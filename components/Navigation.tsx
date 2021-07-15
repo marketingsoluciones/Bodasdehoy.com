@@ -1,16 +1,20 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import Logo from "../public/logo.webp";
 import { CompanyIcon, SearchIcon, UserIcon } from "./icons";
 import useHover from "../hooks/useHover";
-interface propsNavigation {}
+
+
+interface propsNavigation {
+
+}
 
 const Navigation: FC<propsNavigation> = () => {
   return (
     <>
-      <header className="w-full nuevo max-w-screen-xl mx-auto inset-x-0 relative h-20 md:h-24 md:h-16 rounded-b-3xl">
-        <div className="px-5 sm:px-20 mx-auto inset-x-0 h-full flex items-center relative z-10 justify-between">
+      <header className="w-full nuevo sm:max-w-screen-sm md:max-w-screen-md xl:max-w-screen-lg mx-auto inset-x-0 bg-white relative h-20 md:h-20 ">
+        <div className="px-5 md:px-0 mx-auto inset-x-0 h-full flex items-center relative z-10 justify-between">
           <Image
             src={Logo}
             alt={"Logo bodasdehoy.com"}
@@ -29,19 +33,34 @@ const Navigation: FC<propsNavigation> = () => {
               }
           }
 
-          @media (min-width: 800px) {
             .nuevo::before {
                 content: "";
                 background-image: url("/navbar.svg");
                 background-size: contain;
                 background-repeat: no-repeat;
                 position: absolute;
-                width: 100%;
+                width: 70px;
                 height: 100%;
                 z-index: 0;
                 top: 0;
+                left: 0;
+                transform: translate(-50px);
               }
-          }
+
+              .nuevo::after {
+                content: "";
+                background-image: url("/navbar_1.svg");
+                background-size: contain;
+                background-repeat: no-repeat;
+                position: absolute;
+                width: 70px;
+                height: 100%;
+                z-index: 0;
+                top: 0;
+                right: 0;
+                transform: translate(100%) ;
+                
+              }
         `}
       </style>
     </>

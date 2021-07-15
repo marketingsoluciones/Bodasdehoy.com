@@ -1,6 +1,8 @@
-import { FC, ReactComponentElement, ReactNode } from "react";
+import { FC, ReactNode } from "react";
 import FeaturedCompanies from "../components/Home/FeaturedCompanies";
+import Magazine from "../components/Home/Magazine";
 import PlaceDiscovery from "../components/Home/PlaceDiscovery";
+import RecommendCategories from "../components/Home/RecommendCategories";
 import {
   CommunityIcon,
   DownloadFileIcon,
@@ -17,8 +19,10 @@ const Home: FC = () => {
         <Welcome />
       </div>
       <PlaceDiscovery />
-      <div className="bg-white">
+      <div className="bg-white flex flex-col gap-24 w-full">
         <FeaturedCompanies />
+        <RecommendCategories />
+        <Magazine />
       </div>
       <style jsx>
         {`
@@ -87,6 +91,7 @@ export const Features: FC = () => {
     title: string;
     icon: ReactNode;
   };
+
   const List: ItemList[] = [
     { title: "Comunidad para novias", icon: <CommunityIcon /> },
     { title: "Gestor de invitados", icon: <GuestAppIcon /> },

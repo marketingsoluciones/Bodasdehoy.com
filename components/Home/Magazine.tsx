@@ -1,12 +1,17 @@
 import Link from "next/link";
 import { FC } from "react";
+import PlusButton from "../PlusButton";
 
 const Magazine : FC = () => {
   return (
-    <div className="w-full bg-base py-12">
+    <div className="w-full bg-base py-20 relative">
       <div className="max-w-screen-lg mx-auto inset-x-0 ">
         <Principal />
         <BlogCategories />
+        <GridPost />
+        <span className="absolute bottom-0 mx-auto inset-x-0 transform translate-y-2 hover:scale-105 transition">
+        <PlusButton size={"medium"} />
+        </span>
       </div>
     </div>
   );
@@ -74,3 +79,33 @@ const BlogCategories : FC  = () => {
         </div>
     )
 }
+
+
+const GridPost : FC = () => {
+    const Post : FC = () => {
+        return (
+            <div className="w-60 h-max bg-white rounded-3xl overflow-hidden shadow-lg hover:scale-105 transform transition ease-in">
+                <img src="/mask_1.png" className="h-40 w-full object-cover object-center" />
+                <div className="py-5 text-center">
+                    <h2 className="text-gray-300 text-lg font-medium border-b border-primary pb-3 px-5">Tendencias en bodas 2021</h2>
+                    <div className="flex justify-between items-center py-2 px-5">
+                        <p className="text-xs tracking-widest text-primary">CEREMONIA</p>
+                        <p className="text-xs text-gray-300">17/08/2021</p>
+                    </div>
+                    <p className="text-xs px-4 py-2">
+                    Si queréis disfrutar de un recuerdo único de un día irrepetible, contar con un fotógrafo profesional para realizar el reportaje...
+                    </p>
+                </div>
+            </div>
+        )
+    }
+    return (
+        <div className="grid grid-cols-3 gap-6 w-full px-16">
+            <Post />
+            <Post />
+            <Post />
+            
+        </div>
+    )
+}
+

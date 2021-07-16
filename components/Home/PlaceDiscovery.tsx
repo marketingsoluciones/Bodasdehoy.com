@@ -1,12 +1,12 @@
+import TitleSection from "./TitleSection";
+
 const PlaceDiscovery = () => {
   return (
     <>
-    <div className="grid-cards relative">
+    <div className="grid-cards relative w-full">
     <div className="main xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto inset-x-0 pt-32 pb-20 z-20">
-      <h2 className="text-primary font-bold text-2xl">
-        Descubre <span className="font-light">lugares para bodas</span>
-      </h2>
-      <div className="grid grid-cols-4 gap-10 px-5 py-6 z-20 relative">
+      <TitleSection principal={"Descubre"} secondary={"lugares para bodas"} />
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-10 px-5 py-6 z-20 relative w-full">
         <PlaceCard />
         <PlaceCard />
         <PlaceCard />

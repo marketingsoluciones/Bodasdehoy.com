@@ -1,7 +1,10 @@
 import { FC, ReactNode } from "react";
+import AdsApp from "../components/Home/AdsApp";
+import CountriesListing from "../components/Home/CountriesListing";
 import FeaturedCompanies from "../components/Home/FeaturedCompanies";
 import Magazine from "../components/Home/Magazine";
 import PlaceDiscovery from "../components/Home/PlaceDiscovery";
+import PodcastList from "../components/Home/PodcastList";
 import RecommendCategories from "../components/Home/RecommendCategories";
 import {
   CommunityIcon,
@@ -15,7 +18,7 @@ import {
 const Home: FC = () => {
   return (
     <section>
-      <div className="xl:max-w-screen-lg 2xl:max-w-screen-lg pt-28 mx-auto inset-x-0 grid grid-col-2 relative banner">
+      <div className="xl:max-w-screen-lg 2xl:max-w-screen-lg pt-10 sm:pt-28 mx-auto inset-x-0 grid grid-col-2 relative banner ">
         <Welcome />
       </div>
       <PlaceDiscovery />
@@ -23,6 +26,9 @@ const Home: FC = () => {
         <FeaturedCompanies />
         <RecommendCategories />
         <Magazine />
+        <AdsApp />
+        <PodcastList />
+        <CountriesListing />
       </div>
       <style jsx>
         {`
@@ -55,15 +61,15 @@ export default Home;
 
 export const Welcome: FC = (props) => {
   return (
-    <div className="relative w-max h-max flex flex-col gap-6 z-10">
-      <h1 className="text-4xl text-tertiary relative subpixel-antialiased font-bold">
+    <div className="relative w-max h-max flex flex-col gap-6 z-10 px-5 sm:px-0">
+      <h1 className="text-3xl sm:text-4xl w-1/2 sm:w-full text-tertiary relative subpixel-antialiased font-bold">
         <span className="relative font-light">
           Encuentra todo
           <Isologo className="mt-1 ml-0.25 absolute bottom-3 right-0" />
         </span>
         <br /> para una boda inolvidable
       </h1>
-      <p className="text-tertiary text-sm">
+      <p className="w-1/2 sm:w-full text-tertiary text-sm">
         Miles de proveedores de bodas en un sólo lugar.
       </p>
       <Searcher />

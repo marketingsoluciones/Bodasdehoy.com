@@ -1,10 +1,11 @@
 import { FC, useState } from "react";
-import { CrossIcon, EuroIcon, HeartIconFill, HeartIconOutline, StarRating } from "../icons";
+import { EuroIcon, HeartIconFill, HeartIconOutline, StarRating } from "../icons";
+import PlusButton from "../PlusButton";
 
 const FeaturedCompanies = () => {
   return (
     <div className="xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto inset-x-0 grid place-items-center">
-      <div className="w-max flex flex-col items-end h-full">
+      <div className="w-max flex flex-col items-end h-full pb-10">
         <h2 className="w-max text-center text-2xl text-primary font-semibold">
           Empresas de bodas destacadas
         </h2>
@@ -13,7 +14,7 @@ const FeaturedCompanies = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-3 gap-10 py-4 ">
+      <div className="grid sm:grid-cols-3 grid-cols-1 gap-10 py-4 ">
         <CompanyCard />
         <CompanyCard />
         <CompanyCard />
@@ -44,7 +45,7 @@ const CompanyCard = () => {
             <p className="font-bold text-primary">desde <span className="font-normal">300€</span></p>
         </div>
           <p className="text-gray-200 text-sm h-max py-4 leading-5">Si queréis disfrutar de un recuerdo único de un día irrepetible, contar con un fotógrafo profesional para realizar el reportaje...</p>
-      <button className="bg-primary rounded-full w-7 h-7 flex items-center justify-center right-0 left-0 mx-auto transform translate-y-3 absolute bottom-0"><CrossIcon/></button>
+        <PlusButton />
       </div>
       <span className="absolute top-4 right-4 hover:scale-110 transform transition cursor-pointer" onClick={() => setFav(!isFav)}>
         {isFav ? <HeartIconFill className="text-primary" /> : <HeartIconOutline  /> }
@@ -67,7 +68,7 @@ const RatingStars : FC <propsRatings> = ({rating}) => {
         {matriz.map((item, idx) => (
           <StarRating
             key={idx}
-            className={`${rating >= item ? "text-yellow" : "text-gray-200"} hover:opacity-80 `}
+            className={`${rating >= item ? "text-yellow" : "text-gray-100"} hover:opacity-80 `}
           />
         ))}
       </div>

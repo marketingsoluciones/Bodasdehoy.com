@@ -1,4 +1,5 @@
 import { FC } from "react"
+import Footer from "../components/Footer"
 import Navigation from "../components/Navigation"
 
 
@@ -10,6 +11,7 @@ const DefaultLayout: FC = ({children}) => {
         <main>
             {children}
         </main>
+        <Footer />
         </div>
     )
 }

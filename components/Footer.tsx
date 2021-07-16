@@ -31,7 +31,7 @@ const Footer: FC = () => {
     <div className="bg-base w-full pb-8">
       <div className="max-w-screen-lg mx-auto inset-x-0">
         <div className="border-b border-primary pt-10 pb-8">
-          <img src="/logo.webp" className="h-7 object-contain object-center" />
+          <img src="/logo.webp" alt={"Logo bodasdehoy.com"} className="h-7 object-contain object-center" />
         </div>
         <div className="grid grid-cols-3 gap-6 pt-6 pb-8">
           <div className="flex gap-4">
@@ -44,9 +44,8 @@ const Footer: FC = () => {
             <Title title={"Información"} />
             <ul className="flex flex-col gap-1 pt-4 w-full">
               {ListInformacion.map((item, idx) => (
-                <Link href={item.route}>
+                <Link key={idx} href={item.route}>
                   <li
-                    key={idx}
                     className="text-xs text-gray-300 cursor-pointer hover:text-primary transition"
                   >
                     {item.title}
@@ -59,9 +58,8 @@ const Footer: FC = () => {
             <Title title={"Añade tu empresa"} />
             <ul className="flex flex-col gap-1 pt-4 w-full">
               {ListEmpresa.map((item, idx) => (
-                <Link href={item.route}>
+                <Link key={idx} href={item.route}>
                   <li
-                    key={idx}
                     className="text-xs text-gray-300 cursor-pointer hover:text-primary transition"
                   >
                     {item.title}
@@ -82,7 +80,7 @@ interface propsIcon {
   icon: ReactNode;
 }
 
-const Icon: FC<propsIcon> = ({ icon }) => {
+export const Icon: FC<propsIcon> = ({ icon }) => {
   return (
     <button className="border-primary border rounded-full w-12 h-12 text-primary flex items-center justify-center hover:text-white hover:bg-primary transition ">
       {icon}

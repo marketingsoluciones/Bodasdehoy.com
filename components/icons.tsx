@@ -460,3 +460,27 @@ export const YoutubeIcon : FC <PropsIcon> = (props) => {
 }
 
 
+export const EmailIcon : FC <PropsIcon> = (props) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}>
+  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+</svg>
+  )
+}
+
+export const PasswordIcon : FC <PropsIcon> = (props) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}>
+  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+</svg>
+  )
+}
+
+
+export const UserForm : FC <PropsIcon> = (props) => {
+  return (
+    <svg width={13} height={14} viewBox="0 0 13 14" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path d="M6.50033 0.446777C8.24991 0.446777 9.66699 1.86386 9.66699 3.61344C9.66699 5.36303 8.24991 6.78011 6.50033 6.78011C4.75074 6.78011 3.33366 5.36303 3.33366 3.61344C3.33366 1.86386 4.75074 0.446777 6.50033 0.446777ZM6.50033 13.1134C6.50033 13.1134 12.8337 13.1134 12.8337 11.5301C12.8337 9.63011 9.74616 7.57178 6.50033 7.57178C3.25449 7.57178 0.166992 9.63011 0.166992 11.5301C0.166992 13.1134 6.50033 13.1134 6.50033 13.1134Z" fill="#747474" />
+  </svg>
+  )
+}

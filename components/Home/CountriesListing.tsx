@@ -30,7 +30,7 @@ const CountriesListing = () => {
             <TitleSection principal={"Empresa de bodas"} secondary={"según provincias"}/>
             <ul className="grid grid-cols-4 gap-x-10 gap-y-1 py-4">
                 {List.map((item, idx) => (
-                    <Link href={item.route}>
+                    <Link key={idx} href={item.route}>
                     <li className="text-sm cursor-pointer text-gray-300 font-light hover:text-black">Bodas en {item.name}</li>
                     </Link>
                 ))}

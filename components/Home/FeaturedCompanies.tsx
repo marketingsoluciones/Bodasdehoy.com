@@ -31,7 +31,7 @@ const CompanyCard = () => {
     <div className="rounded-3xl w-72 h-auto transition ease-in transform hover:scale-105 duration-300 relative">
       <div className="h-60 rounded-3xl cursor-pointer overflow-hidden">
         <div className="bg-gradient-to-t from-transparent to-black w-full h-1/4 rounded-3xl opacity-60 absolute"/>
-      <img src={"/mask.png"} className="object-cover object-center w-full h-full" />
+      <img src={"/mask.png"} alt={"imagen"} className="object-cover object-center w-full h-full" />
       </div>
       <div className="bg-base rounded-3xl h-max transform -translate-y-10 w-full text-center p-4 flex flex-col gap-1 shadow-md">
         <h2 className="font-ligth text-gray-200 tracking-widest text-regular pt-1">

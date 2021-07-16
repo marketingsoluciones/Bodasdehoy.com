@@ -4,6 +4,7 @@ import Link from "next/link";
 import Logo from "../public/logo.webp";
 import { CompanyIcon, SearchIcon, UserIcon } from "./icons";
 import useHover from "../hooks/useHover";
+import router from "next/router";
 
 
 interface propsNavigation {
@@ -115,7 +116,7 @@ const Icons = () => {
         <span className="px-3 cursor-pointer">
           <SearchIcon className="icon transition transform hover:scale-105 text-gray-200" />
         </span>
-        <span className="px-3 border-gray-100 border-l border-r cursor-pointer">
+        <span className="px-3 border-gray-100 border-l border-r cursor-pointer" onClick={() => router.push("/login")}>
           <UserIcon className="icon transition transform hover:scale-105" />
         </span>
         <span className="px-3 cursor-pointer transition transform hover:scale-105">

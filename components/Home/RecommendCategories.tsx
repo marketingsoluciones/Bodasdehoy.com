@@ -14,7 +14,6 @@ const RecommendCategories: FC = () => {
         <Category title="Servicios para bodas" icon={<CarIcon />} />
         <Category title="Vestidos y trajes" icon={<DressIcon />} />
         <Category title="Viajes para novios" icon={<TravelIcon />} />
-
       </div>
     </div>
   );

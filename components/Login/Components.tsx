@@ -1,5 +1,7 @@
 import { Field } from "formik";
 import { FC, MouseEventHandler, ReactNode } from "react";
+import { api } from "../../api";
+import {firebaseInstance, GoogleProvider} from "../../firebase";
 import { Icon } from "../Footer";
 import { FacebookIcon } from "../icons";
 
@@ -31,13 +33,22 @@ export const RegisterQuestion: FC<propsRegisterQuestion> = ({ onClick }) => {
 };
 
 export const Providers: FC = () => {
+
+  const handleClickGoogle = async () => {
+    try {
+      const auth = firebaseInstance.auth().signInWithPopup(GoogleProvider())
+      console.log(auth)
+      
+    } catch (error) {
+      
+    }
+
+  }
   return (
     <div className={`text-center flex flex-col gap-2 w-full items-center `}>
       <h1 className="text-primary">Accede con</h1>
       <div className="gap-4 flex items-center">
-        <Icon icon={<FacebookIcon />} />
-        <Icon icon={<FacebookIcon />} />
-        <Icon icon={<FacebookIcon />} />
+        <Icon icon={<FacebookIcon />} onClick={handleClickGoogle} />
       </div>
     </div>
   );
@@ -54,25 +65,5 @@ export const BusinessAccess: FC = () => {
   );
 };
 
-interface propsInputField {
-    id : string
-    name: string
-    placeholder : string
-    type : string
-    icon?: ReactNode
-}
-export const InputField : FC <propsInputField> = ({id, name, placeholder, type, icon}) => {
-  return (
-    <span className="w-full relative ">
-      <Field
-        id="email"
-        name="email"
-        placeholder="Email"
-        type="email"
-        className={`bg-base pr-3 pl-12 py-2 rounded-lg w-full focus:outline-none focus:ring`}
-      />
-     {icon}
-    </span>
-  );
-};
+
 

@@ -1,9 +1,8 @@
 import { FC, ReactNode, useEffect, useState } from "react";
 import ButtonClose from "../components/ButtonClose";
-import { Icon } from "../components/Footer";
-import { FacebookIcon } from "../components/icons";
 import router from "next/router";
 import { Login, Register } from "../components/Login/Forms";
+
 
 // Tipos de datos personalizados
 type Forms = {
@@ -20,6 +19,8 @@ const PageLogin: FC = () => {
     login : <Login setStage={setStage} />,
     register : <Register />
 }
+
+
   useEffect(() => {
     document?.addEventListener("keydown", keyDown);
   }, []);
@@ -56,3 +57,4 @@ const PageLogin: FC = () => {
 };
 
 export default PageLogin;
+

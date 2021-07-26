@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FC, ReactNode } from "react";
+import { FC, MouseEventHandler, ReactNode } from "react";
 import {
   FacebookIcon,
   InstagramIcon,
@@ -78,11 +78,12 @@ export default Footer;
 
 interface propsIcon {
   icon: ReactNode;
+  onClick?: MouseEventHandler
 }
 
-export const Icon: FC<propsIcon> = ({ icon }) => {
+export const Icon: FC<propsIcon> = ({ icon, onClick }) => {
   return (
-    <button className="border-primary border rounded-full w-12 h-12 text-primary flex items-center justify-center hover:text-white hover:bg-primary transition ">
+    <button onClick={onClick} className="border-primary border rounded-full w-12 h-12 text-primary flex items-center justify-center hover:text-white hover:bg-primary transition ">
       {icon}
     </button>
   );

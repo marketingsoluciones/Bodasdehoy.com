@@ -1,0 +1,12 @@
+{
+    "type": "service_account",
+    "project_id": "bodasdehoy-1063",
+    "private_key_id": "169dc5037d8301a78e201cd58f2ab8c66134d469",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC2YIQwRY/IGEPZ\nX1bqT98L7nx3/YQzGtmLcxeWk1kBOSv9o2eH/XSE6aBhw2+sSHoSFcM+6U7/QVF5\nwGpZJpUcBUjFJtPO/ME/19q8i427Xgq9/bubmKxYbQl2907/fe+KH2G7KoAC6sHZ\n1iSEeezLqa7vBG2VW+D5OJNsHkEfXg5VDIC8KndPCV4cw2mGactRHvKU7yLUI3Yz\njGECg/+Ob983sx4qyGwsxKs3wiItFXH58xbySMM533qIgjGP8Ncxrxxrc7ois+nb\nwTWW9WjjEdkNjV0A1DAy51k6A/EBzvs7fh9qXubPSx0D2s+vrHIPZSfG7hU2/pqd\nVfOhRzgTAgMBAAECggEAWbWeMFR3RljRPyKLkVRahfb4mNlGZxEFA3hImRO/yz9B\nKVFwgs8kuqBk+NH2o4s/KJg140NGTX7mwfnpFhNJc3AR/JB9zao8sNfPy8Dlpc27\ngPtHhmESHaj859z8qeZbptiK7VMZhtXNJwcUDWogFYpQ91d5Q+ffARhYQ+2Z4QBB\nfpnGvXaoZwgU+51PB1bMyQC+zpePaO5RIpz9tRv8kKtFw9REYIKLDE+LewUuRiqO\nf3rBMxSozcv3ScuneplD2/92sBYLE0kVxNOULu7DPM/ZnjuJjNzhSv14fvw0XPCK\nv5FwwwGNNHUm9a5V//vPwgSevUHu5WPY1cW4Wv0pmQKBgQDZa8MnN4D3v/0gLtgr\nammaK1/cayXc5TSLcpPBa1BUTuuPfJueJkCOpamZsK4Yy8oM+43wuUYyEPDB///2\nWOCyKMKVldLC0HTw1bhFcuFTt21fLVgsznRj04Of4ZpOE3aqcw/P0CbECMILKtHJ\nORjuKahENAkQbfsTarehupQaVQKBgQDWvOatgJXKEMFbPiFpiuKH2dMRb3+831ze\nwVXh08eVhAzxrLO9wx6sBghuojExwBLrYdMfE7INYVcvu3nHmvUPxCqlKFKNtXY+\nMy+MStb9Y9dwbt6z2bs1RM3o4K+OSm6FhwSSSfiazGzJsARFYPAgnDEH3bH6vrdS\nnT2GF8vAxwKBgQDJ1qiMt5IabTjnr5UueNMgNDQBw9aago2NBwjz/lPMcJdt1RgC\ncTBtPI1+B+8XRdiExOK4HsdzoxZegvF0GH4/5mb9xuCpyitFiKJQlp1nwljeipHY\nxrB2G92NhzpgUOFQyxBas7nJMvgwtcebLk5ein2TE1t2zSLQm7ltgnALIQKBgQC7\na8QqSsBxzI32hRPEemOdDpEZ9qcWwhzcjwHWSHE6Hjbt+D4osdRjcCCL7yPguDPL\nHWaXCSmuY/ckwgxYGvco+5386GSlKmw5fZNSbz+ViT7P8vSNJMwwggz15KVVG8G6\n6U0kIUvKUAHjRq1zoFf1Hl3s76IXp715baP1FW/QoQKBgDXNcj50/6f3CtOVrhie\nr3Yv0L4YSrEVuy9v2qeBMeUusdhOTWvsglVLNo16DwgFeUAyG1TPCQ+0tKCK8MKK\n0EV1W4zj201elk1KPJsNL/5l0fWsLOhyeCbdTuabeRPGA/4d2ddqyVm5r0D1AsLS\nuz+5po1fTWtXylmlhcsnH/r7\n-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-z37hz@bodasdehoy-1063.iam.gserviceaccount.com",
+    "client_id": "116417449291368128062",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-z37hz%40bodasdehoy-1063.iam.gserviceaccount.com"
+  }

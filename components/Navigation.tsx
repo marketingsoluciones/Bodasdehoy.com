@@ -5,6 +5,7 @@ import Logo from "../public/logo.webp";
 import { CompanyIcon, SearchIcon, UserIcon } from "./icons";
 import useHover from "../hooks/useHover";
 import router from "next/router";
+import { getCookie } from "../utils/Cookies";
 
 
 interface propsNavigation {
@@ -110,13 +111,20 @@ const Navbar = () => {
 };
 
 const Icons = () => {
+
+  const HandleClickUser = () => {
+    if(!getCookie("Auth")) {
+      router.push("/login")
+    }
+    
+  }
   return (
     <>
       <div className="flex items-center">
         <span className="px-3 cursor-pointer">
           <SearchIcon className="icon transition transform hover:scale-105 text-gray-200" />
         </span>
-        <span className="px-3 border-gray-100 border-l border-r cursor-pointer" onClick={() => router.push("/login")}>
+        <span className="px-3 border-gray-100 border-l border-r cursor-pointer" onClick={HandleClickUser}>
           <UserIcon className="icon transition transform hover:scale-105" />
         </span>
         <span className="px-3 cursor-pointer transition transform hover:scale-105">

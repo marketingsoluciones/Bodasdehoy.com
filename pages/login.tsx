@@ -34,14 +34,14 @@ const PageLogin: FC = () => {
 
   return (
     <>
-      <div className="w-screen fixed h-screen top-0 left-0 grid z-20 grid-cols-5">
-        <div className="bg-white col-span-3 relative flex items-center justify-center w-full ">
+      <div className="w-screen fixed h-screen top-0 left-0 md:grid z-20 grid-cols-5">
+        <div className="bg-white w-full h-full col-span-3 relative flex items-center justify-center  ">
           <ButtonClose onClick={() => router.push("/")} />
-          <div className="flex flex-col items-center gap-4 w-2/3">
+          <div className="flex flex-col items-center gap-4 w-full px-10 md:px-0 md:w-2/3">
               {Stages[stage]}
           </div>
         </div>
-        <div className="banner w-full h-full col-span-2" />
+        <div className="hidden md:block banner w-full h-full col-span-2" />
       </div>
       <style jsx>
         {`

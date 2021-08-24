@@ -24,7 +24,8 @@ module.exports = {
       red: "#EF4444",
       green: "#34D399",
       yellow: "#FFDB00",
-      transparent: "transparent"
+      transparent: "transparent",
+      gold : "#FFC200"
     },
     extend: {},
   },

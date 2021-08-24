@@ -1,21 +1,23 @@
 import { FC, useState } from "react";
 import Footer from "../components/Footer";
+import FooterMobile from "../components/FooterMobile";
 import Navigation from "../components/Navigation";
+import NavigationMobile from "../components/NavigationMobile";
+import Sidebar from "../components/Sidebar";
 import { AuthContextProvider } from "../context/AuthContext";
 
 const DefaultLayout: FC = ({ children }) => {
-  const [user, setUser] = useState({
-    _id: "",
-    username: "",
-    email: "",
-  });
+  
   return (
     <AuthContextProvider>
-      <div className="bg-base relative min-h-screen">
+      <div className="bg-base relative min-h-screen w-full">
+        
         <Navigation />
+        <NavigationMobile />
 
-        <main>{children}</main>
+        <main className="w-full">{children}</main>
         <Footer />
+        <FooterMobile />
       </div>
     </AuthContextProvider>
   );

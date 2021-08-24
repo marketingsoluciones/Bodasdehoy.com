@@ -15,7 +15,7 @@ interface propsNavigation {
 const Navigation: FC<propsNavigation> = () => {
   return (
     <>
-      <header className="w-full nuevo sm:max-w-screen-sm md:max-w-screen-md xl:max-w-screen-lg mx-auto inset-x-0 bg-white relative h-20 md:h-20 ">
+      <header className="hidden md:block w-full nuevo sm:max-w-screen-sm md:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl mx-auto inset-x-0 bg-white relative h-20 md:h-20 z-20 ">
         <div className="px-5 md:px-0 mx-auto inset-x-0 h-full flex items-center relative z-10 justify-between">
           <Image
             src={Logo}
@@ -110,7 +110,7 @@ const Navbar = () => {
   );
 };
 
-const Icons = () => {
+export const Icons = () => {
 
   const HandleClickUser = () => {
     if(!getCookie("Auth")) {
@@ -121,10 +121,10 @@ const Icons = () => {
   return (
     <>
       <div className="flex items-center">
-        <span className="px-3 cursor-pointer">
+        <span className="hidden md:block px-3 cursor-pointer">
           <SearchIcon className="icon transition transform hover:scale-105 text-gray-200" />
         </span>
-        <span className="px-3 border-gray-100 border-l border-r cursor-pointer" onClick={HandleClickUser}>
+        <span className="px-3 md:border-gray-100 md:border-l border-r cursor-pointer" onClick={HandleClickUser}>
           <UserIcon className="icon transition transform hover:scale-105" />
         </span>
         <span className="px-3 cursor-pointer transition transform hover:scale-105">

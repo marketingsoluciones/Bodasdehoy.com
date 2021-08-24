@@ -145,13 +145,6 @@ const FormRegister = () => {
             <UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto" />
           </span>
 
-          <InputField 
-            name={"Hola"}
-            placeholder={"Hola"}
-            type="email"
-            autoComplete="off"
-            />
-
           <div className="grid grid-cols-2 gap-4">
             <span className="w-full relative ">
               <Field

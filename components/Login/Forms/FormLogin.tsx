@@ -5,8 +5,7 @@ import { api } from "../../../api";
 import { AuthContext } from "../../../context/AuthContext";
 import { setCookie } from "../../../utils/Cookies";
 import { EmailIcon, PasswordIcon } from "../../icons";
-import {firebaseInstance} from '../../../firebase'
-
+import { getAuth, signInWithEmailAndPassword, updateProfile} from 'firebase/auth'
 type MyFormValues = {
     identifier : string
     password : any
@@ -25,8 +24,7 @@ const FormLogin : FC <{}> = () => {
         initialValues={initialValues}
         onSubmit={ async (values, action) => {
             try {
-               const res : any = await firebaseInstance.auth().signInWithEmailAndPassword(values.identifier, values.password);
-               console.log(res)
+               const res : any = await signInWithEmailAndPassword(getAuth(), values.identifier, values.password);
                const user = {
                    jwt : res?.user?.Aa,
                    user : {

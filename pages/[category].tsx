@@ -82,7 +82,7 @@ interface propItemCategory {
 }
 const ItemCategory: FC<propItemCategory> = memo(({ title, route }) => {
     return (
-        <Link href={route}>
+        <Link href={route} passHref>
             <button className="bg-white rounded-full w-28 h-28 border border-primary flex items-center justify-center text-center text-sm text-primary capitalize hover:bg-primary hover:text-white transition duration-400">
                 {title}
             </button>

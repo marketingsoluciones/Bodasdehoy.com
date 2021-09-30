@@ -23,7 +23,7 @@ const FooterMobile = () => {
                 </div>
                 <div className="w-full px-5 mx-auto inset-x-0 py-2 flex gap-2 flex-wrap justify-center pt-4">
                     {List.map(({ title, route, bar = false }, idx) => (
-                        <Link key={idx} href={route}>
+                        <Link key={idx} href={route} passHref>
                             <p className={`text-xs text-tertiary ${bar ? " pr-2 border-r border-primary" : ""}`}>{title}</p>
                         </Link>
                     ))}

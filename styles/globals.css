@@ -16,3 +16,7 @@
 .slick-dots li.slick-active button:before {
     color: #F7628C !important;
 }
+
+.h-max {
+    height: fit-content;
+}

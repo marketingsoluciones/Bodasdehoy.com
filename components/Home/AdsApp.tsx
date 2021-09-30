@@ -42,8 +42,8 @@ const AdsApp = () => {
             <h3 className="text-sm md:text-xl tracking-widest">GRATIS</h3>
           </div>
         </div>
-        <h2 className="font-title text-4xl -mt-40 md:text-6xl w-max mx-auto inset-x-0 text-primary pt-14 pb-10 text-right leading-6">
-          Organiza tu boda <br />{" "}
+        <h2 className="font-title text-4xl flex flex-col md:text-6xl w-max mx-auto inset-x-0 text-primary pt-14 pb-10 text-right leading-6">
+          Organiza tu boda 
           <span className="font-display text-xl w-full font-light ">
             con nuestra app
           </span>

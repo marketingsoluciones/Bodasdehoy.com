@@ -42,6 +42,7 @@ const Principal : FC = () => {
         <img
           src="/mask_1.png"
           className="h-80 w-full rounded-2xl object-cover float-right"
+          alt={""}
         />
         </div>
     )
@@ -56,7 +57,7 @@ const BlogCategories : FC  = () => {
     }
      const Category : FC <propsCategory> = ({title, route}) => {
         return (
-            <Link href={route}>
+            <Link href={route} passHref>
             <button className="rounded-full my-4 w-40 flex items-center py-2 justify-center text-tertiary font-medium border border-primary bg-white hover:bg-primary hover:text-white transition ease-in duration-200 cursor-pointer flex-wrap">
                 {title}
             </button>
@@ -110,7 +111,7 @@ const GridPost : FC = () => {
     const Post : FC = () => {
         return (
             <div className="w-60 mx-auto inset-x-0 h-max bg-white rounded-3xl overflow-hidden shadow-lg hover:scale-105 transform transition ease-in">
-                <img src="/mask_1.png" className="h-40 w-full object-cover object-center" />
+                <img src="/mask_1.png" className="h-40 w-full object-cover object-center" alt={""} />
                 <div className="py-5 text-center">
                     <h2 className="text-gray-300 text-lg font-medium border-b border-primary pb-3 px-5">Tendencias en bodas 2021</h2>
                     <div className="flex justify-between items-center py-2 px-5">

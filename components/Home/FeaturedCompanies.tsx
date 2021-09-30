@@ -95,26 +95,30 @@ const CompanyCard : FC <propsCompanyCard> = ({data}) => {
 
 interface propsRatings {
     rating : number,
-    size? : string
+    size? : string,
+    visibleText? : boolean
+    outValue? : any 
 }
 
-export const RatingStars : FC <propsRatings> = ({rating, size = "base"}) => {
+export const RatingStars : FC <propsRatings> = ({rating, size = "base", visibleText = true, outValue = () => {}}) => {
   const matriz: number[] = [1, 2, 3, 4, 5];
   const sizes : any = {
     base : "",
-    lg : "w-4 h-4 mx-0.5"
+    lg : "w-4 h-4 mx-0.5",
+    xl : "w-5 h-5 mx-0.5"
   }
   return (
-    <div className="flex items-center justify-center h-max gap-1">
-      <div className="flex gap-1 items-center cursor-pointer ">
+    <div className="flex items-center justify-center h-max gap-2">
+      <div className="flex  items-center cursor-pointer ">
         {matriz.map((item, idx) => (
           <StarRating
             key={idx}
-            className={`${rating >= item ? "text-gold" : "text-gray-100"} hover:opacity-80 ${sizes[size]} `}
+            className={`transition ${rating >= item ? "text-gold hover:opacity-80" : "text-gray-100 hover:text-gold"}  ${sizes[size]} `}
+            onClick={() => outValue(item)}
           />
         ))}
       </div>
-      <p className="text-xs text-gray-300">12</p>
+      {visibleText && <p className="text-xs text-gray-300">12</p>}
     </div>
   );
 };

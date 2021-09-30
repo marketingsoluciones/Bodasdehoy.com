@@ -16,9 +16,10 @@ const RangeComponent = ({min, max} : {min: number, max: number}) => {
         <div className="bg-gray-100 w-full h-1.5 rounded-full"
         {...getTrackProps()}
       >
-        {handles.map(({ getHandleProps }) => (
+        {handles.map(({ getHandleProps }, idx) => (
           <div className="rounded-full w-5 h-5 border-2 border-primary bg-white"
             {...getHandleProps()}
+            key={idx}
           />
         ))}
 

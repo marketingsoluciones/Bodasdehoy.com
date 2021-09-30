@@ -63,7 +63,7 @@ const BlockButtons: FC<propsBlock> = ({ list }) => {
     return (
         <div className="w-full py-4 border-t border-base gap-2 flex flex-col">
             {list.map((item, idx) => (
-                <Link key={idx} href={item.route}>
+                <Link key={idx} href={item.route} passHref>
                     <p className="text-tertiary">{item.title}</p>
                 </Link>
             ))}

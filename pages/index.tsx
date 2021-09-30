@@ -23,7 +23,6 @@ interface propsHome {
   business : object[]
 }
 const Home: FC <propsHome> = ({business}) => {
-  console.log(business)
   return (
     <section className="w-full">
       <div className="xl:max-w-screen-lg pt-10 sm:pt-28 mx-auto inset-x-0 grid grid-col-2 relative banner w-full ">

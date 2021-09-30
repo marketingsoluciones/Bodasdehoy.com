@@ -15,15 +15,15 @@ const BreadCumbs: FC = () => {
     }, [])
 
     return (
-        <div className="max-w-screen-xl mx-auto inset-x-0 flex items-center w-full text-sm text-gray-200  capitalize font-light">
-            <Link href={`/`}>
+        <div className="lg:max-w-screen-lg 2xl:max-w-screen-xl mx-auto inset-x-0 flex items-center w-full text-sm text-gray-200  capitalize font-light">
+            <Link href={`/`} passHref>
                     <span className="w-max flex items-center">
                     <p className="px-1">Inicio</p>
                     <ArrowIcon className="w-4 h-4" />
                     </span>
                 </Link>
             {niveles?.map((item, idx) => (
-                <Link href={`/${item[1]}`}>
+                <Link key={idx} href={`/${item[1]}`} passHref>
                     <span className="w-max flex items-center">
                     <p className="px-1">{item[1]}</p>
                     <ArrowIcon className="w-4 h-4" />

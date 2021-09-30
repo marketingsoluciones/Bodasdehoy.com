@@ -44,7 +44,7 @@ const Footer: FC = () => {
             <Title title={"Información"} />
             <ul className="flex flex-col gap-1 pt-4 w-full">
               {ListInformacion.map((item, idx) => (
-                <Link key={idx} href={item.route}>
+                <Link key={idx} href={item.route} passHref>
                   <li
                     className="text-xs text-gray-300 cursor-pointer hover:text-primary transition"
                   >
@@ -58,7 +58,7 @@ const Footer: FC = () => {
             <Title title={"Añade tu empresa"} />
             <ul className="flex flex-col gap-1 pt-4 w-full">
               {ListEmpresa.map((item, idx) => (
-                <Link key={idx} href={item.route}>
+                <Link key={idx} href={item.route} passHref>
                   <li
                     className="text-xs text-gray-300 cursor-pointer hover:text-primary transition"
                   >

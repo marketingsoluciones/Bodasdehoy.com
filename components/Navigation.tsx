@@ -91,7 +91,7 @@ const Navbar = () => {
   const ItemList: FC<propsItem> = ({ item }) => {
       const [hoverRef, isHovered] = useHover()
     return (
-      <Link href={item.route}>
+      <Link href={item.route} passHref>
         <li ref={hoverRef} className="cursor-pointer relative">{item.title}
         <svg className={`h-0.5 w-full bg-primary transform transition absolute ${isHovered ? "scale-100" : "scale-0"}`}/>
             </li>

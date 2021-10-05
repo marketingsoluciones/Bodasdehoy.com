@@ -25,22 +25,22 @@ const FormLogin : FC <{}> = () => {
         onSubmit={ async (values, action) => {
             try {
                const res : any = await signInWithEmailAndPassword(getAuth(), values.identifier, values.password);
-               const user = {
-                   jwt : res?.user?.Aa,
-                   user : {
-                       uid : res?.user?.uid,
-                       username : res?.user?.displayName,
-                       email: res?.user?.email,
-                       emailVerified: res?.user?.emailVerified,
-                       creationTime: res?.user?.metadata?.a,
-                       lastSignInTime : res?.user?.lastSignInTime,
-                       phoneNumber: res?.user?.phoneNumber,
-                       photoURL: res?.user?.photoURL
-                   }
+               const user: any = {
+                   jwt : res?.user?.accessToken,
+                //    user : {
+                //        uid : res?.user?.accessToken,
+                //        username : res?.user?.displayName,
+                //        email: res?.user?.email,
+                //        emailVerified: res?.user?.emailVerified,
+                //        creationTime: res?.user?.metadata?.a,
+                //        lastSignInTime : res?.user?.lastSignInTime,
+                //        phoneNumber: res?.user?.phoneNumber,
+                //        photoURL: res?.user?.photoURL
+                //    }
                }
-               //setCookie({nombre:"Auth", valor:jwt, dias:1})
-               //router.push("/")
-               //setUser(user)
+               setCookie({nombre:"Auth", valor:user.jwt, dias:1})
+               router.push("/")
+               setUser(user)
             } catch (error) {
                 console.error(error)
             }

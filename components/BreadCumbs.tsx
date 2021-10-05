@@ -5,7 +5,10 @@ import { useEffect } from "react"
 import { FC } from "react"
 import { ArrowIcon } from "./icons"
 
-const BreadCumbs: FC = () => {
+interface propsBreadCumbs {
+    className? : string
+}
+const BreadCumbs: FC <propsBreadCumbs> = ({className}) => {
     const [niveles, setNiveles] = useState<string[][]>([])
 
     useEffect(() => {
@@ -15,7 +18,7 @@ const BreadCumbs: FC = () => {
     }, [])
 
     return (
-        <div className="lg:max-w-screen-lg 2xl:max-w-screen-xl mx-auto inset-x-0 flex items-center w-full text-sm text-gray-200  capitalize font-light">
+        <div className={`lg:max-w-screen-lg 2xl:max-w-screen-xl mx-auto inset-x-0 flex items-center w-full text-sm text-gray-200 capitalize font-light ${className}`}>
             <Link href={`/`} passHref>
                     <span className="w-max flex items-center">
                     <p className="px-1">Inicio</p>

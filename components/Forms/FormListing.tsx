@@ -1,6 +1,7 @@
 import { Form, Formik } from "formik";
 import React from "react";
-import { EmailIcon, UserIcon2 } from "../icons";
+import ButtonComponent from "../ButtonComponent";
+import { EmailIcon, LinkProps, PhoneIcon, UserIcon2 } from "../icons";
 import { InputField } from "./InputField";
 import PhoneField from "./PhoneField";
 
@@ -37,15 +38,24 @@ const FormListing = () => {
         <span className="h-max relative text-gray-200">
           <InputField name="email" type="email" placeholder="Telefono" />
           <EmailIcon className="absolute w-5 h-5 inset-y-0 my-auto left-4 " />
-          <PhoneField />
+        
         </span>
 
         <span className="h-max relative text-gray-200">
-          <label >Mensaje</label>
-          <textarea id="w3review" className="w-full bg-base p-2 rounded focus:outline-none focus:ring transition" name="w3review" rows={4} cols={50}>
+          <textarea  className="w-full bg-base p-2 h-20 text-sm rounded focus:outline-none focus:ring transition" placeholder={"Escribe tu solicitud a la empresa"}>
             
           </textarea>
         </span>
+
+        <ButtonComponent text={"Enviar solicitud"} color={"primary"} type={"submit"} className="mx-auto inset-x-0"/>
+        <div className="pt-10 mt-3 border-t border-gray-100 flex gap-6 justify-center items-center">
+          <ButtonComponent text={"Telefono"} color={"white"} type={"button"}>
+            <PhoneIcon />
+          </ButtonComponent>
+          <ButtonComponent text={"Ver web"} color={"white"} type={"button"} >
+            <LinkProps />
+          </ButtonComponent>
+        </div>
       </Form>
     </Formik>
   );

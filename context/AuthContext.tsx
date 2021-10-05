@@ -27,7 +27,7 @@ type UserType = {
 }
 
 type Context = {
-    user : UserType
+    user : any
     setUser : Dispatch<SetStateAction<Context>>
 }
 
@@ -36,7 +36,7 @@ const initialContext : Context = {
         _id : "",
         username : "",
         email : "",
-  
+        
     },
     setUser: () => null,
 }

@@ -18,9 +18,9 @@ const [isOpen, setOpen] = useState(false)
         <ReviewIconPrincipal />
         <h2 className="text-xl text-gray-200">Opiniones sobre La Manga Club</h2>
       </div>
-      <div className="grid grid-cols-3 border-b pb-6 pt-4 border-gray-100">
+      <div className="grid md:grid-cols-3 border-b pb-6 pt-4 border-gray-100">
         <AverageComponent />
-        <div className="col-span-2 grid grid-cols-2 gap-6 py-2">
+        <div className="col-span-2 grid md:grid-cols-2 gap-6 py-2">
           {possibleReviews.map((item, idx) => (
             <SelectReviewComponent
               key={idx}
@@ -81,7 +81,7 @@ export const UsersGalleryComponent: FC = () => {
   return (
     <div className="border-b border-gray-100">
       <p className="text-sm text-tertiary">12 fotos de usuarios</p>
-      <div className="flex items-center justify-between pb-6 py-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 items-center justify-between pb-6 py-3">
         <Image />
         <Image />
         <Image />

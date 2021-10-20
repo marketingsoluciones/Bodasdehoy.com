@@ -26,7 +26,7 @@ const RecommendCategories: FC = () => {
   };
   return (
     <div className="max-w-screen-lg mx-auto inset-x-0 w-full">
-      <TitleSection principal={"Recomendados"} secondary={"para tu boda"} />
+      <TitleSection principal={"Recomendados"} secondary={"para tu boda"} size={"md"} />
       <div className="w-full py-10 mx-auto  md:pl-0 overflow-hidden">
         <Slider {...settings}>
         <Category title="Fotográfos para bodas" icon={<CameraIcon  className="transform scale-75 md:scale-100" />} />
@@ -52,7 +52,7 @@ const Category: FC<propsCategory> = memo(({ icon, title }) => {
   return (
     <div
       ref={hoverRef}
-      className={`md:w-28 md:h-28 w-20 h-20 rounded-full bg-primary hover:bg-base transition duration-300 flex items-center justify-center p-3`}
+      className={`md:w-28 md:h-28 w-20 h-20 rounded-full bg-primary hover:bg-color-base transition duration-300 flex items-center justify-center p-3`}
     >
       <span className={`absolute ${isHovered ? "hidden" : ""}`}>{icon}</span>
       <p

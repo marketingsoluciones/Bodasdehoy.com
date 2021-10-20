@@ -5,9 +5,9 @@ import PlusButton from "../PlusButton";
 
 const Magazine : FC = () => {
   return (
-    <div className="w-full bg-base py-10 md:py-20 relative px-5">
+    <div className="w-full bg-color-base py-10 md:py-20 relative px-5">
       <div className="max-w-screen-lg mx-auto inset-x-0">
-      <h2 className="md:hidden font-title text-6xl md:text-7xl text-primary">Magazine</h2>
+      <h2 className="md:hidden font-title text-6xl md:text-7xl w-full text-center md:text-left text-primary">Magazine</h2>
         <Principal />
         <BlogCategories />
         <GridPost />
@@ -21,7 +21,7 @@ const Magazine : FC = () => {
 
 export default Magazine;
 
-const Principal : FC = () => {
+export const Principal : FC = () => {
     return (
         <div className="w-full relative  grid-cols-2 hidden md:grid">
           <h2 className="font-title text-6xl md:text-7xl text-primary">Magazine</h2>
@@ -79,9 +79,9 @@ const BlogCategories : FC  = () => {
           infinite: false,
           slidesToShow: 4,
           slidesToScroll:1,
-          className: "text-center",
           centerMode: false,
           accessibility: false,
+          arrows:false,
           responsive : [
             
             {
@@ -96,7 +96,7 @@ const BlogCategories : FC  = () => {
           
         };
     return (
-        <div className="w-full overflow-hidden py-6">
+        <div className="w-full py-6">
             <Slider {...settings}>
             {List.map((item, idx) => (
                 <Category key={idx} title={item.title} route={item.route} />
@@ -107,10 +107,10 @@ const BlogCategories : FC  = () => {
 }
 
 
-const GridPost : FC = () => {
+export const GridPost : FC = () => {
     const Post : FC = () => {
         return (
-            <div className="w-60 mx-auto inset-x-0 h-max bg-white rounded-3xl overflow-hidden shadow-lg hover:scale-105 transform transition ease-in">
+            <div className="w-60 mx-auto inset-x-0 h-max bg-white rounded-3xl overflow-hidden hover:shadow-xl hover:opacity-95 transition-all cursor-pointer my-8 duration-400 ">
                 <img src="/mask_1.png" className="h-40 w-full object-cover object-center" alt={""} />
                 <div className="py-5 text-center">
                     <h2 className="text-gray-300 text-lg font-medium border-b border-primary pb-3 px-5">Tendencias en bodas 2021</h2>
@@ -132,8 +132,6 @@ const GridPost : FC = () => {
         speed: 200,
         slidesToShow: 3,
         slidesToScroll:1,
-        className: "text-center",
-        centerMode: false,
         responsive : [
           
           {
@@ -147,8 +145,11 @@ const GridPost : FC = () => {
         
       };
     return (
-        <div className="w-full overflow-hidden py-10 px-5">
-            <Slider {...settings}>
+        <div className="w-full grid grid-cols-1 ">
+            <Slider {...settings} >
+            <Post />
+            <Post />
+            <Post />
             <Post />
             <Post />
             <Post />

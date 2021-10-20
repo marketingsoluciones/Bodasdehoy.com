@@ -16,7 +16,7 @@ const FooterMobile = () => {
         { title: "Contacto", route: "/" },
     ]
     return (
-        <div className="md:hidden bg-base w-full pb-8">
+        <div className="md:hidden bg-color-base w-full pb-8">
             <div className="px-5 mx-auto inset-x-0">
                 <div className="border-b border-primary pt-10 pb-4">
                     <img src="/logo.webp" alt={"Logo bodasdehoy.com"} className="h-5 object-contain object-center" />

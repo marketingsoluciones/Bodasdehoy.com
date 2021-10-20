@@ -26,7 +26,7 @@ interface propsButton {
 const PlusButton : FC <propsButton> = ({onClick, size = "small"}) => {
     
     return (
-        <button onClick={onClick} className={`bg-primary rounded-full ${dicSize[size]} flex items-center justify-center right-0 left-0 mx-auto transform translate-y-3 absolute bottom-0`}><CrossIcon className={iconSize[size]}/></button>
+        <button onClick={onClick} className={`bg-primary rounded-full ${dicSize[size]} flex items-center justify-center right-0 left-0 mx-auto transform translate-y-3 absolute bottom-0 text-white`}><CrossIcon className={iconSize[size]}/></button>
     )
 }
 

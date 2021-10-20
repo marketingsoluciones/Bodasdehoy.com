@@ -48,12 +48,12 @@ const FormLogin : FC <{}> = () => {
         >
             <Form className=" text-gray-200 flex flex-col gap-4 py-4 w-3/4">
                 <span className="w-full relative ">
-                    <Field id="identifier" name="identifier" placeholder="email" type="email" className={`bg-base pr-3 pl-12 py-2 rounded-lg w-full focus:outline-none focus:ring`} />
+                    <Field id="identifier" name="identifier" placeholder="email" type="email" className={`bg-color-base pr-3 pl-12 py-2 rounded-lg w-full focus:outline-none focus:ring`} />
                     <EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto" />
                 </span>
 
                 <span className="w-full relative ">
-                    <Field id="password" name="password" placeholder="contraseña" type="password" className={`bg-base pr-3 pl-12 py-2 rounded-lg w-full focus:outline-none focus:ring`} />
+                    <Field id="password" name="password" placeholder="contraseña" type="password" className={`bg-color-base pr-3 pl-12 py-2 rounded-lg w-full focus:outline-none focus:ring`} />
                     <PasswordIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4" />
                 </span>
 

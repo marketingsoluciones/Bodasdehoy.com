@@ -65,7 +65,7 @@ const Option: FC<propsOption> = ({ icon, title, onClick, color = false }) => {
       >
         <div
           onClick={onClick}
-          className="w-24 h-24 rounded-full shadow bg-base grid place-items-center overflow-hidden p-1 "
+          className="w-24 h-24 rounded-full shadow bg-color-base grid place-items-center overflow-hidden p-1 "
         >
           <img src={icon} alt={title} className="object-contain" />
         </div>
@@ -139,7 +139,7 @@ const FormRegister = () => {
               name="fullName"
               placeholder="Nombre y apellidos"
               type="text"
-              className={`bg-base pr-3 pl-12 py-2 rounded-lg w-full focus:outline-none focus:ring`}
+              className={`bg-color-base pr-3 pl-12 py-2 rounded-lg w-full focus:outline-none focus:ring`}
               autoComplete="off"
             />
             <UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto" />
@@ -152,7 +152,7 @@ const FormRegister = () => {
                 name="email"
                 placeholder="Email"
                 type="email"
-                className={`bg-base pr-3 pl-12 py-2 rounded-lg w-full focus:outline-none focus:ring`}
+                className={`bg-color-base pr-3 pl-12 py-2 rounded-lg w-full focus:outline-none focus:ring`}
                 autoComplete="off"
               />
               <EmailIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4" />
@@ -164,7 +164,7 @@ const FormRegister = () => {
                 name="password"
                 placeholder="Contraseña"
                 type="password"
-                className={`bg-base pr-3 pl-12 py-2 rounded-lg w-full focus:outline-none focus:ring`}
+                className={`bg-color-base pr-3 pl-12 py-2 rounded-lg w-full focus:outline-none focus:ring`}
                 autoComplete="off"
               />
               <PasswordIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4" />
@@ -176,7 +176,7 @@ const FormRegister = () => {
                 name="city"
                 placeholder="Vives en"
                 type="text"
-                className={`bg-base pr-3 pl-5 py-2 rounded-lg w-full focus:outline-none focus:ring`}
+                className={`bg-color-base pr-3 pl-5 py-2 rounded-lg w-full focus:outline-none focus:ring`}
                 autoComplete="off"
               />
             </span>
@@ -185,7 +185,7 @@ const FormRegister = () => {
               <select
                 id="country"
                 name="country"
-                className={`bg-base pr-3 pl-5 py-2 rounded-lg w-full focus:outline-none focus:ring`}
+                className={`bg-color-base pr-3 pl-5 py-2 rounded-lg w-full focus:outline-none focus:ring`}
               >
                 <option>Pais</option>
               </select>
@@ -196,7 +196,7 @@ const FormRegister = () => {
                 id="weddingDate"
                 name="weddingDate"
                 type={"date"}
-                className={`bg-base pr-3 pl-5 py-2 rounded-lg w-full focus:outline-none focus:ring`}
+                className={`bg-color-base pr-3 pl-5 py-2 rounded-lg w-full focus:outline-none focus:ring`}
               />
             </span>
 
@@ -206,7 +206,7 @@ const FormRegister = () => {
                 name="phoneNumber"
                 placeholder="Número de telefono"
                 type="number"
-                className={`bg-base pr-3 pl-5 py-2 rounded-lg w-full focus:outline-none focus:ring`}
+                className={`bg-color-base pr-3 pl-5 py-2 rounded-lg w-full focus:outline-none focus:ring`}
                 autoComplete="off"
               />
             </span>

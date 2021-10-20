@@ -26,9 +26,9 @@ const CountriesListing = () => {
         {name: "Zaragoza", route: ""},
     ]
     return (
-        <div className="max-w-screen-lg mx-auto inset-x-0 w-full pb-24">
+        <div className="hidden md:block max-w-screen-lg mx-auto inset-x-0 w-full">
             <TitleSection principal={"Empresa de bodas"} secondary={"según provincias"}/>
-            <ul className="grid grid-cols-4 gap-x-10 gap-y-1 py-4">
+            <ul className="grid grid-cols-2 md:grid-cols-4 gap-x-10 gap-y-1 py-4">
                 {List.map((item, idx) => (
                     <Link key={idx} href={item.route} passHref>
                     <li className="text-sm cursor-pointer text-gray-300 font-light hover:text-black">Bodas en {item.name}</li>

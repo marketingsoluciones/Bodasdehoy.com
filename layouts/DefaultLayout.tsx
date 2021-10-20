@@ -10,12 +10,12 @@ const DefaultLayout: FC = ({ children }) => {
   
   return (
     <AuthContextProvider>
-      <div className="bg-base relative min-h-screen w-full">
+      <div className="bg-color-base relative min-h-screen w-full">
         
         <Navigation />
-        <NavigationMobile />
+        {/* <NavigationMobile /> */}
 
-        <main className="w-full">{children}</main>
+        <main className="w-full pt-20">{children}</main>
         <Footer />
         <FooterMobile />
       </div>

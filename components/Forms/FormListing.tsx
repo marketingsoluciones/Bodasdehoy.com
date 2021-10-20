@@ -1,9 +1,8 @@
 import { Form, Formik } from "formik";
 import React from "react";
 import ButtonComponent from "../ButtonComponent";
-import { EmailIcon, LinkProps, PhoneIcon, UserIcon2 } from "../icons";
+import { EmailIcon, Isologo, LinkProps, PhoneIcon, UserIcon2 } from "../icons";
 import { InputField } from "./InputField";
-import PhoneField from "./PhoneField";
 
 
 
@@ -19,6 +18,11 @@ const FormListing = () => {
     console.log("click");
   };
   return (
+    <>
+    <div className="flex gap-2 items-center text-primary w-full justify-center">
+        <Isologo className="w-5 h-5" />
+        <h2 className="text-md text-light">Consultar disponibilidad</h2>
+      </div>
     <Formik initialValues={initialValue} onSubmit={HandleOnSubmit}>
       <Form className="py-5 flex flex-col gap-4 text-sm h-max">
         <span className="h-max relative text-gray-200">
@@ -42,7 +46,7 @@ const FormListing = () => {
         </span>
 
         <span className="h-max relative text-gray-200">
-          <textarea  className="w-full bg-base p-2 h-20 text-sm rounded focus:outline-none focus:ring transition" placeholder={"Escribe tu solicitud a la empresa"}>
+          <textarea  className="w-full bg-color-base p-2 h-20 text-sm rounded focus:outline-none focus:ring transition" placeholder={"Escribe tu solicitud a la empresa"}>
             
           </textarea>
         </span>
@@ -58,6 +62,7 @@ const FormListing = () => {
         </div>
       </Form>
     </Formik>
+    </>
   );
 };
 

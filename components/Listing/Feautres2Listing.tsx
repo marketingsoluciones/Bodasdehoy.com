@@ -30,7 +30,7 @@ export default Feautres2Listing;
 export const Feature = ({ text, check = false }: { text: string, check?: boolean }) => {
   const [hoverRef, isHovered] = useHover()
     return (
-    <div ref={hoverRef} className="flex gap-2 items-center">
+    <div ref={hoverRef} className="flex gap-2 items-center text-sm">
       <div
         className={`${check && isHovered ? "bg-primary" : "bg-white"} w-5 h-5 rounded-full grid place-items-center ${check && isHovered ? "text-white" : "text-primary"} transition border-2 ${check ? "border-primary" : "border-gray-200"}`}
       >

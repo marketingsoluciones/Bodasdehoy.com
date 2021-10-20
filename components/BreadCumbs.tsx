@@ -18,7 +18,7 @@ const BreadCumbs: FC <propsBreadCumbs> = ({className}) => {
     }, [])
 
     return (
-        <div className={`lg:max-w-screen-lg 2xl:max-w-screen-xl mx-auto inset-x-0 flex items-center w-full text-sm text-gray-200 capitalize font-light ${className}`}>
+        <div className={`lg:max-w-screen-lg  mx-auto inset-x-0 flex items-center w-full text-sm text-gray-200 capitalize font-light ${className}`}>
             <Link href={`/`} passHref>
                     <span className="w-max flex items-center">
                     <p className="px-1">Inicio</p>

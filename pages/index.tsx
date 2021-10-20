@@ -15,56 +15,53 @@ import {
   Isologo,
   SearchIcon,
 } from "../components/icons";
-import "slick-carousel/slick/slick.css"; 
+import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { api } from "../api";
+import Image from 'next/image'
 
 interface propsHome {
-  business : object[]
+  business: object[];
 }
-const Home: FC <propsHome> = ({business}) => {
+const Home: FC<propsHome> = ({ business }) => {
   return (
-    <section className="w-full">
-      <div className="xl:max-w-screen-lg pt-10 sm:pt-28 mx-auto inset-x-0 grid grid-col-2 relative banner w-full ">
+    <section className="w-full ">
+      <div className="xl:max-w-screen-lg banner pt-6 md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full ">
         <Welcome />
       </div>
       <PlaceDiscovery />
-      <div className="bg-white flex flex-col gap-24 w-full">
+      <div className="bg-white flex flex-col gap-24 w-full pb-20">
         <FeaturedCompanies business={business} />
         <ButtonProviders />
         <RecommendCategories />
         <Magazine />
         <AdsApp />
-        {/*<PodcastList />
-        <CountriesListing /> */}
-      </div> 
+        <PodcastList />
+        <CountriesListing />
+      </div>
       <style jsx>
         {`
-          .banner {
-            background-image: url("/photo-principal.png");
-            background-size: 46%;
-            background-position: right top;
-            background-repeat: no-repeat;
-          }
-
-          @media (max-width: 600px) {
-            .banner {
-              background-position: right bottom;
-              background-size: 60%;
-            }
-          }
-
           .banner::after {
             content: "";
             background: linear-gradient(
               0deg,
-              #f2f2f2 0%,
-              rgba(255, 255, 255, 0) 90%
+              #f2f2f2 50%,
+              rgba(255, 255, 255, 0) 100%
             );
             width: 100%;
-            height: 50%;
+            height: 70%;
             position: absolute;
             bottom: 0;
+          }
+          @media screen and (max-width: 604px) {
+            .banner::after {
+              background: linear-gradient(
+                0deg,
+                #f2f2f2 20%,
+                rgba(255, 255, 255, 0) 100%
+              );
+              height:20%;
+            }
           }
         `}
       </style>
@@ -77,33 +74,49 @@ export default Home;
 export const Welcome: FC = (props) => {
   return (
     <>
-    <div className="relative w-full h-max flex flex-col flex-wrap gap-6 z-10 px-5 sm:px-0 pb-36 pb-0">
-      <h1 className="principal text-2xl sm:text-4xl w-full text-tertiary relative subpixel-antialiased font-bold w-full">
-        <span className="relative text-3xl font-light">
-          Encuentra tod<b className="hidden">o</b>
-          <Isologo className="mt-1 absolute bottom-2 -right-5" />
-        </span>
-        <br /> para una boda inolvidable
-      </h1>
-      <p className="hidden md:block w-1/2 sm:w-full text-tertiary text-sm">
-        Miles de proveedores de bodas en un sólo lugar.
-      </p>
-      <Searcher />
-      <Features />
-    </div>
+      <div className="relative grid md:grid-cols-2 px-5 sm:px-0 pb-16 pb-0 relative">
+        <div className="flex flex-col gap-5 z-10 relative">
+          <h1 className="text-2xl md:text-4xl text-tertiary relative subpixel-antialiased font-bold w-full flex flex-col gap-2">
+            <span className="relative w-max h-max  font-light">
+              Encuentra tod<b className="hidden">o</b>
+              <Isologo
+                className="mt-1 isologo absolute bottom-2 -right-4 md:-right-6"
+              />
+            </span>
+            <span className="relative ">
+              para una boda inolvidable
+            </span>
+          </h1>
+          <p className="hidden md:block w-1/2 sm:w-full text-tertiary text-sm">
+            Miles de proveedores de bodas en un sólo lugar.
+          </p>
+          <Searcher autoFocus={true} placeholder="catering, hoteles, fincas, vestidos"
+         />
+          <Features />
+        </div>
+
+        <div className="md:w-full w-1/2 md:relative absolute z-0 -bottom-16 md:bottom-0 right-0 md:-mt-20">
+          <Image src={"/photo-principal.webp"} layout={"responsive"} height={80} width={50}objectFit="contain" objectPosition="top" />
+        </div>
+      </div>
     </>
   );
 };
 
-const Searcher: FC = () => {
+interface propsSearcher {
+  autoFocus? : boolean
+  placeholder: string
+}
+export const Searcher: FC <propsSearcher> = (props) => {
   return (
-    <div className="relative w-full md:w-1/2">
+    <div className="relative w-full">
       <input
-        placeholder="catering, hoteles, fincas, vestidos"
-        className="px-6 py-4 md:py-5 w-full rounded-full focus:ring focus:outline-none transition"
+        
+        className="px-6 h-14 py-1 md:py-3 w-full rounded-full text-gray-200 text-sm md:text-base focus:outline-none transition shadow-lg"
+        {...props}
       />
-      <button className="bg-primary w-14 md:w-16 h-full rounded-full absolute top-0 right-0 flex items-center justify-center">
-        <SearchIcon className="text-white w-7 h-7" />
+      <button className="bg-primary w-14  h-full rounded-full absolute top-0 right-0 flex items-center justify-center transform hover:scale-110 transition hover:-rotate-12">
+        <SearchIcon className="text-white w-6 h-6" />
       </button>
     </div>
   );
@@ -116,9 +129,18 @@ export const Features: FC = () => {
   };
 
   const List: ItemList[] = [
-    { title: "Comunidad para novias", icon: <CommunityIcon className="w-8 h-8" /> },
-    { title: "Gestor de invitados", icon: <GuestAppIcon className="w-8 h-8" /> },
-    { title: "Recursos descargables", icon: <DownloadFileIcon className="w-8 h-8" /> },
+    {
+      title: "Comunidad para novias",
+      icon: <CommunityIcon className="w-8 h-8" />,
+    },
+    {
+      title: "Recursos descargables",
+      icon: <DownloadFileIcon className="w-8 h-8" />,
+    },
+    {
+      title: "Gestor de invitados",
+      icon: <GuestAppIcon className="w-8 h-8" />,
+    },
     { title: "Inspiración", icon: <Inspiration className="w-8 h-8" /> },
   ];
 
@@ -127,8 +149,8 @@ export const Features: FC = () => {
   }
   const Feature: FC<propsFeature> = ({ item }) => {
     return (
-      <div className="flex items-center gap-3 py-2 pl-2">
-        <button className="p-3 bg-white shadow rounded-full bg-white grid place-items-center transform transition duration-800 hover:scale-125 hover:-rotate-12 focus:outline-none">
+      <div className="flex items-center gap-3 py-3 pl-2 w-full">
+        <button className="p-4 bg-white shadow rounded-full bg-white grid place-items-center transform transition duration-800 hover:scale-110 hover:-rotate-12 focus:outline-none">
           {item.icon}
         </button>
         <h2 className="text-tertiary w-32 text-sm md:text-lg leading-6 font-semibold cursor-pointer hover:text-primary transition duration-800">
@@ -137,63 +159,57 @@ export const Features: FC = () => {
       </div>
     );
   };
-  
+
   const settings = {
     autoplay: true,
-    dots: true,
     infinite: true,
     speed: 200,
     slidesToShow: 2,
     rows: 2,
-    slidesToScroll:1,
-    className: "overflow-visible",
-    responsive : [
-      
+    slidesToScroll: 1,
+    arrows: false,
+    responsive: [
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 1,
           slidesPerRow: 1,
-        }
+          fade: true,
+        },
       },
-      
-    ]
-    
+    ],
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 overflow-hidden  gap-12">
+    <div className="grid grid-cols-1 pt-2 gap-12 w-1/2 md:w-full overflow-visible">
       <Slider {...settings}>
-      {List.map((item, idx) => (
-        <Feature key={idx} item={item} />
-      ))}
+        {List.map((item, idx) => (
+          <Feature key={idx} item={item} />
+        ))}
       </Slider>
     </div>
   );
 };
 
-
-
 const ButtonProviders = () => {
   return (
     <button className="md:hidden rounded-full w-max -mt-20 px-6 py-2 mx-auto inset-x-0 bg-primary text-white text-sm border border-primary hover:bg-white hover:text-primary focus:outline-none">
       Ver más proveedores
-    </button >
-  )
-}
-
+    </button>
+  );
+};
 
 export async function getServerSideProps() {
   try {
     const params = {
-      _limit : 4
-    }
-    const {data} = await api.business(params)
-    return { props: {business : data}}
+      _limit: 4,
+    };
+    const { data } = await api.business(params);
+    return { props: { business: data } };
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return {
       props: {},
-    }
+    };
   }
 }

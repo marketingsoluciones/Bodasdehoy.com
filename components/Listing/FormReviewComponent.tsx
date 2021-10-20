@@ -69,7 +69,7 @@ export const SelectField: FC<propsSelectField> = (props) => {
         className="md:text-sm text-xs text-gray-300 pl-3 py-2 rounded-lg focus:outline-none appearance-none w-full"
         onChange={(e) => helpers.setValue(e.target.value)}
       >
-        <option className="text-gray-200 bg-base" disabled selected>
+        <option className="text-gray-200 bg-color-base" disabled selected>
           Seleccionar una opción
         </option>
         {props?.listOption?.map((item, idx) => (

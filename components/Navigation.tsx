@@ -1,11 +1,10 @@
-import { FC } from "react";
-import Image from "next/image";
+import { FC, useState } from "react";
 import Link from "next/link";
-import Logo from "../public/logo.webp";
-import { CompanyIcon, SearchIcon, UserIcon } from "./icons";
+import { BurgerIcon, CompanyIcon, LogoFullColor, SearchIcon, UserIcon } from "./icons";
 import useHover from "../hooks/useHover";
 import router from "next/router";
 import { getCookie } from "../utils/Cookies";
+import Sidebar from "./Sidebar";
 
 
 interface propsNavigation {
@@ -13,58 +12,25 @@ interface propsNavigation {
 }
 
 const Navigation: FC<propsNavigation> = () => {
+  const [showSidebar, setShowSidebar] = useState(false)
   return (
     <>
-      <header className="hidden md:block w-full nuevo sm:max-w-screen-sm md:max-w-screen-md xl:max-w-screen-lg 2xl:max-w-screen-xl mx-auto inset-x-0 bg-white relative h-20 md:h-20 z-20 ">
-        <div className="px-5 md:px-0 mx-auto inset-x-0 h-full flex items-center relative z-10 justify-between">
-          <Image
-            src={Logo}
-            alt={"Logo bodasdehoy.com"}
-            width={190}
-            objectFit={"contain"}
-          />
+    <Sidebar set={(act : boolean) => setShowSidebar(act)} state={showSidebar}/>
+      <header className="bg-white max-w-screen-lg w-95 rounded-full py-3 md:py-5 md:px-10 mx-auto inset-x-0 mt-3 absolute z-40">
+        <div className=" px-5 md:px-0 mx-auto inset-x-0 h-full flex items-center relative z-10 justify-between">
+        <span className="md:hidden " onClick={() => setShowSidebar(!showSidebar)}>
+            <BurgerIcon className="w-7 h-7 text-primary" />
+            </span> 
+         <Link href={"/"}>
+         <span className="relative cursor-pointer hover:opacity-95 transform hover:-translate-x-1 transition duration-700 ">
+         <LogoFullColor className="h-auto w-40"/>
+         </span>
+         </Link>
           <Navbar />
           <Icons />
         </div>
       </header>
-      <style jsx>
-        {`
-          @media (max-width: 1000px) {
-              .nuevo {
-                background-color: white
-              }
-          }
-
-            .nuevo::before {
-                content: "";
-                background-image: url("/navbar.svg");
-                background-size: contain;
-                background-repeat: no-repeat;
-                position: absolute;
-                width: 70px;
-                height: 100%;
-                z-index: 0;
-                top: 0;
-                left: 0;
-                transform: translate(-50px);
-              }
-
-              .nuevo::after {
-                content: "";
-                background-image: url("/navbar_1.svg");
-                background-size: contain;
-                background-repeat: no-repeat;
-                position: absolute;
-                width: 70px;
-                height: 100%;
-                z-index: 0;
-                top: 0;
-                right: 0;
-                transform: translate(100%) ;
-                
-              }
-        `}
-      </style>
+     
     </>
   );
 };
@@ -92,7 +58,7 @@ const Navbar = () => {
       const [hoverRef, isHovered] = useHover()
     return (
       <Link href={item.route} passHref>
-        <li ref={hoverRef} className="cursor-pointer relative">{item.title}
+        <li ref={hoverRef} className="cursor-pointer relative tracking-widest hover:text-tertiary transition">{item.title}
         <svg className={`h-0.5 w-full bg-primary transform transition absolute ${isHovered ? "scale-100" : "scale-0"}`}/>
             </li>
       </Link>
@@ -101,7 +67,7 @@ const Navbar = () => {
 
   return (
     <nav className="hidden lg:block">
-      <ul className="flex lg:gap-8 xl:gap-12 uppercase text-sm font-medium text-gray-200">
+      <ul className="flex lg:gap-6 xl:gap-6 uppercase text-sm font-medium text-gray-200">
         {List.map((item, idx) => (
           <ItemList key={idx} item={item} />
         ))}
@@ -122,12 +88,12 @@ export const Icons = () => {
     <>
       <div className="flex items-center">
         <span className="hidden md:block px-3 cursor-pointer">
-          <SearchIcon className="icon transition transform hover:scale-105 text-gray-200" />
+          <SearchIcon className="icon transition transform hover:-rotate-6 hover:scale-110 text-gray-200" />
         </span>
-        <span className="px-3 md:border-gray-100 md:border-l border-r cursor-pointer" onClick={HandleClickUser}>
-          <UserIcon className="icon transition transform hover:scale-105" />
+        <span className="md:px-3 border-gray-100 py-1 md:border-l md:border-r cursor-pointer" onClick={HandleClickUser}>
+          <UserIcon className="icon transition transform hover:-rotate-6 hover:scale-110" />
         </span>
-        <span className="px-3 cursor-pointer transition transform hover:scale-105">
+        <span className="hidden md:block pl-3 cursor-pointer transition transform hover:-rotate-6 hover:scale-110">
           <CompanyIcon className="icon" />
         </span>
       </div>

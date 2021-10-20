@@ -186,7 +186,7 @@ const LocationFilter = () => {
     return (
         <Accordion title="Localidad">
             <LocationIcon className="text-primary absolute w-4 h-4 inset-y-0 my-auto left-5" />
-            <input className="w-full bg-base rounded-full h-10 focus:outline-none pl-10 text-sm text-gray-200" />
+            <input className="w-full bg-color-base rounded-full h-10 focus:outline-none pl-10 text-sm text-gray-200" />
         </Accordion>
     )
 }

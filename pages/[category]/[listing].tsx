@@ -2,7 +2,7 @@ import { Markup } from "interweave";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Link from "next/link";
 import { FC, ReactNode, useState } from "react";
-import BreadCumbs from "../../components/BreadCumbs";
+import { BreadCumbs } from "../../components/Surface";
 import FormListing from "../../components/Forms/FormListing";
 import { RatingStars } from "../../components/Home/FeaturedCompanies";
 import {
@@ -14,7 +14,7 @@ import {
   Location2Icon,
   OpinionesIcon,
   PreguntasIcon,
-} from "../../components/icons";
+} from "../../components/Icons";
 import EmpresaDestacada from "../../components/Listing/EmpresaDestacada";
 import FAQ from "../../components/Listing/FAQ";
 import FeaturesListing from "../../components/Listing/FeaturesListing";

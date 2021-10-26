@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { FC } from "react";
 import Slider from "react-slick";
-import PlusButton from "../PlusButton";
+import {PlusButton} from "../Inputs";
 
-const Magazine : FC = () => {
+export const Magazine : FC = () => {
   return (
     <div className="w-full bg-color-base py-10 md:py-20 relative px-5">
       <div className="max-w-screen-lg mx-auto inset-x-0">
@@ -108,23 +108,7 @@ const BlogCategories : FC  = () => {
 
 
 export const GridPost : FC = () => {
-    const Post : FC = () => {
-        return (
-            <div className="w-60 mx-auto inset-x-0 h-max bg-white rounded-3xl overflow-hidden hover:shadow-xl hover:opacity-95 transition-all cursor-pointer my-8 duration-400 ">
-                <img src="/mask_1.png" className="h-40 w-full object-cover object-center" alt={""} />
-                <div className="py-5 text-center">
-                    <h2 className="text-gray-300 text-lg font-medium border-b border-primary pb-3 px-5">Tendencias en bodas 2021</h2>
-                    <div className="flex justify-between items-center py-2 px-5">
-                        <p className="text-xs tracking-widest text-primary">CEREMONIA</p>
-                        <p className="text-xs text-gray-300">17/08/2021</p>
-                    </div>
-                    <p className="text-xs px-4 py-2 text-gray-200">
-                    Si queréis disfrutar de un recuerdo único de un día irrepetible, contar con un fotógrafo profesional para realizar el reportaje...
-                    </p>
-                </div>
-            </div>
-        )
-    }
+    
 
     const settings = {
         autoplay: true,
@@ -133,11 +117,12 @@ export const GridPost : FC = () => {
         slidesToShow: 3,
         slidesToScroll:1,
         responsive : [
-          
           {
             breakpoint: 600,
             settings: {
-              slidesToShow: 1,
+              slidesToShow: 2,
+              centerMode: true,
+              centerPadding: "-50px",
             }
           },
           
@@ -145,7 +130,7 @@ export const GridPost : FC = () => {
         
       };
     return (
-        <div className="w-full grid grid-cols-1 ">
+        <div className="w-full grid grid-cols-1 overflow-hidden ">
             <Slider {...settings} >
             <Post />
             <Post />
@@ -159,3 +144,21 @@ export const GridPost : FC = () => {
     )
 }
 
+
+export const Post : FC = () => {
+  return (
+      <div className="w-60 mx-auto inset-x-0 h-max bg-white rounded-3xl overflow-hidden hover:shadow-xl hover:opacity-95 transition-all cursor-pointer my-8 duration-400 ">
+          <img src="/mask_1.png" className="h-40 w-full object-cover object-center" alt={""} />
+          <div className="py-5 text-center">
+              <h2 className="text-gray-300 text-lg font-medium border-b border-primary pb-3 px-5">Tendencias en bodas 2021</h2>
+              <div className="flex justify-between items-center py-2 px-5">
+                  <p className="text-xs tracking-widest text-primary">CEREMONIA</p>
+                  <p className="text-xs text-gray-300">17/08/2021</p>
+              </div>
+              <p className="text-xs px-4 py-2 text-gray-200">
+              Si queréis disfrutar de un recuerdo único de un día irrepetible, contar con un fotógrafo profesional para realizar el reportaje...
+              </p>
+          </div>
+      </div>
+  )
+}

@@ -1,7 +1,7 @@
 import Slider from "react-slick";
 import TitleSection from "./TitleSection";
 
-const PodcastList = () => {
+export const PodcastList = () => {
     const settings = {
         speed: 200,
         slidesToShow: 3,
@@ -33,7 +33,6 @@ const PodcastList = () => {
   );
 };
 
-export default PodcastList;
 
 const Podcast = () => {
   return (

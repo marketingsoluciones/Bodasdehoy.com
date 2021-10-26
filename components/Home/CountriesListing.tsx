@@ -6,7 +6,7 @@ type City = {
     route : string
 }
 
-const CountriesListing = () => {
+export const CountriesListing = () => {
     const List : City[] = [
         {name: "Albacete", route: ""},
         {name: "Alicante", route: ""},
@@ -39,4 +39,4 @@ const CountriesListing = () => {
     )
 }
 
-export default CountriesListing
+

@@ -1,13 +1,12 @@
-import Slider from "react-slick";
-import { GridPost, Principal } from "../components/Home/Magazine";
+import { GridPost } from "../components/Home/Magazine";
 import TitleSection from "../components/Home/TitleSection";
-import CategoriesComponent from "../components/Magazine/CategoriesComponent";
-import PrincipalPost from "../components/Magazine/PrincipalPost";
+import { AsideLastestArticles, CategoriesComponent, LastestArticles, PrincipalPost, SuscribeComponent } from "../components/Magazine";
 import { Searcher } from "./index";
 
 const Magazine = () => {
   return (
-    <section className="w-full py-4 md:py-8 grid gap-6">
+    <section className="w-full pt-4 md:pt-8 grid gap-6">
+      {/* 1era sección */}
       <div className="max-w-screen-lg mx-auto inset-x-0 grid gap-6 ">
         <h1 className="text-5xl md:text-6xl  font-title text-primary w-full text-center">
           Magazine
@@ -22,12 +21,23 @@ const Magazine = () => {
             secondary={"para tu boda"}
             size={"xl"}
           />
-          <GridPost />
+          <GridPost  />
         </div>
       </div>
+      {/* 2da sección */}
       <CategoriesComponent />
+
+      {/* 3er sección */}
+      <div className="grid md:grid-cols-3 max-w-screen-lg w-full mx-auto inset-x-0 gap-6 px-5 md:px-0 overflow-hidden ">
+        <LastestArticles />
+
+        <AsideLastestArticles title={"TOP 5 más leidos"} className="... w-full -mt-6 bg-white p-7 shadow-md" />
+      </div>
+      <SuscribeComponent />
     </section>
   );
 };
 
 export default Magazine;
+
+

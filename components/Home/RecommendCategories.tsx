@@ -1,10 +1,10 @@
 import { FC, memo, ReactNode } from "react";
 import Slider from "react-slick";
-import useHover from "../../hooks/useHover";
-import { CameraIcon, CarIcon, DressIcon, HeartIconFill, RestaurantIcon, TravelIcon } from "../icons";
+import {useHover} from "../../hooks";
+import { CameraIcon, CarIcon, DressIcon, HeartIconFill, RestaurantIcon, TravelIcon } from "../Icons";
 import TitleSection from "./TitleSection";
 
-const RecommendCategories: FC = () => {
+export const RecommendCategories: FC = () => {
   const settings = {
     dots: true,
     speed: 200,
@@ -27,7 +27,7 @@ const RecommendCategories: FC = () => {
   return (
     <div className="max-w-screen-lg mx-auto inset-x-0 w-full">
       <TitleSection principal={"Recomendados"} secondary={"para tu boda"} size={"md"} />
-      <div className="w-full py-10 mx-auto  md:pl-0 overflow-hidden">
+      <div className="w-full py-10 mx-auto  md:pl-0 overflow-hidden text-white">
         <Slider {...settings}>
         <Category title="Fotográfos para bodas" icon={<CameraIcon  className="transform scale-75 md:scale-100" />} />
         <Category title="Catering para bodas" icon={<RestaurantIcon className="transform scale-75 md:scale-100" />} />

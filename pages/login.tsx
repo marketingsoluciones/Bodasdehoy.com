@@ -1,5 +1,5 @@
 import { FC, ReactNode, useEffect, useState } from "react";
-import ButtonClose from "../components/ButtonClose";
+import { ButtonClose } from "../components/Inputs";
 import router from "next/router";
 import { Login, Register } from "../components/Login/Forms";
 
@@ -20,21 +20,21 @@ const PageLogin: FC = () => {
     register : <Register />
 }
 
-
-  useEffect(() => {
-    document?.addEventListener("keydown", keyDown);
-  }, []);
-
-
   const keyDown: any = (event: KeyboardEvent) => {
     const keyName: string = event.key;
     keyName?.toLowerCase() === "escape" && router.push("/");
   };
 
 
+  useEffect(() => {
+    document?.addEventListener("keydown", keyDown);
+  }, []);
+
+
+
   return (
     <>
-      <div className="w-screen fixed h-screen top-0 left-0 md:grid z-20 grid-cols-5">
+      <div className="w-screen fixed h-screen top-0 left-0 md:grid z-50 grid-cols-5">
         <div className="bg-white w-full h-full col-span-3 relative flex items-center justify-center  ">
           <ButtonClose onClick={() => router.push("/")} />
           <div className="flex flex-col items-center gap-4 w-full px-10 md:px-0 md:w-2/3">

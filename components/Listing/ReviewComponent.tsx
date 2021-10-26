@@ -1,8 +1,8 @@
 import { FC, useState } from "react";
 import Slider from "react-slick";
-import ButtonComponent from "../ButtonComponent";
+import {ButtonComponent} from "../Inputs";
 import { RatingStars } from "../Home/FeaturedCompanies";
-import { ReviewIconPrincipal } from "../icons";
+import { ReviewIconPrincipal } from "../Icons";
 import FormReviewComponent from "./FormReviewComponent";
 
 const ReviewComponent: FC = () => {
@@ -36,9 +36,9 @@ const ReviewComponent: FC = () => {
       <ButtonComponent
         onClick={() => setOpen(!isOpen)}
         className="ml-auto right-0"
-        text={"Deja tu opinión"}
-        color={"white"}
-      />
+        color={"white"}>
+          Deja tu opinión
+          </ButtonComponent>
       {isOpen && <FormReviewComponent />}
     </div>
   );

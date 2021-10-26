@@ -1,10 +1,10 @@
 import { FC } from "react";
 import Slider from "react-slick";
-import useHover from "../../hooks/useHover";
-import { CheckIcon } from "../icons";
+import {useHover} from "../../hooks";
+import { CheckIcon } from "../Icons";
 import Image from 'next/image'
 
-const AdsApp = () => {
+export const AdsApp = () => {
   const List: string[] = [
     "Gestiona la lista de invitados",
     "Ordena las mesas del banquete",
@@ -66,7 +66,6 @@ const AdsApp = () => {
   );
 };
 
-export default AdsApp;
 
 interface propsFeautre {
   item: string;

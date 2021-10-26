@@ -1,7 +1,7 @@
 import Slider from "react-slick";
 import TitleSection from "../Home/TitleSection";
 
-const Recommended = () => {
+export const Recommended = () => {
   const settings = {
     autoplay: true,
     accessibility: true,
@@ -32,4 +32,3 @@ const Recommended = () => {
   );
 };
 
-export default Recommended;

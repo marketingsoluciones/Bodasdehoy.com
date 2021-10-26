@@ -1,5 +1,5 @@
-import Accordion from "../Accordion";
-import { FAQIcon } from "../icons"
+import { Accordion } from "../Surface";
+import { FAQIcon } from "../Icons"
 
 const FAQ = () => {
     const FAQArray = [

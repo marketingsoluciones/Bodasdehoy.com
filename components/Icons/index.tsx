@@ -1,0 +1,67 @@
+import { MouseEventHandler } from "react";
+
+export interface PropsIcon {
+  className?: string;
+  width?: number;
+  onClick?: MouseEventHandler;
+  fill? : string
+}
+
+export { SearchIcon } from "./SearchIcon";
+export { UserIcon } from "./UserIcon";
+export { CompanyIcon } from "./CompanyIcon";
+export { Isologo } from "./Isologo";
+export { CommunityIcon } from "./CommunityIcon";
+export { GuestAppIcon } from "./GuestAppIcon";
+export { DownloadFileIcon } from "./DownloadFileIcon";
+export { InspirationIcon } from "./InspirationIcon";
+export { StarRating } from "./StarRating";
+export { EuroIcon } from "./EuroIcon";
+export { CrossIcon } from "./CrossIcon";
+export { HeartIconOutline } from "./HeartIconOutline";
+export { HeartIconFill } from "./HeartIconFill";
+export { CameraIcon } from "./CameraIcon";
+export { RestaurantIcon } from "./RestaurantIcon";
+export { CarIcon } from "./CarIcon";
+export { DressIcon } from "./DressIcon";
+export { TravelIcon } from "./TravelIcon";
+export { CheckIcon } from "./CheckIcon";
+export { FacebookIcon } from "./FacebookIcon";
+export { InstagramIcon } from "./InstagramIcon";
+export { PinterestIcon } from "./PinterestIcon";
+export { YoutubeIcon } from "./YoutubeIcon";
+export { EmailIcon } from "./EmailIcon";
+export { PasswordIcon } from "./PasswordIcon";
+export { UserForm } from "./UserForm";
+export { BurgerIcon } from "./BurgerIcon";
+export { SettingsIcon } from "./SettingsIcon";
+export { GoogleIcon } from "./GoogleIcon";
+export { AppleIcon } from "./AppleIcon";
+export { ArrowIcon } from "./ArrowIcon";
+export { LocationIcon } from "./LocationIcon";
+export { PlayaIcon } from "./PlayaIcon";
+export { AireLibreIcon } from "./AireLibreIcon";
+export { EnLaCiudadIcon } from "./EnLaCiudadIcon";
+export { CheckIconFill } from "./CheckIconFill";
+export { DocsIcon } from "./DocsIcon";
+export { OpinionesIcon } from "./OpinionesIcon";
+export { Location2Icon } from "./Location2Icon";
+export { PreguntasIcon } from "./PreguntasIcon";
+export { PromoIcon } from "./PromoIcon";
+export { EmpresaDestacadaIcon } from "./EmpresaDestacadaIcon";
+export { UserIcon2 } from "./UserIcon2";
+export { CurrencyIcon } from "./CurrencyIcon";
+export { GuestsIcon } from "./GuestsIcon";
+export { NearTheSeaIcon } from "./NearTheSeaIcon";
+export { FAQIcon } from "./FAQIcon";
+export { ReviewIconPrincipal } from "./ReviewIconPrincipal";
+export { UploadImageIcon } from "./UploadImageIcon";
+export { PhoneIcon } from "./PhoneIcon";
+export { LinkProps } from "./LinkProps";
+export { LessIcon } from "./LessIcon";
+export { LogoFullColor } from "./LogoFullColor";
+export { BanqueteIcon } from "./BanqueteIcon";
+export { BagIcon } from "./BagIcon";
+export { ActualidadIcon } from "./ActualidadIcon";
+export { ShareIcon } from "./ShareIcon";
+export { SaveIcon } from "./SaveIcon";

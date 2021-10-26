@@ -1,5 +1,5 @@
 import { FC, MouseEventHandler } from "react"
-import { CrossIcon } from "../icons"
+import { CrossIcon } from "../Icons"
 
 interface propsFloatingButton {
     onClick : MouseEventHandler

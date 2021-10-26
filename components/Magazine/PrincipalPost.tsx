@@ -1,4 +1,4 @@
-const PrincipalPost = () => {
+export const PrincipalPost = () => {
     return (
         <div className="w-full relative  hidden md:grid pt-4">
           <div className="bg-white w-3/5 rounded-2xl shadow-lg h-max absolute top-1/4 py-6 px-12">
@@ -27,4 +27,3 @@ const PrincipalPost = () => {
     )
 }
 
-export default PrincipalPost

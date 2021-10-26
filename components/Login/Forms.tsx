@@ -1,17 +1,19 @@
 import { FC, useState } from "react";
-import { BusinessAccess, Logo, Providers, RegisterQuestion } from "./Components";
+import { LogoFullColor } from "../Icons";
+import { BusinessAccess, Providers, RegisterQuestion } from "./Components";
 import FormLogin from "./Forms/FormLogin";
 import { FirstStep, SecondStep } from "./Forms/FormRegister";
 
-
 interface propsLogin {
-  setStage : CallableFunction
+  setStage: CallableFunction;
 }
-export const Login : FC <propsLogin> = ({setStage}) => {
+export const Login: FC<propsLogin> = ({ setStage }) => {
   return (
     <>
-      <Logo />
-      <RegisterQuestion onClick={() => setStage("register")}/>
+      <div className="flex flex-col gap-2 items-center justify-center">
+        <LogoFullColor className="w-auto h-10" />
+        <RegisterQuestion onClick={() => setStage("register")} />
+      </div>
       <Providers />
       <FormLogin />
       <BusinessAccess />
@@ -19,13 +21,9 @@ export const Login : FC <propsLogin> = ({setStage}) => {
   );
 };
 
-export const Register : FC <{}> = () => {
-  const [whoYouAre, setWhoYouAre] = useState<string>("")
+export const Register: FC<{}> = () => {
+  const [whoYouAre, setWhoYouAre] = useState<string>("");
   return (
-      <>
-      {whoYouAre == "" ? (
-          <FirstStep value={setWhoYouAre} />
-      ) : <SecondStep /> }
-    </>
+    <>{whoYouAre == "" ? <FirstStep value={setWhoYouAre} /> : <SecondStep />}</>
   );
 };

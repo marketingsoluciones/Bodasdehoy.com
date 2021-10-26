@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FC, useState } from "react";
 
-const PlaceDiscovery: FC = () => {
+export const PlaceDiscovery: FC = () => {
   const settings = {
     autoplay: true,
     dots: true,
@@ -90,7 +90,6 @@ const PlaceDiscovery: FC = () => {
   );
 };
 
-export default PlaceDiscovery;
 
 
 interface propsPlaceCard {

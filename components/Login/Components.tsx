@@ -1,18 +1,10 @@
 import { FC, MouseEventHandler} from "react";
 import { GoogleProvider, FacebookProvider } from "../../firebase";
-import { Icon } from "../Footer";
-import { AppleIcon, FacebookIcon, GoogleIcon } from "../icons";
+import { Icon } from "../Surface/Footer";
+import { AppleIcon, FacebookIcon, GoogleIcon } from "../Icons";
 import {getAuth, signInWithPopup} from 'firebase/auth'
 
-export const Logo: FC = () => {
-  return (
-    <img
-      src="/logo.webp"
-      alt={"Logo bodasdehoy.com"}
-      className={`w-72 object-contain`}
-    />
-  );
-};
+
 
 interface propsRegisterQuestion {
   onClick: MouseEventHandler;

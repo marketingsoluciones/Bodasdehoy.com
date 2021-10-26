@@ -1,8 +1,8 @@
 import { Form, Formik, FormikContext, useField } from "formik";
 import { FC } from "react";
-import ButtonComponent from "../ButtonComponent";
+import { ButtonComponent } from "../Inputs";
 import { RatingStars } from "../Home/FeaturedCompanies";
-import { ArrowIcon, UploadImageIcon } from "../icons";
+import { ArrowIcon, UploadImageIcon } from "../Icons";
 
 const FormReviewComponent: FC = () => {
   const initialValues = {
@@ -45,7 +45,9 @@ const FormReviewComponent: FC = () => {
           <UploadImageIcon className="w-4 h-4 absolute top-3 right-3" />
           </div>
           <div className="flex w-full justify-end">
-          <ButtonComponent color={"primary"} text="Añadir opinión" type={"submit"}  />
+          <ButtonComponent color={"primary"} type={"submit"}>
+            Añadir opinión
+          </ButtonComponent>
           </div>
         </Form>
       </Formik>

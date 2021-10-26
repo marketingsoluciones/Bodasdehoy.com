@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
-import { EuroIcon, HeartIconFill, HeartIconOutline, StarRating } from "../icons";
-import PlusButton from "../PlusButton";
+import { EuroIcon, HeartIconFill, HeartIconOutline, StarRating } from "../Icons";
+import {PlusButton} from "../Inputs";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick-theme.css";
 interface propsFeaturedCompanies {
   business : object[]
 }
-const FeaturedCompanies : FC <propsFeaturedCompanies> = ({business = [1,2,3]}) => {
+export const FeaturedCompanies : FC <propsFeaturedCompanies> = ({business = [1,2,3]}) => {
   const settings = {
     autoplay: true,
     accessibility: true,
@@ -57,7 +57,6 @@ const FeaturedCompanies : FC <propsFeaturedCompanies> = ({business = [1,2,3]}) =
   );
 };
 
-export default FeaturedCompanies;
 
 interface propsCompanyCard {
   data : object

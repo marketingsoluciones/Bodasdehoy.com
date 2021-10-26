@@ -1,7 +1,7 @@
 import { Field, Formik, Form } from "formik";
 import { FC, MouseEventHandler, useState } from "react";
-import { InputField } from "../../Forms/InputField";
-import { EmailIcon, PasswordIcon, UserForm } from "../../icons";
+import { InputField } from "../../Inputs/InputField";
+import { EmailIcon, PasswordIcon, UserForm } from "../../Icons";
 import { Logo, Providers } from "../Components";
 
 type TypeOption = {

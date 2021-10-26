@@ -1,4 +1,4 @@
-import { PromoIcon } from "../icons"
+import { PromoIcon } from "../Icons"
 
 const PromoActiva = () => {
     return (

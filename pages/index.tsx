@@ -1,28 +1,29 @@
 import { FC, ReactNode } from "react";
 import Slider from "react-slick";
-import AdsApp from "../components/Home/AdsApp";
-import CountriesListing from "../components/Home/CountriesListing";
-import FeaturedCompanies from "../components/Home/FeaturedCompanies";
-import Magazine from "../components/Home/Magazine";
-import PlaceDiscovery from "../components/Home/PlaceDiscovery";
-import PodcastList from "../components/Home/PodcastList";
-import RecommendCategories from "../components/Home/RecommendCategories";
+import {
+  AdsApp,
+  CountriesListing,
+  FeaturedCompanies,
+  Magazine,
+  PlaceDiscovery,
+  PodcastList,
+  RecommendCategories,
+} from "../components/Home";
 import {
   CommunityIcon,
   DownloadFileIcon,
   GuestAppIcon,
-  Inspiration,
+  InspirationIcon,
   Isologo,
   SearchIcon,
-} from "../components/icons";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+} from "../components/Icons";
 import { api } from "../api";
-import Image from 'next/image'
+import Image from "next/image";
 
 interface propsHome {
   business: object[];
 }
+
 const Home: FC<propsHome> = ({ business }) => {
   return (
     <section className="w-full ">
@@ -60,7 +61,7 @@ const Home: FC<propsHome> = ({ business }) => {
                 #f2f2f2 20%,
                 rgba(255, 255, 255, 0) 100%
               );
-              height:20%;
+              height: 20%;
             }
           }
         `}
@@ -79,24 +80,29 @@ export const Welcome: FC = (props) => {
           <h1 className="text-2xl md:text-4xl text-tertiary relative subpixel-antialiased font-bold w-full flex flex-col gap-2">
             <span className="relative w-max h-max  font-light">
               Encuentra tod<b className="hidden">o</b>
-              <Isologo
-                className="mt-1 isologo absolute bottom-2 -right-4 md:-right-6"
-              />
+              <Isologo className="mt-1 isologo absolute bottom-2 -right-4 md:-right-6" />
             </span>
-            <span className="relative ">
-              para una boda inolvidable
-            </span>
+            <span className="relative ">para una boda inolvidable</span>
           </h1>
           <p className="hidden md:block w-1/2 sm:w-full text-tertiary text-sm">
             Miles de proveedores de bodas en un sólo lugar.
           </p>
-          <Searcher autoFocus={true} placeholder="catering, hoteles, fincas, vestidos"
-         />
+          <Searcher
+            autoFocus={true}
+            placeholder="catering, hoteles, fincas, vestidos"
+          />
           <Features />
         </div>
 
         <div className="md:w-full w-1/2 md:relative absolute z-0 -bottom-16 md:bottom-0 right-0 md:-mt-20">
-          <Image src={"/photo-principal.webp"} layout={"responsive"} height={80} width={50}objectFit="contain" objectPosition="top" />
+          <Image
+            src={"/photo-principal.webp"}
+            layout={"responsive"}
+            height={80}
+            width={50}
+            objectFit="contain"
+            objectPosition="top"
+          />
         </div>
       </div>
     </>
@@ -104,14 +110,13 @@ export const Welcome: FC = (props) => {
 };
 
 interface propsSearcher {
-  autoFocus? : boolean
-  placeholder: string
+  autoFocus?: boolean;
+  placeholder: string;
 }
-export const Searcher: FC <propsSearcher> = (props) => {
+export const Searcher: FC<propsSearcher> = (props) => {
   return (
     <div className="relative w-full">
       <input
-        
         className="px-6 h-14 py-1 md:py-3 w-full rounded-full text-gray-200 text-sm md:text-base focus:outline-none transition shadow-lg"
         {...props}
       />
@@ -141,7 +146,7 @@ export const Features: FC = () => {
       title: "Gestor de invitados",
       icon: <GuestAppIcon className="w-8 h-8" />,
     },
-    { title: "Inspiración", icon: <Inspiration className="w-8 h-8" /> },
+    { title: "Inspiración", icon: <InspirationIcon className="w-8 h-8" /> },
   ];
 
   interface propsFeature {

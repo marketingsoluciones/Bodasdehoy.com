@@ -1,5 +1,5 @@
-import useHover from "../../hooks/useHover";
-import { CheckIcon, CheckIconFill } from "../icons";
+import {useHover} from "../../hooks";
+import { CheckIcon, CheckIconFill } from "../Icons";
 
 const Feautres2Listing = ({
   title,

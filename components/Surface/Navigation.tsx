@@ -97,9 +97,7 @@ const Navbar: FC<propsNavbar> = () => {
 
 export const Icons = () => {
   const HandleClickUser = () => {
-    if (!getCookie("Auth")) {
-      router.push("/login");
-    }
+    !getCookie("auth") ? router.push("/login") : router.push("/perfil")
   };
   return (
     <>

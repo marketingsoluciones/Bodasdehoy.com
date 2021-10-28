@@ -62,7 +62,7 @@ interface propsSelectField {
   listOption: { title: string; id: number }[];
 }
 
-export const SelectField: FC<propsSelectField> = (props) => {
+const SelectField: FC<propsSelectField> = (props) => {
   const [field, meta, helpers] = useField({ ...props });
   console.log("field", field, "meta", meta, "helpers", helpers);
   return (

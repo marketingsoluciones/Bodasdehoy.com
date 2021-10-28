@@ -6,6 +6,8 @@ import { setCookie } from "../../../utils/Cookies";
 import { EmailIcon, PasswordIcon } from "../../Icons";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { InputField, ButtonComponent } from "../../Inputs";
+import * as yup from "yup";
+import router from "next/router";
 
 type MyFormValues = {
   identifier: string;
@@ -14,7 +16,7 @@ type MyFormValues = {
 };
 
 const FormLogin: FC = () => {
-  const { setUser } = useContext(AuthContext);
+  const { setUser, user } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
   const initialValues: MyFormValues = {
@@ -23,25 +25,30 @@ const FormLogin: FC = () => {
     wrong: "",
   };
 
+  const validationSchema = yup.object().shape({});
+
+  const errorsCode: any = {
+    "auth/wrong-password": "Correo o contraseña invalida",
+    "auth/too-many-requests":
+      "Demasiados intentos fallidos. Intenta de nuevo más tarde",
+  };
   const handleSubmit = async (values: MyFormValues, actions: any) => {
     try {
-      console.log(actions);
-      actions.setErrors({ wrong: "Correo o contraseña invalidad. Favor intentar de nuevo" });
-      const res: any = await signInWithEmailAndPassword(
+      const res = await signInWithEmailAndPassword(
         getAuth(),
         values.identifier,
         values.password
       );
-
-      console.log(res);
-      // const user: any = {
-      //   jwt: res?.user?.accessToken,
-      // };
-      // setCookie({ nombre: "Auth", valor: user.jwt, dias: 1 });
-      // router.push("/");
-      // setUser(user);
-    } catch (error) {
-      console.error(error);
+      setUser(res.user);
+      document.cookie =
+        "auth" +
+        "=" +
+        ((await res.user.getIdTokenResult()).token || "") +
+        "; path=/";
+      router.push("/");
+    } catch (error: any) {
+      actions.setErrors({ wrong: errorsCode[error.code] });
+      console.error(JSON.stringify(error));
     }
   };
 

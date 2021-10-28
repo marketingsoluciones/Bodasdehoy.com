@@ -24,6 +24,7 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
 export const Register: FC<{}> = () => {
   const [whoYouAre, setWhoYouAre] = useState<string>("");
   return (
-    <>{whoYouAre == "" ? <FirstStep value={setWhoYouAre} /> : <SecondStep />}</>
+    <>{whoYouAre == "" ? <FirstStep value={setWhoYouAre} /> : <SecondStep
+    whoYouAre={whoYouAre} />}</>
   );
 };

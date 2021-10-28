@@ -1,10 +1,11 @@
-import { FC, MouseEventHandler} from "react";
+import { FC, MouseEventHandler, useContext} from "react";
 import { GoogleProvider, FacebookProvider } from "../../firebase";
 import { Icon } from "../Surface/Footer";
 import { AppleIcon, FacebookIcon, GoogleIcon } from "../Icons";
-import {getAuth, signInWithPopup} from 'firebase/auth'
-
-
+import {getAuth, signInWithPopup, UserCredential} from 'firebase/auth'
+import { AuthContext } from "../../context/AuthContext";
+import { api } from "../../api";
+import router from "next/router";
 
 interface propsRegisterQuestion {
   onClick: MouseEventHandler;
@@ -24,11 +25,35 @@ export const RegisterQuestion: FC<propsRegisterQuestion> = ({ onClick }) => {
 };
 
 export const Providers: FC = () => {
+  const { user, setUser } = useContext(AuthContext)
 
   const handleClick = async (provider : any) => {
     try {
-      const res = await signInWithPopup(getAuth(), provider)
-      console.log(res)
+      const auth = getAuth()
+      const res : UserCredential = await signInWithPopup(auth, provider)
+      const params = {
+        query: `query getUser ($uid : ID) {
+              getUser(uid: $uid){
+                    city
+                    country
+                    weddingDate
+                    phoneNumber
+                    role
+                  }
+                }
+              `,
+        variables: {
+          uid : res.user.uid 
+        },
+      };
+      const {data} = await api.graphql(params)
+      if(!data.errors) {
+        setUser(res.user)
+        router.push("/")
+      } else {
+        throw new Error("UID no valido")
+      }
+      
     } catch (error) {
       console.log(error)
     }

@@ -1,7 +1,8 @@
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useContext, useEffect, useState } from "react";
 import { ButtonClose } from "../components/Inputs";
 import router from "next/router";
 import { Login, Register } from "../components/Login/Forms";
+import { AuthContext } from "../context/AuthContext";
 
 
 // Tipos de datos personalizados
@@ -13,7 +14,13 @@ type Forms = {
 
 
 const PageLogin: FC = () => {
+  const {user} = useContext(AuthContext)
   const [stage, setStage] = useState <keyof typeof Stages>("login")
+
+  useEffect(() => {
+    console.log("este",user)
+    user?.uid && setStage("register")
+  }, [user])
   
   const Stages : Forms = {
     login : <Login setStage={setStage} />,

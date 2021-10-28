@@ -1,0 +1,1 @@
+export {dataFirebase} from './FirebaseInterface'

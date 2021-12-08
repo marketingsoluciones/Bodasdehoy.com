@@ -1,0 +1,52 @@
+[
+  {
+      "category" : "Novias",
+      "SubCategorias" : [
+      "Vestidos de novia",
+      "Complementos",
+      "Belleza para novias",
+      "Joyería",
+      "Trajes de fiesta"
+    ]
+  },
+  {
+    "category" : "Novios",
+    "SubCategorias": [
+      "Trajes para novios",
+      "Complementos para novios",
+      "Alquiler de trajes",
+      "Joyería"
+    ]
+  },
+  {
+    "category" : "Lugares para bodas",
+    "SubCategorias": [
+      "Fincas",
+      "Hoteles",
+      "Restaurantes",
+      "Salones",
+      "Bodegas",
+      "Castillos"
+    ]
+  },
+  {
+    "category" : "Catering",
+    "SubCategorias": ["Banquete", "Coctelería", "Tartas", "Camareras"]
+  },
+  {
+    "category" : "Decoración",
+    "SubCategorias": ["Floristería", "Mobiliario", "Papelería", "Wedding Planner"]
+  },
+  {
+    "category" : "Servicios",
+    "SubCategorias": ["Fotógrafos", "Animación", "Coches", "Musica y sonido"]
+  },
+  {
+    "category" : "Viajes de novios",
+    "SubCategorias": ["Agencias de viaje"]
+  }
+]
+
+
+
+

@@ -65,3 +65,5 @@ export { BagIcon } from "./BagIcon";
 export { ActualidadIcon } from "./ActualidadIcon";
 export { ShareIcon } from "./ShareIcon";
 export { SaveIcon } from "./SaveIcon";
+export { EuroIcon2 } from "./EuroIcon2";
+export { DateIcon } from "./DateIcon";

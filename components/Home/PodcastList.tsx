@@ -21,7 +21,7 @@ export const PodcastList = () => {
       };
   return (
     <div className="max-w-screen-lg mx-auto inset-x-0 w-full">
-      <TitleSection principal={"Podcast"} secondary={"Cómplices de Bodas"} />
+      <TitleSection principal={"Podcast"} secondary={"Cómplices de Bodas"} size={"xl"} />
       <div className="grid grid-cols-1 w-full">
         <Slider {...settings} className="pt-6 overflow-hidden">
           <Podcast />

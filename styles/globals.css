@@ -3,20 +3,19 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap");
 
 :root {
-    font-family: Poppins
+  font-family: Poppins;
 }
 
-
 .slick-dots li.slick-active button:before {
-    color: #F7628C !important;
+  color: #f7628c !important;
 }
 
 .h-max {
-    height: fit-content;
+  height: fit-content;
 }
 .w-95 {
-    width:95%
+  width: 95%;
 }

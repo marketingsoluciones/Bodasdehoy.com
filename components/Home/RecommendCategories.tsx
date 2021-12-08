@@ -26,7 +26,7 @@ export const RecommendCategories: FC = () => {
   };
   return (
     <div className="max-w-screen-lg mx-auto inset-x-0 w-full">
-      <TitleSection principal={"Recomendados"} secondary={"para tu boda"} size={"md"} />
+      <TitleSection principal={"Recomendados"} secondary={"para tu boda"} size={"xl"} />
       <div className="w-full py-10 mx-auto  md:pl-0 overflow-hidden text-white">
         <Slider {...settings}>
         <Category title="Fotográfos para bodas" icon={<CameraIcon  className="transform scale-75 md:scale-100" />} />

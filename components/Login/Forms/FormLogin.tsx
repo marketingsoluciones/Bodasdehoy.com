@@ -8,6 +8,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { InputField, ButtonComponent } from "../../Inputs";
 import * as yup from "yup";
 import router from "next/router";
+import { GraphQL } from '../../../utils/Fetching';
 
 type MyFormValues = {
   identifier: string;
@@ -39,13 +40,12 @@ const FormLogin: FC = () => {
         values.identifier,
         values.password
       );
-      setUser(res.user);
-      document.cookie =
-        "auth" +
-        "=" +
-        ((await res.user.getIdTokenResult()).token || "") +
-        "; path=/";
-      router.push("/");
+      if(res.user){
+        const moreInfo = await GraphQL.getUser(res.user.uid)
+        setUser({...res.user, ...moreInfo});
+      }
+      localStorage.setItem('auth', (await res?.user?.getIdTokenResult())?.token)
+      await router.push("/");
     } catch (error: any) {
       actions.setErrors({ wrong: errorsCode[error.code] });
       console.error(JSON.stringify(error));
@@ -56,17 +56,18 @@ const FormLogin: FC = () => {
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       <Form className=" text-gray-200 flex flex-col gap-4 py-4 w-3/4">
         <span className="w-full relative ">
-          <InputField name="identifier" placeholder="email" type="email" />
-          <EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto" />
+          <InputField label={"Correo electronico"} name="identifier" placeholder="jhondoe@gmail.com" type="email" icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto text-gray-500" />} />
+          
         </span>
 
         <span className="w-full relative ">
           <InputField
             name="password"
-            placeholder="contraseña"
+            placeholder="******"
             type="password"
+            icon={<PasswordIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4 text-gray-500" />}
+            label={"Contraseña"}
           />
-          <PasswordIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4" />
         </span>
         <span className="text-sm text-red">
           <ErrorMessage name="wrong" />

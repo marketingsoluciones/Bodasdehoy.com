@@ -3,7 +3,7 @@ import React from "react";
 import { ButtonComponent, InputField } from "../Inputs";
 import { EmailIcon, Isologo, LinkProps, PhoneIcon, UserIcon2 } from "../Icons";
 
-const FormListing = () => {
+export const FormListing = () => {
   const initialValue = {
     name: "",
     email: "",
@@ -68,11 +68,9 @@ const FormListing = () => {
               <LinkProps /> Ver web
             </ButtonComponent>
           </div>
-
         </Form>
       </Formik>
     </>
   );
 };
 
-export default FormListing;

@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { LogoFullColor } from "../Icons";
 import { BusinessAccess, Providers, RegisterQuestion } from "./Components";
 import FormLogin from "./Forms/FormLogin";
-import { FirstStep, SecondStep } from "./Forms/FormRegister";
+import { FirstStep, SecondStep } from "./Forms/Register/Steps";
 
 interface propsLogin {
   setStage: CallableFunction;
@@ -12,19 +12,35 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
     <>
       <div className="flex flex-col gap-2 items-center justify-center">
         <LogoFullColor className="w-auto h-10" />
-        <RegisterQuestion onClick={() => setStage("register")} />
       </div>
       <Providers />
       <FormLogin />
-      <BusinessAccess />
+        <RegisterQuestion onClick={() => setStage("register")} />
+      {/* <BusinessAccess /> */}
     </>
   );
 };
 
-export const Register: FC<{}> = () => {
+export const Register: FC<propsLogin> = ({ setStage }) => {
   const [whoYouAre, setWhoYouAre] = useState<string>("");
   return (
-    <>{whoYouAre == "" ? <FirstStep value={setWhoYouAre} /> : <SecondStep
-    whoYouAre={whoYouAre} />}</>
+    <>
+      {whoYouAre == "" ? (
+        <FirstStep value={setWhoYouAre} />
+      ) : (
+        <SecondStep whoYouAre={whoYouAre} />
+      )}
+      <h2
+        className={`font-light text-tertiary flex gap-2 items-center text-sm `}
+      >
+        ¿Dispones de una cuenta?
+        <span
+          className="text-sm text-primary font-semibold cursor-pointer hover:text-tertiary transition"
+          onClick={() => setStage("login")}
+        >
+          Inicia Sesión
+        </span>
+      </h2>
+    </>
   );
 };

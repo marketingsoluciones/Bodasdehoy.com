@@ -1,0 +1,15 @@
+[
+    {
+        "category": "Novios",
+        "subCategories" : [
+            {
+                "NombreSubCategoria": "Vestidos de novia",
+                "preguntas" : "otras"
+            },
+            {
+                "NombreSubCategoria": "Complementos",
+                "preguntas" : "otras"
+            }
+        ]
+    }
+]

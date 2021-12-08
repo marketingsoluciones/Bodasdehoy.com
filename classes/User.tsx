@@ -17,13 +17,13 @@ export class Usuario {
 }
 
 
-
 interface InterfaceNovio extends InterfaceUsuario {
   ciudad: string;
   pais: string;
   fechaBoda: string;
   telefono: number;
 }
+
 
 export class Novio extends Usuario implements InterfaceNovio {
   ciudad: string;

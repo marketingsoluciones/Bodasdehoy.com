@@ -1,4 +1,4 @@
-import { FC, ReactNode } from "react";
+import { FC, ReactNode, useContext } from 'react';
 import Slider from "react-slick";
 import {
   AdsApp,
@@ -19,15 +19,25 @@ import {
 } from "../components/Icons";
 import { api } from "../api";
 import Image from "next/image";
+import { AuthContext } from '../context/AuthContext';
+import { getAuth } from '@firebase/auth';
 
 interface propsHome {
   business: object[];
 }
 
 const Home: FC<propsHome> = ({ business }) => {
+  const {user} = useContext(AuthContext)
   return (
-    <section className="w-full ">
-      <div className="xl:max-w-screen-lg banner pt-6 md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full ">
+    <section className="w-full">
+      <p>{JSON.stringify(user, null, 3)}</p>
+      <button onClick={() => {
+        const auth = getAuth()
+        auth.signOut()
+      }} className="bg-gray-900 text-white px-5">
+        cerrar sesion
+      </button>
+      <div className="max-w-screen-lg banner pt-6 md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full">
         <Welcome />
       </div>
       <PlaceDiscovery />
@@ -206,11 +216,7 @@ const ButtonProviders = () => {
 
 export async function getServerSideProps() {
   try {
-    const params = {
-      _limit: 4,
-    };
-    const { data } = await api.business(params);
-    return { props: { business: data } };
+    return { props: { business: {} } };
   } catch (error) {
     console.log(error);
     return {

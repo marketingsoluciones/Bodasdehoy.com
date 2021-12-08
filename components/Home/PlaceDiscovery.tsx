@@ -13,14 +13,12 @@ export const PlaceDiscovery: FC = () => {
     slidesToShow: 4,
     slidesToScroll:1,
     responsive : [
-      
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
         }
       },
-      
     ]
   };
 
@@ -34,9 +32,9 @@ export const PlaceDiscovery: FC = () => {
   const [categories, setCategories] = useState(fakeData)
   return (
     <>
-    <div className="grid-cards relative w-full -mt-12 md:-mt-96">
+    <div className=" grid-cards relative w-full -mt-12 md:-mt-96">
     <div className="w-full xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto inset-x-0 pt-20 flex flex-col gap-5 md:gap-6 md:pt-32 pb-20 z-20 px-5">
-      <TitleSection className="text-normal md:text-2xl " principal={"Descubre"} secondary={"lugares para bodas"} />
+      <TitleSection className="text-normal md:text-xl " principal={"Descubre"} secondary={"lugares para bodas"} />
       <div className="z-20 relative w-full pb-8 pt-4 overflow-hidden ">
         <Slider {...settings}>
         {categories.map((item, idx) => (

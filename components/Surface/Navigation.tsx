@@ -1,4 +1,12 @@
-import { FC, forwardRef, useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  FC,
+  ReactNode,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Link from "next/link";
 import {
   BurgerIcon,
@@ -7,18 +15,41 @@ import {
   SearchIcon,
   UserIcon,
 } from "../Icons";
-import { useHover } from "../../hooks";
 import router from "next/router";
 import { getCookie } from "../../utils/Cookies";
 import { Sidebar } from "./";
 import { MultiMenu } from "./MultiMenu";
 import { NoviaMenu } from "./MultiMenu/NoviaMenu";
+import { CarIcon } from "../Icons/CarIcon";
+import { useHover } from "../../hooks/useHover";
+import { autenticacion } from "../../utils/Authentication";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
-interface propsNavigation {}
+const initialSelected = {
+  ["Lugares para bodas"]: false,
+  ["Mi boda"]: false,
+  ["Novio"]: false,
+  ["Novia"]: false,
+  ["Proveedores"]: false,
+};
 
-export const Navigation: FC<propsNavigation> = () => {
+export const Navigation: FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
+  const [selected, setSelect] = useState<any>(initialSelected);
+  const [state, setState] = useState<any>("");
 
+  type DicCategories = {
+    Novia: ReactNode;
+  };
+  const categories: DicCategories = {
+    Novia: <NoviaMenu />,
+  };
+
+  useEffect(() => {
+    const select = Object.entries(selected).find((el) => el[1] === true)?.[0];
+    setState(select);
+  }, [selected]);
   return (
     <>
       <Sidebar
@@ -26,9 +57,11 @@ export const Navigation: FC<propsNavigation> = () => {
         state={showSidebar}
       />
       <header className="max-w-screen-lg mx-auto inset-x-0 mt-3 absolute ">
-        <MultiMenu>
-          <NoviaMenu />
-        </MultiMenu>
+        {
+          // @ts-ignore
+          state && <MultiMenu>{categories[state]}</MultiMenu>
+        }
+
         <div className="bg-white rounded-full py-3 md:py-5 md:px-10 z-30 px-5 md:px-0 mx-auto inset-x-0 h-full flex items-center relative justify-between">
           <span
             className="md:hidden "
@@ -41,7 +74,7 @@ export const Navigation: FC<propsNavigation> = () => {
               <LogoFullColor className="h-auto w-40" />
             </span>
           </Link>
-          <Navbar />
+          <Navbar setSelect={(a) => setSelect(a)} selected={selected} />
           <Icons />
         </div>
       </header>
@@ -49,9 +82,12 @@ export const Navigation: FC<propsNavigation> = () => {
   );
 };
 
-interface propsNavbar {}
+interface propsNavbar {
+  setSelect: Dispatch<SetStateAction<any>>;
+  selected: any;
+}
 
-const Navbar: FC<propsNavbar> = () => {
+const Navbar: FC<propsNavbar> = ({ setSelect, selected }) => {
   type Item = {
     title: string;
     route: string;
@@ -67,54 +103,129 @@ const Navbar: FC<propsNavbar> = () => {
 
   interface propsItem {
     item: Item;
+    setRef: Dispatch<SetStateAction<any>>;
   }
-  const ItemList: FC<propsItem> = ({ item }) => {
-    const [hoverRef, isHovered] = useHover();
+
+  const ItemList: FC<propsItem> = ({ item, setRef }) => {
+    const [isHovered, setHovered] = useState<boolean>(false);
+    const onMouseHandler = (value: boolean): void => {
+      setHovered(value);
+      setRef(value);
+    };
+
     return (
-      <Link href={item.route} passHref>
-        <li ref={hoverRef} className="cursor-pointer relative tracking-widest hover:text-tertiary transition">
-          {item.title}
-          <svg
-            className={`h-0.5 w-full bg-primary transform transition absolute ${
-              isHovered ? "scale-100" : "scale-0"
-            } `}
-          />
-        </li>
-      </Link>
+      <div
+        onMouseOver={() => onMouseHandler(true)}
+        onMouseOut={() => onMouseHandler(false)}
+      >
+        <Link href={item.route} passHref>
+          <li className="cursor-pointer relative tracking-widest hover:text-tertiary transition text-gray-500">
+            {item.title}
+            <svg
+              className={`h-0.5 w-full bg-primary transform transition absolute ${
+                isHovered ? "scale-100" : "scale-0"
+              } `}
+            />
+          </li>
+        </Link>
+      </div>
     );
   };
 
   return (
-    <nav className="hidden lg:block">
-      <ul className="flex lg:gap-6 xl:gap-6 uppercase text-sm font-medi um text-gray-200">
-        {List.map((item, idx) => (
-          <ItemList key={idx} item={item} />
-        ))}
-      </ul>
-    </nav>
+    <>
+      <nav className="hidden lg:block">
+        <ul className="flex lg:gap-6 xl:gap-6 uppercase text-sm font-medi um text-gray-200">
+          {List.map((item, idx) => (
+            <ItemList
+              key={idx}
+              item={item}
+              setRef={(a) =>
+                selected[item.title] !== a &&
+                setSelect((obj: any) => ({ ...obj, [item.title]: a }))
+              }
+            />
+          ))}
+        </ul>
+      </nav>
+    </>
   );
 };
 
 export const Icons = () => {
+  const [hoverRef, isHovered] = useHover();
   const HandleClickUser = () => {
-    !getCookie("auth") ? router.push("/login") : router.push("/perfil")
+    !localStorage.getItem("auth")
+      ? router.push("/login")
+      : router.push("/perfil");
   };
   return (
     <>
-      <div className="flex items-center">
-        <span className="hidden md:block px-3 cursor-pointer">
-          <SearchIcon className="icon transition transform hover:-rotate-6 hover:scale-110 text-gray-200" />
+      <div className="flex items-center relative">
+        <span className="hidden md:block px-3 cursor-pointer text-gray-500">
+          <SearchIcon className="icon transition transform hover:-rotate-6 hover:scale-110 " />
         </span>
         <span
-          className="md:px-3 border-gray-100 py-1 md:border-l md:border-r cursor-pointer"
-          onClick={HandleClickUser}
+          className="md:px-3 border-gray-100 py-1 md:border-l md:border-r cursor-pointer text-gray-500"
+          ref={hoverRef}
         >
-          <UserIcon className="icon transition transform hover:-rotate-6 hover:scale-110" />
+          <ProfileMenu state={isHovered} />
+          <span onClick={HandleClickUser}>
+            <UserIcon className="icon transition transform hover:-rotate-6 hover:scale-110" />
+          </span>
         </span>
-        <span className="hidden md:block pl-3 cursor-pointer transition transform hover:-rotate-6 hover:scale-110">
-          <CompanyIcon className="icon" />
+        <span
+          className="hidden md:block pl-3 cursor-pointer transition transform hover:-rotate-6 hover:scale-110"
+          onClick={() => router.push("empresas/crear-empresa")}
+        >
+          <CompanyIcon className="icon text-gray-200" />
         </span>
       </div>
     </>
+  );
+};
+
+const ProfileMenu = ({ state }: { state: boolean }) => {
+  const { setUser } = useContext(AuthContext);
+  const options = [
+    {
+      title: "Cerrar Sesión",
+      route: "/cerrar-sesion",
+      icon: <CarIcon className="w-6 h-6" />,
+      function: async () => {
+        setUser(await autenticacion.SignOut());
+        localStorage.removeItem("auth");
+        router.push("/");
+      },
+    },
+  ];
+  return (
+    <ul
+      className={`w-40 rounded-xl h-max bg-white shadow-md absolute bottom-0 left-0 inset-y-full overflow-hidden ${
+        state ? "" : "hidden"
+      }`}
+    >
+      {options.map((item, idx) => {
+        if (item?.function) {
+          return (
+            <li
+              key={idx}
+              onClick={item.function}
+              className="flex items-center gap-2 text-gray-500 px-4 py-3 text-sm hover:bg-gray-100 transition cursor-pointer"
+            >
+              {item.icon} {item.title}
+            </li>
+          );
+        } else {
+          return (
+            <Link key={idx} href={item.route}>
+              <li className="flex items-center gap-2 text-gray-500 px-4 py-3 text-sm hover:bg-gray-100 transition cursor-pointer">
+                {item.icon} {item.title}{" "}
+              </li>
+            </Link>
+          );
+        }
+      })}
+    </ul>
   );
 };

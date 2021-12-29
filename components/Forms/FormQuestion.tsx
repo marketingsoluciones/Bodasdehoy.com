@@ -1,15 +1,45 @@
 import { SectionForm } from "../../pages/empresas/crear-empresa";
 import { Location2Icon, UserIcon, EuroIcon } from "../Icons";
-import { InputField, SelectField } from "../Inputs";
-import { useContext, useState, useEffect, FC } from 'react';
-import { AuthContext } from "../../context";
-import { GraphQL } from '../../utils/Fetching';
+import { Checkbox, InputField, SelectField } from "../Inputs";
+import { useState, useEffect, FC, memo, Dispatch, SetStateAction } from 'react';
+import { GraphQL } from "../../utils/Fetching";
+import { FieldArray } from "formik";
 
-export const FormQuestion: FC = (props) => {
+interface propsFormQuestion {
+  values?: any;
+  setValues? : Dispatch<SetStateAction<any>> | undefined
+}
+export const FormQuestion: FC <propsFormQuestion> = ({ values, setValues }) => {
+  const [data, setData] = useState<any>([]);
+
+  const fetchQuestions = async () => {
+    try {
+      const data = await GraphQL.createBusiness({
+        ...values,
+        mobilePhone: JSON.stringify(values.mobilePhone),
+        landline: JSON.stringify(values.landline),
+      });
+      setData(data);
+
+      // const re = data.questionsAndAnswers.reduce((acc : object, item : Question) => {
+      //   //@ts-ignore
+      //   acc[item.frequentQuestions] = item.answers
+      //   return acc
+      // }, {})
+
+      //@ts-ignore
+      setValues((old) => ({...old, questions: re}))
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchQuestions();
+  }, []);
   
   return (
     <div className="flex flex-col gap-10">
-      
       <SectionForm>
         <div>
           <h2 className="text-primary text-lg font-semibold">
@@ -26,7 +56,12 @@ export const FormQuestion: FC = (props) => {
             <p className="text-tertiary font-semibold">Precio del menú</p>
             <div className="flex items-center text-primary gap-3">
               <p>Desde</p>
-              <InputField type={"number"} name={"menuPrice"} placeholder={""} label={""}/>
+              <InputField
+                type={"number"}
+                name={"menuPrice"}
+                placeholder={""}
+                label={""}
+              />
             </div>
           </div>
           <div className="flex flex-col items-center gap-1">
@@ -39,49 +74,129 @@ export const FormQuestion: FC = (props) => {
             <p className="text-tertiary font-semibold">Número de invitados</p>
             <div className="flex items-center text-primary gap-3">
               <p>Desde</p>
-              <InputField type={"number"} name={"guestsNumber"} placeholder={""} label={""}/>
+              <InputField
+                type={"number"}
+                name={"guestsNumber"}
+                placeholder={""}
+                label={""}
+              />
             </div>
           </div>
         </div>
-          <span className="flex flex-col">
-            <h3 className="text-sm text-tertiary font-medium">
-              ¿Cuáles son las características más relevantes de las
-              instalaciones?
-            </h3>
-            <QuestionsComponent {...props}/>
-          </span>
+        <span className="flex flex-col">
+          <QuestionsComponent data={data?.questionsAndAnswers} />
+          {/* <ServicesAndAccessoriesComponent
+            data={{ services: data?.services, accessories: data?.accessories }}
+            values={values}
+          /> */}
+        </span>
       </SectionForm>
     </div>
   );
 };
 
+type Question = {
+  frequentQuestions : string
+  answers : string
+}
 
 interface propsQuestionComponent {
-  values? : any
+  data: Question[];
 }
-const QuestionsComponent : FC <propsQuestionComponent> = ({values}) => {
-  const {user} = useContext(AuthContext)
-  const [questions, setQuestions] = useState([])
+const QuestionsComponent: FC<propsQuestionComponent> = memo(({ data }) => {
+  const [questions, setQuestions] = useState(data);
 
-  const fetchQuestions = async () => {
-    try {
-      const res = await GraphQL.createBusiness({userUid: user?.uid, ...values})
-      console.log(res)
-    } catch (error) {
-      console.log(error)
-    }
-  }
   useEffect(() => {
-    fetchQuestions()
-  }, [])
-
+    setQuestions(data);
+  }, [data]);
+  
   return (
-    <div>
-      
-    </div>
-  )
+      <div className="w-full flex flex-col gap-3 ">
+        {questions?.map((item, idx) => {
+          return (
+            <div key={idx} className="text-primary text-lg">
+              <h3 className="text-sm text-tertiary font-medium">
+              {item.frequentQuestions}
+              </h3>
+              <InputField name={`questionsAndAnswers.${idx}`} placeholder={""} type="text" question={item?.frequentQuestions}  />
+            </div>
+          )
+        })}
+        </div>
+  );
+});
+
+interface propsServiceAndAccessoriesComponent {
+  data: {
+    services: string[];
+    accessories: string[];
+  };
+  values: any;
 }
 
-export default FormQuestion
+const ServicesAndAccessoriesComponent: FC<propsServiceAndAccessoriesComponent> =
+  ({ data: { services, accessories }, values }) => {
+    return (
+      <div className="w-full pt-12">
+        <h2 className="text-primary text-lg font-semibold">
+          Servicios e instalaciones
+        </h2>
+        <p className="text-sm text-gray-500 w-full">
+          Selecciona los servicios e instalaciones que incluyes.
+        </p>
+        <div className="flex flex-col gap-6 pt-6">
+          <FieldArrayWithProps
+            data={services}
+            label={"servicios"}
+            values={values}
+          />
+          <FieldArrayWithProps
+            data={accessories}
+            label={"Instalaciones"}
+            values={values}
+          />
+        </div>
+      </div>
+    );
+  };
 
+//
 
+interface propsFieldArrayWithProps {
+  data: string[];
+  label: string;
+  values: any;
+}
+const FieldArrayWithProps: FC<propsFieldArrayWithProps> = ({
+  data,
+  label,
+  values,
+}) => {
+  const [dataArray, setDataArray] = useState(data ?? []);
+
+  useEffect(() => {
+    setDataArray(data);
+  }, [data]);
+  return (
+    <div className="w-full">
+      <h3 className="text-primary font-medium capitalize">{label}</h3>
+      <FieldArray name={label}>
+        {({ insert, remove, push }) => (
+          <div className="grid grid-cols-3 gap-3 py-2">
+            {dataArray?.map((item: any, idx) => (
+              <Checkbox
+                key={idx}
+                checked={values[label] && values[label].includes(item)}
+                label={item}
+                name={item}
+                onChange={(e: any) =>
+                  e.target.checked ? push(item) : remove(item)
+                }
+              />
+            ))}
+          </div>
+        )}
+      </FieldArray>
+    </div>
+  );
+};

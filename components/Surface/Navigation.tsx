@@ -9,6 +9,7 @@ import {
 } from "react";
 import Link from "next/link";
 import {
+  ArrowIcon,
   BurgerIcon,
   CompanyIcon,
   LogoFullColor,
@@ -25,6 +26,7 @@ import { useHover } from "../../hooks/useHover";
 import { autenticacion } from "../../utils/Authentication";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { LoadingContext } from "../../context";
 
 const initialSelected = {
   ["Lugares para bodas"]: false,
@@ -62,7 +64,7 @@ export const Navigation: FC = () => {
           state && <MultiMenu>{categories[state]}</MultiMenu>
         }
 
-        <div className="bg-white rounded-full py-3 md:py-5 md:px-10 z-30 px-5 md:px-0 mx-auto inset-x-0 h-full flex items-center relative justify-between">
+        <div className="bg-white rounded-full h-16 py-3 md:px-10 z-30 px-5 md:px-0 mx-auto inset-x-0  flex items-center relative justify-between">
           <span
             className="md:hidden "
             onClick={() => setShowSidebar(!showSidebar)}
@@ -153,6 +155,7 @@ const Navbar: FC<propsNavbar> = ({ setSelect, selected }) => {
 };
 
 export const Icons = () => {
+  const { user } = useContext(AuthContext);
   const [hoverRef, isHovered] = useHover();
   const HandleClickUser = () => {
     !localStorage.getItem("auth")
@@ -165,21 +168,31 @@ export const Icons = () => {
         <span className="hidden md:block px-3 cursor-pointer text-gray-500">
           <SearchIcon className="icon transition transform hover:-rotate-6 hover:scale-110 " />
         </span>
-        <span
-          className="md:px-3 border-gray-100 py-1 md:border-l md:border-r cursor-pointer text-gray-500"
-          ref={hoverRef}
-        >
-          <ProfileMenu state={isHovered} />
-          <span onClick={HandleClickUser}>
-            <UserIcon className="icon transition transform hover:-rotate-6 hover:scale-110" />
+        {!user ? (
+          <>
+            <span
+              className="md:px-3 border-gray-100 py-1 md:border-l md:border-r cursor-pointer text-gray-500"
+            >
+              
+              <span onClick={HandleClickUser}>
+                <UserIcon className="icon transition transform hover:-rotate-6 hover:scale-110" />
+              </span>
+            </span>
+            <span
+              className="hidden md:block pl-3 cursor-pointer transition transform hover:-rotate-6 hover:scale-110"
+              onClick={() => router.push("empresas/crear-empresa")}
+            >
+              <CompanyIcon className="icon text-gray-200" />
+            </span>
+          </>
+        ) : (
+          <span  className=" border-gray-100 border-l cursor-pointer text-gray-500 pl-3 flex items-center gap-1"
+          ref={hoverRef}>
+            <img src={user.photoURL?? undefined} className="w-10 h-10 border border-primary rounded-full" />
+            <ProfileMenu state={isHovered} />
+            <ArrowIcon className="w-4 h-4 rotate-90 transform" />
           </span>
-        </span>
-        <span
-          className="hidden md:block pl-3 cursor-pointer transition transform hover:-rotate-6 hover:scale-110"
-          onClick={() => router.push("empresas/crear-empresa")}
-        >
-          <CompanyIcon className="icon text-gray-200" />
-        </span>
+        )}
       </div>
     </>
   );
@@ -187,16 +200,25 @@ export const Icons = () => {
 
 const ProfileMenu = ({ state }: { state: boolean }) => {
   const { setUser } = useContext(AuthContext);
+  const {setLoading} = useContext(LoadingContext)
   const options = [
     {
       title: "Cerrar Sesión",
       route: "/cerrar-sesion",
       icon: <CarIcon className="w-6 h-6" />,
       function: async () => {
+        setLoading(true)
         setUser(await autenticacion.SignOut());
         localStorage.removeItem("auth");
-        router.push("/");
+        await router.push("/");
+        setLoading(false)
+
       },
+    },
+    {
+      title: "Empresas",
+      route: "/empresas/crear-empresa",
+      icon: <CarIcon className="w-6 h-6" />,
     },
   ];
   return (

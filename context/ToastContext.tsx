@@ -1,31 +1,59 @@
-import { createContext, Dispatch, FC, SetStateAction, useState } from "react";
+import { createContext, FC, useContext, useReducer, Reducer } from 'react';
+import ToastContainer from '../components/Toast/ToastContainer';
 
-type Toast = {
+const types = {
+  success : "",
+  error : "",
+  warning: "",
+  update : ""
+}
+
+export type Toast = {
+    id : number
     message : string,
-    route : string
+    type : keyof typeof types
 }
 
 
 type Context = {
     toasts : Toast[]
-    setToast : Dispatch<SetStateAction<Context>>
+    dispatch : any
 }
 
 const initialContext : Context = {
     toasts: [],
-    setToast: () => null,
+    dispatch: () => null,
 }
 
 const ToastContext = createContext<Context>(initialContext);
 
-const ToastContextProvider : FC = ({ children }): JSX.Element => {
-    const [toasts, setToast] = useState<Context>(initialContext);
+const toastReducer = (state : Toast[], action: any) => {
+  console.log(action)
+  switch(action.type){
+    case "ADD_TOAST": {
+      console.log([...state, action.toast])
+        return [...state, action.toast]
+    }
+    case "DELETE_TOAST" : {
+      const updateToast = state.filter(e => e.id !== action.id)
+      return updateToast
+    }
+    default: {
+      throw new Error('unhandled action type');
+    }
+  }
+}
+
+const ToastProvider : FC = ({ children }): JSX.Element => {
+    const [toasts, dispatch] = useReducer<Reducer<any, Toast[]>>(toastReducer, []);
   
     return (
-      <ToastContext.Provider value={{ ...toasts, setToast }}>
+      <ToastContext.Provider value={{toasts, dispatch }}>
+        <ToastContainer toasts={toasts} />
         {children}
       </ToastContext.Provider>
     );
   };
 
-  export { ToastContext, ToastContextProvider };
+  const ToastContextProvider = () => useContext(ToastContext)
+  export { ToastContextProvider, ToastProvider };

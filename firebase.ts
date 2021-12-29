@@ -28,3 +28,4 @@ const firebaseConfig = {
 
 
 export { firebaseClient, GoogleProvider, FacebookProvider}
+

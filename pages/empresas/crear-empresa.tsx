@@ -3,10 +3,10 @@ import {
   Children,
   FC,
   useState,
-  Dispatch,
-  SetStateAction,
   useContext,
   cloneElement,
+  useReducer,
+  Reducer,
 } from "react";
 import IndiceSteps from "../../components/Business/IndiceSteps";
 import { FormYourBusiness, FormQuestion } from "../../components/Forms";
@@ -14,9 +14,24 @@ import { ButtonComponent } from "../../components/Inputs";
 import { AuthContext } from "../../context/AuthContext";
 import { validations } from "./validations";
 import { useEffect } from "react";
+import { GraphQL } from "../../utils/Fetching";
+import FormImages from "../../components/Forms/FormImages";
+
+const reducer = (state: any, action: any) => {
+  switch (action.type) {
+    case "NEXT":
+      return state + 1;
+      break;
+    case "PREV":
+      return state - 1;
+      break;
+    default:
+      return;
+  }
+};
 
 const createBusiness = () => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useReducer<Reducer<number, number>>(reducer, 2);
   const { user } = useContext(AuthContext);
   return (
     <section className="w-full relative">
@@ -34,7 +49,7 @@ const createBusiness = () => {
       <div className="max-w-screen-md py-20 mx-auto inset-x-0">
         <FormikStepper
           step={step}
-          setStep={(value) => setStep(value)}
+          setStep={setStep}
           initialValues={{
             userUid: user?.uid ?? "",
             contactName: user?.displayName ?? "",
@@ -47,6 +62,7 @@ const createBusiness = () => {
             address: "",
             description: "",
             subcategories: [],
+            questionsAndAnswers: [],
           }}
           onSubmit={async (values) => {
             console.log("values", values);
@@ -61,8 +77,8 @@ const createBusiness = () => {
           <FormikStep label={"Datos Basicos"}>
             <FormQuestion />
           </FormikStep>
-          <FormikStep label={"Datos 22"}>
-            <FormQuestion />
+          <FormikStep label={"Imagenes"}>
+            <FormImages />
           </FormikStep>
         </FormikStepper>
       </div>
@@ -74,7 +90,7 @@ export default createBusiness;
 
 export const SectionForm: FC = ({ children }) => {
   return (
-    <div className="bg-white shadow rounded-xl p-6 w-full flex flex-col justify-center gap-10">
+    <div className="bg-white shadow rounded-xl p-6 w-full flex flex-col justify-center gap-10 h-auto">
       {children}
     </div>
   );
@@ -82,7 +98,7 @@ export const SectionForm: FC = ({ children }) => {
 
 interface FormikStepper extends FormikConfig<FormikValues> {
   step: number;
-  setStep: Dispatch<SetStateAction<number>>;
+  setStep: any;
 }
 
 const FormikStepper = ({
@@ -95,24 +111,30 @@ const FormikStepper = ({
     Children.toArray(children)
   );
   const currentChild = ChildrenArray[step];
+  const { user } = useContext(AuthContext);
 
   const isLastStep = () => {
     return step === ChildrenArray.length - 1;
   };
 
   const handleSubmit = async (values: any, actions: any) => {
-    console.log(step);
+    values.userUid = user?.uid;
+
     if (isLastStep()) {
       await props.onSubmit(values, actions);
     }
 
     switch (step) {
       case 0:
-        console.log("PASO 0 COMPLETADO");
-        setStep(step + 1);
+        setStep({ type: "NEXT" });
         break;
       case 1:
-        console.log("PASO 2");
+        setStep({type: "NEXT"})
+        const res = await GraphQL.createBusiness({
+          ...values,
+          mobilePhone: JSON.stringify(values.mobilePhone),
+        });
+        console.log(res);
         break;
       default:
         break;
@@ -126,17 +148,23 @@ const FormikStepper = ({
       validationSchema={currentChild?.props?.validationSchema}
     >
       {(formik) => {
+        console.log(formik);
         useEffect(() => {
-          setChildrenArray(Children.map(children, (child: any) =>
-            cloneElement(child, { values: formik.values })
-          ))
+          setChildrenArray(
+            Children.map(children, (child: any) =>
+              cloneElement(child, {
+                values: formik.values,
+                setValues: formik.setValues,
+              })
+            )
+          );
         }, [formik.values]);
         return (
           <Form autoComplete={"off"}>
             {currentChild}
             <div className="w-max p-10 mx-auto inset-x-0">
               {step > 0 && (
-                <ButtonComponent onClick={() => setStep((s) => s - 1)}>
+                <ButtonComponent onClick={() => setStep({ type: "PREV" })}>
                   Atras
                 </ButtonComponent>
               )}

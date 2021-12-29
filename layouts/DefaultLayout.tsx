@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import {Footer, FooterMobile, Navigation} from "../components/Surface";
-import { AuthContextProvider, ToastContextProvider } from "../context";
+import { AuthContextProvider, ToastProvider } from "../context";
 import { LoadingContextProvider } from '../context/LoadingContext';
 
 const DefaultLayout: FC = ({ children }) => {
@@ -8,7 +8,7 @@ const DefaultLayout: FC = ({ children }) => {
   return (
     <AuthContextProvider>
       <LoadingContextProvider>
-      <ToastContextProvider>
+      <ToastProvider>
         <div className="bg-color-base relative min-h-screen w-full">
           <Navigation />
           {/* <NavigationMobile /> */}
@@ -16,7 +16,7 @@ const DefaultLayout: FC = ({ children }) => {
           <Footer />
           <FooterMobile />
         </div>
-      </ToastContextProvider>
+      </ToastProvider>
       </LoadingContextProvider>
     </AuthContextProvider>
   );

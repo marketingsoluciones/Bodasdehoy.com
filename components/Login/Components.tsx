@@ -7,6 +7,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { api } from "../../api";
 import router from "next/router";
 import { GraphQL } from '../../utils/Fetching';
+import { useToast } from "../../hooks/useToast";
 
 interface propsRegisterQuestion {
   onClick: MouseEventHandler;
@@ -26,20 +27,27 @@ export const RegisterQuestion: FC<propsRegisterQuestion> = ({ onClick }) => {
 };
 
 export const Providers: FC = () => {
-  const { setUser } = useContext(AuthContext);
+  const { setUser} = useContext(AuthContext);
+  const toast = useToast()
 
   const handleClick = async (provider: any) => {
     try {
       // Autenticar con firebase
       const auth = getAuth();
       const res: UserCredential = await signInWithPopup(auth, provider);
-      //
 
+      // Solicitar datos adicionales del usuario
       const moreInfo = await GraphQL.getUser(res.user.uid)
+
       // Actualizar estado con los dos datos
       setUser({ ...res.user, ...moreInfo });
+
+      // Setear en localStorage token JWT
+      localStorage.setItem('auth', (await res?.user?.getIdTokenResult())?.token)
+      toast("success", "Inicio de sesión con exito")
       await router.push("/");
     } catch (error) {
+      toast("error", JSON.stringify(error))
       console.log(error);
     }
   };
@@ -47,7 +55,7 @@ export const Providers: FC = () => {
   const ListProviders = [
     {
       icon: <FacebookIcon className="w-5 h-5" />,
-      function: () => alert("Aun por configurar"),
+      function: () => handleClick(FacebookProvider),
     },
     {
       icon: <GoogleIcon className="w-5 h-5" />,

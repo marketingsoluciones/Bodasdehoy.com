@@ -67,3 +67,8 @@ export { ShareIcon } from "./ShareIcon";
 export { SaveIcon } from "./SaveIcon";
 export { EuroIcon2 } from "./EuroIcon2";
 export { DateIcon } from "./DateIcon";
+export { WebSiteIcon } from "./WebSiteIcon";
+export { IconSuccess } from "./IconSuccess";
+export { IconError } from "./IconError";
+export { IconWarning } from "./IconWarning";
+export { IconUpdate } from "./IconUpdate";

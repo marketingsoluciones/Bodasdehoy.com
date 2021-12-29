@@ -32,12 +32,16 @@ const AuthContext = createContext<Context>(initialContext);
 const AuthContextProvider: FC = ({ children }): JSX.Element => {
   const [user, setUser] = useState<Partial<UserMax | null>>(null);
 
+
   useEffect(() => {
     const auth = getAuth();
     auth.onAuthStateChanged(async (user: any) => {
       if (user) {
         const moreInfo = await GraphQL.getUser(user?.uid);
         setUser({ ...user, ...moreInfo });
+
+        // Setear en localStorage token JWT
+        localStorage.setItem('auth', (await user?.getIdTokenResult())?.token)
       }
     });
   }, []);

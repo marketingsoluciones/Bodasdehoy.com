@@ -5,6 +5,7 @@ interface propsCheckBox {
     name : string
     label: string
     onChange? : any
+    checked : boolean
 }
 export const Checkbox : FC <propsCheckBox> = (props) => {
     const [field, meta, helpers] = useField({...props});

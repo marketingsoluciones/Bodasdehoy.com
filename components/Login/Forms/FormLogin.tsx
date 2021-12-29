@@ -9,6 +9,7 @@ import { InputField, ButtonComponent } from "../../Inputs";
 import * as yup from "yup";
 import router from "next/router";
 import { GraphQL } from '../../../utils/Fetching';
+import { useToast } from '../../../hooks/useToast';
 
 type MyFormValues = {
   identifier: string;
@@ -17,22 +18,20 @@ type MyFormValues = {
 };
 
 const FormLogin: FC = () => {
-  const { setUser, user } = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
-
+  const { setUser } = useContext(AuthContext);
+  const toast = useToast()
   const initialValues: MyFormValues = {
     identifier: "",
     password: "",
     wrong: "",
   };
 
-  const validationSchema = yup.object().shape({});
-
   const errorsCode: any = {
     "auth/wrong-password": "Correo o contraseña invalida",
     "auth/too-many-requests":
       "Demasiados intentos fallidos. Intenta de nuevo más tarde",
   };
+
   const handleSubmit = async (values: MyFormValues, actions: any) => {
     try {
       const res = await signInWithEmailAndPassword(
@@ -46,9 +45,10 @@ const FormLogin: FC = () => {
       }
       localStorage.setItem('auth', (await res?.user?.getIdTokenResult())?.token)
       await router.push("/");
+      toast("success", "Inicio de sesión con exito")
     } catch (error: any) {
-      actions.setErrors({ wrong: errorsCode[error.code] });
       console.error(JSON.stringify(error));
+      toast("error", JSON.stringify(errorsCode[error.code]))
     }
   };
 

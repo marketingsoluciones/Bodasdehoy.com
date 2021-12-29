@@ -1,4 +1,5 @@
 import { api } from "../api";
+import createBusiness from '../pages/empresas/crear-empresa';
 export const GraphQL = {
   createUser: async (variables: any) => {
     const query = `mutation crearUsuario ($uid : ID, $city: String, $country : String, $weddingDate : String, $phoneNumber : String, $role : [String]) {
@@ -44,14 +45,12 @@ export const GraphQL = {
   },
 
   createBusiness: async (variables : any) => {
-    const query = `mutation getQuestions ($userUid : ID, $contactName: String, $contactEmail : String, $webPage : String, $landline : String, $mobilePhone : String, $businessName: String, $country : String, $city: String, $zip : String, $address : String, $description : String, $subCategories : [String] ) {
+    const query = `mutation getQuestions ($userUid : ID, $contactName: String, $contactEmail : String, $mobilePhone : String, $businessName: String, $country : String, $city: String, $zip : String, $address : String, $description : String, $subcategories : [String] ) {
       createBusiness(
         inputBusiness:{
           userUid : $userUid,
           contactName: $contactName,
           contactEmail: $contactEmail,
-          webPage: $webPage,
-          landline: $landline,
           mobilePhone: $mobilePhone,
           businessName: $businessName,
           country: $country,
@@ -59,7 +58,7 @@ export const GraphQL = {
           zip: $zip,
           address: $address,
           description: $description,
-          subCategories: $subCategories
+          subCategories: $subcategories
         }){
         _id,
         questionsAndAnswers{
@@ -70,9 +69,16 @@ export const GraphQL = {
             services,
       }
     }`;
-    const data = await api.graphql({ query, variables });
-    console.log(data)
-    return {};
+    const {data : {data : {createBusiness}}} = await api.graphql({ query, variables });
+    return createBusiness
   },
 
+  getCategories : async () => {
+    const query = `query{
+      getCategories{categorie,subCategories}
+    }`
+    const variables = {}
+    const {data : {data : {getCategories}}} = await api.graphql({query, variables})
+    return getCategories
+  }
 };

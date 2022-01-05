@@ -3,11 +3,10 @@ import { GoogleProvider, FacebookProvider } from "../../firebase";
 import { Icon } from "../Surface/Footer";
 import { AppleIcon, FacebookIcon, GoogleIcon } from "../Icons";
 import { getAuth, signInWithPopup, UserCredential } from "firebase/auth";
-import { AuthContext } from "../../context/AuthContext";
-import { api } from "../../api";
 import router from "next/router";
 import { GraphQL } from '../../utils/Fetching';
 import { useToast } from "../../hooks/useToast";
+import { AuthContextProvider } from "../../context";
 
 interface propsRegisterQuestion {
   onClick: MouseEventHandler;
@@ -27,7 +26,7 @@ export const RegisterQuestion: FC<propsRegisterQuestion> = ({ onClick }) => {
 };
 
 export const Providers: FC = () => {
-  const { setUser} = useContext(AuthContext);
+  const { setUser} = AuthContextProvider();
   const toast = useToast()
 
   const handleClick = async (provider: any) => {

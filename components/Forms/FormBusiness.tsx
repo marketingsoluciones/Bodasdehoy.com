@@ -155,6 +155,7 @@ const [categories, setCategories] = useState<Partial<GetCategory[] | null>>([])
   useEffect(() => {
     fetchData()
   }, [])
+
   return (
     <div className="flex flex-col w-full gap-3 pb-3">
         <h2 className="text-primary text-lg font-semibold">

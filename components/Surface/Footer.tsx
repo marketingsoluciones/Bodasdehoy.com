@@ -28,7 +28,7 @@ export const Footer: FC = () => {
   ];
 
   return (
-    <div className="hidden md:block bg-color-base w-full pb-8 pt-10">
+    <div className="hidden md:block bg-color-base w-full pb-8 pt-10 container mx-auto inset-x-0 max-w-screen-lg">
       <div className="max-w-screen-lg 2xl:max-w-screen-2xl mx-auto inset-x-0">
         <div className="border-b border-primary pt-10 pb-8">
           <img src="/logo.webp" alt={"Logo bodasdehoy.com"} className="h-7 object-contain object-center" />
@@ -46,7 +46,7 @@ export const Footer: FC = () => {
               {ListInformacion.map((item, idx) => (
                 <Link key={idx} href={item.route} passHref>
                   <li
-                    className="text-xs text-gray-300 cursor-pointer hover:text-primary transition"
+                    className="text-xs text-gray-700 cursor-pointer hover:text-primary transition"
                   >
                     {item.title}
                   </li>
@@ -60,7 +60,7 @@ export const Footer: FC = () => {
               {ListEmpresa.map((item, idx) => (
                 <Link key={idx} href={item.route} passHref>
                   <li
-                    className="text-xs text-gray-300 cursor-pointer hover:text-primary transition"
+                    className="text-xs text-gray-700 cursor-pointer hover:text-primary transition"
                   >
                     {item.title}
                   </li>
@@ -100,5 +100,5 @@ interface propsTitle {
   title: string;
 }
 const Title: FC<propsTitle> = ({ title }) => {
-  return <h3 className="uppercase text-gray-300 tracking-widest">{title}</h3>;
+  return <h3 className="uppercase text-gray-700 tracking-widest">{title}</h3>;
 };

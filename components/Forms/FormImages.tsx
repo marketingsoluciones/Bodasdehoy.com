@@ -10,7 +10,9 @@ import {
 import { PicturesIcon } from "../Icons/PicturesIcon";
 import { StarRating } from "../Icons";
 import { UploadImageIcon } from "../Icons/UploadImageIcon";
-import { memo } from 'react';
+import { memo } from "react";
+import { api } from "../../api";
+import { GraphQL } from "../../utils/Fetching";
 
 type ImageUploaded = {
   file: File;
@@ -33,28 +35,39 @@ interface PrincipalSelected extends ImageUploaded {
   idx: number | undefined;
 }
 
-const FormImages: FC = () => {
+const FormImages: FC <any> = ({values}) => {
   const [images, setImages] = useState<ImageUploaded[]>([]);
   const [principalSelected, setPrincipal] = useState<
     PrincipalSelected | undefined
   >(undefined);
 
-  const handleChange = (e: any) => {
-    e.preventDefault();
-    let files = e.target.files;
-    Object.values(files).forEach((file: any) => {
+  const handleChange = async (e: any) => {
+    try {
+      if(values._id) {
+      let file = e.target.files[0];
       let reader = new FileReader();
-      reader.onloadend = () => {
+
+      
+      reader.onloadend = async () => {
         if (reader.result) {
           const nuevaImagen = {
             file: file,
             image: reader.result,
           };
-          setImages([...images, nuevaImagen]);
+          const res = await GraphQL.uploadImage(file, "123");
+          console.log(res)
+          setImages([...images, {...nuevaImagen, ...res}]);
         }
       };
+      
       reader.readAsDataURL(file);
-    });
+
+      } else {
+        throw new Error("ID de empresa no especificado")
+      }
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   const handleClick = (idx: number) => {
@@ -95,7 +108,7 @@ const FormImages: FC = () => {
                   onClick={() => handleClick(idx)}
                 />
               ))}
-               {images.length < 8 && <UploadModuleV2 onChange={handleChange} />}
+              {images.length < 8 && <UploadModuleV2 onChange={handleChange} />}
             </div>
           ) : (
             <UploadModule onChange={handleChange} />
@@ -119,20 +132,22 @@ const ItemCheck = ({ text }: { text: string }) => {
   );
 };
 
-const UploadModule: FC<InputHTMLAttributes<HTMLInputElement>> = memo((props) => {
-  return (
-    <label className="w-72 h-72 mx-auto inset-x-0 rounded-full border-2 border-gray-300 border-dashed flex flex-col items-center justify-center gap-5 cursor-pointer hover:bg-gray-100 transition	">
-      <input type="file" className="hidden" accept={"image/*"} {...props} />
-      <PicturesIcon />
-      <small className="text-tertiary text-center text-xs w-1/2">
-        Formato GIF, JPG o PNG Peso máximo 5 MB
-      </small>
-      <div className="w-max text-sm text-primary bg-white border-primary border rounded-xl py-1 px-3">
-        Añadir imagenes
-      </div>
-    </label>
-  );
-});
+const UploadModule: FC<InputHTMLAttributes<HTMLInputElement>> = memo(
+  (props) => {
+    return (
+      <label className="w-72 h-72 mx-auto inset-x-0 rounded-full border-2 border-gray-300 border-dashed flex flex-col items-center justify-center gap-5 cursor-pointer hover:bg-gray-100 transition	">
+        <input type="file" className="hidden" accept={"image/*"} {...props} />
+        <PicturesIcon />
+        <small className="text-tertiary text-center text-xs w-1/2">
+          Formato GIF, JPG o PNG Peso máximo 5 MB
+        </small>
+        <div className="w-max text-sm text-primary bg-white border-primary border rounded-xl py-1 px-3">
+          Añadir imagenes
+        </div>
+      </label>
+    );
+  }
+);
 
 interface ImgHTMLAttributesV2 extends ImgHTMLAttributes<HTMLImageElement> {
   principal: PrincipalSelected | undefined;
@@ -160,21 +175,20 @@ const ImageComponent: FC<ImgHTMLAttributesV2> = ({
         {isPrincipal?.idx === idx && (
           <StarRating className="w-6 h-6 text-yellow-400 z-50 top-2 right-2 absolute" />
         )}
-       
       </picture>
-     
     </>
   );
 };
 
-
-const UploadModuleV2: FC<InputHTMLAttributes<HTMLInputElement>> = memo((props) => {
+const UploadModuleV2: FC<InputHTMLAttributes<HTMLInputElement>> = memo(
+  (props) => {
     return (
       <label className="">
         <input type="file" className="hidden" accept={"image/*"} {...props} />
         <div className="w-full rounded-xl border-2 border-gray-200 h-32 text-gray-400 hover:text-gray-600 flex items-center justify-center cursor-pointer bg-white shadow-md transition overflow-hidden">
-        <UploadImageIcon className="w-8 h-8" />
-      </div>
+          <UploadImageIcon className="w-8 h-8" />
+        </div>
       </label>
     );
-  });
+  }
+);

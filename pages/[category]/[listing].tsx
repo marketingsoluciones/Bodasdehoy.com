@@ -3,7 +3,7 @@ import { GetStaticPaths, GetStaticProps } from "next";
 import Link from "next/link";
 import { FC, ReactNode, useState } from "react";
 import { BreadCumbs } from "../../components/Surface";
-import FormListing from "../../components/Forms/FormListing";
+import {FormListing} from "../../components/Forms/FormListing";
 import { RatingStars } from "../../components/Home/FeaturedCompanies";
 import {
   CrossIcon,

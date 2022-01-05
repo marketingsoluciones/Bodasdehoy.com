@@ -6,6 +6,7 @@ import {
   Dispatch,
   SetStateAction,
   useEffect,
+  useContext,
 } from "react";
 import { GraphQL } from "../utils/Fetching";
 
@@ -29,7 +30,7 @@ const initialContext: Context = {
 
 const AuthContext = createContext<Context>(initialContext);
 
-const AuthContextProvider: FC = ({ children }): JSX.Element => {
+const AuthProvider: FC = ({ children }): JSX.Element => {
   const [user, setUser] = useState<Partial<UserMax | null>>(null);
 
 
@@ -53,4 +54,6 @@ const AuthContextProvider: FC = ({ children }): JSX.Element => {
   );
 };
 
-export { AuthContext, AuthContextProvider };
+const AuthContextProvider = () => useContext(AuthContext)
+
+export { AuthProvider, AuthContextProvider };

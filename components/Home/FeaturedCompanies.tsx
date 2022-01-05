@@ -9,7 +9,7 @@ import { PlusButton } from "../Inputs";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
+import {Markup} from "interweave"
 interface propsFeaturedCompanies {
   business: object[];
 }
@@ -101,43 +101,49 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({
 
 interface propsCompanyCard {
   data: object;
+  pricing?: boolean
 }
 
-const CompanyCard: FC<propsCompanyCard> = ({ data }) => {
+export const CompanyCard: FC<propsCompanyCard> = ({ data, pricing = true }) => {
   const [isFav, setFav] = useState(false);
   const [business, setBusiness] = useState<any>({});
 
   useEffect(() => {
+    console.log(data)
     setBusiness(data);
-  }, []);
+  }, [data]);
 
   return (
     <div className="rounded-3xl w-72 h-full mx-auto inset-x-0  relative h-full">
       <div className="h-60 rounded-3xl cursor-pointer overflow-hidden ">
         <div className="bg-gradient-to-t from-transparent to-black w-full h-1/4 rounded-3xl opacity-60 absolute" />
-        <img
-          src={business?.url}
+        {business?.photo?.mediumUrl && (
+          <img
+          src={business?.photo?.mediumUrl}
           alt={"imagen"}
           className="object-cover object-center w-full h-full"
         />
+        )}
       </div>
       <div className="bg-color-base rounded-3xl h-max transform -translate-y-10 w-full text-center p-4 flex flex-col gap-1 shadow-md">
-        <h2 className="font-ligth text-gray-200 tracking-widest text-regular pt-1 uppercase">
-          {business?.category}
+        <h2 className="font-ligth text-gray-500 tracking-widest text-regular pt-1 uppercase">
+          {business?.subCategories?.length >= 0 && business?.subCategories[0]}
         </h2>
-        <h2 className="text-gray-300 text-lg font-medium transition cursor-pointer hover:text-primary">
-          {business?.title}
+        <h2 className="text-gray-700 text-lg font-medium transition cursor-pointer hover:text-primary capitalize">
+          {business?.businessName}
         </h2>
         <RatingStars rating={4} />
-        <h3 className="text-gray-200 text-sm">{business.gAddress}</h3>
-        <div className="border-t border-b border-primary py-2 my-2 flex items-center justify-center gap-2">
+        <h3 className="text-gray-500 text-sm">{business.address}</h3>
+        {pricing && (
+          <div className="border-t border-b border-primary py-2 my-2 flex items-center justify-center gap-2">
           <EuroIcon2 />
           <p className="font-bold text-primary">
             desde <span className="font-normal">300€</span>
           </p>
         </div>
-        <p className="text-gray-200 text-sm h-max py-4 leading-5">
-          {business.content}
+        )}
+        <p className="text-gray-500 text-sm h-max py-4 leading-5">
+          <Markup content={business.description} noHtml/>
         </p>
         <PlusButton />
       </div>
@@ -182,14 +188,14 @@ export const RatingStars: FC<propsRatings> = ({
             key={idx}
             className={`transition ${
               rating >= item
-                ? "text-gold hover:opacity-80"
-                : "text-gray-100 hover:text-gold"
+                ? "text-yellow-400 hover:opacity-80"
+                : "text-gray-400 hover:text-yellow-400"
             }  ${sizes[size]} `}
             onClick={() => outValue(item)}
           />
         ))}
       </div>
-      {visibleText && <p className="text-xs text-gray-300">12</p>}
+      {visibleText && <p className="text-xs text-gray-700">12</p>}
     </div>
   );
 };

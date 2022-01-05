@@ -2,7 +2,6 @@ import { SectionForm } from "../../pages/empresas/crear-empresa";
 import { Location2Icon, UserIcon, EuroIcon } from "../Icons";
 import { Checkbox, InputField, SelectField } from "../Inputs";
 import { useState, useEffect, FC, memo, Dispatch, SetStateAction } from 'react';
-import { GraphQL } from "../../utils/Fetching";
 import { FieldArray } from "formik";
 
 interface propsFormQuestion {
@@ -10,34 +9,7 @@ interface propsFormQuestion {
   setValues? : Dispatch<SetStateAction<any>> | undefined
 }
 export const FormQuestion: FC <propsFormQuestion> = ({ values, setValues }) => {
-  const [data, setData] = useState<any>([]);
-
-  const fetchQuestions = async () => {
-    try {
-      const data = await GraphQL.createBusiness({
-        ...values,
-        mobilePhone: JSON.stringify(values.mobilePhone),
-        landline: JSON.stringify(values.landline),
-      });
-      setData(data);
-
-      // const re = data.questionsAndAnswers.reduce((acc : object, item : Question) => {
-      //   //@ts-ignore
-      //   acc[item.frequentQuestions] = item.answers
-      //   return acc
-      // }, {})
-
-      //@ts-ignore
-      setValues((old) => ({...old, questions: re}))
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchQuestions();
-  }, []);
-  
+ 
   return (
     <div className="flex flex-col gap-10">
       <SectionForm>
@@ -84,7 +56,7 @@ export const FormQuestion: FC <propsFormQuestion> = ({ values, setValues }) => {
           </div>
         </div>
         <span className="flex flex-col">
-          <QuestionsComponent data={data?.questionsAndAnswers} />
+          <QuestionsComponent data={values?.questionsAndAnswers} />
           {/* <ServicesAndAccessoriesComponent
             data={{ services: data?.services, accessories: data?.accessories }}
             values={values}

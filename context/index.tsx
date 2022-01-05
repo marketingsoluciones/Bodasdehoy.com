@@ -1,3 +1,3 @@
-export { AuthContextProvider, AuthContext } from './AuthContext'
+export { AuthContextProvider, AuthProvider } from './AuthContext'
 export { ToastContextProvider, ToastProvider } from './ToastContext'
-export { LoadingContextProvider, LoadingContext } from './LoadingContext'
+export { LoadingContextProvider, LoadingProvider } from './LoadingContext'

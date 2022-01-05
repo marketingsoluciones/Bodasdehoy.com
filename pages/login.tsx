@@ -2,7 +2,7 @@ import { FC, ReactNode, useContext, useEffect, useState } from "react";
 import { ButtonClose } from "../components/Inputs";
 import router from "next/router";
 import { Login, Register } from '../components/Login/Forms';
-import { AuthContext } from "../context/AuthContext";
+import { AuthContextProvider } from "../context";
 
 // Tipos de datos personalizados
 type Forms = {
@@ -12,7 +12,7 @@ type Forms = {
 };
 
 const PageLogin: FC = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = AuthContextProvider();
   const [stage, setStage] = useState<keyof typeof Stages>("login");
 
 
@@ -38,7 +38,7 @@ const PageLogin: FC = () => {
 
   return (
     <>
-      <div className="w-screen fixed h-screen top-0 left-0 md:grid z-30 grid-cols-5">
+      <div className="w-screen fixed h-full top-0 left-0 md:grid z-30 grid-cols-5">
         <div className="bg-white w-full h-full col-span-3 relative flex items-center justify-center">
           <ButtonClose onClick={() => router.push("/")} />
           <div className="flex flex-col items-center gap-4 w-full px-10 md:px-0 sm:w-3/4 md:w-2/3">

@@ -1,8 +1,5 @@
 import { Formik, Form, ErrorMessage } from "formik";
 import { FC, useContext, useState } from "react";
-import { api } from "../../../api";
-import { AuthContext } from "../../../context/AuthContext";
-import { setCookie } from "../../../utils/Cookies";
 import { EmailIcon, PasswordIcon } from "../../Icons";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { InputField, ButtonComponent } from "../../Inputs";
@@ -10,6 +7,7 @@ import * as yup from "yup";
 import router from "next/router";
 import { GraphQL } from '../../../utils/Fetching';
 import { useToast } from '../../../hooks/useToast';
+import { AuthContextProvider } from "../../../context";
 
 type MyFormValues = {
   identifier: string;
@@ -18,7 +16,7 @@ type MyFormValues = {
 };
 
 const FormLogin: FC = () => {
-  const { setUser } = useContext(AuthContext);
+  const { setUser } = AuthContextProvider();
   const toast = useToast()
   const initialValues: MyFormValues = {
     identifier: "",

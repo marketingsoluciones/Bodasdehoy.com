@@ -9,13 +9,11 @@ import {
   UserCredential,
 } from "@firebase/auth";
 import * as yup from "yup";
-import { AuthContext } from "../../../../context/AuthContext";
 import { UserMax } from "../../../../context/AuthContext";
+import { AuthContextProvider, LoadingContextProvider } from "../../../../context";
 import router from "next/router";
-import Loading from "../../../Loading";
 import { ValidationSchemaRegister } from "./ValidationRegister";
 import { GraphQL } from "../../../../utils/Fetching";
-import { LoadingContext } from "../../../../context/LoadingContext";
 
 // Interfaces para el InitialValues del formulario de registro
 interface userInitialValuesPartial {
@@ -67,8 +65,8 @@ interface propsFormRegister {
   whoYouAre: string;
 }
 const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
-  const { setUser, user } = useContext(AuthContext);
-  const { setLoading } = useContext(LoadingContext);
+  const { setUser, user } = AuthContextProvider();
+  const { setLoading } = LoadingContextProvider();
 
   //Initial values de cada form
   const userInitialValuesPartial: userInitialValuesPartial = {

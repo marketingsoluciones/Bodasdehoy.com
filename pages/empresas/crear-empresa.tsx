@@ -11,31 +11,31 @@ import {
 import IndiceSteps from "../../components/Business/IndiceSteps";
 import { FormYourBusiness, FormQuestion } from "../../components/Forms";
 import { ButtonComponent } from "../../components/Inputs";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContextProvider } from "../../context";
 import { validations } from "./validations";
 import { useEffect } from "react";
 import { GraphQL } from "../../utils/Fetching";
 import FormImages from "../../components/Forms/FormImages";
+import PagesWithAuth from "../../HOC/PagesWithAuth";
 
 const reducer = (state: any, action: any) => {
   switch (action.type) {
     case "NEXT":
       return state + 1;
-      break;
     case "PREV":
       return state - 1;
-      break;
     default:
       return;
   }
 };
 
-const createBusiness = () => {
-  const [step, setStep] = useReducer<Reducer<number, number>>(reducer, 2);
-  const { user } = useContext(AuthContext);
+const CreateBusiness = () => {
+  const [step, setStep] = useReducer<Reducer<number, number>>(reducer, 0);
+  const { user } = AuthContextProvider();
   return (
     <section className="w-full relative">
       <img
+        alt={"banner"}
         src={"/bannerCreateBusiness.webp"}
         className="w-full h-80 -mt-20 object-center object-cover absolute top-0 left-0 z-0 "
       />
@@ -43,7 +43,7 @@ const createBusiness = () => {
         <h2 className="text-3xl font-medium font-medium text-tertiary w-full text-center">
           ¡Empecemos el registro!
         </h2>
-        <IndiceSteps step={step + 1} />
+        <IndiceSteps step={step} />
       </div>
 
       <div className="max-w-screen-md py-20 mx-auto inset-x-0">
@@ -86,7 +86,7 @@ const createBusiness = () => {
   );
 };
 
-export default createBusiness;
+export default PagesWithAuth(CreateBusiness);
 
 export const SectionForm: FC = ({ children }) => {
   return (
@@ -111,7 +111,7 @@ const FormikStepper = ({
     Children.toArray(children)
   );
   const currentChild = ChildrenArray[step];
-  const { user } = useContext(AuthContext);
+  const { user } = AuthContextProvider();
 
   const isLastStep = () => {
     return step === ChildrenArray.length - 1;
@@ -125,16 +125,43 @@ const FormikStepper = ({
     }
 
     switch (step) {
+      //Form Business | Primer formulario
       case 0:
         setStep({ type: "NEXT" });
+
+        const createBusinessAndGetQuestions = async () => {
+          if (!values._id) {
+            const data = await GraphQL.createBusiness({
+              ...values,
+              mobilePhone: JSON.stringify(values.mobilePhone),
+              landline: JSON.stringify(values.landline),
+            });
+
+            await actions.setValues((state: any) => ({ ...state, ...data }));
+            console.log(values);
+          }
+        };
+
+        try {
+          createBusinessAndGetQuestions();
+        } catch (error) {
+          console.log(error);
+        }
+
         break;
+      //Form Questions | Segundo formulario
       case 1:
-        setStep({type: "NEXT"})
-        const res = await GraphQL.createBusiness({
-          ...values,
-          mobilePhone: JSON.stringify(values.mobilePhone),
-        });
-        console.log(res);
+        setStep({ type: "NEXT" });
+        try {
+          await GraphQL.createBusiness({
+            ...values,
+            mobilePhone: JSON.stringify(values.mobilePhone),
+            fase: "fase2",
+          });
+        } catch (error) {
+          console.log(error);
+        }
+
         break;
       default:
         break;
@@ -148,7 +175,6 @@ const FormikStepper = ({
       validationSchema={currentChild?.props?.validationSchema}
     >
       {(formik) => {
-        console.log(formik);
         useEffect(() => {
           setChildrenArray(
             Children.map(children, (child: any) =>

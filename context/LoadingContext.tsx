@@ -1,4 +1,4 @@
-import { createContext, FC, useState, Dispatch, SetStateAction } from 'react';
+import { createContext, FC, useState, Dispatch, SetStateAction, useContext } from 'react';
 import Loading from '../components/Loading';
 
 
@@ -15,7 +15,7 @@ const initialContext: Context = {
 
 const LoadingContext = createContext<Context>(initialContext);
 
-const LoadingContextProvider: FC = ({ children }): JSX.Element => {
+const LoadingProvider: FC = ({ children }): JSX.Element => {
   const [loading, setLoading] = useState<boolean>(initialContext.loading);
 
  
@@ -28,4 +28,6 @@ const LoadingContextProvider: FC = ({ children }): JSX.Element => {
   );
 };
 
-export { LoadingContext, LoadingContextProvider };
+const LoadingContextProvider = () => useContext(LoadingContext)
+
+export { LoadingProvider, LoadingContextProvider };

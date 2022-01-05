@@ -8,7 +8,7 @@ import {
   EnLaCiudadIcon,
   LocationIcon,
   PlayaIcon,
-} from "../components/Icons/icons";
+} from "../components/Icons";
 import { RangeComponent } from "../components/Inputs";
 import { useHover } from "../hooks";
 import CardBusiness from "../components/Category/CardBusiness";

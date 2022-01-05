@@ -4,7 +4,6 @@ import {
   ReactNode,
   SetStateAction,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import Link from "next/link";
@@ -16,17 +15,14 @@ import {
   SearchIcon,
   UserIcon,
 } from "../Icons";
-import router from "next/router";
-import { getCookie } from "../../utils/Cookies";
+import router, { useRouter } from "next/router";
 import { Sidebar } from "./";
 import { MultiMenu } from "./MultiMenu";
 import { NoviaMenu } from "./MultiMenu/NoviaMenu";
 import { CarIcon } from "../Icons/CarIcon";
 import { useHover } from "../../hooks/useHover";
 import { autenticacion } from "../../utils/Authentication";
-import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import { LoadingContext } from "../../context";
+import { LoadingContextProvider, AuthContextProvider } from "../../context";
 
 const initialSelected = {
   ["Lugares para bodas"]: false,
@@ -40,6 +36,9 @@ export const Navigation: FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [selected, setSelect] = useState<any>(initialSelected);
   const [state, setState] = useState<any>("");
+  const router = useRouter()
+
+  console.log(router.pathname.split("/").includes("empresas"))
 
   type DicCategories = {
     Novia: ReactNode;
@@ -52,19 +51,20 @@ export const Navigation: FC = () => {
     const select = Object.entries(selected).find((el) => el[1] === true)?.[0];
     setState(select);
   }, [selected]);
+  
   return (
     <>
       <Sidebar
         set={(act: boolean) => setShowSidebar(act)}
         state={showSidebar}
       />
-      <header className="max-w-screen-lg mx-auto inset-x-0 mt-3 absolute ">
+      <header className="container max-w-screen-lg w-full px-3 sm:px-0 mx-auto inset-x-0 mt-3 absolute ">
         {
           // @ts-ignore
           state && <MultiMenu>{categories[state]}</MultiMenu>
         }
 
-        <div className="bg-white rounded-full h-16 py-3 md:px-10 z-30 px-5 md:px-0 mx-auto inset-x-0  flex items-center relative justify-between">
+        <div className="bg-white rounded-full h-16 py-3 md:px-10 z-30 px-5 md:px-0 mx-auto inset-x-0  flex items-center relative justify-between container">
           <span
             className="md:hidden "
             onClick={() => setShowSidebar(!showSidebar)}
@@ -90,6 +90,8 @@ interface propsNavbar {
 }
 
 const Navbar: FC<propsNavbar> = ({ setSelect, selected }) => {
+  
+
   type Item = {
     title: string;
     route: string;
@@ -155,7 +157,7 @@ const Navbar: FC<propsNavbar> = ({ setSelect, selected }) => {
 };
 
 export const Icons = () => {
-  const { user } = useContext(AuthContext);
+  const { user } = AuthContextProvider();
   const [hoverRef, isHovered] = useHover();
   const HandleClickUser = () => {
     !localStorage.getItem("auth")
@@ -199,8 +201,8 @@ export const Icons = () => {
 };
 
 const ProfileMenu = ({ state }: { state: boolean }) => {
-  const { setUser } = useContext(AuthContext);
-  const {setLoading} = useContext(LoadingContext)
+  const { setUser } = AuthContextProvider();
+  const {setLoading} = LoadingContextProvider()
   const options = [
     {
       title: "Cerrar Sesión",
@@ -217,7 +219,7 @@ const ProfileMenu = ({ state }: { state: boolean }) => {
     },
     {
       title: "Empresas",
-      route: "/empresas/crear-empresa",
+      route: "/empresas",
       icon: <CarIcon className="w-6 h-6" />,
     },
   ];

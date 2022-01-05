@@ -1,6 +1,7 @@
-const Loading = () => {
+import { FC } from 'react';
+const Loading : FC = () => {
   return (
-    <div className="text-primary w-screen h-screen bg-white flex items-center justify-center fixed z-50 bg-opacity-95">
+    <div className="text-primary w-screen h-screen bg-white flex items-center justify-center fixed z-50  top-0 left-0">
       <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"

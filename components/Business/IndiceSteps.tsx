@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 interface propsIndiceSteps {
-  step : Number
+  step : number
 }
 const IndiceSteps : FC <propsIndiceSteps> = ({step}) => {
   const steps = [
@@ -11,17 +11,14 @@ const IndiceSteps : FC <propsIndiceSteps> = ({step}) => {
     "Promociones",
   ];
 
-  const setWidth : CallableFunction = (step : number) : number  => {
-    const base = 100 / steps.length
-    console.log(Array.of(steps.length))
-    return 0
-  }
+  const stages : any = [0, 32, 64, 100]
+
   return (
     <div className="w-full flex items-center gap-32 relative w-max mx-auto inset-x-0 py-6">
       {steps.map((item, idx) => (
-        <Step step={idx} key={idx} isActive={idx < step} title={item} />
+        <Step step={idx} key={idx} isActive={idx <= step} title={item} />
       ))}
-      <Bar width={setWidth(step)} />
+      <Bar width={stages[step]} />
     </div>
   );
 };
@@ -55,8 +52,8 @@ interface propsBar {
 }
 const Bar: FC <propsBar> = ({width}) => {
   return (
-    <div className="rounded-xl w-full h-1 bg-gray-200 absolute ">
-      <svg className="bg-primary h-full" width={`${width}%`} />
+    <div className="rounded-xl w-full h-1 bg-gray-200 absolute transition ">
+      <svg className="bg-primary h-full transition" width={`${width}%`} />
     </div>
   );
 };

@@ -9,21 +9,7 @@ module.exports = {
       "display": ['Poppins', ...defaultTheme.fontFamily.sans],
       "title": ['Italiana', ...defaultTheme.fontFamily.sans],
     },
-    // colors: {
-      
-    //   gray: {
-    //     100: "#DFDFDF",
-    //     200: "#727272",
-    //     300: "#444444"
-    //   },
-    //   white: "#FFFFFF",
-    //   black: "#000000",
-    //   red: "#EF4444",
-    //   green: "#34D399",
-    //   yellow: "#FFDB00",
-    //   transparent: "transparent",
-    //   gold : "#FFC200"
-    // },
+   
     extend: {
       colors: {
         primary: "#F7628C",  

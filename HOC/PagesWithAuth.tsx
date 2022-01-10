@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Loading from "../components/Loading";
 import { AuthContextProvider } from "../context";
-import { useToast } from "../hooks/useToast";
 const PagesWithAuth = (WrappedComponent: NextPage) => {
   return (props: any) => {
     // checks whether we are on client / browser or server.

@@ -6,18 +6,25 @@ import {
   InputHTMLAttributes,
   useState,
   useEffect,
+  memo,
+  Dispatch,
+  SetStateAction
 } from "react";
 import { PicturesIcon } from "../Icons/PicturesIcon";
-import { StarRating } from "../Icons";
+import { IconError, StarRating } from "../Icons";
 import { UploadImageIcon } from "../Icons/UploadImageIcon";
-import { memo } from "react";
-import { api } from "../../api";
 import { GraphQL } from "../../utils/Fetching";
+import DeleteIcon from '../Icons/DeleteIcon';
+import { useToast } from '../../hooks/useToast';
+import Image from 'next/image'
 
 type ImageUploaded = {
-  file: File;
-  image: any;
+  file?: File;
+  image?: any;
+  mediumUrl?: string
+  _id : string
 };
+
 interface File {
   name: string;
   lastModified: number;
@@ -41,6 +48,14 @@ const FormImages: FC <any> = ({values}) => {
     PrincipalSelected | undefined
   >(undefined);
 
+  const fetchingPhotos = async () => {
+    const result = await GraphQL.getPhotosBusinessByID({_id : values?._id})
+    setImages(result?.photos)
+  }
+  useEffect(() => {
+    fetchingPhotos()
+  }, [])
+
   const handleChange = async (e: any) => {
     try {
       if(values._id) {
@@ -50,11 +65,12 @@ const FormImages: FC <any> = ({values}) => {
       
       reader.onloadend = async () => {
         if (reader.result) {
+          setImages([...images, {_id: "001"}])
           const nuevaImagen = {
             file: file,
             image: reader.result,
           };
-          const res = await GraphQL.uploadImage(file, "123");
+          const res = await GraphQL.uploadImage(file, values?._id, "business");
           console.log(res)
           setImages([...images, {...nuevaImagen, ...res}]);
         }
@@ -103,9 +119,11 @@ const FormImages: FC <any> = ({values}) => {
                 <ImageComponent
                   key={idx}
                   idx={idx}
-                  src={item?.image}
+                  data={item}
                   principal={principalSelected}
                   onClick={() => handleClick(idx)}
+                  values={values}
+                  setImages={setImages}
                 />
               ))}
               {images.length < 8 && <UploadModuleV2 onChange={handleChange} />}
@@ -150,17 +168,40 @@ const UploadModule: FC<InputHTMLAttributes<HTMLInputElement>> = memo(
 );
 
 interface ImgHTMLAttributesV2 extends ImgHTMLAttributes<HTMLImageElement> {
-  principal: PrincipalSelected | undefined;
-  idx: number;
+  principal: PrincipalSelected | undefined
+  data: ImageUploaded
+  values : any
+  setImages: Dispatch<SetStateAction<any>>
+  idx: number
 }
 const ImageComponent: FC<ImgHTMLAttributesV2> = ({
   principal,
   idx,
+  data,
+  values,
+  setImages,
   ...props
 }) => {
   const [isPrincipal, setPrincipal] = useState<PrincipalSelected | undefined>(
     principal ?? undefined
   );
+
+  const toast = useToast()
+  const handleRemove = async () => {
+    try {
+      
+      const result = await GraphQL.deleteImage({idImage: data._id, idBusiness: values._id, use: "business"})
+      if(!result){
+        throw new Error("No se pudo borrar la foto")
+      }
+      toast("success", result)
+      setImages((old: any) => old.filter((item : any) => item._id !== data._id))
+    } catch (error) {
+      toast("error", JSON.stringify(error))
+      console.log(error)
+    }
+    
+  }
 
   useEffect(() => {
     setPrincipal(principal);
@@ -168,10 +209,13 @@ const ImageComponent: FC<ImgHTMLAttributesV2> = ({
   return (
     <>
       <picture className="rounded-xl border-2 border-gray-200 w-full h-32 text-gray-400 hover:text-gray-600 flex items-center justify-center cursor-pointer bg-white shadow-md transition overflow-hidden relative">
-        <img
+        <button className="z-20 bg-white p-1 rounded-xl absolute bottom-3 left-3" onClick={handleRemove}><DeleteIcon className={"w-5 h-5"} /></button>
+        {data?.image || data?.mediumUrl && (<img src={data?.image ?? `${process.env.NEXT_PUBLIC_BASE_URL}${data?.mediumUrl}`} className="object-cover object-center absolute top-0 left-0 w-full h-full"/>)}
+        {/* <img
           className="object-cover object-center absolute top-0 left-0 w-full h-full"
+          src={data?.image ?? `${process.env.NEXT_PUBLIC_BASE_URL}${data?.mediumUrl}`}
           {...props}
-        />
+        /> */}
         {isPrincipal?.idx === idx && (
           <StarRating className="w-6 h-6 text-yellow-400 z-50 top-2 right-2 absolute" />
         )}

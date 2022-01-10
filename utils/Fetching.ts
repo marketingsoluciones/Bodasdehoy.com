@@ -35,7 +35,7 @@ export const GraphQL = {
           description,
           categories,
           subCategories,
-          photo{
+          photos{
             _id
             mediumUrl
           }
@@ -63,7 +63,25 @@ export const GraphQL = {
           description,
           categories,
           subCategories,
-          photo{
+          photos{
+            _id
+            mediumUrl
+          }
+        }
+    }
+    `;
+    const {
+      data: {
+        data: { getBussines },
+      },
+    } = await api.graphql({ query, variables });
+    return getBussines;
+  },
+  getPhotosBusinessByID: async (variables: any) => {
+    const query = `query getBusiness($_id : ID){
+      getBussines(id:$_id){
+          _id,
+          photos{
             _id
             mediumUrl
           }
@@ -151,11 +169,11 @@ export const GraphQL = {
     return getCategories;
   },
 
-  uploadImage: async (file: any, id: string) => {
+  uploadImage: async (file: any, id: string, use: string) => {
     const newFile = new FormData();
     const params = {
-      query: `mutation ($file: Upload!, $businessID : String) {
-                singleUpload(file: $file, businessID:$businessID){
+      query: `mutation ($file: Upload!, $businessID : String, $use : String) {
+                singleUpload(file: $file, businessID:$businessID, use : $use){
                   _id
                   thumbnailUrl
                   smallUrl
@@ -168,6 +186,7 @@ export const GraphQL = {
       variables: {
         file: null,
         businessID: id,
+        use: use
       },
     };
 
@@ -179,7 +198,26 @@ export const GraphQL = {
     newFile.append("map", JSON.stringify(map));
     newFile.append("0", file);
 
-    const { data } = await api.graphql(newFile);
-    return data;
+    const config = {
+      onUploadProgress: (progressEvent : ProgressEvent) => {
+        const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+        console.log(percentCompleted)
+      }
+  }
+
+    const { data : {data : {singleUpload}} } = await api.graphql(newFile, config);
+    return singleUpload;
+  },
+  deleteImage: async ({idImage, idBusiness, use} : {idImage: string, idBusiness: string, use: string}) => {
+    const query = `mutation deleteUpload ($_id :ID, $businessID:ID, $use : String) {
+      deleteUpload(_id:$_id, businessID:$businessID, use:$use)
+    }`;
+    const variables = {_id : idImage, businessID: idBusiness, use: use };
+    const {
+      data: {
+        data: { deleteUpload },
+      },
+    } = await api.graphql({ query, variables });
+    return deleteUpload;
   },
 };

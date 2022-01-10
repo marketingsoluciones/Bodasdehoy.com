@@ -1,4 +1,4 @@
-import { FC, ReactNode} from 'react';
+import { FC, ReactNode, useState, useEffect } from 'react';
 import Slider from "react-slick";
 import {
   AdsApp,
@@ -18,18 +18,30 @@ import {
   SearchIcon,
 } from "../components/Icons";
 import Image from "next/image";
+import { GraphQL } from '../utils/Fetching';
 
 interface propsHome {
   business: object[];
+  categories : any
 }
 
-const Home: FC<propsHome> = ({ business }) => {
+
+const Home: FC<propsHome> = ({ business, categories: categoriesData }) => {
+
+  type category  = {
+    categorie : string
+    subcategories : [string]
+  }
+  
+  const [categories, setCategories] = useState<[category] | []>(categoriesData)
+
+
   return (
     <section className="w-full">
-      <div className="max-w-screen-lg banner pt-6 md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full">
+      <div className="sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg banner pt-6 md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full">
         <Welcome />
       </div>
-      <PlaceDiscovery />
+      <PlaceDiscovery category={categories?.find(item => item.categorie.toLowerCase() === "lugares para bodas")} />
       <div className="bg-white flex flex-col gap-24 w-full pb-20">
         <FeaturedCompanies business={business} />
         <ButtonProviders />
@@ -153,7 +165,7 @@ export const Features: FC = () => {
   }
   const Feature: FC<propsFeature> = ({ item }) => {
     return (
-      <div className="flex items-center gap-3 py-3 pl-2 w-full">
+      <div className="flex items-center gap-3 py-3 pl-2 w-full ">
         <button className="p-4 bg-white shadow rounded-full bg-white grid place-items-center transform transition duration-800 hover:scale-110 hover:-rotate-12 focus:outline-none">
           {item.icon}
         </button>
@@ -205,7 +217,8 @@ const ButtonProviders = () => {
 
 export async function getServerSideProps() {
   try {
-    return { props: { business: {} } };
+    const categories = await GraphQL.getCategories()
+    return { props: { categories, business : [] } };
   } catch (error) {
     console.log(error);
     return {
@@ -213,3 +226,4 @@ export async function getServerSideProps() {
     };
   }
 }
+

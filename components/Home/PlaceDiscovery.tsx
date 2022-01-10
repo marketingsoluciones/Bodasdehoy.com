@@ -2,9 +2,13 @@ import TitleSection from "./TitleSection";
 import Slider from 'react-slick'
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from 'react';
+import { GraphQL } from '../../utils/Fetching';
 
-export const PlaceDiscovery: FC = () => {
+interface propsPlaceDiscovery {
+  category : any
+}
+export const PlaceDiscovery: FC <propsPlaceDiscovery> = ({category}) => {
   const settings = {
     autoplay: true,
     dots: true,
@@ -22,23 +26,16 @@ export const PlaceDiscovery: FC = () => {
     ]
   };
 
-  const fakeData = [
-    {title: "Fincas"},
-    {title: "Fincas"},
-    {title: "Fincas"},
-    {title: "Fincas"},
-
-  ]
-  const [categories, setCategories] = useState(fakeData)
+  
   return (
     <>
-    <div className=" grid-cards relative w-full -mt-12 md:-mt-96">
+    <div className="grid-cards relative w-full -mt-12 md:-mt-52 lg:-mt-96">
     <div className="w-full xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto inset-x-0 pt-20 flex flex-col gap-5 md:gap-6 md:pt-32 pb-20 z-20 px-5">
       <TitleSection className="text-normal md:text-xl " principal={"Descubre"} secondary={"lugares para bodas"} />
       <div className="z-20 relative w-full pb-8 pt-4 overflow-hidden ">
         <Slider {...settings}>
-        {categories.map((item, idx) => (
-          <PlaceCard key={idx} data={item} />
+        {category?.subCategories?.map((item : any, idx : any) => (
+          <PlaceCard key={idx} data={{title: item}} />
         ))}
         </Slider>
       </div>
@@ -103,7 +100,7 @@ const PlaceCard : FC <propsPlaceCard> = ({data}) => {
   return (
     <div className="px-4">
       <div className="w-full h-32 md:h-52 bg-gray-100 rounded-2xl"/>
-      <h2 className="px-2 py-1 font-light md:text-base text-sm text-gray-200 tracking-widest">{title}</h2>
+      <h2 className="px-2 py-1 font-light md:text-base text-sm text-gray-600 tracking-widest capitalize">{title}</h2>
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import { Formik, Form, ErrorMessage } from "formik";
 import { FC, useContext, useState } from "react";
-import { EmailIcon, PasswordIcon } from "../../Icons";
+import { EmailIcon, EmailIcon as PasswordIcon } from "../../Icons";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { InputField, ButtonComponent } from "../../Inputs";
 import * as yup from "yup";

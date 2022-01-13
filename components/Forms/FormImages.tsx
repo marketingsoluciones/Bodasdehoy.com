@@ -1,5 +1,4 @@
-import { SectionForm } from "../../pages/empresas/crear-empresa";
-import { CheckIcon } from "../Icons/CheckIcon";
+import { SectionForm } from "../../pages2/empresas/crear-empresa";
 import {
   FC,
   ImgHTMLAttributes,
@@ -10,13 +9,9 @@ import {
   Dispatch,
   SetStateAction
 } from "react";
-import { PicturesIcon } from "../Icons/PicturesIcon";
-import { IconError, StarRating } from "../Icons";
-import { UploadImageIcon } from "../Icons/UploadImageIcon";
+import { StarRating, PicturesIcon, UploadImageIcon, DeleteIcon, CheckIcon } from "../Icons";
 import { GraphQL } from "../../utils/Fetching";
-import DeleteIcon from '../Icons/DeleteIcon';
 import { useToast } from '../../hooks/useToast';
-import Image from 'next/image'
 
 type ImageUploaded = {
   file?: File;
@@ -71,7 +66,6 @@ const FormImages: FC <any> = ({values}) => {
             image: reader.result,
           };
           const res = await GraphQL.uploadImage(file, values?._id, "business");
-          console.log(res)
           setImages([...images, {...nuevaImagen, ...res}]);
         }
       };

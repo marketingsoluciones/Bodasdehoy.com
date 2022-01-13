@@ -1,10 +1,10 @@
-import dayjs from "dayjs";
 import { useField } from "formik";
 import { FC, useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
-import { DateIcon } from "../Icons/DateIcon";
+import { format } from "../../utils/FormatTime";
+import { EmailIcon as DateIcon } from "../Icons";
 
 interface propsDatePicker {
   name: string;
@@ -23,7 +23,7 @@ export const DatePicker: FC<propsDatePicker> = (props) => {
         <div className={className} onClick={() => setShow(!show)}>
           <DateIcon className="text-gray-500 w-5 h-5" />
           <p className="text-sm text-gray-700">
-            {field?.value && dayjs(field.value).format("DD-MM-YYYY")}
+            {field?.value && format(field.value, "es")}
           </p>
 
           {meta.touched && meta.error ? (

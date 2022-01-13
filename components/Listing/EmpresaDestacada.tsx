@@ -1,4 +1,4 @@
-import { EmpresaDestacadaIcon } from "../Icons"
+import { CarIcon as EmpresaDestacadaIcon } from "../Icons"
 
 const EmpresaDestacada = () => {
     return (

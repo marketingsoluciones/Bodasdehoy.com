@@ -1,4 +1,4 @@
-import { LocationIcon, StarRating } from "../Icons"
+import { Location2Icon as LocationIcon, StarRating } from "../Icons"
 
 const CardBusiness = ({promocion = false}) => {
     return (

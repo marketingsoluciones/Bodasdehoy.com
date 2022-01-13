@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react"
-import { ActualidadIcon, BagIcon, BanqueteIcon, CameraIcon, CarIcon, DressIcon } from "../Icons"
+import { CameraIcon as ActualidadIcon,  CameraIcon as BagIcon, CameraIcon as BanqueteIcon, CameraIcon, CarIcon, DressIcon } from "../Icons"
 import Link from 'next/link'
 import {useHover} from "../../hooks"
 

@@ -1,5 +1,6 @@
 import { createContext, FC, useState, Dispatch, SetStateAction, useContext } from 'react';
-import Loading from '../components/Loading';
+import dynamic from 'next/dynamic';
+const DynamicLoading = dynamic(() : any => import('../components/Loading'))
 
 
 
@@ -22,7 +23,7 @@ const LoadingProvider: FC = ({ children }): JSX.Element => {
 
   return (
     <LoadingContext.Provider value={{ loading, setLoading }}>
-        {loading && <Loading />}
+        {loading && <DynamicLoading />}
       {children}
     </LoadingContext.Provider>
   );

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 import Slider from "react-slick";
 import {useHover} from "../../hooks";
 import { CheckIcon } from "../Icons";
@@ -18,7 +18,6 @@ export const AdsApp = () => {
     dots: true,
     speed: 200,
     slidesToShow: 1,
-    slidesToScroll: 1,
     slidesPerRow: 3,
     infinite: false,
     accessibility: true,
@@ -31,6 +30,7 @@ export const AdsApp = () => {
       },
     ],
   };
+
   return (
     <>
       <div className="max-w-screen-lg mx-auto inset-x-0 grid md:grid-cols-2 w-full">
@@ -70,7 +70,7 @@ export const AdsApp = () => {
 interface propsFeautre {
   item: string;
 }
-const Feature: FC<propsFeautre> = ({ item }) => {
+const Feature: FC<propsFeautre> = memo(({ item }) => {
   const [hoverRef, isHovered] = useHover();
   return (
     <div
@@ -84,7 +84,7 @@ const Feature: FC<propsFeautre> = ({ item }) => {
       >
         <CheckIcon className="w-4 h-4" />
       </span>
-      <h3 className="text-gray-300">{item}</h3>
+      <h3 className="text-gray-500">{item}</h3>
     </div>
   );
-};
+});

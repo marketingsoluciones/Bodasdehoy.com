@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import Slider from "react-slick";
 import {ButtonComponent} from "../Inputs";
 import { RatingStars } from "../Home/FeaturedCompanies";
-import { ReviewIconPrincipal } from "../Icons";
+import { CheckIcon as ReviewIconPrincipal } from "../Icons";
 import FormReviewComponent from "./FormReviewComponent";
 
 const ReviewComponent: FC = () => {

@@ -1,82 +1,43 @@
-import { FC, useEffect, useState } from "react";
+import { FC, useEffect, useState, memo } from 'react';
 import {
-  EuroIcon2,
+  EuroIcon as EuroIcon2,
   HeartIconFill,
   HeartIconOutline,
   StarRating,
 } from "../Icons";
 import { PlusButton } from "../Inputs";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+const Slider = dynamic(() : any => import('react-slick'), {ssr : false})
 import {Markup} from "interweave"
+import dynamic from 'next/dynamic';
+
 interface propsFeaturedCompanies {
   business: object[];
 }
-export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({
-  business = [1, 2, 3],
-}) => {
-  const settings = {
-    autoplay: true,
-    accessibility: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
-    responsive: [
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToScroll: 1,
-          slidesToShow: 1,
-        },
+const settings = {
+  autoplay: false,
+  accessibility: true,
+  infinite: true,
+  speed: 500,
+  slidesToShow: 3,
+  responsive: [
+    {
+      breakpoint: 600,
+      settings: {
+        slidesToScroll: 1,
+        slidesToShow: 1,
       },
-    ],
-  };
+    },
+  ],
+};
 
-  const data = [
-    {
-      url: "/catering.jpg",
-      title: "Hotel La Margarita",
-      content:
-        "Si queréis disfrutar de un recuerdo único de un día irrepetible, contar con un fotógrafo profesional para realizar el reportaje...",
-      category: "Hoteles",
-    },
-    {
-      url: "/catering.jpg",
-      title: "Hotel La Margarita",
-      content:
-        "Si queréis disfrutar de un recuerdo único de un día irrepetible, contar con un fotógrafo profesional para realizar el reportaje...",
-      category: "Hoteles",
-    },
-    {
-      url: "/catering.jpg",
-      title: "Hotel La Margarita",
-      content:
-        "Si queréis disfrutar de un recuerdo único de un día irrepetible, contar con un fotógrafo profesional para realizar el reportaje...",
-      category: "Hoteles",
-    },
-    {
-      url: "/catering.jpg",
-      title: "Hotel La Margarita",
-      content:
-        "Si queréis disfrutar de un recuerdo único de un día irrepetible, contar con un fotógrafo profesional para realizar el reportaje...",
-      category: "Hoteles",
-    },
-    {
-      url: "/catering.jpg",
-      title: "Hotel La Margarita",
-      content:
-        "Si queréis disfrutar de un recuerdo único de un día irrepetible, contar con un fotógrafo profesional para realizar el reportaje...",
-      category: "Hoteles",
-    },
-    {
-      url: "/catering.jpg",
-      title: "Hotel La Margarita",
-      content:
-        "Si queréis disfrutar de un recuerdo único de un día irrepetible, contar con un fotógrafo profesional para realizar el reportaje...",
-      category: "Hoteles",
-    },
-  ];
+export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({business}) => {
+  const [data, setData] = useState<any>([])
+
+  useEffect(() => {
+    setData(business)
+  }, [business])
+
+  
   return (
     <div className="w-full xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto inset-x-0 flex flex-col px-5 md:px-0">
       <div className="w-max flex flex-col items-center h-full pb-10 mx-auto inset-x-0">
@@ -90,8 +51,8 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({
 
       <div className="grid grid-cols-1 w-full overflow-hidden">
         <Slider {...settings}>
-          {data?.map((item, idx) => (
-            <CompanyCard key={idx} data={item} />
+          {data?.map((item : any) => (
+            <CompanyCard key={item._id} data={item} />
           ))}
         </Slider>
       </div>
@@ -104,7 +65,7 @@ interface propsCompanyCard {
   pricing?: boolean
 }
 
-export const CompanyCard: FC<propsCompanyCard> = ({ data, pricing = true }) => {
+export const CompanyCard: FC<propsCompanyCard> = memo(({ data, pricing = true }) => {
   const [isFav, setFav] = useState(false);
   const [business, setBusiness] = useState<any>({});
 
@@ -117,13 +78,13 @@ export const CompanyCard: FC<propsCompanyCard> = ({ data, pricing = true }) => {
     <div className="rounded-3xl w-72 h-full mx-auto inset-x-0  relative h-full">
       <div className="h-60 rounded-3xl cursor-pointer overflow-hidden ">
         <div className="bg-gradient-to-t from-transparent to-black w-full h-1/4 rounded-3xl opacity-60 absolute" />
-        {business?.photo?.mediumUrl && (
+        
           <img
-          src={business?.photo?.mediumUrl}
+          src={`${process.env.NEXT_PUBLIC_BASE_URL}${business?.imgMiniatura?.mediumUrl}`}
           alt={"imagen"}
           className="object-cover object-center w-full h-full"
         />
-        )}
+        
       </div>
       <div className="bg-color-base rounded-3xl h-max transform -translate-y-10 w-full text-center p-4 flex flex-col gap-1 shadow-md">
         <h2 className="font-ligth text-gray-500 tracking-widest text-regular pt-1 uppercase">
@@ -159,7 +120,7 @@ export const CompanyCard: FC<propsCompanyCard> = ({ data, pricing = true }) => {
       </span>
     </div>
   );
-};
+});
 
 interface propsRatings {
   rating: number;

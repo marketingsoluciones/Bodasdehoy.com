@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik";
 import React from "react";
 import { ButtonComponent, InputField } from "../Inputs";
-import { EmailIcon, Isologo, LinkProps, PhoneIcon, UserIcon2 } from "../Icons";
+import { EmailIcon, Isologo, EmailIcon as LinkProps, EmailIcon as PhoneIcon, EmailIcon as UserIcon2 } from "../Icons";
 
 export const FormListing = () => {
   const initialValue = {

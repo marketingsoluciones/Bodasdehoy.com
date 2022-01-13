@@ -13,6 +13,7 @@ export const Banner = () => {
           <p className="absolute bottom-0 transform pt-3 translate-y-full text-xs text-gray-200 italic">Por María de los Angeles</p>
         </div>
         <img
+          alt={"mascara"}
           className="w-5/6 md:w-3/5 bg-gray-300 h-80 md:h-96 rounded-xl object-cover object-center"
           src={"/mask_1.png"}
         />

@@ -14,12 +14,12 @@ import {
   LogoFullColor,
   SearchIcon,
   UserIcon,
+  CarIcon
 } from "../Icons";
-import router, { useRouter } from "next/router";
+import router from "next/router";
 import { Sidebar } from "./";
 import { MultiMenu } from "./MultiMenu";
 import { NoviaMenu } from "./MultiMenu/NoviaMenu";
-import { CarIcon } from "../Icons/CarIcon";
 import { useHover } from "../../hooks/useHover";
 import { autenticacion } from "../../utils/Authentication";
 import { LoadingContextProvider, AuthContextProvider } from "../../context";
@@ -36,9 +36,6 @@ export const Navigation: FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [selected, setSelect] = useState<any>(initialSelected);
   const [state, setState] = useState<any>("");
-  const router = useRouter()
-
-  console.log(router.pathname.split("/").includes("empresas"))
 
   type DicCategories = {
     Novia: ReactNode;

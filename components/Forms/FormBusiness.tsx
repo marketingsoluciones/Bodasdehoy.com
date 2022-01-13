@@ -2,10 +2,10 @@ import { useState, useEffect, FC } from 'react';
 import dynamic from "next/dynamic";
 import { InputField, SelectField, Checkbox } from "../Inputs";
 import { api } from '../../api';
-import { SectionForm } from '../../pages/empresas/crear-empresa';
+import { SectionForm } from '../../pages2/empresas/crear-empresa';
 import { GetCategory } from '../../interfaces/FetchCategories';
 import { FieldArray } from "formik";
-import { UserIcon2, EmailIcon, CompanyIcon, WebSiteIcon } from '../Icons';
+import { UserIcon as UserIcon2, EmailIcon, CompanyIcon, WebSiteIcon } from '../Icons';
 import { GraphQL } from '../../utils/Fetching';
 const TextEditorRich = dynamic(() => import("../TextEditorRich"), {
   ssr: false,

@@ -13,6 +13,9 @@
   color: #f7628c !important;
 }
 
+/* .slick-list, .slick-track, .slick-slide > div {
+  height: 100%
+} */
 .h-max {
   height: fit-content;
 }

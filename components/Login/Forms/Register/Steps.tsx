@@ -1,5 +1,5 @@
 import { FC, MouseEventHandler, useState } from 'react';
-import { LogoFullColor } from '../../../Icons/LogoFullColor';
+import { LogoFullColor } from '../../../Icons/';
 import FormRegister from './FormRegister';
 
 /*

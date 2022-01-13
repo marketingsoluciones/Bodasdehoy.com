@@ -1,5 +1,4 @@
 import { api } from "../api";
-import createBusiness from "../pages/empresas/crear-empresa";
 
 export const GraphQL = {
   createUser: async (variables: any) => {
@@ -18,7 +17,6 @@ export const GraphQL = {
         data: { createUser },
       },
     } = await api.graphql({ query, variables });
-    console.log(createUser);
     return createUser;
   },
   getBusinessByUID: async (variables: any) => {
@@ -157,8 +155,23 @@ export const GraphQL = {
   },
 
   getCategories: async () => {
-    const query = `query{
-      getCategories{categorie,subCategories}
+    const query = `query {
+      getCategories{
+        categorie{
+          title
+          imgMiniatura
+          imgBanner
+          slug
+          description
+        }
+        subCategories{
+          title
+          imgMiniatura
+          imgBanner
+          slug
+          description
+        }
+      }
     }`;
     const variables = {};
     const {
@@ -201,7 +214,6 @@ export const GraphQL = {
     const config = {
       onUploadProgress: (progressEvent : ProgressEvent) => {
         const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-        console.log(percentCompleted)
       }
   }
 
@@ -220,4 +232,60 @@ export const GraphQL = {
     } = await api.graphql({ query, variables });
     return deleteUpload;
   },
+  getHome : async () => {
+    const query = `query {
+      getHome{
+        business{
+          _id
+          slug
+          description
+          businessName
+          imgMiniatura{
+            _id
+            mediumUrl
+          }
+        }
+        categoriesBusiness{
+          categorie{
+            title
+            imgMiniatura
+            slug
+          }
+          subCategories{
+            title
+            imgMiniatura
+            slug
+          }
+        }
+        post{
+          _id
+          title
+          slug
+          seoDescription
+          content
+          categories
+          createdAt
+          imgMiniatura{
+            _id
+            mediumUrl
+            largeUrl
+          }
+        }
+        categoriesPost{
+          categorie{
+            title
+            imgMiniatura
+            slug
+          }
+          subCategories {
+            title
+            imgMiniatura
+            slug
+          }
+        }
+      }
+    }`
+    const {data : {data : {getHome}}} = await api.graphql({query, variables : {}})
+    return getHome
+  }
 };

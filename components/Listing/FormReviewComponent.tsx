@@ -64,7 +64,6 @@ interface propsSelectField {
 
 const SelectField: FC<propsSelectField> = (props) => {
   const [field, meta, helpers] = useField({ ...props });
-  console.log("field", field, "meta", meta, "helpers", helpers);
   return (
     <div className="relative w-full">
       <select

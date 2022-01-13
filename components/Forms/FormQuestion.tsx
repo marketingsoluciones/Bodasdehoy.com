@@ -1,4 +1,4 @@
-import { SectionForm } from "../../pages/empresas/crear-empresa";
+import { SectionForm } from "../../pages2/empresas/crear-empresa";
 import { Location2Icon, UserIcon, EuroIcon } from "../Icons";
 import { Checkbox, InputField, SelectField } from "../Inputs";
 import { useState, useEffect, FC, memo, Dispatch, SetStateAction } from 'react';
@@ -25,12 +25,12 @@ export const FormQuestion: FC <propsFormQuestion> = ({ values, setValues }) => {
         <div className="grid grid-cols-3 gap-6">
           <div className="flex flex-col items-center gap-1">
             <EuroIcon className="w-10 h-10 text-tertiary" />
-            <p className="text-tertiary font-semibold">Precio del menú</p>
+            <p className="text-tertiary font-semibold">Precio</p>
             <div className="flex items-center text-primary gap-3">
               <p>Desde</p>
               <InputField
                 type={"number"}
-                name={"menuPrice"}
+                name={"priceFrom"}
                 placeholder={""}
                 label={""}
               />

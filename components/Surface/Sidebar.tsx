@@ -1,7 +1,7 @@
 import Link from "next/link"
-import { FC, useState } from "react"
+import { FC } from "react"
 import ClickAwayListener from "react-click-away-listener"
-import { SettingsIcon } from "../Icons"
+import { CarIcon as SettingsIcon } from "../Icons"
 
 type ItemNav = {
     title: string

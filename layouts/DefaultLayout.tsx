@@ -1,23 +1,28 @@
+import dynamic from 'next/dynamic';
 import { FC } from 'react';
-import {Footer, FooterMobile, Navigation} from "../components/Surface";
-import { AuthProvider, ToastProvider, LoadingProvider } from "../context";
+const DynamicAuthProvider = dynamic(() : any => import('../context').then(mod => mod.AuthProvider))
+const DynamicToastProvider = dynamic(() : any => import('../context').then(mod => mod.ToastProvider))
+const DynamicLoadingProvider = dynamic(() : any => import('../context').then(mod => mod.LoadingProvider))
+const DynamicNavigation = dynamic(() : any => import('../components/Surface').then(mod => mod.Navigation))
+const DynamicFooter = dynamic(() : any => import('../components/Surface/Footer').then(mod => mod.Footer))
+const DynamicFooterMobile = dynamic(() : any => import('../components/Surface/FooterMobile').then(mod => mod.FooterMobile))
 
 const DefaultLayout: FC = ({ children }) => {
   
   return (
-    <AuthProvider>
-      <LoadingProvider>
-      <ToastProvider>
+    <DynamicAuthProvider>
+      <DynamicLoadingProvider>
+      <DynamicToastProvider>
         <div className="bg-color-base relative min-h-screen w-full">
-          <Navigation />
+          <DynamicNavigation />
           {/* <NavigationMobile /> */}
           <main className="w-full pt-20">{children}</main>
-          <Footer />
-          <FooterMobile />
+          <DynamicFooter />
+          <DynamicFooterMobile />
         </div>
-      </ToastProvider>
-      </LoadingProvider>
-    </AuthProvider>
+      </DynamicToastProvider>
+      </DynamicLoadingProvider>
+    </DynamicAuthProvider>
   );
 };
 

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import Slider from "react-slick";
-import { CurrencyIcon, GuestsIcon, NearTheSeaIcon } from "../Icons";
+import { EmailIcon as CurrencyIcon, EmailIcon as GuestsIcon, EmailIcon as NearTheSeaIcon } from "../Icons";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 

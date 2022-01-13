@@ -1,4 +1,4 @@
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useContext, useEffect, useState } from "react";
 import { ButtonClose } from "../components/Inputs";
 import router from "next/router";
 import { Login, Register } from '../components/Login/Forms';

@@ -1,7 +1,7 @@
 import { Formik, Form } from "formik";
 import { FC, useContext, Children, memo } from "react";
 import { DatePicker, InputField, SelectField } from "../../../Inputs";
-import { EmailIcon, PasswordIcon, UserForm } from "../../../Icons";
+import { EmailIcon, EmailIcon as PasswordIcon, EmailIcon as UserForm } from "../../../Icons";
 import {
   createUserWithEmailAndPassword,
   getAuth,

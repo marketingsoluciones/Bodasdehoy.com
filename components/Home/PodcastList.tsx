@@ -2,7 +2,6 @@ import Slider from "react-slick";
 import TitleSection from "./TitleSection";
 import { useState, useEffect, FC } from "react";
 import { api } from "../../api";
-import Link from "next/link";
 
 export const PodcastList = () => {
   const [podcasts, setPodcast] = useState([]);
@@ -11,15 +10,20 @@ export const PodcastList = () => {
     speed: 200,
     slidesToShow: 3,
     slidesToScroll: 1,
-    infinite: false,
     accessibility: true,
 
     responsive: [
       {
-        breakpoint: 600,
+        breakpoint: 640,
         settings: {
           slidesToShow: 1,
           centerPadding: "-10px",
+        },
+      },
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
         },
       },
     ],
@@ -61,6 +65,7 @@ const Podcast: FC<{ data: any }> = ({ data }) => {
       <a
         href={`https://www.youtube.com/watch?v=${data?.id?.videoId}`}
         target={"_blank"}
+        rel="noreferrer"
       >
         <div className="bg-white rounded-xl shadow w-80 h-44 hover:opacity-80 transition cursor-pointer mx-auto inset-x-0"></div>
       </a>

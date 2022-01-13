@@ -31,7 +31,7 @@ export const CountriesListing = () => {
             <ul className="grid grid-cols-2 md:grid-cols-4 gap-x-10 gap-y-1 py-4">
                 {List.map((item, idx) => (
                     <Link key={idx} href={item.route} passHref>
-                    <li className="text-sm cursor-pointer text-gray-300 font-light hover:text-black">Bodas en {item.name}</li>
+                    <li className="text-sm cursor-pointer text-gray-600 font-light hover:text-black">Bodas en {item.name}</li>
                     </Link>
                 ))}
             </ul>

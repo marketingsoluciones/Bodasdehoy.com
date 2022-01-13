@@ -1,8 +1,7 @@
 import { Toast as toastType } from '../../context/ToastContext';
 import { FC, useState } from 'react';
 import {ToastContextProvider} from '../../context/ToastContext'
-import { IconError, IconSuccess, IconWarning } from '../Icons';
-import { IconUpdate } from '../Icons/IconUpdate';
+import { IconError, IconError as IconSuccess, IconError as IconWarning, IconError as IconUpdate } from '../Icons';
 const ToastContainer = ({toasts} : {toasts : toastType[]}) => {
     return (
         <div className="fixed top-10  w-full z-50">

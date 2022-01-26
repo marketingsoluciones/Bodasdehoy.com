@@ -2,8 +2,8 @@ import { useState, useEffect, FC } from 'react';
 import dynamic from "next/dynamic";
 import { InputField, SelectField, Checkbox } from "../Inputs";
 import { api } from '../../api';
-import { SectionForm } from '../../pages2/empresas/crear-empresa';
-import { GetCategory } from '../../interfaces/FetchCategories';
+import { SectionForm } from '../../pages/empresa/crear-empresa';
+import { fetchCategory } from '../../interfaces';
 import { FieldArray } from "formik";
 import { UserIcon as UserIcon2, EmailIcon, CompanyIcon, WebSiteIcon } from '../Icons';
 import { GraphQL } from '../../utils/Fetching';
@@ -136,7 +136,7 @@ interface propsCategoriesComponent {
   values : any
 }
 const CategoriesComponent : FC <propsCategoriesComponent> = ({values}) => {
-const [categories, setCategories] = useState<Partial<GetCategory[] | null>>([])
+const [categories, setCategories] = useState<Partial<fetchCategory[] | null>>([])
 
   const fetchData = async () => {
     if(!localStorage.getItem('categoriesBusiness')){

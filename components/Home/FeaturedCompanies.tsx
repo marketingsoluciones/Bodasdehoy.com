@@ -9,9 +9,12 @@ import { PlusButton } from "../Inputs";
 const Slider = dynamic(() : any => import('react-slick'), {ssr : false})
 import {Markup} from "interweave"
 import dynamic from 'next/dynamic';
+import Link from 'next/link'
+import { createURL } from '../../utils/UrlImage';
+import { business } from '../../interfaces';
 
 interface propsFeaturedCompanies {
-  business: object[];
+  business: business[];
 }
 const settings = {
   autoplay: false,
@@ -31,7 +34,7 @@ const settings = {
 };
 
 export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({business}) => {
-  const [data, setData] = useState<any>([])
+  const [data, setData] = useState<business[]>([])
 
   useEffect(() => {
     setData(business)
@@ -51,7 +54,7 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({business}) => {
 
       <div className="grid grid-cols-1 w-full overflow-hidden">
         <Slider {...settings}>
-          {data?.map((item : any) => (
+          {data?.map((item : business) => (
             <CompanyCard key={item._id} data={item} />
           ))}
         </Slider>
@@ -61,13 +64,13 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({business}) => {
 };
 
 interface propsCompanyCard {
-  data: object;
+  data: business;
   pricing?: boolean
 }
 
 export const CompanyCard: FC<propsCompanyCard> = memo(({ data, pricing = true }) => {
   const [isFav, setFav] = useState(false);
-  const [business, setBusiness] = useState<any>({});
+  const [business, setBusiness] = useState<business>();
 
   useEffect(() => {
     console.log(data)
@@ -78,23 +81,30 @@ export const CompanyCard: FC<propsCompanyCard> = memo(({ data, pricing = true })
     <div className="rounded-3xl w-72 h-full mx-auto inset-x-0  relative h-full">
       <div className="h-60 rounded-3xl cursor-pointer overflow-hidden ">
         <div className="bg-gradient-to-t from-transparent to-black w-full h-1/4 rounded-3xl opacity-60 absolute" />
-        
-          <img
-          src={`${process.env.NEXT_PUBLIC_BASE_URL}${business?.imgMiniatura?.mediumUrl}`}
-          alt={"imagen"}
+        <img
+          alt={business?.businessName}
           className="object-cover object-center w-full h-full"
+          src={createURL(business?.imgMiniatura?.smallUrl)}
+          srcSet={`
+          ${createURL(business?.imgMiniatura?.thumbnailUrl)} 300w,
+          ${createURL(business?.imgMiniatura?.smallUrl)} 994w,
+          ${createURL(business?.imgMiniatura?.mediumUrl)} 1240w
+          `}
         />
         
       </div>
       <div className="bg-color-base rounded-3xl h-max transform -translate-y-10 w-full text-center p-4 flex flex-col gap-1 shadow-md">
         <h2 className="font-ligth text-gray-500 tracking-widest text-regular pt-1 uppercase">
-          {business?.subCategories?.length >= 0 && business?.subCategories[0]}
+          {business?.subCategories && business.subCategories.length >= 0 && business?.subCategories[0]}
         </h2>
+        <Link href={`/empresa/${business?.slug}`} passHref>
+        
         <h2 className="text-gray-700 text-lg font-medium transition cursor-pointer hover:text-primary capitalize">
           {business?.businessName}
         </h2>
+        </Link>
         <RatingStars rating={4} />
-        <h3 className="text-gray-500 text-sm">{business.address}</h3>
+        <h3 className="text-gray-500 text-sm">{business?.address}</h3>
         {pricing && (
           <div className="border-t border-b border-primary py-2 my-2 flex items-center justify-center gap-2">
           <EuroIcon2 />
@@ -104,7 +114,7 @@ export const CompanyCard: FC<propsCompanyCard> = memo(({ data, pricing = true })
         </div>
         )}
         <p className="text-gray-500 text-sm h-max py-4 leading-5">
-          <Markup content={business.description} noHtml/>
+          <Markup content={business?.description} noHtml/>
         </p>
         <PlusButton />
       </div>

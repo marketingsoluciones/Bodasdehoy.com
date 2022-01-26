@@ -68,7 +68,7 @@ export const Navigation: FC = () => {
           >
             <BurgerIcon className="w-7 h-7 text-primary" />
           </span>
-          <Link href={"/"}>
+          <Link href={"/"} passHref>
             <span className="relative cursor-pointer hover:opacity-95 transform hover:-translate-x-1 transition duration-700 ">
               <LogoFullColor className="h-auto w-40" />
             </span>
@@ -187,7 +187,7 @@ export const Icons = () => {
         ) : (
           <span  className=" border-gray-100 border-l cursor-pointer text-gray-500 pl-3 flex items-center gap-1"
           ref={hoverRef}>
-            <img src={user.photoURL?? undefined} className="w-10 h-10 border border-primary rounded-full" />
+            <img alt={user?.displayName?? "nombre"} src={user.photoURL?? undefined} className="w-10 h-10 border border-primary rounded-full" />
             <ProfileMenu state={isHovered} />
             <ArrowIcon className="w-4 h-4 rotate-90 transform" />
           </span>
@@ -216,13 +216,13 @@ const ProfileMenu = ({ state }: { state: boolean }) => {
     },
     {
       title: "Empresas",
-      route: "/empresas",
+      route: "/empresa",
       icon: <CarIcon className="w-6 h-6" />,
     },
   ];
   return (
     <ul
-      className={`w-40 rounded-xl h-max bg-white shadow-md absolute bottom-0 left-0 inset-y-full overflow-hidden ${
+      className={`w-40 rounded-xl h-max bg-white shadow-md absolute bottom-0 left-0 inset-y-full overflow-hidden z-50 ${
         state ? "" : "hidden"
       }`}
     >
@@ -239,7 +239,7 @@ const ProfileMenu = ({ state }: { state: boolean }) => {
           );
         } else {
           return (
-            <Link key={idx} href={item.route}>
+            <Link key={idx} href={item.route} passHref>
               <li className="flex items-center gap-2 text-gray-500 px-4 py-3 text-sm hover:bg-gray-100 transition cursor-pointer">
                 {item.icon} {item.title}{" "}
               </li>

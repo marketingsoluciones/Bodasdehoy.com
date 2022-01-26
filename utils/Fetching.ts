@@ -1,4 +1,5 @@
 import { api } from "../api";
+import { SearchCriteria } from "../interfaces";
 
 export const GraphQL = {
   createUser: async (variables: any) => {
@@ -105,8 +106,8 @@ export const GraphQL = {
           weddingDate
           signUpProgress
           status
-          createAt
-          updateAt
+          createdAt
+          updatedAt
         }
       }`;
     const {
@@ -199,7 +200,7 @@ export const GraphQL = {
       variables: {
         file: null,
         businessID: id,
-        use: use
+        use: use,
       },
     };
 
@@ -212,19 +213,33 @@ export const GraphQL = {
     newFile.append("0", file);
 
     const config = {
-      onUploadProgress: (progressEvent : ProgressEvent) => {
-        const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-      }
-  }
+      onUploadProgress: (progressEvent: ProgressEvent) => {
+        const percentCompleted = Math.round(
+          (progressEvent.loaded * 100) / progressEvent.total
+        );
+      },
+    };
 
-    const { data : {data : {singleUpload}} } = await api.graphql(newFile, config);
+    const {
+      data: {
+        data: { singleUpload },
+      },
+    } = await api.graphql(newFile, config);
     return singleUpload;
   },
-  deleteImage: async ({idImage, idBusiness, use} : {idImage: string, idBusiness: string, use: string}) => {
+  deleteImage: async ({
+    idImage,
+    idBusiness,
+    use,
+  }: {
+    idImage: string;
+    idBusiness: string;
+    use: string;
+  }) => {
     const query = `mutation deleteUpload ($_id :ID, $businessID:ID, $use : String) {
       deleteUpload(_id:$_id, businessID:$businessID, use:$use)
     }`;
-    const variables = {_id : idImage, businessID: idBusiness, use: use };
+    const variables = { _id: idImage, businessID: idBusiness, use: use };
     const {
       data: {
         data: { deleteUpload },
@@ -232,7 +247,7 @@ export const GraphQL = {
     } = await api.graphql({ query, variables });
     return deleteUpload;
   },
-  getHome : async () => {
+  getHome: async () => {
     const query = `query {
       getHome{
         business{
@@ -242,6 +257,8 @@ export const GraphQL = {
           businessName
           imgMiniatura{
             _id
+            thumbnailUrl
+            smallUrl
             mediumUrl
           }
         }
@@ -267,8 +284,9 @@ export const GraphQL = {
           createdAt
           imgMiniatura{
             _id
+            thumbnailUrl
+            smallUrl
             mediumUrl
-            largeUrl
           }
         }
         categoriesPost{
@@ -284,8 +302,234 @@ export const GraphQL = {
           }
         }
       }
+    }`;
+    const {
+      data: {
+        data: { getHome },
+      },
+    } = await api.graphql({ query, variables: {} });
+    return getHome;
+  },
+  getSlugBusiness: async () => {
+    const query = `query{
+      getSlugBusiness
+    }`;
+    const variables = {};
+
+    const {
+      data: {
+        data: { getSlugBusiness },
+      },
+    } = await api.graphql({ query, variables });
+    return getSlugBusiness;
+  },
+  getBusinessBySlug: async (slug : string) => {
+    const query = `query ($slug: String){
+      getBussines(slug: $slug){
+        _id
+          slug
+          userUid
+          tags
+          contactName
+          contactEmail
+          businessName
+          webPage
+          landline
+          mobilePhone
+          whatsapp
+          twitter
+          facebook
+          linkedin
+          youtube
+          instagram
+          country
+          city
+          zip
+          address
+          description
+          content
+          coordinates
+          categories
+          subCategories
+          questionsAndAnswers{
+            frequentQuestions
+            answers
+          }
+          accessories
+          services
+          servicesList{
+            title
+            check
+          }
+          accessoriesList{
+            title
+            check
+          }
+          imgMiniatura{
+            _id
+            thumbnailUrl
+            smallUrl
+            mediumUrl
+          }
+          imgLogo{
+            _id
+            thumbnailUrl
+            smallUrl
+            mediumUrl
+          }
+          fase
+          status
+          createdAt
+          updatedAt
+    }}`;
+    const variables = {
+      slug
+    };
+    const {
+      data: {
+        data: { getBussines },
+      },
+    } = await api.graphql({ query, variables });
+
+    return getBussines;
+  },
+  getSlugPosts: async () => {
+    const query = `query {
+      getSlugPosts
+    }`;
+    const variables = {};
+    const {
+      data: {
+        data: { getSlugPosts },
+      },
+    } = await api.graphql({ query, variables });
+
+    return getSlugPosts;
+  },
+  getPostByCriteria: async (criteria: Partial<SearchCriteria>) => {
+    const query = `query ($criteria : searchCriteriaPost) {
+      getAllPost(searchCriteria:$criteria){
+        total
+        results{
+          _id
+          title
+          subTitle
+          content
+          permaLink
+          slug
+          seoDescription
+          categories
+          groupSubCategories
+          subCategories
+          tags
+          imgCarrusel{
+            _id
+            mediumUrl
+          }
+          imgMiniatura{
+            _id
+            mediumUrl
+          }
+          authorUsername
+          status
+          createdAt
+          updatedAt
+        }
+      }
+    }`;
+    const variables = {
+      criteria,
+    };
+    const {
+      data: {
+        data: { getAllPost },
+      },
+    } = await api.graphql({ query, variables });
+
+    return getAllPost;
+  },
+
+  getTopFivePost : async () => {
+    const query = `
+    query  {
+      getAllPost(sort: {createdAt : 1} limit: 5){
+        total
+        results{
+          _id
+          title
+          subTitle
+          content
+          permaLink
+          slug
+          seoDescription
+          categories
+          groupSubCategories
+          subCategories
+          tags
+          imgCarrusel{
+            _id
+            mediumUrl
+          }
+          imgMiniatura{
+            _id
+            mediumUrl
+          }
+          authorUsername
+          status
+          createdAt
+          updatedAt
+        }
+      }
     }`
-    const {data : {data : {getHome}}} = await api.graphql({query, variables : {}})
-    return getHome
+
+    const {data: {data : {getAllPost}}} = await api.graphql({query, variables: {}})
+    return getAllPost
+  },
+  getMagazine : async () => {
+    const query = `query {
+      getMagazine{
+        lastestPosts{
+          _id
+          content
+          title
+          slug
+          categories
+          updatedAt
+          imgMiniatura{
+            _id
+            mediumUrl
+          }
+        }
+        postsByCategory{
+          _id
+          title
+          seoDescription
+          slug
+          imgMiniatura{
+            _id
+            mediumUrl
+          }
+        }
+        postsMoreViews{
+          _id
+          title
+          slug
+          imgMiniatura{
+            _id
+            mediumUrl
+          }
+        }
+        categoriesPost{
+          categorie{
+            title
+            slug
+          }
+        }
+      }
+    }`
+    const variables = {}
+
+    const {data:{data:{getMagazine}}} = await api.graphql({query, variables})
+    return getMagazine
   }
 };

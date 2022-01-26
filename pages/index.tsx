@@ -1,46 +1,26 @@
-import { FC, ReactNode, useState, useEffect, memo } from 'react';
+import { FC, ReactNode, memo } from 'react';
 
 const Slider : any = dynamic(() : any => import('react-slick'))
-const DynamicAdsApp : any = dynamic(() : any => import('../components/Home').then((mod) => mod.AdsApp))
-const DynamicCountriesListing : any = dynamic(() : any => import('../components/Home').then((mod) => mod.CountriesListing))
-const DynamicPodcastList : any = dynamic(() : any => import('../components/Home').then((mod) => mod.PodcastList))
-const DynamicFeaturedCompanies : any = dynamic(() : any => import('../components/Home').then((mod) => mod.FeaturedCompanies))
-const DynamicMagazine : any = dynamic(() : any => import('../components/Home').then((mod) => mod.Magazine))
-const DynamicPlaceDiscovery : any = dynamic(() : any => import('../components/Home').then((mod) => mod.PlaceDiscovery))
-const DynamicRecommendCategories : any = dynamic(() : any => import('../components/Home').then((mod) => mod.RecommendCategories))
-
-
-const DynamicCommunityIcon : any = dynamic(() : any => import('../components/Icons').then((mod) => mod.CommunityIcon))
-const DynamicDownloadFileIcon : any = dynamic(() : any => import('../components/Icons').then((mod) => mod.DownloadFileIcon))
-const DynamicGuestAppIcon : any = dynamic(() : any => import('../components/Icons').then((mod) => mod.GuestAppIcon))
-const DynamicInspirationIcon : any = dynamic(() : any => import('../components/Icons').then((mod) => mod.InspirationIcon))
-const DynamicIsologo : any = dynamic(() : any => import('../components/Icons').then((mod) => mod.Isologo))
-const DynamicSearchIcon : any = dynamic(() : any => import('../components/Icons').then((mod) => mod.SearchIcon))
 
 import Image from "next/image";
 import dynamic from 'next/dynamic';
 import { GraphQL } from '../utils/Fetching';
+import { business, fetchCategory, Post } from '../interfaces';
+import { AdsApp, FeaturedCompanies, Magazine, PlaceDiscovery, PodcastList } from '../components/Home';
+import RecommendCategories from '../components/Home/RecommendCategories';
+import { CommunityIcon, DownloadFileIcon, GuestAppIcon, InspirationIcon, Isologo, SearchIcon } from '../components/Icons';
 
 interface propsHome {
-  business: object[];
+  business: business[];
   categoriesBusiness : fetchCategory[]
-  post : object[]
-  categoriesPost : object[]
-}
-
-export interface fetchCategory {
-  categorie : category
-  subCategories: category[]
+  post : Post[]
+  categoriesPost : fetchCategory[]
 }
 
 
-export type category = {
-    title: string
-    imgMiniatura : string
-    imgBanner : string
-    slug : string
-    description : string
-  }
+
+
+
 
 const Home: FC<propsHome> = (props) => {
   
@@ -50,42 +30,17 @@ const Home: FC<propsHome> = (props) => {
       <div className="sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg banner pt-6 md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full">
         <Welcome />
       </div>
-      <DynamicPlaceDiscovery data={props?.categoriesBusiness} />
+      <PlaceDiscovery data={props?.categoriesBusiness} />
       <div className="bg-white flex flex-col gap-24 w-full pb-20">
-        <DynamicFeaturedCompanies business={props?.business} />
+        <FeaturedCompanies business={props?.business} />
         <ButtonProviders />
-        <DynamicRecommendCategories data={props?.categoriesBusiness} />
-        <DynamicMagazine posts={props?.post} categories={props?.categoriesPost} />
-        <DynamicAdsApp />
-        <DynamicPodcastList />
+        <RecommendCategories data={props?.categoriesBusiness} />
+        <Magazine posts={props?.post} categories={props?.categoriesPost} />
+        <AdsApp />
+        <PodcastList />
         {/* <DynamicCountriesListing /> */}
       </div>
-      <style jsx>
-        {`
-          .banner::after {
-            content: "";
-            background: linear-gradient(
-              0deg,
-              #f2f2f2 50%,
-              rgba(255, 255, 255, 0) 100%
-            );
-            width: 100%;
-            height: 70%;
-            position: absolute;
-            bottom: 0;
-          }
-          @media screen and (max-width: 604px) {
-            .banner::after {
-              background: linear-gradient(
-                0deg,
-                #f2f2f2 20%,
-                rgba(255, 255, 255, 0) 100%
-              );
-              height: 20%;
-            }
-          }
-        `}
-      </style>
+      
     </section>
   );
 };
@@ -100,7 +55,7 @@ export const Welcome: FC = (props) => {
           <h1 className="text-2xl md:text-4xl text-tertiary relative subpixel-antialiased font-bold w-full flex flex-col gap-2">
             <span className="relative w-max h-max  font-light">
               Encuentra tod<b className="hidden">o</b>
-              <DynamicIsologo className="mt-1 isologo absolute bottom-2 -right-4 md:-right-6" />
+              <Isologo className="mt-1 isologo absolute bottom-2 -right-4 md:-right-6" />
             </span>
             <span className="relative ">para una boda inolvidable</span>
           </h1>
@@ -117,6 +72,7 @@ export const Welcome: FC = (props) => {
         <div className="md:w-full w-1/2 md:relative absolute z-0 -bottom-16 md:bottom-0 right-0 md:-mt-20">
           <Image
             src={"/photo-principal.webp"}
+            alt='Bodas de hoy'
             layout={"responsive"}
             height={80}
             width={50}
@@ -141,7 +97,7 @@ export const Searcher: FC<propsSearcher> = (props) => {
         {...props}
       />
       <button className="bg-primary w-14  h-full rounded-full absolute top-0 right-0 flex items-center justify-center transform hover:scale-110 transition hover:-rotate-12">
-        <DynamicSearchIcon className="text-white w-6 h-6" />
+        <SearchIcon className="text-white w-6 h-6" />
       </button>
     </div>
   );
@@ -156,17 +112,17 @@ export const Features: FC = () => {
   const List: ItemList[] = [
     {
       title: "Comunidad para novias",
-      icon: <DynamicCommunityIcon className="w-8 h-8" />,
+      icon: <CommunityIcon className="w-8 h-8" />,
     },
     {
       title: "Recursos descargables",
-      icon: <DynamicDownloadFileIcon className="w-8 h-8" />,
+      icon: <DownloadFileIcon className="w-8 h-8" />,
     },
     {
       title: "Gestor de invitados",
-      icon: <DynamicGuestAppIcon className="w-8 h-8" />,
+      icon: <GuestAppIcon className="w-8 h-8" />,
     },
-    { title: "Inspiración", icon: <DynamicInspirationIcon className="w-8 h-8" /> },
+    { title: "Inspiración", icon: <InspirationIcon className="w-8 h-8" /> },
   ];
 
   interface propsFeature {

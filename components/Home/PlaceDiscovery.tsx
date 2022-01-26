@@ -1,9 +1,10 @@
 import TitleSection from "./TitleSection";
 const Slider = dynamic(() => import("react-slick"), {ssr: false})
 import { FC, memo, useEffect, useState } from 'react';
-import { category } from "../../pages/index";
 import Link from "next/link";
 import dynamic from 'next/dynamic';
+import { category } from "../../interfaces";
+import { createURL } from "../../utils/UrlImage";
 
 interface propsPlaceDiscovery {
   data : object[] | undefined
@@ -91,16 +92,23 @@ export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({data}) => {
   );
 };
 
-const PlaceCard: FC<category> = memo((item) => {
+const PlaceCard: FC<category> = memo(({title, imgMiniatura, slug}) => {
   return (
     <div className="px-4">
       <img
-        src={item?.imgMiniatura !== "" ? item.imgMiniatura : "/mask_1.png"}
-        className="w-full h-32 md:h-52 bg-gray-100 rounded-2xl object-center object-cover"
-      />
-      <Link href={item.slug !== "" ? item.slug : "/"}>
+          alt={title}
+          className="w-full h-32 md:h-52 bg-gray-100 rounded-2xl object-center object-cover"
+          src={createURL(imgMiniatura?.thumbnailUrl)}
+          srcSet={`
+          ${createURL(imgMiniatura?.thumbnailUrl)} 300w,
+          ${createURL(imgMiniatura?.smallUrl)} 994w,
+          ${createURL(imgMiniatura?.mediumUrl)} 1240w
+          `}
+        />
+      
+      <Link href={slug !== "" ? slug : "/"} passHref>
         <h2 className="px-2 py-1 font-light md:text-base text-sm text-gray-600 tracking-widest capitalize cursor-pointer hover:text-gray-900">
-          {item?.title}
+          {title}
         </h2>
       </Link>
     </div>

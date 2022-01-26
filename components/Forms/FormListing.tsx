@@ -31,23 +31,24 @@ export const FormListing = () => {
             <UserIcon2 className="absolute w-5 h-5 inset-y-0 my-auto left-4 " />
           </span>
 
-          <span className="h-max relative text-gray-200">
+          <span className="h-max relative text-gray-500">
             <InputField
               name="email"
               type="email"
               placeholder="Correo electronico"
+              icon={true}
             />
-            <EmailIcon className="absolute w-5 h-5 inset-y-0 my-auto left-4 " />
+            <EmailIcon className="absolute w-5 h-5 inset-y-0 my-auto left-4" />
           </span>
 
-          <span className="h-max relative text-gray-200">
-            <InputField name="email" type="email" placeholder="Telefono" />
-            <EmailIcon className="absolute w-5 h-5 inset-y-0 my-auto left-4 " />
+          <span className="h-max relative text-gray-500">
+            <InputField name="phone" type="phone" placeholder="Telefono" icon={true} />
+            <PhoneIcon className="absolute w-5 h-5 inset-y-0 my-auto left-4" />
           </span>
 
-          <span className="h-max relative text-gray-200">
+          <span className="h-max relative text-gray-500">
             <textarea
-              className="w-full bg-color-base p-2 h-20 text-sm rounded focus:outline-none focus:ring transition"
+              className="w-full bg-color-base p-2 h-20 text-sm rounded transition"
               placeholder={"Escribe tu solicitud a la empresa"}
             ></textarea>
           </span>

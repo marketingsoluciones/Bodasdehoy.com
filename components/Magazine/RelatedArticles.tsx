@@ -1,6 +1,6 @@
 import { FC, useRef } from "react";
 import Slider from "react-slick";
-import { Post } from "../Home/Magazine";
+import { PostComponent } from "../Home/Magazine";
 import { ArrowIcon } from "../Icons";
 
 const settings = {
@@ -44,14 +44,10 @@ export const RelatedArticles : FC <propsRelatedArticles> = ({title}) => {
         className="w-12 h-12 absolute top-0 inset-y-0 my-auto right-0 transform translate-x-full text-primary hover:bg-gray-100 flex flex-col items-center justify-center rounded-full transition">
         <ArrowIcon className="w-8 h-8" />
       </button>
-      <Slider {...settings} ref={refSlider}>
+      {/* <Slider {...settings} ref={refSlider}>
         <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-        <Post />
-      </Slider>
+       
+      </Slider> */}
     </div>
   );
 };

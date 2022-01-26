@@ -1,7 +1,7 @@
 import { FC, ReactNode } from "react";
-import { DocsIcon, IconError } from "../../../components/Icons";
-import { GraphQL } from '../../../utils/Fetching';
-import { SectionForm } from '../crear-empresa';
+import { DocsIcon, IconError } from "../../components/Icons";
+import { GraphQL } from '../../utils/Fetching';
+import { SectionForm } from '../empresa/crear-empresa';
 const index = ({params} : {params: any}) => {
   const options = [
     {title: "Datos de la empresa", icon: <DocsIcon />},
@@ -42,23 +42,8 @@ export const SectionComponent : FC = ({children}) => {
   )
 }
 
-
-export async function getStaticPaths() {
+export async function getServerSideProps({params} : {params: object}) {
   return {
-    paths: [
-      { params: { id : "1" } } // See the "paths" section below
-    ],
-    fallback: true 
-  };
-}
-
-export async function getStaticProps({params} : {params : { id: string}}) {
-
-  try {
-    const result = await GraphQL.getBusinessByID({_id : params.id})
-    return { props: {params: result} }
-  } catch (error) {
-    console.log(error)
-    return { props: {} }
+    props: {}, // will be passed to the page component as props
   }
 }

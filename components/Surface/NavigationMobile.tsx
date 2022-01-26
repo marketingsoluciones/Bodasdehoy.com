@@ -10,7 +10,7 @@ export const NavigationMobile = () => {
     return (
         <>
         <Sidebar set={(act : boolean) => setShowSidebar(act)} state={showSidebar}/>
-        <div className="bg-white h-20 w-full md:hidden block relative flex items-center justify-between px-5 z-20 ">
+        <div className="bg-white h-20 w-full md:hidden block relative flex items-center justify-between px-5 z-50 ">
             <span onClick={() => setShowSidebar(!showSidebar)}>
             <BurgerIcon className="w-7 h-7 text-primary" />
             </span> 

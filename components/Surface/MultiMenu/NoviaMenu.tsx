@@ -16,7 +16,7 @@ export const NoviaMenu: FC = () => {
       <div className="grid grid-cols-6">
         <ul className="col-span-4 grid grid-cols-3 text-sm">
           {List.map((item, idx) => (
-            <Link key={idx} href={item.route}>
+            <Link key={idx} href={item.route} passHref>
               <li className="text-gray-300 hover:text-tertiary cursor-pointer">
                 {item.title}
               </li>

@@ -35,7 +35,7 @@ export const AdsApp = () => {
     <>
       <div className="max-w-screen-lg mx-auto inset-x-0 grid md:grid-cols-2 w-full">
         <div className="relative p-2 w-full h-72 md:h-auto">
-          <Image src="/bannerApp.webp" layout={"fill"} objectPosition={"0px -25px"} objectFit={"contain"} />
+          <Image src="/bannerApp.webp" layout={"fill"} objectPosition={"0px -25px"} objectFit={"contain"} alt="banner bodas de hoy" />
           <div className="absolute bg-tertiary bottom-12 md:left-20 left-16 opacity-90 rounded-full w-20 h-20 p-4 flex items-center justify-center text-white">
             <h3 className="text-sm md:text-md tracking-widest">GRATIS</h3>
           </div>

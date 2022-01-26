@@ -32,11 +32,11 @@ export const Feature = ({ text, check = false }: { text: string, check?: boolean
     return (
     <div ref={hoverRef} className="flex gap-2 items-center text-sm">
       <div
-        className={`${check && isHovered ? "bg-primary" : "bg-white"} w-5 h-5 rounded-full grid place-items-center ${check && isHovered ? "text-white" : "text-primary"} transition border-2 ${check ? "border-primary" : "border-gray-200"}`}
+        className={`${check && isHovered ? "bg-primary" : "bg-white"} w-5 h-5 rounded-full grid place-items-center ${check && isHovered ? "text-white" : "text-primary"} transition border-2 ${check ? "border-primary" : "border-gray-500"}`}
       >
         {check && <CheckIcon className="w-4 h-4" />}
       </div>
-      <p className="text-gray-300">{text}</p>
+      <p className="text-gray-500">{text}</p>
     </div>
   );
 };

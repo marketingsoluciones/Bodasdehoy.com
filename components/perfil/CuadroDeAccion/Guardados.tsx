@@ -1,5 +1,5 @@
 import CardBusiness from "../../Category/CardBusiness"
-import { Post } from "../../Home/Magazine"
+import { PostComponent } from "../../Home/Magazine"
 
 export const Guardados =() =>{
     return (
@@ -15,7 +15,8 @@ export const Guardados =() =>{
                 </div>
             </div>
 
-            <div className=" grid grid-rows-2 grid-flow-col">{/* contenedor de las tarjetas favoritas */}
+            {/* contenedor de las tarjetas favoritas */}
+            {/* <div className=" grid grid-rows-2 grid-flow-col">
                 <div >
                     <Post/>
                 </div>
@@ -28,7 +29,7 @@ export const Guardados =() =>{
                 <div>
                     <Post/>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

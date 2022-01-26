@@ -1,4 +1,4 @@
-import { SectionForm } from "../../pages2/empresas/crear-empresa";
+import { SectionForm } from "../../pages/empresa/crear-empresa";
 import { Location2Icon, UserIcon, EuroIcon } from "../Icons";
 import { Checkbox, InputField, SelectField } from "../Inputs";
 import { useState, useEffect, FC, memo, Dispatch, SetStateAction } from 'react';

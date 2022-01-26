@@ -22,7 +22,7 @@ const Empresas = () => {
     <div className="container max-w-screen-lg mx-auto inset-x-0 py-10">
       <div className="flex items-center w-full justify-between">
       <h1 className="text-primary text-2xl font-semibold">Mis empresas</h1>
-      <Link href={"/empresas/crear-empresa"} passHref >
+      <Link href={"/empresa/crear-empresa"} passHref >
       <ButtonComponent>+ Crear empresa</ButtonComponent>
       </Link>
       </div>

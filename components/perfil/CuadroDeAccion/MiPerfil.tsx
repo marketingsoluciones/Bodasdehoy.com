@@ -4,15 +4,12 @@ import { InputField } from "../../Inputs";
 
 export const MiPerfil = () => {
     const initialValues = {
-        email: "",
+        Usuario:'',
       };
-      const handleSubmit = () => { console.log("hola mundo")};
+
+    const handleSubmit = () => { console.log({handleSubmit})};
+
       return (
-
-      
-
-
-
         <div className="space-y-5 mx-8 w-200"> {/* cuadro de datos */}
 
             <div className=" flex flex-row-reverse"> 
@@ -31,6 +28,7 @@ export const MiPerfil = () => {
                                         type={"text"}
                                     />
                                 </span>
+                                <button type="submit"> enviar</button>
                             </Form>
                         </Formik>
                     </div>

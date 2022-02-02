@@ -21,10 +21,10 @@ const Empresas = () => {
   return (
     <div className="container max-w-screen-lg mx-auto inset-x-0 py-10">
       <div className="flex items-center w-full justify-between">
-      <h1 className="text-primary text-2xl font-semibold">Mis empresas</h1>
-      <Link href={"/empresa/crear-empresa"} passHref >
-      <ButtonComponent>+ Crear empresa</ButtonComponent>
-      </Link>
+        <h1 className="text-primary text-2xl font-semibold">Mis empresas</h1>
+        <Link href={"/empresa/crear-empresa"} passHref >
+          <ButtonComponent>+ Crear empresa</ButtonComponent>
+        </Link>
       </div>
       <div className="grid grid-cols-3 gap-10 pl-10 py-10">
         {data.map((item : any, idx : number) => (

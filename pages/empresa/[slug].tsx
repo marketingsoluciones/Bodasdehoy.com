@@ -51,6 +51,7 @@ const Listing: FC<business> = (props) => {
     youtube,
     servicesList,
   } = props;
+  
   const [sendMessage, setMessage] = useState(false);
   const List: Boton[] = [
     { title: "Descripción", route: "#description", icon: <DocsIcon /> },

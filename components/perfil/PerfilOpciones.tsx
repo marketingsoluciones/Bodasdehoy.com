@@ -12,7 +12,7 @@ type Item = {
 export const PerfilOpciones : FC <{onClick : CallableFunction}> = ({onClick}) =>{
     
     return(
-        <div className="bg-white  ">
+        <div className="bg-white">
             <div>
                 <ul className="space-y-4 p-7">
                     {Opciones?.map((item, idx) => (

@@ -20,6 +20,7 @@ export const GraphQL = {
     } = await api.graphql({ query, variables });
     return createUser;
   },
+
   getBusinessByUID: async (variables: any) => {
     const query = `query getBusiness($uid : ID){
       getBusinesses(uid:$uid){
@@ -48,6 +49,7 @@ export const GraphQL = {
     } = await api.graphql({ query, variables });
     return getBusinesses;
   },
+
   getBusinessByID: async (variables: any) => {
     const query = `query getBusiness($_id : ID){
       getBussines(id:$_id){
@@ -76,6 +78,7 @@ export const GraphQL = {
     } = await api.graphql({ query, variables });
     return getBussines;
   },
+
   getPhotosBusinessByID: async (variables: any) => {
     const query = `query getBusiness($_id : ID){
       getBussines(id:$_id){
@@ -95,6 +98,7 @@ export const GraphQL = {
     return getBussines;
   },
 
+  //getUser con error en peticion 
   getUser: async (uid: string) => {
     const query = `query getUser ($uid: ID) {
         getUser(uid:$uid){
@@ -227,6 +231,7 @@ export const GraphQL = {
     } = await api.graphql(newFile, config);
     return singleUpload;
   },
+
   deleteImage: async ({
     idImage,
     idBusiness,
@@ -247,6 +252,7 @@ export const GraphQL = {
     } = await api.graphql({ query, variables });
     return deleteUpload;
   },
+
   getHome: async () => {
     const query = `query {
       getHome{
@@ -284,9 +290,10 @@ export const GraphQL = {
           createdAt
           imgMiniatura{
             _id
-            thumbnailUrl
-            smallUrl
-            mediumUrl
+            i1024
+            i800
+            i640
+            i320
           }
         }
         categoriesPost{
@@ -310,6 +317,7 @@ export const GraphQL = {
     } = await api.graphql({ query, variables: {} });
     return getHome;
   },
+
   getSlugBusiness: async () => {
     const query = `query{
       getSlugBusiness
@@ -323,6 +331,7 @@ export const GraphQL = {
     } = await api.graphql({ query, variables });
     return getSlugBusiness;
   },
+
   getBusinessBySlug: async (slug : string) => {
     const query = `query ($slug: String){
       getBussines(slug: $slug){
@@ -393,6 +402,7 @@ export const GraphQL = {
 
     return getBussines;
   },
+
   getSlugPosts: async () => {
     const query = `query {
       getSlugPosts
@@ -406,6 +416,7 @@ export const GraphQL = {
 
     return getSlugPosts;
   },
+
   getPostByCriteria: async (criteria: Partial<SearchCriteria>) => {
     const query = `query ($criteria : searchCriteriaPost) {
       getAllPost(searchCriteria:$criteria){
@@ -485,6 +496,7 @@ export const GraphQL = {
     const {data: {data : {getAllPost}}} = await api.graphql({query, variables: {}})
     return getAllPost
   },
+
   getMagazine : async () => {
     const query = `query {
       getMagazine{

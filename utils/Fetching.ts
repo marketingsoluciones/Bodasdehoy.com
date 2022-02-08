@@ -263,20 +263,31 @@ export const GraphQL = {
           businessName
           imgMiniatura{
             _id
-            thumbnailUrl
-            smallUrl
-            mediumUrl
+            i1024
+            i800
+            i640
+            i320
           }
         }
         categoriesBusiness{
-          categorie{
-            title
-            imgMiniatura
-            slug
+          title
+          imgMiniatura{
+            _id
+            i1024
+            i800
+            i640
+            i320
           }
+          slug
           subCategories{
             title
-            imgMiniatura
+            imgMiniatura{
+              _id
+              i1024
+              i800
+              i640
+              i320
+            }
             slug
           }
         }
@@ -286,7 +297,10 @@ export const GraphQL = {
           slug
           seoDescription
           content
-          categories
+          categories{
+            _id
+            title
+          }
           createdAt
           imgMiniatura{
             _id
@@ -297,14 +311,24 @@ export const GraphQL = {
           }
         }
         categoriesPost{
-          categorie{
-            title
-            imgMiniatura
-            slug
+          title
+          imgMiniatura{
+            _id
+            i1024
+            i800
+            i640
+            i320
           }
+          slug
           subCategories {
             title
-            imgMiniatura
+            imgMiniatura{
+              _id
+              i1024
+              i800
+              i640
+              i320
+            }
             slug
           }
         }

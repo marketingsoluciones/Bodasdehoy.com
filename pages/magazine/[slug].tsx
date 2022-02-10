@@ -59,7 +59,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   try {
     const {results} = await GraphQL.getPostByCriteria({slug : params.slug})
     return {
-      props: results.length > 0 && results[0],
+      props: results.length > 0 ? results[0] : {},
     };
   } catch (error) {
     console.log(error)

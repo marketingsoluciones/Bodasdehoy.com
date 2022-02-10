@@ -15,7 +15,7 @@ const FAQ : FC <{data: questionsAndAnswers[]}> = ({data}) => {
                   {data && data?.map((item, idx) => {
                     if(item.answers !== ""){
                       return (
-                        <Accordion key={idx} title={item.frequentQuestions.title} isOpen={isActive === idx} onClick={() => idx === isActive ? setActive(null) : setActive(idx)}>
+                        <Accordion key={idx} title={item.questions.title} isOpen={isActive === idx} onClick={() => idx === isActive ? setActive(null) : setActive(idx)}>
                       {item.answers}
                     </Accordion>
                       )

@@ -53,7 +53,7 @@ const Empresas = () => {
           </div>
         ) : (
           data?.map((item: business, ) => (
-                <BusinessItem {...item} refreshData={fetchy} />
+                <BusinessItem key={item._id} {...item} refreshData={fetchy} />
           ))
         )}
         {data?.length === 0 && "No hay data"}

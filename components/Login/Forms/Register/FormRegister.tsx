@@ -14,6 +14,7 @@ import { AuthContextProvider, LoadingContextProvider } from "../../../../context
 import router from "next/router";
 import { ValidationSchemaRegister } from "./ValidationRegister";
 import { GraphQL } from "../../../../utils/Fetching";
+import SelectFieldCoutries from '../../../Inputs/SelectFieldCoutries';
 
 // Interfaces para el InitialValues del formulario de registro
 interface userInitialValuesPartial {
@@ -303,7 +304,7 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
         </span>
 
         <span className="w-full relative ">
-          <SelectField name="country" placeholder={"Pais"} label={"País"} />
+          <SelectFieldCoutries name="country" label={"País"} />
         </span>
 
         <span className="w-full relative ">
@@ -358,7 +359,7 @@ const UserDataAPI: FC<propsForm> = () => {
         </span>
 
         <span className="w-full relative ">
-          <SelectField name="country" placeholder={"Pais"} />
+          <SelectFieldCoutries name="country" label={"Pais"} />
         </span>
 
         <span className="w-full relative ">

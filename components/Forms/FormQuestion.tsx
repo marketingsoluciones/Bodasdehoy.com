@@ -32,7 +32,7 @@ export const FormQuestion: FC<propsFormQuestion> = ({ data }) => {
             servicios
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-6">
+        {/* <div className="grid grid-cols-3 gap-6">
           <div className="flex flex-col items-center gap-1">
             <EuroIcon className="w-10 h-10 text-tertiary" />
             <p className="text-tertiary font-semibold">Precio</p>
@@ -64,7 +64,7 @@ export const FormQuestion: FC<propsFormQuestion> = ({ data }) => {
               />
             </div>
           </div>
-        </div>
+        </div> */}
         <span className="flex flex-col">
           <QuestionsComponent data={data?.questionsAndAnswers} />
           <CharacteristicComponent data={data?.characteristics} />
@@ -163,7 +163,7 @@ const CharacteristicComponent: FC<propsCharacteristicsComponent> = ({
         Selecciona las caracteristicas que definan tu empresa.
       </p>
       {data?.map((item) => (
-        <div className="flex flex-col gap-6 pt-6">
+        <div key={item.characteristic._id} className="flex flex-col gap-6 pt-6">
           <FieldArrayWithProps
             key={item?.characteristic?._id}
             data={item?.characteristic?.items}

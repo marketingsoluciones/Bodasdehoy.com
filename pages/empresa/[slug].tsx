@@ -136,8 +136,8 @@ const Listing: FC<Partial<business>> = (props) => {
                 <div id="preguntas" className="transition flex flex-col gap-6">
                     {characteristics?.map((item) => (
                       <Feautres2Listing
-                      key={item._id}
-                      title={item?.title}
+                      key={item.characteristic._id}
+                      title={item?.characteristic.title}
                       provider={businessName ?? ""}
                       items={item?.items}
                     />
@@ -156,10 +156,10 @@ const Listing: FC<Partial<business>> = (props) => {
             <div className="hidden md:block w-full ...">
               <div className="bg-white shadow md:-mt-12 rounded-xl overflow-hidden p-4">
                 <div className="flex gap-4 items-center text-primary w-full justify-center flex-col">
-                  {(() => {
+                  {/* {(() => {
                     const coordenadas = coordinates && coordinates?.length > 0 && coordinates[0].split(",").map((item) => parseFloat(item));
                     return <GoogleMaps coordenadas={coordenadas} />;
-                  })()}
+                  })()} */}
                   <button
                     type="button"
                     className=" py-2 border-primary text-primary bg-white rounded-xl border hover:bg-primary hover:text-white transition flex items-center gap-2 text-sm w-full justify-center"

@@ -3,6 +3,7 @@ import { FC } from "react";
 import { Post } from "../../interfaces";
 import { format } from "../../utils/FormatTime";
 import { createURL } from "../../utils/UrlImage";
+import { createSrcSet } from '../../utils/CreateSrcSet';
 export const PrincipalPost: FC<Partial<Post>> = ({
   title,
   content,
@@ -38,12 +39,8 @@ export const PrincipalPost: FC<Partial<Post>> = ({
         <img
           alt={title}
           className="h-80 w-2/4 rounded-2xl object-cover float-right"
-          src={createURL(imgMiniatura?.thumbnailUrl)}
-          srcSet={`
-          ${createURL(imgMiniatura?.thumbnailUrl)} 300w,
-          ${createURL(imgMiniatura?.smallUrl)} 994w,
-          ${createURL(imgMiniatura?.mediumUrl)} 1240w
-          `}
+          src={createURL(imgMiniatura?.i320)}
+          srcSet={createSrcSet(imgMiniatura)}
         />
       </div>
     </div>

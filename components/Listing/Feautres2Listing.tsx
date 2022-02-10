@@ -1,24 +1,22 @@
+import { FC } from "react";
 import {useHover} from "../../hooks";
+import { characteristic } from "../../interfaces";
 import { CheckIcon, CheckIcon as CheckIconFill } from "../Icons";
 
-const Feautres2Listing = ({
-  title,
-  proveedor,
-  data
-}: {
-  title: string;
-  proveedor: string;
-  data? : {title: string, check: boolean}[]
-}) => {
+interface FeaturesListingProps extends characteristic {
+  provider : string
+  title: string
+}
+const Feautres2Listing : FC <Partial<FeaturesListingProps>> = ({provider, title, items}) => {
   return (
     <div className="w-full">
-      <h2 className="text-lg font-semibold text-primary pb-4">
+      <h2 className="text-lg font-semibold text-primary pb-4 capitalize">
         {title}
-        <span className="font-light"> {proveedor}</span>
+        <span className="font-light"> de {provider}</span>
       </h2>
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {data?.map((item,idx) => (
-              <Feature key={idx} text={item.title} check={item.check} />
+          {items?.map((item,idx) => (
+              <Feature key={idx} text={item.title} check={true} />
           ))}
       </div>
     </div>
@@ -36,7 +34,7 @@ export const Feature = ({ text, check = false }: { text: string, check?: boolean
       >
         {check && <CheckIcon className="w-4 h-4" />}
       </div>
-      <p className="text-gray-500">{text}</p>
+      <p className="text-gray-500 capitalize">{text}</p>
     </div>
   );
 };

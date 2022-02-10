@@ -12,22 +12,30 @@ import dynamic from 'next/dynamic';
 import Link from 'next/link'
 import { createURL } from '../../utils/UrlImage';
 import { business } from '../../interfaces';
+import { createSrcSet } from '../../utils/CreateSrcSet';
 
 interface propsFeaturedCompanies {
   business: business[];
 }
 const settings = {
-  autoplay: false,
-  accessibility: true,
-  infinite: true,
-  speed: 500,
+  speed: 200,
+  infinite: false,
   slidesToShow: 3,
+  arrows: false,
   responsive: [
     {
       breakpoint: 600,
       settings: {
-        slidesToScroll: 1,
-        slidesToShow: 1,
+        slidesToShow: 2,
+        rows: 2,
+      },
+    },
+
+    {
+      breakpoint: 1200,
+      settings: {
+        slidesToShow: 3,
+        rows: 1,
       },
     },
   ],
@@ -73,7 +81,6 @@ export const CompanyCard: FC<propsCompanyCard> = memo(({ data, pricing = true })
   const [business, setBusiness] = useState<business>();
 
   useEffect(() => {
-    console.log(data)
     setBusiness(data);
   }, [data]);
 
@@ -84,12 +91,8 @@ export const CompanyCard: FC<propsCompanyCard> = memo(({ data, pricing = true })
         <img
           alt={business?.businessName}
           className="object-cover object-center w-full h-full"
-          src={createURL(business?.imgMiniatura?.smallUrl)}
-          srcSet={`
-          ${createURL(business?.imgMiniatura?.thumbnailUrl)} 300w,
-          ${createURL(business?.imgMiniatura?.smallUrl)} 994w,
-          ${createURL(business?.imgMiniatura?.mediumUrl)} 1240w
-          `}
+          src={createURL(business?.imgMiniatura?.i640)}
+          srcSet={createSrcSet(business?.imgMiniatura)}
         />
         
       </div>

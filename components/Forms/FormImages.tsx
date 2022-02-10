@@ -12,13 +12,14 @@ import {
 import { StarRating, PicturesIcon, UploadImageIcon, DeleteIcon, CheckIcon } from "../Icons";
 import { GraphQL } from "../../utils/Fetching";
 import { useToast } from '../../hooks/useToast';
+import { useFormikContext, FormikValues } from 'formik';
+import { image } from "../../interfaces";
+import { createURL } from '../../utils/UrlImage';
 
-type ImageUploaded = {
+interface ImageUploaded extends image{
   file?: File;
   image?: any;
-  mediumUrl?: string
-  _id : string
-};
+}
 
 interface File {
   name: string;
@@ -37,19 +38,21 @@ interface PrincipalSelected extends ImageUploaded {
   idx: number | undefined;
 }
 
-const FormImages: FC <any> = ({values}) => {
+const FormImages: FC  = () => {
   const [images, setImages] = useState<ImageUploaded[]>([]);
+  const {values} = useFormikContext<FormikValues>()
   const [principalSelected, setPrincipal] = useState<
     PrincipalSelected | undefined
   >(undefined);
+  
 
-  const fetchingPhotos = async () => {
-    const result = await GraphQL.getPhotosBusinessByID({_id : values?._id})
-    setImages(result?.photos)
-  }
-  useEffect(() => {
-    fetchingPhotos()
-  }, [fetchingPhotos])
+  // const fetchingPhotos = async () => {
+  //   const result = await GraphQL.getPhotosBusinessByID({_id : values?._id})
+  //   setImages(result?.photos)
+  // }
+  // useEffect(() => {
+  //   fetchingPhotos()
+  // }, [fetchingPhotos])
 
   const handleChange = async (e: any) => {
     try {
@@ -60,7 +63,7 @@ const FormImages: FC <any> = ({values}) => {
       
       reader.onloadend = async () => {
         if (reader.result) {
-          setImages([...images, {_id: "001"}])
+          //setImages([...images])
           const nuevaImagen = {
             file: file,
             image: reader.result,
@@ -84,6 +87,11 @@ const FormImages: FC <any> = ({values}) => {
     const principal = { idx, ...images[idx] };
     setPrincipal(principal);
   };
+
+  useEffect(() => {
+    //setImages([...images, ...values.imgCarrusel])
+  }, [values.imgCarrusel])
+  
 
   return (
     <div>
@@ -110,7 +118,8 @@ const FormImages: FC <any> = ({values}) => {
           {images.length > 0 ? (
             <div className="grid grid-cols-5 gap-4">
               {images.map((item, idx) => (
-                <ImageComponent
+                item.i640 && (
+                  <ImageComponent
                   key={idx}
                   idx={idx}
                   data={item}
@@ -119,6 +128,7 @@ const FormImages: FC <any> = ({values}) => {
                   values={values}
                   setImages={setImages}
                 />
+                )
               ))}
               {images.length < 8 && <UploadModuleV2 onChange={handleChange} />}
             </div>
@@ -148,7 +158,7 @@ const UploadModule: FC<InputHTMLAttributes<HTMLInputElement>> = memo(
   (props) => {
     return (
       <label className="w-72 h-72 mx-auto inset-x-0 rounded-full border-2 border-gray-300 border-dashed flex flex-col items-center justify-center gap-5 cursor-pointer hover:bg-gray-100 transition	">
-          
+          <input type="file" className="hidden" accept={"image/*"} {...props} />
         <PicturesIcon />
         <small className="text-tertiary text-center text-xs w-1/2">
           Formato GIF, JPG o PNG Peso máximo 5 MB
@@ -183,7 +193,6 @@ const ImageComponent: FC<ImgHTMLAttributesV2> = ({
   const toast = useToast()
   const handleRemove = async () => {
     try {
-      
       const result = await GraphQL.deleteImage({idImage: data._id, idBusiness: values._id, use: "business"})
       if(!result){
         throw new Error("No se pudo borrar la foto")
@@ -200,11 +209,12 @@ const ImageComponent: FC<ImgHTMLAttributesV2> = ({
   useEffect(() => {
     setPrincipal(principal);
   }, [principal]);
+  
   return (
     <>
       <picture className="rounded-xl border-2 border-gray-200 w-full h-32 text-gray-400 hover:text-gray-600 flex items-center justify-center cursor-pointer bg-white shadow-md transition overflow-hidden relative">
         <button className="z-20 bg-white p-1 rounded-xl absolute bottom-3 left-3" onClick={handleRemove}><DeleteIcon className={"w-5 h-5"} /></button>
-        {data?.image || data?.mediumUrl && (<img alt="imagen" src={data?.image ?? `${process.env.NEXT_PUBLIC_BASE_URL}${data?.mediumUrl}`} className="object-cover object-center absolute top-0 left-0 w-full h-full"/>)}
+        <img alt="imagen" src={data.i640 ? createURL(data.i640) : data.image} className="object-cover object-center absolute top-0 left-0 w-full h-full"/>
         {/* <img
           className="object-cover object-center absolute top-0 left-0 w-full h-full"
           src={data?.image ?? `${process.env.NEXT_PUBLIC_BASE_URL}${data?.mediumUrl}`}

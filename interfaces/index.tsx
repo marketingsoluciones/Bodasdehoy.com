@@ -5,12 +5,23 @@ export interface fetchCategory {
   subCategories: category[]
 }
 
-export type category = {
+export type subCategory = {
+  _id: string
   title: string
   imgMiniatura : image
   imgBanner : image
   slug : string
   description : string
+}
+
+export type category = {
+  _id: string
+  title: string
+  imgMiniatura : image
+  imgBanner : image
+  slug : string
+  description : string
+  subCategories : subCategory[]
 }
 
 // @@Business Interfaces de business / listing / empresas
@@ -41,7 +52,7 @@ export interface business {
   coordinates: string[]
   categories: string[]
   groupSubCategories: string[]
-  subCategories: string[]
+  subCategories: subCategory[]
   questionsAndAnswers: questionsAndAnswers[]
   accessories: string[]
   accessoriesList : character[]
@@ -55,25 +66,42 @@ export interface business {
   status: string
   createdAt: number
   updatedAt: number
+  characteristics: characteristic[]
 }
 
-type character = {
+export type characteristic = {
+  characteristic : itemCharacteristic
+  items: character[]
+}
+
+export interface itemCharacteristic {
+  _id : string
   title: string
-  check: boolean
+  items: character[]
+}
+
+export type character = {
+  _id : string
+  title: string
+  clicked: boolean
 }
 
 export interface questionsAndAnswers {
-  frequentQuestions: string
+  questions: question
   answers: string
 }
 
-interface image {
+type question =  {
+  _id : string
+  title: string
+}
+
+export interface image {
   _id: string
-  thumbnailUrl: string
-  smallUrl: string
-  mediumUrl: string
-  largeUrl: string
-  createdAt: string
+  i1024: string
+  i800: string
+  i640: string
+  i320: string
 }
 
 interface dias {

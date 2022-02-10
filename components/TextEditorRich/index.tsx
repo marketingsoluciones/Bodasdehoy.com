@@ -1,22 +1,30 @@
 import { useField } from "formik";
 import { FC } from "react";
-//import ReactQuill from "react-quill";
+import dynamic from 'next/dynamic'
+const ReactQuill = dynamic(() => import('react-quill'))
 
 interface propsTextEditor {
   name: string;
+  label: string
 }
-const TextEditorRich: FC<propsTextEditor> = (props) => {
+const TextEditorRich: FC<propsTextEditor> = ({label, ...props}) => {
   const [{ value }, meta, { setValue }] = useField({ ...props });
   return (
     <div className="relative flex flex-col gap-2">
-      {/* <ReactQuill
-        value={value}
+     <span className="flex items-center gap-2">
+        <label className="text-sm text-gray-500">{label}</label>
+        {meta.touched && meta.error ? (
+          <span className="text-red-500 text-xs font-medium ">
+            {meta.error}
+          </span>
+        ) : null}
+      </span>
+      <ReactQuill
+        value={value?? ""}
         onChange={(value) => setValue(value)}
         theme={"snow"}
-      /> */}
-      {meta.touched && meta.error ? (
-          <span className="text-red text-xs absolute bottom-0 left-0 pl-1 transform translate-y-full">{meta.error}</span>
-        ) : null}
+      />
+      
     </div>
   );
 };

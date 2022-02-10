@@ -1,6 +1,8 @@
 import { Markup } from "interweave";
 import Link from "next/link";
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, useState, useEffect } from 'react';
+import { GetStaticPaths, GetStaticProps } from "next";
+
 import { FormListing } from "../../components/Forms";
 import { RatingStars } from "../../components/Home/FeaturedCompanies";
 import {
@@ -28,15 +30,17 @@ import { GraphQL } from "../../utils/Fetching";
 import GoogleMaps from "../../components/GoogleMaps";
 import { InstagramIcon } from "../../components/Icons/index";
 import { BreadCumbs } from "../../components/Surface";
-import { GetStaticPaths, GetStaticProps } from "next";
 import { createURL } from "../../utils/UrlImage";
+import { createSrcSet } from '../../utils/CreateSrcSet';
 
 type Boton = {
   title: string;
   route: string;
   icon: ReactNode;
 };
-const Listing: FC<business> = (props) => {
+
+const Listing: FC<Partial<business>> = (props) => {
+  
   const {
     imgMiniatura,
     businessName,
@@ -50,7 +54,13 @@ const Listing: FC<business> = (props) => {
     instagram,
     youtube,
     servicesList,
-  } = props;
+    characteristics
+  } = props
+
+  useEffect(() => {
+    console.log(props);
+  }, []);
+  
   
   const [sendMessage, setMessage] = useState(false);
   const List: Boton[] = [
@@ -86,15 +96,11 @@ const Listing: FC<business> = (props) => {
         <img
           alt={businessName}
           className="w-full object-cover h-80"
-          src={createURL(imgMiniatura?.mediumUrl)}
-          srcSet={`
-          ${createURL(imgMiniatura?.thumbnailUrl)} 300w,
-          ${createURL(imgMiniatura?.smallUrl)} 994w,
-          ${createURL(imgMiniatura?.mediumUrl)} 1240w
-          `}
+          src={createURL(imgMiniatura?.i640)}
+          srcSet={createSrcSet(imgMiniatura)}
         />
       </div>
-      {/* Imagenes solo para moviles */}
+      
       <div className="mx-auto inset-x-0 my-10 flex flex-col gap-10 ">
         <BreadCumbs />
         <HeaderListing {...props} />
@@ -104,12 +110,8 @@ const Listing: FC<business> = (props) => {
               <img
           alt={businessName}
           className="w-full object-cover h-96 hidden md:block"
-          src={createURL(imgMiniatura?.mediumUrl)}
-          srcSet={`
-          ${createURL(imgMiniatura?.thumbnailUrl)} 300w,
-          ${createURL(imgMiniatura?.smallUrl)} 994w,
-          ${createURL(imgMiniatura?.mediumUrl)} 1240w
-          `}
+          src={createURL(imgMiniatura?.i640)}
+          srcSet={createSrcSet(imgMiniatura)}
         />
               <div className="hidden md:block bg-gray-200 w-full h-max -mt-4 rounded-lg relative z-10 bg-opacity-30">
                 <div className="bg-white rounded-lg py-3 w-full border border-primary flex items-center justify-between px-16">
@@ -132,35 +134,30 @@ const Listing: FC<business> = (props) => {
                 <ContentListing text={content} />
                 <FeaturesListing />
                 <div id="preguntas" className="transition flex flex-col gap-6">
-                  {accessoriesList.length > 0 && (
-                    <Feautres2Listing
-                      title={"Instalaciones"}
-                      proveedor={"La Manga Club"}
-                      data={accessoriesList}
+                    {characteristics?.map((item) => (
+                      <Feautres2Listing
+                      key={item._id}
+                      title={item?.title}
+                      provider={businessName ?? ""}
+                      items={item?.items}
                     />
-                  )}
-                  {servicesList.length > 0 && (
-                    <Feautres2Listing
-                      title={"Servicios"}
-                      proveedor={"La Manga Club"}
-                      data={servicesList}
-                    />
-                  )}
+                    ))}
                 </div>
-                {questionsAndAnswers?.filter((item) => item.answers !== "")
-                  .length > 0 && <FAQ data={questionsAndAnswers} />}
-                <ReviewComponent {...props} />
+                
+                {questionsAndAnswers && questionsAndAnswers?.filter(
+                  (item) => item.answers !== "").length > 0 && (
+                    <>
+                    <FAQ data={questionsAndAnswers} />
+                    <ReviewComponent {...props} />
+                    </>
+                  )}
               </div>
             </section>
             <div className="hidden md:block w-full ...">
               <div className="bg-white shadow md:-mt-12 rounded-xl overflow-hidden p-4">
                 <div className="flex gap-4 items-center text-primary w-full justify-center flex-col">
                   {(() => {
-                    const coordenadas =
-                      coordinates?.length > 0 &&
-                      coordinates[0].split(",").map((item) => parseFloat(item));
-
-                    console.log(coordenadas);
+                    const coordenadas = coordinates && coordinates?.length > 0 && coordinates[0].split(",").map((item) => parseFloat(item));
                     return <GoogleMaps coordenadas={coordenadas} />;
                   })()}
                   <button
@@ -187,14 +184,14 @@ const Listing: FC<business> = (props) => {
                   {facebook && (
                     <ItemContact
                       icon={<FacebookIcon className="w-5 h-5" />}
-                      title={businessName}
+                      title={businessName ?? ""}
                       route={facebook}
                     />
                   )}
                   {instagram && (
                     <ItemContact
                       icon={<InstagramIcon className="w-5 h-5" />}
-                      title={businessName}
+                      title={businessName ?? ""}
                       route={instagram}
                     />
                   )}
@@ -207,7 +204,7 @@ const Listing: FC<business> = (props) => {
                   )}
                 </div>
 
-                {/* <FormListing /> */}
+               
               </div>
             </div>
           </div>
@@ -234,19 +231,15 @@ const ItemContact: FC<{ icon: ReactNode; title: string; route: string }> = ({
   );
 };
 
-const HeaderListing: FC<business> = ({ businessName, imgLogo }) => {
+const HeaderListing: FC<Partial<business>> = ({ businessName, imgLogo }) => {
   return (
     <div className="lg:max-w-screen-lg mx-auto w-full inset-x-0 flex items-center justify-between px-5 sm:px-0">
       <div className="flex items-center gap-2">
       <img
           alt={businessName}
           className="object-cover w-24 h-24 rounded-full border border-primary"
-          src={createURL(imgLogo?.thumbnailUrl)}
-          srcSet={`
-          ${createURL(imgLogo?.thumbnailUrl)} 300w,
-          ${createURL(imgLogo?.smallUrl)} 994w,
-          ${createURL(imgLogo?.mediumUrl)} 1240w
-          `}
+          src={createURL(imgLogo?.i640)}
+          srcSet={createSrcSet(imgLogo)}
         />
         
         <div className="flex flex-col items-start md:items-start justify-center gap-y-2 ">
@@ -259,7 +252,7 @@ const HeaderListing: FC<business> = ({ businessName, imgLogo }) => {
 };
 
 interface propsContentListing {
-  text: string;
+  text: string | undefined;
 }
 
 const ContentListing: FC<propsContentListing> = ({ text }) => {
@@ -271,7 +264,11 @@ const ContentListing: FC<propsContentListing> = ({ text }) => {
           seeMore ? "max-h-full" : "max-h-48 md:max-h-full"
         }`}
       >
-        <Markup className="text-sm text-justify" content={text} />
+        {text ? <Markup className="text-sm text-justify" content={text} /> : (
+          <div className="min-h-40 h-40 flex items-center justify-center text-xs text-gray-400">
+            No content
+          </div>
+        )}
       </div>
       <button
         className="text-primary text-sm w-full justify-end flex gap-2 items-center md:hidden"
@@ -291,7 +288,6 @@ const ContentListing: FC<propsContentListing> = ({ text }) => {
 
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   try {
-    console.log(params.slug);
     const data = await GraphQL.getBusinessBySlug(params.slug);
     return {
       props: data,
@@ -311,7 +307,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
       slug && acc.push({params: {slug}})
       return acc
     }, [])
-    console.log(paths);
     return {
       paths: paths,
       fallback: "blocking",

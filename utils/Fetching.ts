@@ -21,84 +21,121 @@ export const GraphQL = {
     return createUser;
   },
 
-  getBusinessByUID: async (variables: any) => {
-    const query = `query getBusiness($uid : ID){
-      getBusinesses(uid:$uid){
-          _id,
-          userUid,
-          businessName,
-          country,
-          city,
-          zip,
-          address,
-          coordinates,
-          description,
-          categories,
-          subCategories,
-          photos{
-            _id
-            mediumUrl
-          }
-        }
-    }
-    `;
-    const {
-      data: {
-        data: { getBusinesses },
-      },
-    } = await api.graphql({ query, variables });
-    return getBusinesses;
-  },
+  
 
   getBusinessByID: async (variables: any) => {
-    const query = `query getBusiness($_id : ID){
-      getBussines(id:$_id){
-          _id,
-          userUid,
-          businessName,
-          country,
-          city,
-          zip,
-          address,
-          coordinates,
-          description,
-          categories,
-          subCategories,
-          photos{
-            _id
-            mediumUrl
-          }
+    const query = `query ($id: ID) {
+      getOneBusiness(_id: $id){
+        _id
+        slug
+        tags
+        contactName
+        contactEmail
+        businessName
+        webPage
+        landline
+        mobilePhone
+        whatsapp
+        twitter
+        facebook
+        linkedin
+        youtube
+        instagram
+        country
+        city
+        zip
+        address
+        description
+        content
+        subCategories{
+          _id
         }
-    }
-    `;
+        questionsAndAnswers{
+          questions{
+            _id
+            title
+          }
+          answers
+        }
+        coordinates{
+          lat
+          lng
+        }
+        categories{
+          _id
+        }
+        subCategories{
+          _id
+        }
+        imgMiniatura{
+          _id
+          i1024
+          i800
+          i640
+          i320
+        }
+        imgLogo{
+          _id
+          i1024
+          i800
+          i640
+          i320
+        }
+        status
+        createdAt
+        updatedAt
+        characteristics{
+          characteristic{
+            _id
+            title
+            items{
+              _id
+              title
+            }
+          }
+          items{
+            _id
+            title
+          }
+          
+        }
+        imgCarrusel {
+          _id
+          i1024
+          i800
+          i640
+          i320
+        }
+      }
+    }`;
     const {
       data: {
-        data: { getBussines },
+        data: { getOneBusiness },
       },
     } = await api.graphql({ query, variables });
-    return getBussines;
+    return getOneBusiness;
   },
 
-  getPhotosBusinessByID: async (variables: any) => {
-    const query = `query getBusiness($_id : ID){
-      getBussines(id:$_id){
-          _id,
-          photos{
-            _id
-            mediumUrl
-          }
-        }
-    }
-    `;
-    const {
-      data: {
-        data: { getBussines },
-      },
-    } = await api.graphql({ query, variables });
-    return getBussines;
-  },
+  // getPhotosBusinessByID: async (variables: any) => {
+  //   const query = `query getBusiness($_id : ID){
+  //     getBussines(id:$_id){
+  //         _id,
+  //         photos{
+  //           _id
+  //           mediumUrl
+  //         }
+  //       }
+  //   }
+  //   `;
+  //   const {
+  //     data: {
+  //       data: { getBussines },
+  //     },
+  //   } = await api.graphql({ query, variables });
+  //   return getBussines;
+  // },
 
-  //getUser con error en peticion 
+  //getUser con error en peticion
   getUser: async (uid: string) => {
     const query = `query getUser ($uid: ID) {
         getUser(uid:$uid){
@@ -123,34 +160,66 @@ export const GraphQL = {
   },
 
   createBusiness: async (variables: any) => {
-    const query = `mutation getQuestions ($fase: String, $_id: ID, $userUid : ID, $contactName: String, $contactEmail : String, $mobilePhone : String, $businessName: String, $country : String, $city: String, $zip : String, $address : String, $description : String, $subcategories : [String], $questionsAndAnswers : [inputQuestionsAndAnswers] ) {
-      createBusiness(
-        fase : $fase,
-        id: $_id,
-        inputBusiness:{
-          userUid : $userUid,
-          contactName: $contactName,
-          contactEmail: $contactEmail,
-          mobilePhone: $mobilePhone,
-          businessName: $businessName,
-          country: $country,
-          city: $city,
-          zip: $zip,
-          address: $address,
-          description: $description,
-          subCategories: $subcategories,
-          questionsAndAnswers : $questionsAndAnswers
-        }){
-        _id,
-        fase,
-        questionsAndAnswers{
-            answers
-            frequentQuestions
-          },
-        accessories,
-            services,
-      }
-    }`;
+    const query = `mutation ($fase: String,
+      $_id: ID,
+      $userUid : ID,
+      $contactName: String,
+      $contactEmail : String,
+      $mobilePhone : String,
+      $businessName: String!,
+      $country : String,
+      $city: String,
+      $webPage : String,
+      $landline : String,
+      $zip : String,
+      $address : String,
+      $description : String,
+      $subCategories : [inputObjectID]
+      $questionsAndAnswers : [inputQuestionsAndAnswers]
+      $characteristics: [inputCharacteristicsCms]
+      ) {
+          createBusiness(
+            fase : $fase,
+            id: $_id,
+            inputBusiness:{
+              userUid : $userUid,
+              contactName: $contactName,
+              contactEmail: $contactEmail,
+              mobilePhone: $mobilePhone,
+              businessName: $businessName,
+              country: $country,
+              city: $city,
+              zip: $zip,
+              address: $address,
+              description: $description,
+              subCategories: $subCategories,
+              questionsAndAnswers : $questionsAndAnswers
+              characteristics : $characteristics
+              webPage: $webPage
+              landline: $landline
+            }){
+            _id,
+            fase,
+            questionsAndAnswers{
+              questions{
+                _id
+                title
+              }
+              answers
+            }
+            characteristics{
+              characteristic{
+                _id
+                title
+                items{
+                  _id
+                  title
+                }
+              }
+              
+            }
+          }
+        }`;
     const {
       data: {
         data: { createBusiness },
@@ -161,30 +230,47 @@ export const GraphQL = {
 
   getCategories: async () => {
     const query = `query {
-      getCategories{
-        categorie{
+      getCategoryBusiness{
+        total
+        results{
+          _id
           title
-          imgMiniatura
-          imgBanner
+          imgMiniatura{
+            i1024
+            i800
+            i640
+            i320
+          }
+          imgBanner{
+            i1024
+            i800
+            i640
+            i320
+          }
           slug
           description
-        }
-        subCategories{
-          title
-          imgMiniatura
-          imgBanner
-          slug
-          description
+          subCategories{
+            _id
+            title
+            imgMiniatura{
+            i1024
+            i800
+            i640
+            i320
+          }
+            slug
+            description
+          }
         }
       }
     }`;
     const variables = {};
     const {
       data: {
-        data: { getCategories },
+        data: { getCategoryBusiness },
       },
     } = await api.graphql({ query, variables });
-    return getCategories;
+    return getCategoryBusiness;
   },
 
   uploadImage: async (file: any, id: string, use: string) => {
@@ -193,10 +279,10 @@ export const GraphQL = {
       query: `mutation ($file: Upload!, $businessID : String, $use : String) {
                 singleUpload(file: $file, businessID:$businessID, use : $use){
                   _id
-                  thumbnailUrl
-                  smallUrl
-                  mediumUrl
-                  largeUrl
+                  i1024
+                  i800
+                  i640
+                  i320
                   createdAt
                 }
               }
@@ -262,23 +348,31 @@ export const GraphQL = {
           description
           businessName
           imgMiniatura{
-            _id
-            thumbnailUrl
-            smallUrl
-            mediumUrl
+            i1024
+            i800
+            i640
+            i320
           }
         }
         categoriesBusiness{
-          categorie{
             title
-            imgMiniatura
+          	subCategories{
+              _id
+              title
+              imgMiniatura{
+                i1024
+                i800
+                i640
+                i320
+              }
+            }
             slug
-          }
-          subCategories{
-            title
-            imgMiniatura
-            slug
-          }
+            imgMiniatura{
+              i1024
+              i800
+              i640
+              i320
+            }
         }
         post{
           _id
@@ -286,10 +380,8 @@ export const GraphQL = {
           slug
           seoDescription
           content
-          categories
           createdAt
           imgMiniatura{
-            _id
             i1024
             i800
             i640
@@ -297,16 +389,25 @@ export const GraphQL = {
           }
         }
         categoriesPost{
-          categorie{
-            title
-            imgMiniatura
-            slug
+          title
+          imgMiniatura{
+              i1024
+              i800
+              i640
+              i320
           }
-          subCategories {
+          subCategories{
+            _id
             title
-            imgMiniatura
             slug
+            imgMiniatura{
+              i1024
+              i800
+              i640
+              i320
+            }
           }
+          slug
         }
       }
     }`;
@@ -332,9 +433,9 @@ export const GraphQL = {
     return getSlugBusiness;
   },
 
-  getBusinessBySlug: async (slug : string) => {
+  getBusinessBySlug: async (slug: string) => {
     const query = `query ($slug: String){
-      getBussines(slug: $slug){
+      getOneBusiness(slug: $slug){
         _id
           slug
           userUid
@@ -357,50 +458,66 @@ export const GraphQL = {
           address
           description
           content
-          coordinates
-          categories
-          subCategories
+          categories{
+            _id
+          }
+          subCategories{
+            _id
+          }
           questionsAndAnswers{
-            frequentQuestions
+            frequentQuestions{
+              _id
+              title
+            }
             answers
-          }
-          accessories
-          services
-          servicesList{
-            title
-            check
-          }
-          accessoriesList{
-            title
-            check
           }
           imgMiniatura{
             _id
-            thumbnailUrl
-            smallUrl
-            mediumUrl
+            i1024
+            i800
+            i640
+            i320
           }
           imgLogo{
             _id
-            thumbnailUrl
-            smallUrl
-            mediumUrl
+            i1024
+            i800
+            i640
+            i320
           }
           fase
           status
           createdAt
           updatedAt
+          imgCarrusel {
+            _id
+            i1024
+            i800
+            i640
+            i320
+          }
+          characteristics{
+            characteristic{
+              _id
+              title
+              items{
+                _id
+                title
+              }
+            }
+            
+          }
     }}`;
     const variables = {
-      slug
+      slug,
     };
     const {
       data: {
-        data: { getBussines },
+        data: { getOneBusiness },
       },
     } = await api.graphql({ query, variables });
 
-    return getBussines;
+    return getOneBusiness;
   },
 
   getSlugPosts: async () => {
@@ -460,7 +577,7 @@ export const GraphQL = {
     return getAllPost;
   },
 
-  getTopFivePost : async () => {
+  getTopFivePost: async () => {
     const query = `
     query  {
       getAllPost(sort: {createdAt : 1} limit: 5){
@@ -491,13 +608,17 @@ export const GraphQL = {
           updatedAt
         }
       }
-    }`
+    }`;
 
-    const {data: {data : {getAllPost}}} = await api.graphql({query, variables: {}})
-    return getAllPost
+    const {
+      data: {
+        data: { getAllPost },
+      },
+    } = await api.graphql({ query, variables: {} });
+    return getAllPost;
   },
 
-  getMagazine : async () => {
+  getMagazine: async () => {
     const query = `query {
       getMagazine{
         lastestPosts{
@@ -538,10 +659,28 @@ export const GraphQL = {
           }
         }
       }
-    }`
-    const variables = {}
+    }`;
+    const variables = {};
 
-    const {data:{data:{getMagazine}}} = await api.graphql({query, variables})
-    return getMagazine
-  }
+    const {
+      data: {
+        data: { getMagazine },
+      },
+    } = await api.graphql({ query, variables });
+    return getMagazine;
+  },
+  deleteBusiness: async (id : string) => {
+    const query = `mutation ($id : [ID]){
+      deleteBusinesses(id: $id)
+    }`;
+    const variables = {id};
+
+    const {
+      data: {
+        data: { deleteBusinesses },
+      },
+    } = await api.graphql({ query, variables });
+    return deleteBusinesses;
+  },
+
 };

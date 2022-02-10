@@ -6,7 +6,7 @@ import { ReviewIconPrincipal } from "../Icons";
 import FormReviewComponent from "./FormReviewComponent";
 import { business } from "../../interfaces";
 
-const ReviewComponent: FC<business> = ({ businessName }) => {
+const ReviewComponent: FC<Partial<business>> = ({ businessName }) => {
   const [isOpen, setOpen] = useState(false);
   const possibleReviews = [
     { title: "Profesionalidad", value: 5 },

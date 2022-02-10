@@ -2,15 +2,15 @@ import { NextPage } from "next";
 import { useRouter } from "next/router";
 import Loading from "../components/Loading";
 import { AuthContextProvider } from "../context";
-const PagesWithAuth = (WrappedComponent: NextPage) => {
+const PagesWithAuth = (WrappedComponent: any) => {
   return (props: any) => {
     // checks whether we are on client / browser or server.
     if (typeof window !== "undefined") {
       const { user } = AuthContextProvider();
-      const Router = useRouter();
+      const router = useRouter();
 
       if (!user) {
-        Router.replace("/");
+        router.replace("/")
         return <Loading />;
       }
 

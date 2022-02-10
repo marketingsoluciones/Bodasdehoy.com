@@ -18,13 +18,8 @@ interface propsHome {
 }
 
 
-
-
-
-
 const Home: FC<propsHome> = (props) => {
-  
-  
+  console.log(props);
   return (
     <section className="w-full">
       <div className="sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg banner pt-6 md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full">

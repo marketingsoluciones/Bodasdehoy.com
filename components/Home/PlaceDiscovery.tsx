@@ -1,37 +1,49 @@
 import TitleSection from "./TitleSection";
-const Slider = dynamic(() => import("react-slick"), {ssr: false})
-import { FC, memo, useEffect, useState } from 'react';
+const Slider = dynamic(() => import("react-slick"), { ssr: false });
+import { FC, memo, useEffect, useState } from "react";
 import Link from "next/link";
-import dynamic from 'next/dynamic';
-import { category } from "../../interfaces";
+import dynamic from "next/dynamic";
+import { category, fetchCategory, subCategory } from "../../interfaces";
 import { createURL } from "../../utils/UrlImage";
+import { createSrcSet } from "../../utils/CreateSrcSet";
 
 interface propsPlaceDiscovery {
-  data : object[] | undefined
+  data: Partial<category>[];
 }
 const settings = {
-  autoplay: true,
-  dots: true,
-  infinite: true,
-  speed: 500,
+  speed: 200,
+  infinite: false,
   slidesToShow: 4,
+  arrows: false,
   responsive: [
     {
       breakpoint: 600,
       settings: {
         slidesToShow: 2,
+        rows: 2,
+      },
+    },
+
+    {
+      breakpoint: 1200,
+      settings: {
+        slidesToShow: 3,
+        rows: 1,
       },
     },
   ],
 };
 
-export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({data}) => {
-  const [state, setState] = useState<any>([])
+export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({ data }) => {
+  const [state, setState] = useState<Partial<category>>();
 
   useEffect(() => {
-    const findCategory = data?.find((item: any) => item?.categorie.title.toLowerCase() === "lugares para bodas")
-    setState(findCategory)
-  }, [data])
+    const findCategory = data?.find(
+      (item: any) => item?.title?.toLowerCase() === "lugares para bodas"
+    );
+    setState(findCategory);
+  }, [data]);
+
   return (
     <>
       <div className="grid-cards relative w-full -mt-12 md:-mt-52 lg:-mt-96">
@@ -42,11 +54,13 @@ export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({data}) => {
             secondary={"lugares para bodas"}
           />
           <div className="z-20 relative w-full pb-8 pt-4 overflow-hidden ">
-            <Slider {...settings}>
-              {state?.subCategories?.map((item: any, idx: any) => (
-                <PlaceCard key={idx} {...item} />
-              ))}
-            </Slider>
+            {state && state?.subCategories && state.subCategories.length > 0 && (
+              <Slider {...settings}>
+                {state?.subCategories?.map((item: any, idx: any) => (
+                  <PlaceCard key={idx} {...item} />
+                ))}
+              </Slider>
+            )}
           </div>
         </div>
       </div>
@@ -92,21 +106,19 @@ export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({data}) => {
   );
 };
 
-const PlaceCard: FC<category> = memo(({title, imgMiniatura, slug}) => {
+const PlaceCard: FC<subCategory> = memo(({ title, imgMiniatura, slug }) => {
+  
+
   return (
     <div className="px-4">
       <img
-          alt={title}
-          className="w-full h-32 md:h-52 bg-gray-100 rounded-2xl object-center object-cover"
-          src={createURL(imgMiniatura?.thumbnailUrl)}
-          srcSet={`
-          ${createURL(imgMiniatura?.thumbnailUrl)} 300w,
-          ${createURL(imgMiniatura?.smallUrl)} 994w,
-          ${createURL(imgMiniatura?.mediumUrl)} 1240w
-          `}
-        />
-      
-      <Link href={slug !== "" ? slug : "/"} passHref>
+        alt={title}
+        className="w-full h-32 md:h-52 bg-gray-100 rounded-2xl object-center object-cover"
+        src={createURL(imgMiniatura?.i640)}
+        srcSet={createSrcSet(imgMiniatura)}
+      />
+
+      <Link href={slug ?? "/"} passHref>
         <h2 className="px-2 py-1 font-light md:text-base text-sm text-gray-600 tracking-widest capitalize cursor-pointer hover:text-gray-900">
           {title}
         </h2>
@@ -114,5 +126,3 @@ const PlaceCard: FC<category> = memo(({title, imgMiniatura, slug}) => {
     </div>
   );
 });
-
-

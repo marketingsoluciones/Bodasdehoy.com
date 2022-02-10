@@ -29,7 +29,7 @@ export const BreadCumbs: FC<propsBreadCumbs> = ({ className }) => {
 
   return (
     <div
-      className={`lg:max-w-screen-lg mx-auto inset-x-0 flex items-center w-full text-sm text-gray-500 capitalize font-light py-8 w-full hidden sm:block`}
+      className={`lg:max-w-screen-lg mx-auto inset-x-0 flex items-center w-full text-sm text-gray-500 capitalize font-light py-8 w-full hidden sm:flex`}
     >
       <Link href={`/`} passHref>
         <span className="w-max flex items-center">

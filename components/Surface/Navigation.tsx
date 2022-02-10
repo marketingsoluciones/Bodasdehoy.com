@@ -179,7 +179,7 @@ export const Icons = () => {
             </span>
             <span
               className="hidden md:block pl-3 cursor-pointer transition transform hover:-rotate-6 hover:scale-110"
-              onClick={() => router.push("empresas/crear-empresa")}
+              onClick={() => router.push("empresa/crear-empresa")}
             >
               <CompanyIcon className="icon text-gray-200" />
             </span>

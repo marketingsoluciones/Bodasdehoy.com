@@ -1,15 +1,25 @@
 import { SectionForm } from "../../pages/empresa/crear-empresa";
 import { Location2Icon, UserIcon, EuroIcon } from "../Icons";
 import { Checkbox, InputField, SelectField } from "../Inputs";
-import { useState, useEffect, FC, memo, Dispatch, SetStateAction } from 'react';
-import { FieldArray } from "formik";
+import { useState, useEffect, FC, memo, Dispatch, SetStateAction } from "react";
+import { FieldArray, FormikValues, useFormikContext } from "formik";
+import {
+  questionsAndAnswers,
+  characteristic,
+  itemCharacteristic,
+  character
+} from "../../interfaces";
 
 interface propsFormQuestion {
-  values?: any;
-  setValues? : Dispatch<SetStateAction<any>> | undefined
+  data: {
+    characteristics: characteristic[];
+    questionsAndAnswers: questionsAndAnswers[];
+  };
 }
-export const FormQuestion: FC <propsFormQuestion> = ({ values, setValues }) => {
- 
+export const FormQuestion: FC<propsFormQuestion> = ({ data }) => {
+  const { values, setFieldValue } = useFormikContext<FormikValues>();
+     
+  
   return (
     <div className="flex flex-col gap-10">
       <SectionForm>
@@ -56,113 +66,159 @@ export const FormQuestion: FC <propsFormQuestion> = ({ values, setValues }) => {
           </div>
         </div>
         <span className="flex flex-col">
-          <QuestionsComponent data={values?.questionsAndAnswers} />
-          {/* <ServicesAndAccessoriesComponent
-            data={{ services: data?.services, accessories: data?.accessories }}
-            values={values}
-          /> */}
+          <QuestionsComponent data={data?.questionsAndAnswers} />
+          <CharacteristicComponent data={data?.characteristics} />
         </span>
       </SectionForm>
     </div>
   );
 };
 
-type Question = {
-  frequentQuestions : string
-  answers : string
-}
-
-interface propsQuestionComponent {
-  data: Question[];
-}
-const QuestionsComponent: FC<propsQuestionComponent> = memo(({ data }) => {
-  const [questions, setQuestions] = useState(data);
+const QuestionsComponent: FC<{ data: questionsAndAnswers[] }> = ({ data }) => {
+  const { values, setFieldValue } = useFormikContext<FormikValues>();
 
   useEffect(() => {
-    setQuestions(data);
-  }, [data]);
-  
-  return (
-      <div className="w-full flex flex-col gap-3 ">
-        {questions?.map((item, idx) => {
-          return (
-            <div key={idx} className="text-primary text-lg">
-              <h3 className="text-sm text-tertiary font-medium">
-              {item.frequentQuestions}
-              </h3>
-              <InputField name={`questionsAndAnswers.${idx}`} placeholder={""} type="text" question={item?.frequentQuestions}  />
-            </div>
-          )
-        })}
-        </div>
-  );
-});
+    if(values.questionsAndAnswers){
+      const mapResult = values.questionsAndAnswers.reduce((acc:any,item : questionsAndAnswers) => {
+        acc[item.questions._id] = item.answers
+        return acc
+      }, {})
+      setFieldValue("questionsAndAnswers2", mapResult)
+    }
+  }, []) 
 
-interface propsServiceAndAccessoriesComponent {
-  data: {
-    services: string[];
-    accessories: string[];
-  };
-  values: any;
+  
+ 
+  
+  useEffect(() => {
+    if (values.questionsAndAnswers2) {
+      const arrCharac = Object?.entries(values?.questionsAndAnswers2 ?? {});
+      console.log(arrCharac)
+      const reduce = arrCharac?.reduce((acc: any, item: any) => {
+          acc.push({ questions: {_id : item[0]}, answers: item[1] });
+        return acc;
+      }, []);
+      console.log("reduce", reduce)
+      values && setFieldValue("questionsAndAnswers", reduce);
+    }
+  }, [values.questionsAndAnswers2]);
+  
+
+  return (
+    <div className="w-full flex flex-col gap-3 ">
+      {data?.map((item : questionsAndAnswers) => {
+        return (
+          <div key={item.questions._id} className="text-primary text-lg">
+            <InputField
+              name={`questionsAndAnswers2.${item.questions._id}`}
+              type="text"
+              label={item.questions.title}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+interface propsCharacteristicsComponent {
+  data: characteristic[];
 }
 
-const ServicesAndAccessoriesComponent: FC<propsServiceAndAccessoriesComponent> =
-  ({ data: { services, accessories }, values }) => {
-    return (
-      <div className="w-full pt-12">
-        <h2 className="text-primary text-lg font-semibold">
-          Servicios e instalaciones
-        </h2>
-        <p className="text-sm text-gray-500 w-full">
-          Selecciona los servicios e instalaciones que incluyes.
-        </p>
+const CharacteristicComponent: FC<propsCharacteristicsComponent> = ({
+  data,
+}) => {
+  const { values, setFieldValue } = useFormikContext<FormikValues>();
+
+
+  useEffect(() => {
+    if(values.characteristics){
+      const mapResult = values.characteristics.reduce((acc:any,item : characteristic) => {
+        if(item.characteristic._id){
+          acc[item.characteristic._id] = item.items.map((character) => character.title)
+        }
+        return acc
+      }, {})
+      setFieldValue("characteristics2", mapResult)
+    }
+  }, []) 
+
+  useEffect(() => {
+    if (values) {
+      const arrCharac = Object?.entries(values?.characteristics2 ?? {});
+      const reduce = arrCharac?.reduce((acc: any, item: any) => {
+        if (item[1]?.length > 0) {
+          acc.push({ characteristic: {_id : item[0]}, items: item[1]?.map((item: string) => ({title: item})) });
+        }
+        return acc;
+      }, []);
+      values && setFieldValue("characteristics", reduce);
+    }
+  }, [values.characteristics2]);
+
+  return (
+    <div className="w-full pt-12">
+      <h2 className="text-primary text-lg font-semibold">Caracteristicas</h2>
+      <p className="text-sm text-gray-500 w-full">
+        Selecciona las caracteristicas que definan tu empresa.
+      </p>
+      {data?.map((item) => (
         <div className="flex flex-col gap-6 pt-6">
           <FieldArrayWithProps
-            data={services}
-            label={"servicios"}
-            values={values}
-          />
-          <FieldArrayWithProps
-            data={accessories}
-            label={"Instalaciones"}
-            values={values}
+            key={item?.characteristic?._id}
+            data={item?.characteristic?.items}
+            label={item?.characteristic?.title}
+            name={`characteristics2.${item?.characteristic?._id}`}
+            values={values?.characteristics2 && values?.characteristics2[item.characteristic._id]}
           />
         </div>
-      </div>
-    );
-  };
+      ))}
+    </div>
+  );
+};
 
 //
 
 interface propsFieldArrayWithProps {
-  data: string[];
+  data: character[];
   label: string;
-  values: any;
+  name: string
+  values : string[]
 }
 const FieldArrayWithProps: FC<propsFieldArrayWithProps> = ({
   data,
   label,
-  values,
+  name,
+  values
 }) => {
   const [dataArray, setDataArray] = useState(data ?? []);
 
   useEffect(() => {
     setDataArray(data);
   }, [data]);
+
+  const handleRemove = (values: string[], id: string) => {
+    return values.findIndex((item: string) => item === id);
+  };
+
   return (
     <div className="w-full">
       <h3 className="text-primary font-medium capitalize">{label}</h3>
-      <FieldArray name={label}>
-        {({ insert, remove, push }) => (
+      <FieldArray name={name}>
+        {({ remove, push }) => (
           <div className="grid grid-cols-3 gap-3 py-2">
-            {dataArray?.map((item: any, idx) => (
+            {dataArray?.map((item: character) => (
               <Checkbox
-                key={idx}
-                checked={values[label] && values[label].includes(item)}
-                label={item}
-                name={item}
+                key={item._id}
+                checked={values?.includes(item.title)}
+                label={item.title}
+                name={item.title}
                 onChange={(e: any) =>
-                  e.target.checked ? push(item) : remove(item)
+                  e.target.checked
+                    ? push(item.title)
+                    : remove(
+                        handleRemove(values, item.title)
+                      )
                 }
               />
             ))}

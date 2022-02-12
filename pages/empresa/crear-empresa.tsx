@@ -151,8 +151,6 @@ const FormikStepper = ({
         const createBusinessAndGetQuestions = async () => {
           const valuesModified = {...values}
 
-          delete valuesModified.imgLogo
-          delete valuesModified.imgMiniatura
           delete valuesModified.imgBanner
           delete valuesModified.updatedAt
           delete valuesModified.createdAt
@@ -164,9 +162,13 @@ const FormikStepper = ({
               ...valuesModified,
               mobilePhone: typeof values.mobilePhone === "number" ? JSON.stringify(values.mobilePhone) : values.mobilePhone,
               landline: typeof values.landline === "number" ? JSON.stringify(values.landline) : values.landline,
-            });
-           setData(data)
-           await actions.setFieldValue("_id", values._id ?? data?._id );
+            }, "formData");
+            setData(data)
+            console.log("hola",data)
+             await actions.setFieldValue("_id", values._id ?? data?._id );
+             await actions.setFieldValue("imgMiniatura", data.imgMiniatura );
+             await actions.setFieldValue("imgLogo", data.imgLogo );
+           
          // }
         };
 

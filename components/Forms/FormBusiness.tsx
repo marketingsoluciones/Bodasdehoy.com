@@ -14,6 +14,7 @@ import { fetchApi, queries } from '../../utils/Fetching';
 import { subCategory } from '../../interfaces/index';
 import SelectFieldCoutries from "../Inputs/SelectFieldCoutries";
 import GoogleMapsField from "../GoogleMaps/GoogleMapsField";
+import UploadImage from '../Inputs/UploadImage';
 const TextEditorRich = dynamic(() => import("../TextEditorRich"), {
   ssr: false,
 });
@@ -87,7 +88,16 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
         <div className="flex flex-col w-full gap-3">
           <h2 className="text-primary text-lg font-semibold">Tu empresa</h2>
           <div className="grid grid-cols-2 gap-4 text-gray-300">
+          <UploadImage 
+                label={"Imagen Logo"}
+                name={"imgLogo"}
+              />
+              <UploadImage 
+                label={"Imagen Miniatura"}
+                name={"imgMiniatura"}
+              />
             <span className="relative col-span-2">
+              
               <InputField
                 name={"businessName"}
                 placeholder={"Joyeria Montilla"}

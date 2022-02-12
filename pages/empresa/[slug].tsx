@@ -31,7 +31,6 @@ import { InstagramIcon } from "../../components/Icons/index";
 import { BreadCumbs } from "../../components/Surface";
 import { createURL } from "../../utils/UrlImage";
 import { createSrcSet } from '../../utils/CreateSrcSet';
-import GoogleMaps from "../../components/GoogleMaps/GoogleMapsView";
 import GoogleMapsView from '../../components/GoogleMaps/GoogleMapsView';
 import ChatComponentView from "../../components/Listing/ChatComponentView";
 
@@ -155,25 +154,19 @@ const Listing: FC<business> = (props) => {
                     <FAQ data={questionsAndAnswers} />
                     </>
                   )}
-                  <div className="rounded-xl overflow-hidden w-full h-64">
+                  <div id={"maps"} className="rounded-xl overflow-hidden w-full h-64">
                   <GoogleMapsView {...coordinates}/>
                   </div>
                   <hr />
                   <ReviewComponent {...props} />
               </div>
             </section>
-            <div className="hidden md:block w-full ...">
-              <div className="bg-white shadow md:-mt-12 rounded-xl overflow-hidden p-4">
+            <div className="hidden md:block w-full ... relative ">
+              <div className="bg-white shadow md:-mt-12 rounded-xl  p-4 relative">
                 <div className="flex gap-4 items-center text-primary w-full justify-center flex-col">
                 <ChatComponentView {...props} />
                
-                  {/* <button
-                    type="button"
-                    className=" py-2 border-primary text-primary bg-white rounded-xl border hover:bg-primary hover:text-white transition flex items-center gap-2 text-sm w-full justify-center"
-                  >
-                    <Isologo className="w-5 h-5" />
-                    Consultar disponibilidad
-                  </button> */}
+                  
                   {webPage && (
                     <ItemContact
                       icon={<WebSiteIcon className="w-5 h-5" />}
@@ -210,11 +203,11 @@ const Listing: FC<business> = (props) => {
                     />
                   )}
                 </div>
-        <p className="text-xs text-gray-500 text-center pt-3"><strong>ID: </strong> {_id}</p>
 
                
               </div>
             </div>
+        <p className="text-xs w-full text-gray-300 -mt-10"><strong>Business ID: </strong> {_id}</p>
           </div>
         </div>
       </div>

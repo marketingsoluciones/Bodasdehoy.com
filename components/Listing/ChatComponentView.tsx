@@ -2,10 +2,15 @@ import React, { FC } from "react";
 import { business } from "../../interfaces/index";
 import { createURL } from "../../utils/UrlImage";
 import { createSrcSet } from "../../utils/CreateSrcSet";
+import { Isologo } from "../Icons/index";
 
-const ChatComponentView: FC<business> = ({ contactName, businessName, imgLogo }) => {
+const ChatComponentView: FC<business> = ({
+  contactName,
+  businessName,
+  imgLogo,
+}) => {
   return (
-    <div className="w-full">
+    <div className="w-full border-b border-gray-200 pb-4">
       <div className="relative flex items-center p-3 border-b border-gray-200">
         <span className="relative w-max">
           <img
@@ -19,53 +24,31 @@ const ChatComponentView: FC<business> = ({ contactName, businessName, imgLogo })
           <span className="absolute w-3 h-3 bg-green-600 rounded-full -right-0 border border-white top-0" />
         </span>
         <div className="flex ml-2 items-start flex-col justify-end">
-        <span className="block font-bold text-gray-600 capitalize">
-          {contactName === "" ? businessName : contactName}
-        </span>
-            <span className="text-xs text-gray-400">
-                en linea
-            </span>
+          <span className="block font-bold text-gray-600 capitalize">
+            {contactName === "" ? businessName : contactName}
+          </span>
+          <span className="text-xs text-gray-400">en linea</span>
         </div>
       </div>
 
-      <div className="relative w-full p-6 overflow-y-auto h-[40rem] text-xs">
-        <ul className="space-y-2">
-          <li className="flex justify-start">
-            <div className="relative max-w-xl px-3 py-1 text-gray-700 rounded shadow">
-              <span className="block">Hola</span>
-            </div>
-          </li>
-          <li className="flex justify-end">
-            <div className="relative max-w-xl px-3 py-1 text-gray-700 bg-gray-100 rounded shadow">
-              <span className="block">Holaaa!</span>
-            </div>
-          </li>
-          <li className="flex justify-end">
-            <div className="relative max-w-xl px-3 py-1 text-gray-700 bg-gray-100 rounded shadow">
-              <span className="block">como estas?</span>
-            </div>
-          </li>
-          <li className="flex justify-start">
-            <div className="relative max-w-xl px-3 py-1 text-gray-700 rounded shadow">
-              <span className="block">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit.{" "}
-              </span>
-            </div>
-          </li>
-        </ul>
-      </div>
 
-      <div className="flex items-center justify-between w-full py-3 border-t border-gray-300">
+      <div className="flex flex-col items-center justify-between w-full py-3">
+      <span className="flex items-center text-primary text-sm gap-2 py-2 justify-start w-full">
+        <Isologo className="w-4 h-4" />
+        Envia un mensaje al proveedor
+      </span>
         <input
           type="text"
-          className="text-gray-700 text-xs block w-full py-2 pl-4 mx-3 bg-gray-100 rounded-lg focus:outline-none  border-gray-300"
+          className="text-gray-700 text-sm block w-full py-2 pl-4 mx-3 bg-gray-100 rounded-lg focus:outline-none  border-gray-300"
           name="mensaje"
+          placeholder="Hola, ¿estas disponible?"
           required
         />
 
-        <button type="submit">
+        <button className="flex items-center text-white bg-primary w-full mt-2 text-sm p-2 flex justify-center rounded-lg hover:opacity-90 transition hover:text-gray-100 gap-1" type="submit">
+          Enviar mensaje
           <svg
-            className="w-5 h-5 text-gray-500 origin-center transform rotate-90"
+            className="w-4 h-4 origin-center transform rotate-90"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
             fill="currentColor"

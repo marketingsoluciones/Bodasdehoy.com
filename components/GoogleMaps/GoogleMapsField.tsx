@@ -5,18 +5,14 @@ import {
 } from "@react-google-maps/api";
 import { useField } from "formik";
 import { useCallback, useState, useRef, FC, useEffect } from "react";
-import usePlacesAutocomplete,{getGeocode, getLatLng} from 'use-places-autocomplete'
-import usePlacesAutoComplete from 'use-places-autocomplete';
+import usePlacesAutoComplete,{getGeocode, getLatLng} from 'use-places-autocomplete'
 
 const mapContainerStyle = {
   width: "100%",
   height: "300px",
 };
 
-const center = {
-  lat: 40.416729,
-  lng: -3.703339,
-};
+
 
 const options = {
   disableDefaultUI: true,
@@ -34,13 +30,22 @@ interface propsGoogleMapsField {
 }
 const GoogleMapsField: FC<propsGoogleMapsField> = ({ label, ...props }) => {
   const [ libraries ] = useState(['places']);
+  const [marker, setMarker] = useState<marker | null>(null);
+  const [center, setCenter] = useState<marker>({
+    lat: 40.416729,
+    lng: -3.703339,
+  })
+
   const [field, meta, { setValue }] = useField<marker>({ ...props });
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_API_KEY_CONSOLE_GOOGLE ?? "",
     //@ts-ignore
     libraries,
   });
-  const [marker, setMarker] = useState<marker | null>(null);
+
+  useEffect(() => {
+    field?.value?.lat && setCenter(field.value)
+  }, [])
 
   const onMapClick = useCallback((event: any) => {
     setValue({
@@ -74,13 +79,13 @@ const GoogleMapsField: FC<propsGoogleMapsField> = ({ label, ...props }) => {
           </span>
 
               <div className="relative w-full">
-                <Search panTo={panTo} />
+                <Search panTo={panTo} center={center} />
                 <div className="pt-3">
                   <p className="text-xs font-bold text-primary pb-2 text-center">Selecciona la ubicación con el click derecho</p>
           <GoogleMap
             mapContainerStyle={mapContainerStyle}
-            zoom={10}
-            center={field.value.lat ? field.value : center}
+            zoom={18}
+            center={center}
             options={options}
             onRightClick={onMapClick}
             onLoad={onMapLoad}
@@ -99,7 +104,7 @@ const GoogleMapsField: FC<propsGoogleMapsField> = ({ label, ...props }) => {
 export default GoogleMapsField;
 
 
-const Search : FC <any> = ({panTo}) => {
+const Search : FC <any> = ({panTo, center}) => {
   const [selected, setSelected] = useState <google.maps.GeocoderRequest>()
   const {ready, value, suggestions: {status, data}, setValue, clearSuggestions} = usePlacesAutoComplete({
     requestOptions: {

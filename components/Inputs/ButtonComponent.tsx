@@ -1,10 +1,5 @@
-import { ButtonHTMLAttributes, FC, MouseEventHandler } from "react"
+import { ButtonHTMLAttributes, FC } from "react"
 
-const types = {
-    submit : "",
-    button : "",
-    reset : ""
-}
 
 const sizes = {
     sm: "text-sm",
@@ -15,7 +10,6 @@ const sizes = {
 
 interface propsButton extends ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: string
-    type? : keyof typeof types,
     size ? : keyof typeof sizes
     
  }

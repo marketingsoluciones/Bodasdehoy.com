@@ -88,12 +88,9 @@ const QuestionsComponent: FC<{ data: questionsAndAnswers[] }> = ({ data }) => {
   }, []) 
 
   
- 
-  
   useEffect(() => {
     if (values.questionsAndAnswers2) {
       const arrCharac = Object?.entries(values?.questionsAndAnswers2 ?? {});
-      console.log(arrCharac)
       const reduce = arrCharac?.reduce((acc: any, item: any) => {
           acc.push({ questions: {_id : item[0]}, answers: item[1] });
         return acc;
@@ -144,7 +141,7 @@ const CharacteristicComponent: FC<propsCharacteristicsComponent> = ({
   }, []) 
 
   useEffect(() => {
-    if (values) {
+    if (values.characteristics2) {
       const arrCharac = Object?.entries(values?.characteristics2 ?? {});
       const reduce = arrCharac?.reduce((acc: any, item: any) => {
         if (item[1]?.length > 0) {

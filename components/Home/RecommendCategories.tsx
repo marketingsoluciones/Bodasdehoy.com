@@ -1,4 +1,4 @@
-import { FC, memo, ReactNode, useState, useEffect } from "react";
+import { FC, memo, useState, useEffect } from "react";
 import Slider from "react-slick";
 import { useHover } from "../../hooks";
 import {
@@ -12,6 +12,8 @@ import {
 } from "../Icons";
 import TitleSection from "./TitleSection";
 import { category } from "../../interfaces/index";
+import { createURL } from "../../utils/UrlImage";
+import Link from "next/link";
 
 const settings = {
   dots: true,
@@ -69,13 +71,10 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
         <Slider {...settings}>
           {categories &&
             categories.length > 0 &&
-            categories?.map((item: Partial<category>, idx: number) => (
+            categories?.map((item: Partial<category>) => (
               <Category
-                key={idx}
-                title={item.title}
-                //@ts-ignore
-                icon={icons[item?.title?.toLowerCase()]}
-                route={item.slug}
+                key={item._id}
+                {...item}
               />
             ))}
         </Slider>
@@ -95,19 +94,21 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
 
 export default RecommendCategories;
 
-interface propsCategory {
-  title?: string;
-  icon?: ReactNode;
-  route: string | undefined;
-}
-const Category: FC<propsCategory> = memo(({ icon, title, route }) => {
+
+const Category: FC<Partial<category>> = memo(({ icon, title, slug }) => {
   const [hoverRef, isHovered] = useHover();
+  
   return (
+    <>
     <div
       ref={hoverRef}
-      className={`md:w-28 md:h-28 w-20 h-20 rounded-full bg-primary hover:bg-color-base transition duration-300 flex items-center justify-center p-3`}
+      className={`md:w-28 md:h-28 w-20 h-20 rounded-full bg-primary hover:bg-color-base transition duration-300 flex items-center justify-center p-3 relative`}
     >
-      <span className={`absolute ${isHovered ? "hidden" : ""}`}>{icon}</span>
+      
+      <svg className={` ${isHovered ? "hidden" : ""} transition duration-200 w-1/2 h-1/2`}>       
+        <image  href={createURL(icon?.i320)} className="w-full h-full" />    
+    </svg>
+    <Link href={slug?? ""}>
       <p
         className={`w-max h-max text-tertiary font-medium transition cursor-pointer ${
           isHovered ? "" : "hidden"
@@ -115,6 +116,16 @@ const Category: FC<propsCategory> = memo(({ icon, title, route }) => {
       >
         {title}
       </p>
+    
+    </Link>
     </div>
+    <style jsx>
+      {`
+      image {
+          filter: invert(100%)  saturate(0%)  brightness(100%) contrast(100%);
+      }
+      `}
+    </style>
+    </>
   );
 });

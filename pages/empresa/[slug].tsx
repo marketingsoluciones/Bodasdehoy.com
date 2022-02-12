@@ -26,12 +26,13 @@ import FloatingButton from "../../components/Listing/FloatingButton";
 import PromoActiva from "../../components/Listing/PromoActiva";
 import ReviewComponent from "../../components/Listing/ReviewComponent";
 import { business } from "../../interfaces";
-import { GraphQL } from "../../utils/Fetching";
-import GoogleMaps from "../../components/GoogleMaps";
+import { fetchApi, queries } from '../../utils/Fetching';
 import { InstagramIcon } from "../../components/Icons/index";
 import { BreadCumbs } from "../../components/Surface";
 import { createURL } from "../../utils/UrlImage";
 import { createSrcSet } from '../../utils/CreateSrcSet';
+import GoogleMaps from "../../components/GoogleMaps/GoogleMapsView";
+import GoogleMapsView from '../../components/GoogleMaps/GoogleMapsView';
 
 type Boton = {
   title: string;
@@ -54,20 +55,19 @@ const Listing: FC<Partial<business>> = (props) => {
     instagram,
     youtube,
     servicesList,
-    characteristics
+    characteristics,
+    _id
   } = props
 
-  useEffect(() => {
-    console.log(props);
-  }, []);
+
   
   
   const [sendMessage, setMessage] = useState(false);
   const List: Boton[] = [
     { title: "Descripción", route: "#description", icon: <DocsIcon /> },
-    { title: "Opiniones", route: "#opiniones", icon: <OpinionesIcon /> },
-    { title: "Comó llegar", route: "#como-llegar", icon: <Location2Icon /> },
-    { title: "Preguntas", route: "#preguntas", icon: <PreguntasIcon /> },
+    { title: "Opiniones", route: "#reviews", icon: <OpinionesIcon /> },
+    { title: "Comó llegar", route: "#maps", icon: <Location2Icon /> },
+    { title: "Preguntas", route: "#questions", icon: <PreguntasIcon /> },
   ];
 
   return (
@@ -101,8 +101,8 @@ const Listing: FC<Partial<business>> = (props) => {
         />
       </div>
       
-      <div className="mx-auto inset-x-0 my-10 flex flex-col gap-10 ">
-        <BreadCumbs />
+      <div id={"listing"} className="mx-auto inset-x-0 flex flex-col gap-6 mt-6">
+        {/* <BreadCumbs /> */}
         <HeaderListing {...props} />
         <div className="md:bg-white w-full px-5">
           <div className="lg:max-w-screen-lg inset-x-0 mx-auto w-full grid md:grid-cols-3 gap-10 ">
@@ -117,49 +117,55 @@ const Listing: FC<Partial<business>> = (props) => {
                 <div className="bg-white rounded-lg py-3 w-full border border-primary flex items-center justify-between px-16">
                   {List.map((item, idx) => (
                     <Link key={idx} href={item.route} passHref>
-                      <div className="flex items-center text-gray-500 text-sm gap-2 hover:scale-125 transition transform cursor-pointer">
+                      <div className="flex items-center text-gray-500 text-sm gap-2 hover:scale-105 transition transform cursor-pointer">
                         {item?.icon}
                         {item?.title}
                       </div>
                     </Link>
                   ))}
                 </div>
-                <div className="w-full h-full flex items-center justify-center gap-6 py-6">
+                {/* Hay que hacerlo para que quede condicional */}
+                {/* <div className="w-full h-full flex items-center justify-center gap-6 py-6">
                   <PromoActiva />
                   <svg className="h-12 w-0.5 bg-gray-300" />
                   <EmpresaDestacada />
-                </div>
+                </div> */}
               </div>
-              <div className="flex flex-col flex-wrap gap-14 py-6 ">
+              <div className="flex flex-col flex-wrap gap-12 py-6 ">
                 <ContentListing text={content} />
-                <FeaturesListing />
-                <div id="preguntas" className="transition flex flex-col gap-6">
+                <hr />
+               
+                {/* <FeaturesListing /> */}
+                <div id="questions" className="transition flex flex-col gap-6">
                     {characteristics?.map((item) => (
                       <Feautres2Listing
                       key={item.characteristic._id}
                       title={item?.characteristic.title}
                       provider={businessName ?? ""}
-                      items={item?.items}
+                      items={item?.characteristic.items}
                     />
                     ))}
                 </div>
+                <hr />
                 
                 {questionsAndAnswers && questionsAndAnswers?.filter(
                   (item) => item.answers !== "").length > 0 && (
                     <>
                     <FAQ data={questionsAndAnswers} />
-                    <ReviewComponent {...props} />
                     </>
                   )}
+                  <div className="rounded-xl overflow-hidden w-full h-64">
+                  <GoogleMapsView {...coordinates}/>
+                  </div>
+                  <hr />
+                  <ReviewComponent {...props} />
               </div>
             </section>
             <div className="hidden md:block w-full ...">
               <div className="bg-white shadow md:-mt-12 rounded-xl overflow-hidden p-4">
                 <div className="flex gap-4 items-center text-primary w-full justify-center flex-col">
-                  {/* {(() => {
-                    const coordenadas = coordinates && coordinates?.length > 0 && coordinates[0].split(",").map((item) => parseFloat(item));
-                    return <GoogleMaps coordenadas={coordenadas} />;
-                  })()} */}
+                CHAT
+               
                   <button
                     type="button"
                     className=" py-2 border-primary text-primary bg-white rounded-xl border hover:bg-primary hover:text-white transition flex items-center gap-2 text-sm w-full justify-center"
@@ -203,6 +209,7 @@ const Listing: FC<Partial<business>> = (props) => {
                     />
                   )}
                 </div>
+        <p className="text-xs text-gray-500 text-center pt-3"><strong>ID: </strong> {_id}</p>
 
                
               </div>
@@ -210,6 +217,7 @@ const Listing: FC<Partial<business>> = (props) => {
           </div>
         </div>
       </div>
+      
     </>
   );
 };
@@ -237,13 +245,13 @@ const HeaderListing: FC<Partial<business>> = ({ businessName, imgLogo }) => {
       <div className="flex items-center gap-2">
       <img
           alt={businessName}
-          className="object-cover w-24 h-24 rounded-full border border-primary"
-          src={createURL(imgLogo?.i640)}
+          className="object-cover w-24 h-24 rounded-full border-2 border-primary"
+          src={imgLogo?.i640 ?? "/placeholder/logo.png"}
           srcSet={createSrcSet(imgLogo)}
         />
         
         <div className="flex flex-col items-start md:items-start justify-center gap-y-2 ">
-          <h1 className="md:text-4xl text-3xl text-tertiary">{businessName}</h1>
+          <h1 className="md:text-4xl text-3xl text-tertiary pl-1">{businessName}</h1>
           <RatingStars rating={4} size={"lg"} />
         </div>
       </div>
@@ -258,7 +266,7 @@ interface propsContentListing {
 const ContentListing: FC<propsContentListing> = ({ text }) => {
   const [seeMore, setSeeMore] = useState(false);
   return (
-    <div className="max-h-full w-full">
+    <div id="description" className="max-h-full w-full">
       <div
         className={`w-full text-tertiary overflow-hidden h-auto ${
           seeMore ? "max-h-full" : "max-h-48 md:max-h-full"
@@ -288,7 +296,7 @@ const ContentListing: FC<propsContentListing> = ({ text }) => {
 
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   try {
-    const data = await GraphQL.getBusinessBySlug(params.slug);
+    const data = await fetchApi(queries.getOneBusiness, {slug : params.slug});
     return {
       props: data,
     };
@@ -302,7 +310,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
-    const data = await GraphQL.getSlugBusiness();
+    const data = await fetchApi(queries.getSlugBusiness);
     const paths = data.reduce((acc: {params: {slug : string}}[], slug : string) => {
       slug && acc.push({params: {slug}})
       return acc

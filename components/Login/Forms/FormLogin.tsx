@@ -5,7 +5,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { InputField, ButtonComponent } from "../../Inputs";
 import * as yup from "yup";
 import router from "next/router";
-import { GraphQL } from '../../../utils/Fetching';
+import { GraphQL, fetchApi, queries } from '../../../utils/Fetching';
 import { useToast } from '../../../hooks/useToast';
 import { AuthContextProvider } from "../../../context";
 
@@ -38,7 +38,7 @@ const FormLogin: FC = () => {
         values.password
       );
       if(res.user){
-        const moreInfo = await GraphQL.getUser(res.user.uid)
+        const moreInfo = await fetchApi(queries.getUser, {uid : res.user.uid})
         setUser({...res.user, ...moreInfo});
       }
       localStorage.setItem('auth', (await res?.user?.getIdTokenResult())?.token)

@@ -25,19 +25,19 @@ const useFetch = ({query, variables, config = {}} : propsUseFetch) => {
       setLoading(true)
       setError(false)
         const {data : {data}} = await api.graphql({query, variables}, config)
-        setData(Object.values(data)[0])
+        isMounted.current && setData(Object.values(data)[0])
         console.log(data)
     } catch (error) {
         isMounted.current && setError(true)
         console.log(error)
     } finally {
-        setLoading(false)
+      isMounted.current && setLoading(false)
     }
   }
 
 
   useEffect(() => {
-    fetchData()
+    isMounted.current && fetchData()
   }, [query]);
   
     return [data, loading, error, fetchData]

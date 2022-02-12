@@ -4,7 +4,7 @@ const Slider : any = dynamic(() : any => import('react-slick'))
 
 import Image from "next/image";
 import dynamic from 'next/dynamic';
-import { GraphQL } from '../utils/Fetching';
+import { fetchApi, queries } from '../utils/Fetching';
 import { business, fetchCategory, Post } from '../interfaces';
 import { AdsApp, FeaturedCompanies, Magazine, PlaceDiscovery, PodcastList } from '../components/Home';
 import RecommendCategories from '../components/Home/RecommendCategories';
@@ -19,7 +19,6 @@ interface propsHome {
 
 
 const Home: FC<propsHome> = (props) => {
-  console.log(props);
   return (
     <section className="w-full">
       <div className="sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg banner pt-6 md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full">
@@ -176,11 +175,11 @@ const ButtonProviders = () => {
 
 export async function getServerSideProps() {
   try {
-    console.log("empezo")
-    console.time("hola")
-    const data = await GraphQL.getHome()
-    console.timeEnd("hola")
-    return { props: data };
+    console.time("getHome")
+    const data = await fetchApi(queries.getHome)
+    console.log(data)
+    console.timeEnd("getHome")
+    return { props: data ?? {} };
   } catch (error) {
     console.log(error);
     return {

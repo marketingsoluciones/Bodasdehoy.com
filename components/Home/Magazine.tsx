@@ -181,7 +181,6 @@ export const GridPost: FC<{ data: Partial<Post>[] }> = ({ data }) => {
 export const PostComponent: FC<Partial<Post>> = memo(
   (props) => {
     const { title, content, updatedAt, imgMiniatura, slug } = props
-    console.log(props)
     return (
       <div className="w-60 h-full mx-auto my-6 inset-x-0 bg-white rounded-3xl overflow-hidden hover:shadow-xl hover:opacity-95 transition-all cursor-pointer duration-400 border ">
         

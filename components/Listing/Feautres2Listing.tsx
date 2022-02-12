@@ -16,7 +16,7 @@ const Feautres2Listing : FC <Partial<FeaturesListingProps>> = ({provider, title,
       </h2>
       <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
           {items?.map((item,idx) => (
-              <Feature key={idx} text={item.title} check={true} />
+              <Feature key={idx} text={item.title} clicked={item.clicked} />
           ))}
       </div>
     </div>
@@ -25,14 +25,14 @@ const Feautres2Listing : FC <Partial<FeaturesListingProps>> = ({provider, title,
 
 export default Feautres2Listing;
 
-export const Feature = ({ text, check = false }: { text: string, check?: boolean }) => {
+export const Feature = ({ text, clicked = false }: { text: string, clicked?: boolean }) => {
   const [hoverRef, isHovered] = useHover()
     return (
     <div ref={hoverRef} className="flex gap-2 items-center text-sm">
       <div
-        className={`${check && isHovered ? "bg-primary" : "bg-white"} w-5 h-5 rounded-full grid place-items-center ${check && isHovered ? "text-white" : "text-primary"} transition border-2 ${check ? "border-primary" : "border-gray-500"}`}
+        className={`${clicked && isHovered ? "bg-primary" : "bg-white"} w-5 h-5 rounded-full grid place-items-center ${clicked && isHovered ? "text-white" : "text-primary"} transition border-2 ${clicked ? "border-primary" : "border-gray-500"}`}
       >
-        {check && <CheckIcon className="w-4 h-4" />}
+        {clicked && <CheckIcon className="w-4 h-4" />}
       </div>
       <p className="text-gray-500 capitalize">{text}</p>
     </div>

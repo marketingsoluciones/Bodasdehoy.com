@@ -19,6 +19,7 @@ export type category = {
   title: string
   imgMiniatura : image
   imgBanner : image
+  icon : image
   slug : string
   description : string
   subCategories : subCategory[]
@@ -49,7 +50,7 @@ export interface business {
   address: string
   description: string
   content: string
-  coordinates: string[]
+  coordinates: coordinates
   categories: string[]
   groupSubCategories: string[]
   subCategories: subCategory[]
@@ -67,6 +68,11 @@ export interface business {
   createdAt: number
   updatedAt: number
   characteristics: characteristic[]
+}
+
+export type coordinates = {
+  lat : number
+  lng : number
 }
 
 export type characteristic = {

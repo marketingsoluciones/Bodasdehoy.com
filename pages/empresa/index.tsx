@@ -9,9 +9,11 @@ import { createSrcSet } from "../../utils/CreateSrcSet";
 import { createURL } from "../../utils/UrlImage";
 import useFetch from "../../hooks/useFetch";
 import { LoadingItem } from "../../components/Loading";
-import { GraphQL } from '../../utils/Fetching';
+import { GraphQL, fetchApi, queries } from '../../utils/Fetching';
 import { useToast } from '../../hooks/useToast';
 import { useRouter } from 'next/router';
+import { DeleteIcon, EditIcon, EmptyIcon, ViewIcon } from "../../components/Icons";
+import IconButton from '../../components/Inputs/IconButton';
 
 const query = `query ($uid : ID){
   getBusinesses(uid:$uid){
@@ -20,6 +22,7 @@ const query = `query ($uid : ID){
       businessName,
       country,
       city,
+      slug,
       zip,
       fase
       address,
@@ -56,7 +59,12 @@ const Empresas = () => {
                 <BusinessItem key={item._id} {...item} refreshData={fetchy} />
           ))
         )}
-        {data?.length === 0 && "No hay data"}
+        {data?.length === 0 && (
+          <div className="w-full h-40 min-h-40 flex items-center justify-center text-gray-500 gap-5">
+            <EmptyIcon className="w-10 h-10 text-gray-500" />
+            <p>No hay empresas creadas</p>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -68,12 +76,12 @@ interface propsBusinessItem extends business {
   refreshData : CallableFunction
 }
 
-const BusinessItem: FC<propsBusinessItem> = ({ businessName, imgLogo, _id, refreshData, subCategories, fase }) => {
+const BusinessItem: FC<propsBusinessItem> = ({ businessName, imgLogo, _id, refreshData, subCategories, fase, slug }) => {
   const toast = useToast()
   const router = useRouter()
   const handleRemove = async () => {
     try {
-      await GraphQL.deleteBusiness(_id)
+      await fetchApi(queries.deleteBusiness, {id : _id})
       toast("success", "Eliminado con exito" )
       refreshData()
     } catch (error) {
@@ -114,9 +122,16 @@ const BusinessItem: FC<propsBusinessItem> = ({ businessName, imgLogo, _id, refre
           ))}
         </div>
       </div>
-      <div className="flex items-center gap-3">
-        <ButtonComponent size={"xs"} onClick={() => router.push(`/empresa/crear-empresa?id=${_id}`)}>Editar</ButtonComponent>
-        <ButtonComponent size={"xs"} variant={"alternative"} onClick={handleRemove}>Borrar</ButtonComponent>
+      <div className="flex items-center gap-1.5">
+        <IconButton onClick={() => router.push(`/empresa/${slug}`)} size={"sm"} variant={"primary"}>
+          <ViewIcon />
+        </IconButton>
+        <IconButton onClick={() => router.push(`/empresa/crear-empresa?id=${_id}`)} size={"sm"} variant={"primary"}>
+          <EditIcon />
+        </IconButton>
+        <IconButton onClick={handleRemove} size={"sm"} variant={"primary"}>
+          <DeleteIcon/>
+        </IconButton>
       </div>
     </div>
   );

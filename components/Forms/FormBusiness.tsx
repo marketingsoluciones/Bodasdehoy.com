@@ -11,9 +11,10 @@ import {
   CompanyIcon,
   WebSiteIcon,
 } from "../Icons";
-import { GraphQL } from "../../utils/Fetching";
+import { GraphQL, fetchApi, queries } from '../../utils/Fetching';
 import { subCategory } from '../../interfaces/index';
 import SelectFieldCoutries from "../Inputs/SelectFieldCoutries";
+import GoogleMapsField from "../GoogleMaps/GoogleMapsField";
 const TextEditorRich = dynamic(() => import("../TextEditorRich"), {
   ssr: false,
 });
@@ -142,6 +143,10 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
       <SectionForm>
         <CategoriesComponent />
       </SectionForm>
+
+      <SectionForm>
+        <GoogleMapsField name="coordinates" label="Ubicación" />
+      </SectionForm>
     </div>
   );
 };
@@ -151,7 +156,7 @@ const CategoriesComponent: FC = () => {
 
   const fetchData = async () => {
       try {
-        const {results} = await GraphQL.getCategories();
+        const {results} = await fetchApi(queries.getCategories);
         const mapResults = results.filter((item: any) => item.subCategories.length > 0 && item)
         setCategories(mapResults);
       } catch (error) {

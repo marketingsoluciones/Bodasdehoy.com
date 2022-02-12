@@ -11,7 +11,7 @@ import IndiceSteps from "../../components/Business/IndiceSteps";
 import { FormYourBusiness, FormQuestion } from "../../components/Forms";
 import { ButtonComponent } from "../../components/Inputs";
 import { AuthContextProvider } from "../../context";
-import { GraphQL } from '../../utils/Fetching';
+import { fetchApi, GraphQL, queries } from '../../utils/Fetching';
 import FormImages from "../../components/Forms/FormImages";
 import PagesWithAuth from "../../HOC/PagesWithAuth";
 import { GetServerSidePropsContext, NextPage } from "next";
@@ -33,11 +33,9 @@ const reducer = (state: any, action: any) => {
 
 const CreateBusiness : NextPage <{business : Partial<business>}> = (props) => {
   const [step, setStep] = useReducer<Reducer<number, number>>(reducer, 0);
-  
 
   const reduceBusiness = Object?.entries(props.business ?? {}).reduce((acc: any, item: any) => {
     if(item[1]){
-      
       //@ts-ignore
       acc[item[0]] = item[1]
     }
@@ -156,14 +154,13 @@ const FormikStepper = ({
           delete valuesModified.imgLogo
           delete valuesModified.imgMiniatura
           delete valuesModified.imgBanner
-          delete valuesModified.coordinates
           delete valuesModified.updatedAt
           delete valuesModified.createdAt
           delete valuesModified.questionsAndAnswers
           delete valuesModified.characteristics
           
           //if (!values._id) {
-            const data = await GraphQL.createBusiness({
+            const data = await fetchApi(queries.createBusiness,{
               ...valuesModified,
               mobilePhone: typeof values.mobilePhone === "number" ? JSON.stringify(values.mobilePhone) : values.mobilePhone,
               landline: typeof values.landline === "number" ? JSON.stringify(values.landline) : values.landline,
@@ -186,7 +183,7 @@ const FormikStepper = ({
       case 1:
         setStep({ type: "NEXT" });
         try {
-          await GraphQL.createBusiness({
+          await fetchApi(queries.createBusiness,{
             ...values,
             mobilePhone: typeof values.mobilePhone === "number" ? JSON.stringify(values.mobilePhone) : values.mobilePhone,
             landline: typeof values.landline === "number" ? JSON.stringify(values.landline) : values.landline,
@@ -232,7 +229,6 @@ const FormikStepper = ({
           
             <ButtonComponent type="button" disabled={canPrevious(step)} onClick={() => {
               setStep({ type: "PREV" })
-              console.log("hola")
             }}>
               Atras
             </ButtonComponent>
@@ -261,7 +257,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     
     if(context.query.id){
-      const result = await GraphQL.getBusinessByID({id : context.query.id})
+      const result = await fetchApi(queries.getOneBusiness,{id : context.query.id})
       return {
         props: {business : result},
       };

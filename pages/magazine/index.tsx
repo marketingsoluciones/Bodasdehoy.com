@@ -3,7 +3,7 @@ import { TitleSection } from "../../components/Home";
 import { GridPost } from "../../components/Home/Magazine";
 import { AsideLastestArticles, CategoriesComponent, LastestArticles, PrincipalPost, SuscribeComponent } from "../../components/Magazine";
 import { fetchCategory, Post } from "../../interfaces";
-import { GraphQL } from "../../utils/Fetching";
+import { GraphQL, fetchApi, queries } from '../../utils/Fetching';
 import { Searcher } from '../index';
 
 interface propsMagazine {
@@ -54,7 +54,7 @@ export default Magazine;
 export async function getServerSideProps() {
   try {
     
-    const data = await GraphQL.getMagazine()
+    const data = await fetchApi(queries.getMagazine)
     return { props: data };
   } catch (error) {
     console.log(error);

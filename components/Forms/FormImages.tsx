@@ -10,7 +10,7 @@ import {
   SetStateAction
 } from "react";
 import { StarRating, PicturesIcon, UploadImageIcon, DeleteIcon, CheckIcon } from "../Icons";
-import { GraphQL } from "../../utils/Fetching";
+import { GraphQL, fetchApi, queries } from '../../utils/Fetching';
 import { useToast } from '../../hooks/useToast';
 import { useFormikContext, FormikValues } from 'formik';
 import { image } from "../../interfaces";
@@ -193,7 +193,7 @@ const ImageComponent: FC<ImgHTMLAttributesV2> = ({
   const toast = useToast()
   const handleRemove = async () => {
     try {
-      const result = await GraphQL.deleteImage({idImage: data._id, idBusiness: values._id, use: "business"})
+      const result = await fetchApi(queries.deleteImages,{idImage: data._id, idBusiness: values._id, use: "business"})
       if(!result){
         throw new Error("No se pudo borrar la foto")
       }

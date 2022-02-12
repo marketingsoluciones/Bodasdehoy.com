@@ -33,6 +33,7 @@ import { createURL } from "../../utils/UrlImage";
 import { createSrcSet } from '../../utils/CreateSrcSet';
 import GoogleMaps from "../../components/GoogleMaps/GoogleMapsView";
 import GoogleMapsView from '../../components/GoogleMaps/GoogleMapsView';
+import ChatComponentView from "../../components/Listing/ChatComponentView";
 
 type Boton = {
   title: string;
@@ -40,7 +41,7 @@ type Boton = {
   icon: ReactNode;
 };
 
-const Listing: FC<Partial<business>> = (props) => {
+const Listing: FC<business> = (props) => {
   
   const {
     imgMiniatura,
@@ -164,15 +165,15 @@ const Listing: FC<Partial<business>> = (props) => {
             <div className="hidden md:block w-full ...">
               <div className="bg-white shadow md:-mt-12 rounded-xl overflow-hidden p-4">
                 <div className="flex gap-4 items-center text-primary w-full justify-center flex-col">
-                CHAT
+                <ChatComponentView {...props} />
                
-                  <button
+                  {/* <button
                     type="button"
                     className=" py-2 border-primary text-primary bg-white rounded-xl border hover:bg-primary hover:text-white transition flex items-center gap-2 text-sm w-full justify-center"
                   >
                     <Isologo className="w-5 h-5" />
                     Consultar disponibilidad
-                  </button>
+                  </button> */}
                   {webPage && (
                     <ItemContact
                       icon={<WebSiteIcon className="w-5 h-5" />}
@@ -246,7 +247,7 @@ const HeaderListing: FC<Partial<business>> = ({ businessName, imgLogo }) => {
       <img
           alt={businessName}
           className="object-cover w-24 h-24 rounded-full border-2 border-primary"
-          src={imgLogo?.i640 ?? "/placeholder/logo.png"}
+          src={imgLogo?.i640 ? createURL(imgLogo.i640) : "/placeholder/logo.png"}
           srcSet={createSrcSet(imgLogo)}
         />
         

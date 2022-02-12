@@ -1,9 +1,8 @@
 import { useState, useEffect, FC } from "react";
 import dynamic from "next/dynamic";
-import { InputField, SelectField, Checkbox } from "../Inputs";
-import { api } from "../../api";
+import { InputField, Checkbox } from "../Inputs";
 import { SectionForm } from "../../pages/empresa/crear-empresa";
-import { category, fetchCategory } from "../../interfaces";
+import { category } from "../../interfaces";
 import { FieldArray } from "formik";
 import {
   UserIcon as UserIcon2,
@@ -11,7 +10,7 @@ import {
   CompanyIcon,
   WebSiteIcon,
 } from "../Icons";
-import { GraphQL, fetchApi, queries } from '../../utils/Fetching';
+import { fetchApi, queries } from '../../utils/Fetching';
 import { subCategory } from '../../interfaces/index';
 import SelectFieldCoutries from "../Inputs/SelectFieldCoutries";
 import GoogleMapsField from "../GoogleMaps/GoogleMapsField";

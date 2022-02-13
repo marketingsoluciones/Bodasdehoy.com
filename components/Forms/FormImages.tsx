@@ -89,7 +89,7 @@ const FormImages: FC  = () => {
   };
 
   useEffect(() => {
-    //setImages([...images, ...values.imgCarrusel])
+    values.imgCarrusel && setImages([...images, ...values.imgCarrusel])
   }, [values.imgCarrusel])
   
 
@@ -213,7 +213,7 @@ const ImageComponent: FC<ImgHTMLAttributesV2> = ({
   return (
     <>
       <picture className="rounded-xl border-2 border-gray-200 w-full h-32 text-gray-400 hover:text-gray-600 flex items-center justify-center cursor-pointer bg-white shadow-md transition overflow-hidden relative">
-        <button className="z-20 bg-white p-1 rounded-xl absolute bottom-3 left-3" onClick={handleRemove}><DeleteIcon className={"w-5 h-5"} /></button>
+        <button type={"button"} className="z-20 bg-white p-1 rounded-xl absolute bottom-3 left-3" onClick={handleRemove}><DeleteIcon className={"w-5 h-5"} /></button>
         <img alt="imagen" src={data.i640 ? createURL(data.i640) : data.image} className="object-cover object-center absolute top-0 left-0 w-full h-full"/>
         {/* <img
           className="object-cover object-center absolute top-0 left-0 w-full h-full"

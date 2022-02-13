@@ -16,10 +16,18 @@ export const validations = {
         businessName: yup.string().required(message),
         country: yup.string().required(message),
         city: yup.string().required(message),
+        coordinates : yup.object().shape({
+          lat : yup.number(),
+          lng: yup.number()
+        }).nullable().required("Requerido: Debes marcar un punto en el mapa"),
         zip: yup.number().required(message),
         address: yup.string().required(message),
         description: yup.string().required(message),
-        subcategories: yup.array().of(yup.string()),
+        subCategories: yup.array().of(yup.object().shape({
+          _id : yup.string()
+        })).test("minElements", "Debe seleccionar una subcategoria", (element : any) => element?.length > 0),
+        // imgLogo: yup.object().shape({name: yup.string()}).nullable().required(message),
+        // imgMiniatura: yup.object().shape({name: yup.string()}).nullable().required(message),
       }),
     
     secondary : yup.object().shape({

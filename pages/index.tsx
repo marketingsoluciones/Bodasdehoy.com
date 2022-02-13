@@ -44,7 +44,7 @@ export default Home;
 export const Welcome: FC = (props) => {
   return (
     <>
-      <div className="relative grid md:grid-cols-2 px-5 sm:px-0 pb-16 pb-0 relative">
+      <div className=" before:absolute before:w-full before:h-1/2 before:bg-gradient-to-t before:from-color-base before:to-transparent before:via-color-base before:z-10 before:bottom-20 before:left-0 relative grid md:grid-cols-2 px-5 sm:px-0 pb-16 pb-0 relative">
         <div className="flex flex-col gap-5 z-10 relative">
           <h1 className="text-2xl md:text-4xl text-tertiary relative subpixel-antialiased font-bold w-full flex flex-col gap-2">
             <span className="relative w-max h-max  font-light">
@@ -63,7 +63,7 @@ export const Welcome: FC = (props) => {
           <Features />
         </div>
 
-        <div className="md:w-full w-1/2 md:relative absolute z-0 -bottom-16 md:bottom-0 right-0 md:-mt-20">
+        <div className=" md:w-full w-1/2 md:relative absolute z-0 -bottom-16 md:bottom-0 right-0 md:-mt-20 relative">
           <Image
             src={"/photo-principal.webp"}
             alt='Bodas de hoy'
@@ -75,6 +75,14 @@ export const Welcome: FC = (props) => {
           />
         </div>
       </div>
+      {/* <style jsx>
+        {`
+          .image-principal::before{
+            content: "''";
+            position: absolute
+          }
+        `}
+      </style> */}
     </>
   );
 };
@@ -177,7 +185,6 @@ export async function getServerSideProps() {
   try {
     console.time("getHome")
     const data = await fetchApi(queries.getHome)
-    console.log(data)
     console.timeEnd("getHome")
     return { props: data ?? {} };
   } catch (error) {

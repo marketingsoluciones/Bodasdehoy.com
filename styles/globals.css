@@ -2,6 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind variants;
 
 :root {
   font-family: Poppins;
@@ -20,3 +21,4 @@
 .w-95 {
   width: 95%;
 }
+

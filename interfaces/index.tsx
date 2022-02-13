@@ -17,6 +17,7 @@ export type subCategory = {
 export type category = {
   _id: string
   title: string
+  heading: string
   imgMiniatura : image
   imgBanner : image
   icon : image

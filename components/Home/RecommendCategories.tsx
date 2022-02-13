@@ -108,7 +108,7 @@ const Category: FC<Partial<category>> = memo(({ icon, title, slug }) => {
       <svg className={` ${isHovered ? "hidden" : ""} transition duration-200 w-1/2 h-1/2`}>       
         <image  href={createURL(icon?.i320)} className="w-full h-full" />    
     </svg>
-    <Link href={slug?? ""}>
+    <Link href={`/categoria/${slug}`}>
       <p
         className={`w-max h-max text-tertiary font-medium transition cursor-pointer ${
           isHovered ? "" : "hidden"

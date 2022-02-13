@@ -1,6 +1,7 @@
 import {
   Dispatch,
   FC,
+  MouseEventHandler,
   ReactNode,
   SetStateAction,
   useEffect,
@@ -10,19 +11,23 @@ import Link from "next/link";
 import {
   ArrowIcon,
   BurgerIcon,
+  CloseIcon,
   CompanyIcon,
   LogoFullColor,
   SearchIcon,
   UserIcon,
-  CarIcon
 } from "../Icons";
-import router from "next/router";
 import { Sidebar } from "./";
 import { MultiMenu } from "./MultiMenu";
 import { NoviaMenu } from "./MultiMenu/NoviaMenu";
 import { useHover } from "../../hooks/useHover";
 import { autenticacion } from "../../utils/Authentication";
 import { LoadingContextProvider, AuthContextProvider } from "../../context";
+import {cloneElement} from 'react';
+import { HeartIconFill, StarRating } from '../Icons/index';
+import {TransitionGroup, CSSTransition } from 'react-transition-group'
+import { useRouter } from 'next/router';
+import { ButtonClose } from "../Inputs";
 
 const initialSelected = {
   ["Lugares para bodas"]: false,
@@ -36,6 +41,7 @@ export const Navigation: FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const [selected, setSelect] = useState<any>(initialSelected);
   const [state, setState] = useState<any>("");
+  const [isSearch, setSearch] = useState(false)
 
   type DicCategories = {
     Novia: ReactNode;
@@ -48,7 +54,7 @@ export const Navigation: FC = () => {
     const select = Object.entries(selected).find((el) => el[1] === true)?.[0];
     setState(select);
   }, [selected]);
-  
+
   return (
     <>
       <Sidebar
@@ -62,7 +68,18 @@ export const Navigation: FC = () => {
         }
 
         <div className="bg-white rounded-full h-16 py-3 md:px-10 z-30 px-5 md:px-0 mx-auto inset-x-0  flex items-center relative justify-between container">
-          <span
+         {isSearch && (
+           <span className="flex items-center w-full justify-between">
+             <input  autoFocus className="w-full h-full focus:outline-none" placeholder="Buscar en bodasdehoy.com" />
+              <button className="p-1 bg-color-base rounded-full" onClick={() => setSearch(!isSearch)}>
+              <CloseIcon className="w-5 h-5 text-gray-500" />
+              </button>
+           </span>
+         )}
+         
+         {!isSearch && (
+           <>
+            <span
             className="md:hidden "
             onClick={() => setShowSidebar(!showSidebar)}
           >
@@ -74,7 +91,9 @@ export const Navigation: FC = () => {
             </span>
           </Link>
           <Navbar setSelect={(a) => setSelect(a)} selected={selected} />
-          <Icons />
+          <Icons handleClickSearch={() => setSearch(!isSearch)} />
+          </>
+         )}
         </div>
       </header>
     </>
@@ -87,8 +106,6 @@ interface propsNavbar {
 }
 
 const Navbar: FC<propsNavbar> = ({ setSelect, selected }) => {
-  
-
   type Item = {
     title: string;
     route: string;
@@ -153,9 +170,14 @@ const Navbar: FC<propsNavbar> = ({ setSelect, selected }) => {
   );
 };
 
-export const Icons = () => {
+interface propsIcons {
+  handleClickSearch : MouseEventHandler
+}
+
+export const Icons : FC <propsIcons> = ({handleClickSearch}) => {
   const { user } = AuthContextProvider();
   const [hoverRef, isHovered] = useHover();
+  const router = useRouter()
   const HandleClickUser = () => {
     !localStorage.getItem("auth")
       ? router.push("/login")
@@ -164,15 +186,12 @@ export const Icons = () => {
   return (
     <>
       <div className="flex items-center relative">
-        <span className="hidden md:block px-3 cursor-pointer text-gray-500">
-          <SearchIcon className="icon transition transform hover:-rotate-6 hover:scale-110 " />
-        </span>
+        <button className="hidden md:block px-3 cursor-pointer text-gray-500 focus:outline-none ">
+          <SearchIcon onClick={handleClickSearch} className="icon transition transform hover:-rotate-6 hover:scale-110 " />
+        </button>
         {!user ? (
           <>
-            <span
-              className="md:px-3 border-gray-100 py-1 md:border-l md:border-r cursor-pointer text-gray-500"
-            >
-              
+            <span className="md:px-3 border-gray-100 py-1 md:border-l md:border-r cursor-pointer text-gray-500">
               <span onClick={HandleClickUser}>
                 <UserIcon className="icon transition transform hover:-rotate-6 hover:scale-110" />
               </span>
@@ -185,68 +204,134 @@ export const Icons = () => {
             </span>
           </>
         ) : (
-          <span  className=" border-gray-100 border-l cursor-pointer text-gray-500 pl-3 flex items-center gap-1"
-          ref={hoverRef}>
-            <img alt={user?.displayName?? "nombre"} src={user.photoURL?? undefined} className="w-10 h-10 border border-primary rounded-full" />
-            <ProfileMenu state={isHovered} />
-            <ArrowIcon className="w-4 h-4 rotate-90 transform" />
+          <span
+            className=" border-gray-100 border-l text-gray-500 pl-3 flex items-center gap-1"
+            ref={hoverRef}
+          >
+            <img
+              alt={user?.displayName ?? "nombre"}
+              src={user.photoURL ?? undefined}
+              className="w-10 h-10 border border-primary rounded-full cursor-pointer"
+            />
+            <ArrowIcon className="w-4 h-4 rotate-90 transform cursor-pointer" />
+              <CSSTransition in={isHovered} unmountOnExit mountOnEnter timeout={300} classNames={"fade"}>
+              <ProfileMenu />
+              </CSSTransition>
+            
+
           </span>
         )}
       </div>
+      
     </>
   );
 };
 
-const ProfileMenu = ({ state }: { state: boolean }) => {
-  const { setUser } = AuthContextProvider();
-  const {setLoading} = LoadingContextProvider()
-  const options = [
+
+
+
+
+const ProfileMenu = () => {
+  const { setUser, user } = AuthContextProvider();
+  const { setLoading } = LoadingContextProvider();
+  const router = useRouter()
+  
+  const options : Option[] = [
     {
-      title: "Cerrar Sesión",
-      route: "/cerrar-sesion",
-      icon: <CarIcon className="w-6 h-6" />,
-      function: async () => {
-        setLoading(true)
+      title: "Mi perfil",
+      route: "/",
+      icon: <UserIcon />
+    },
+    {
+      title: "Notificaciones",
+      route: "/empresa",
+      icon: <HeartIconFill />,
+    },
+    {
+      title: "Favoritos",
+      route: "/",
+      icon: <StarRating />
+    },
+    {
+      title: "Cerrar Sesion",
+      icon: <UserIcon />,
+      onClick: async () => {
+        setLoading(true);
         setUser(await autenticacion.SignOut());
         localStorage.removeItem("auth");
         await router.push("/");
-        setLoading(false)
-
+        setLoading(false);
       },
-    },
-    {
-      title: "Empresas",
-      route: "/empresa",
-      icon: <CarIcon className="w-6 h-6" />,
     },
   ];
   return (
-    <ul
-      className={`w-40 rounded-xl h-max bg-white shadow-md absolute bottom-0 left-0 inset-y-full overflow-hidden z-50 ${
-        state ? "" : "hidden"
+    <>
+    <div
+      className={`w-80 p-3 h-20 rounded-xl h-max bg-white shadow-md absolute bottom-0 right-0 inset-y-full overflow-hidden z-50
       }`}
     >
-      {options.map((item, idx) => {
-        if (item?.function) {
-          return (
-            <li
-              key={idx}
-              onClick={item.function}
-              className="flex items-center gap-2 text-gray-500 px-4 py-3 text-sm hover:bg-gray-100 transition cursor-pointer"
-            >
-              {item.icon} {item.title}
-            </li>
-          );
-        } else {
-          return (
-            <Link key={idx} href={item.route} passHref>
-              <li className="flex items-center gap-2 text-gray-500 px-4 py-3 text-sm hover:bg-gray-100 transition cursor-pointer">
-                {item.icon} {item.title}{" "}
-              </li>
-            </Link>
-          );
+      <div className="w-full border-b border-gray-100 pb-2">
+        <p className="text-gray-500 font-extralight uppercase tracking-wider	text-xs text-center ">
+          Empresa
+        </p>
+        <h3 className="text-primary font-medium w-full text-center">
+          {user?.displayName}
+        </h3>
+      </div>
+      <ul className="grid grid-cols-2 gap-2 text-xs place-items-center p-2 ">
+        {options.map((item : Option,idx) => (
+          <ListItemProfile key={idx} {...item}/>
+        ))}
+      </ul>
+    </div>
+    <style jsx global>
+        {`
+        .fade-enter {
+          opacity: 0;
+          transition: opacity 300ms;
         }
-      })}
-    </ul>
+        .fade-enter-active {
+          opacity: 1;
+          transition: opacity 300ms;
+        }
+        .fade-exit {
+          opacity: 1;
+        }
+        .fade-exit-active {
+          opacity: 0;
+          transition: opacity 300ms;
+        }
+        `}
+      </style>
+    </>
   );
 };
+
+interface Option {
+  title: string,
+  icon : any,
+  route?: string,
+  onClick?: MouseEventHandler
+  sizeIcon?: keyof typeof sizesIcon
+}
+
+const sizesIcon : {xs: string, sm: string} = {
+  xs: "w-3 h-3",
+  sm: "w-5 h-5",
+}
+
+const ListItemProfile: FC <Option> = ({title, icon, sizeIcon = "sm", route, onClick}) => {
+  return (
+    <>
+    {(() => {
+      if(route){
+        return <Link href={route}>
+    <li className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">{cloneElement(icon, {className : sizesIcon[sizeIcon]})}{title}</li>
+    </Link>
+      } else if(onClick) {
+    return <li onClick={onClick} className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">{cloneElement(icon, {className : sizesIcon[sizeIcon]})}{title}</li>
+      }
+    })()}
+    </>
+  )
+}

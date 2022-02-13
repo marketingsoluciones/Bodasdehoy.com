@@ -93,16 +93,17 @@ export const fetchApi: CallableFunction = async (
 
 type queries = {
   createUser: string;
-  getOneBusiness: string;
-  getUser : string
   createBusiness : string
-  getCategories : string
-  deleteImages : string
-  getHome : string
-  getSlugBusiness: string
-  getSlugPosts: string
   getAllPost: string
+  getAllCategoryBusiness : string
+  getHome : string
+  getCategories : string
+  getUser : string
+  getSlugBusiness: string
+  getOneBusiness: string;
+  getSlugPosts: string
   getMagazine : string
+  deleteImages : string
   deleteBusiness : string
 };
 
@@ -236,6 +237,7 @@ export const queries: queries = {
     $coordinates : inputCoordinates
     $imgLogo : Upload
     $imgMiniatura : Upload
+    $status : Boolean
     ) {
         createBusiness(
           fase : $fase,
@@ -259,6 +261,7 @@ export const queries: queries = {
             coordinates: $coordinates
             imgLogo : $imgLogo
             imgMiniatura : $imgMiniatura
+            status: $status
           }){
           _id,
           fase,
@@ -330,7 +333,7 @@ export const queries: queries = {
     }
   }`,
   deleteImages: `mutation  ($idImage :ID, $idBusiness:ID, $use : String) {
-    deleteUpload(_id:$_id, businessID:$businessID, use:$use)
+    deleteUpload(_id:$idImage, businessID:$idBusiness, use:$use)
   }`,
   getHome : `query {
     getHome{
@@ -488,6 +491,37 @@ export const queries: queries = {
   }`,
   deleteBusiness : `mutation ($id : [ID]){
     deleteBusinesses(id: $id)
+  }`,
+  getAllCategoryBusiness : `query ($criteria : searchCriteriaCategory, $sort : sortCriteriaCategory, $skip : Int, $limit: Int) {
+    getAllCategoryBusiness(searchCriteria: $criteria, sort: $sort, skip: $skip, limit: $limit){
+      total
+      results{
+        _id
+        title
+        heading
+        slug
+        description
+        imgBanner{
+          i1024
+          i800
+          i640
+          i320
+        }
+        subCategories{
+          _id
+          title
+          heading
+          slug
+          description
+          imgMiniatura{
+            i1024
+            i800
+            i640
+            i320
+          }
+        }
+      }
+    }
   }`
 };
 

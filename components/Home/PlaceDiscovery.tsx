@@ -46,7 +46,7 @@ export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({ data }) => {
 
   return (
     <>
-      <div className="grid-cards relative w-full -mt-12 md:-mt-52 lg:-mt-96">
+      <div className="grid-cards relative w-full -mt-12 md:-mt-52 lg:-mt-80">
         <div className="w-full xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto inset-x-0 pt-20 flex flex-col gap-5 md:gap-6 md:pt-32 pb-20 z-20 px-5">
           <TitleSection
             className="text-normal md:text-xl "

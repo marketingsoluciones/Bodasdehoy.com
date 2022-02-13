@@ -6,6 +6,9 @@ import {
   cloneElement,
   useReducer,
   Reducer,
+  useEffect,
+  useRef,
+  LegacyRef
 } from "react";
 import IndiceSteps from "../../components/Business/IndiceSteps";
 import { FormYourBusiness, FormQuestion } from "../../components/Forms";
@@ -16,7 +19,6 @@ import FormImages from "../../components/Forms/FormImages";
 import PagesWithAuth from "../../HOC/PagesWithAuth";
 import { GetServerSidePropsContext, NextPage } from "next";
 import { business } from "../../interfaces";
-import { useEffect } from 'react';
 import { validations } from "../../components/Business/validations";
 import { useRouter } from "next/router";
 
@@ -33,6 +35,7 @@ const reducer = (state: any, action: any) => {
 
 const CreateBusiness : NextPage <{business : Partial<business>}> = (props) => {
   const [step, setStep] = useReducer<Reducer<number, number>>(reducer, 0);
+  
 
   const reduceBusiness = Object?.entries(props.business ?? {}).reduce((acc: any, item: any) => {
     if(item[1]){
@@ -43,7 +46,7 @@ const CreateBusiness : NextPage <{business : Partial<business>}> = (props) => {
   },{})
 
   const router = useRouter()
-  
+  const refHeader = useRef<any>()
   return (
     <section className="w-full relative">
       <img
@@ -51,7 +54,7 @@ const CreateBusiness : NextPage <{business : Partial<business>}> = (props) => {
         src={"/bannerCreateBusiness.webp"}
         className="w-full h-80 -mt-20 object-center object-cover absolute top-0 left-0 z-0 "
       />
-      <div className="max-w-screen-lg mx-auto inset-x-0 z-10 relative py-10">
+      <div ref={refHeader} tabIndex={0}  className="max-w-screen-lg mx-auto inset-x-0 z-10 relative py-10">
         <h2 className="text-3xl font-medium font-medium text-tertiary w-full text-center">
           ¡Empecemos el registro!
         </h2>
@@ -60,6 +63,7 @@ const CreateBusiness : NextPage <{business : Partial<business>}> = (props) => {
 
       <div className="max-w-screen-md py-20 mx-auto inset-x-0">
         <FormikStepper
+        refHeader={refHeader}
           step={step}
           setStep={setStep}
           initialValues={{
@@ -74,6 +78,9 @@ const CreateBusiness : NextPage <{business : Partial<business>}> = (props) => {
             zip : "",
             address: "",
             description: "",
+            coordinates : null,
+            imgLogo: null,
+            imgMiniatura: null,
             subcategories: [],
             ...reduceBusiness
           }}
@@ -113,12 +120,14 @@ export const SectionForm: FC = ({ children }) => {
 interface FormikStepper extends FormikConfig<FormikValues> {
   step: number;
   setStep: any;
+  refHeader: any
 }
 
 const FormikStepper = ({
   children,
   step,
   setStep,
+  refHeader,
   ...props
 }: FormikStepper) => {
   const [ChildrenArray, setChildrenArray] = useState<any>(
@@ -139,7 +148,9 @@ const FormikStepper = ({
   };
 
   const handleSubmit = async (values: FormikValues, actions: any) => {
+    
     values.userUid = user?.uid;
+    
 
     if (isLastStep()) {
       await props.onSubmit(values, actions);
@@ -164,11 +175,10 @@ const FormikStepper = ({
               landline: typeof values.landline === "number" ? JSON.stringify(values.landline) : values.landline,
             }, "formData");
             setData(data)
-            console.log("hola",data)
              await actions.setFieldValue("_id", values._id ?? data?._id );
              await actions.setFieldValue("imgMiniatura", data.imgMiniatura );
              await actions.setFieldValue("imgLogo", data.imgLogo );
-           
+             
          // }
         };
 
@@ -190,6 +200,7 @@ const FormikStepper = ({
             mobilePhone: typeof values.mobilePhone === "number" ? JSON.stringify(values.mobilePhone) : values.mobilePhone,
             landline: typeof values.landline === "number" ? JSON.stringify(values.landline) : values.landline,
             fase: "fase2",
+            status: true
           });
         } catch (error) {
           console.log(error);
@@ -199,6 +210,8 @@ const FormikStepper = ({
       default:
         break;
     }
+    
+    refHeader.current.focus()
   };
 
   const canNext = (step: number) : boolean | undefined => {

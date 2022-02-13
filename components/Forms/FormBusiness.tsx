@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { InputField, Checkbox } from "../Inputs";
 import { SectionForm } from "../../pages/empresa/crear-empresa";
 import { category } from "../../interfaces";
-import { FieldArray } from "formik";
+import { FieldArray, useFormikContext } from "formik";
 import {
   UserIcon as UserIcon2,
   EmailIcon,
@@ -100,7 +100,6 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
               
               <InputField
                 name={"businessName"}
-                placeholder={"Joyeria Montilla"}
                 label={"Nombre de tu empresa"}
                 type={"text"}
                 icon={
@@ -162,6 +161,7 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
 
 const CategoriesComponent: FC = () => {
   const [categories, setCategories] = useState<Partial<category>[]>([]);
+  const {errors, touched} = useFormikContext<any>()
 
   const fetchData = async () => {
       try {
@@ -178,12 +178,20 @@ const CategoriesComponent: FC = () => {
   }, []);
 
   const removeElementFieldArray = (values : any, id : string) => {
-    return values?.subcategories?.findIndex((item : {_id : string}) => item._id === id)
+    return values?.subCategories?.findIndex((item : {_id : string}) => item._id === id)
   }
 
   return (
     <div className="flex flex-col w-full gap-3 pb-3">
+      <span className="flex items-center gap-2">
       <h2 className="text-primary text-lg font-semibold">Sector o Actividad</h2>
+        {errors.subCategories ? (
+          <span className="text-red-500 text-xs font-medium ">
+            {errors?.subCategories}
+          </span>
+        ) : null}
+      </span>
+      
       <div className="grid grid-cols-3 gap-10 text-gray-300">
         <FieldArray name={"subCategories"}>
           {({ insert, remove, push, form }) =>

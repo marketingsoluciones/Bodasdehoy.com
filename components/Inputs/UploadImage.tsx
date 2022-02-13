@@ -33,7 +33,14 @@ const UploadImage : FC <propsUploadImage> = ({label, ...props}) => {
 
   return (
     <div className="flex flex-col w-full pb-5">
-        <label className="text-sm text-gray-500 py-2">{label}</label>
+        <span className="flex items-center gap-2 py-1">
+        <label className="text-sm text-gray-500">{label}</label>
+        {meta.touched && meta.error ? (
+          <span className="text-red-500 text-xs font-medium ">
+            {meta.error}
+          </span>
+        ) : null}
+      </span>
             <div className="flex items-center justify-center w-full">
                 <label className="flex flex-col w-full h-32 border-2 border-dashed overflow-hidden hover:bg-gray-100 hover:border-gray-300 transition-all cursor-pointer rounded-xl">
                     {!image && !field?.value?.i640 ? (

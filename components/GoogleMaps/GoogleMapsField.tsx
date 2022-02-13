@@ -12,8 +12,6 @@ const mapContainerStyle = {
   height: "300px",
 };
 
-
-
 const options = {
   disableDefaultUI: true,
   zoomControl: true,
@@ -30,7 +28,6 @@ interface propsGoogleMapsField {
 }
 const GoogleMapsField: FC<propsGoogleMapsField> = ({ label, ...props }) => {
   const [ libraries ] = useState(['places']);
-  const [marker, setMarker] = useState<marker | null>(null);
   const [center, setCenter] = useState<marker>({
     lat: 40.416729,
     lng: -3.703339,
@@ -90,7 +87,7 @@ const GoogleMapsField: FC<propsGoogleMapsField> = ({ label, ...props }) => {
             onRightClick={onMapClick}
             onLoad={onMapLoad}
           >
-            <Marker position={field.value} />
+            {field?.value?.lat && <Marker position={field.value} />}
           </GoogleMap>
           </div>
 
@@ -110,8 +107,8 @@ const Search : FC <any> = ({panTo, center}) => {
     requestOptions: {
       //@ts-ignore
       location : {
-        lat: () => center.lat,
-        lng: () => center.lng,
+        lat: () => center?.lat,
+        lng: () => center?.lng,
       },
       radius: 200 * 1000
     }

@@ -113,10 +113,10 @@ const Navbar: FC<propsNavbar> = ({ setSelect, selected }) => {
 
   const List: Item[] = [
     { title: "Mi boda", route: "https://app.bodasdehoy.com" },
-    { title: "Novia", route: "/" },
-    { title: "Novio", route: "/" },
-    { title: "Proveedores", route: "/" },
-    { title: "Lugares para bodas", route: "/" },
+    { title: "Novia", route: "/categoria/novias" },
+    { title: "Novio", route: "/categoria/novios" },
+    { title: "Proveedores", route: "/categoria/proveedores" },
+    { title: "Lugares para bodas", route: "/categoria/lugares-para-bodas" },
   ];
 
   interface propsItem {
@@ -171,7 +171,7 @@ const Navbar: FC<propsNavbar> = ({ setSelect, selected }) => {
 };
 
 interface propsIcons {
-  handleClickSearch : MouseEventHandler
+  handleClickSearch? : MouseEventHandler
 }
 
 export const Icons : FC <propsIcons> = ({handleClickSearch}) => {
@@ -210,7 +210,7 @@ export const Icons : FC <propsIcons> = ({handleClickSearch}) => {
           >
             <img
               alt={user?.displayName ?? "nombre"}
-              src={user.photoURL ?? undefined}
+              src={user.photoURL ?? "/placeholder/user.png"}
               className="w-10 h-10 border border-primary rounded-full cursor-pointer"
             />
             <ArrowIcon className="w-4 h-4 rotate-90 transform cursor-pointer" />

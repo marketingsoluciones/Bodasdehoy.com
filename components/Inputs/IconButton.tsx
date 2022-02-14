@@ -8,10 +8,10 @@ const sizes = {
     lg : "w-10 h-10",
 }
 interface propsIconButton extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant: string;
-  size : keyof typeof sizes
+  variant?: string;
+  size? : keyof typeof sizes
 }
-const IconButton: FC<propsIconButton> = ({ variant, children, size = "sm", ...props }) => {
+const IconButton: FC<propsIconButton> = ({ variant = "primary", children, size = "sm", ...props }) => {
     const [childrenArray] = useState<any>(
         Children.toArray(children)
       );

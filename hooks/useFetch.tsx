@@ -13,17 +13,18 @@ const useFetch = ({query, variables, config = {}} : propsUseFetch) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
+  // useEffect(() => {
+  //   return () => {
+  //     isMounted.current = false;
+  //   };
+  // }, []);
 
-  const fetchData = async () => {
+  const fetchData = async ({query, variables, config = {}} : Partial<propsUseFetch>) => {
     try {
+      console.log("ENTREO")
       setData(null)
-      setLoading(true)
       setError(false)
+      setLoading(true)
         const {data : {data}} = await api.graphql({query, variables}, config)
         isMounted.current && setData(Object.values(data)[0])
         console.log(data)
@@ -35,9 +36,8 @@ const useFetch = ({query, variables, config = {}} : propsUseFetch) => {
     }
   }
 
-
   useEffect(() => {
-    isMounted.current && fetchData()
+    isMounted.current && fetchData({query, variables, config})
   }, [query]);
   
     return [data, loading, error, fetchData]

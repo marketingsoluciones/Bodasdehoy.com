@@ -96,6 +96,7 @@ type queries = {
   createBusiness : string
   getAllPost: string
   getAllCategoryBusiness : string
+  getAllBusiness : string
   getHome : string
   getCategories : string
   getUser : string
@@ -115,6 +116,23 @@ export const queries: queries = {
           weddingDate
           phoneNumber
           role
+        }
+      }`,
+      getAllBusiness: `query ($criteria :searchCriteriaBusiness, $sort : sortCriteriaBusiness, $skip :Int, $limit : Int) {
+        getAllBusinesses(searchCriteria:$criteria, sort: $sort, skip: $skip, limit: $limit){
+          total
+          results{
+             _id
+            businessName
+            slug
+            imgMiniatura{
+              i1024
+              i800
+              i640
+              i320
+            }
+            
+          }
         }
       }`,
   getOneBusiness: `query ($id: ID, $slug : String) {

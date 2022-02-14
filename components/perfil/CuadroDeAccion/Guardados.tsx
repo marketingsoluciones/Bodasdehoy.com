@@ -1,4 +1,4 @@
-import CardBusiness from "../../Category/CardBusiness"
+import {CardBusiness} from "../../Category/CardBusiness"
 import { PostComponent } from "../../Home/Magazine"
 
 export const Guardados =() =>{

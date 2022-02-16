@@ -45,7 +45,7 @@ export const Panel =( ) => {
        {component:<Escaparate/>, id : 0 },
        {component:<Solicitudes/>, id : 1 },
        {component:<Telefono/>, id : 2 },
-       {component:<SitioWeb/>, id : 2 },
+       {component:<SitioWeb/>, id : 3 },
     ]
     const handleClickOption = (idx : number) => {
         setActive(idx)

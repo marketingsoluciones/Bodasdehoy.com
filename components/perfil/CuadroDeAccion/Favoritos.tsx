@@ -1,4 +1,4 @@
-import CardBusiness from "../../Category/CardBusiness"
+import {CardBusiness} from "../../Category/CardBusiness"
 
 export const Favoritos =() =>{
     return (
@@ -15,7 +15,7 @@ export const Favoritos =() =>{
             </div>
 
             <div className=" grid grid-rows-2 grid-flow-col">{/* contenedor de las tarjetas favoritas */}
-                <div className="  shadow-md w-72  mx-auto inset-x-0 h-max bg-white rounded-3xl overflow-hidden hover:shadow-xl hover:opacity-95 transition-all cursor-pointer my-8 duration-400 ">
+                {/* <div className="  shadow-md w-72  mx-auto inset-x-0 h-max bg-white rounded-3xl overflow-hidden hover:shadow-xl hover:opacity-95 transition-all cursor-pointer my-8 duration-400 ">
                     <CardBusiness/>
                 </div>
                 <div className="  shadow-md w-72  mx-auto inset-x-0 h-max bg-white rounded-3xl overflow-hidden hover:shadow-xl hover:opacity-95 transition-all cursor-pointer my-8 duration-400 ">
@@ -26,7 +26,7 @@ export const Favoritos =() =>{
                 </div>
                 <div className="  shadow-md w-72  mx-auto inset-x-0 h-max bg-white rounded-3xl overflow-hidden hover:shadow-xl hover:opacity-95 transition-all cursor-pointer my-8 duration-400 ">
                     <CardBusiness/>
-                </div>
+                </div> */}
             </div>
             
         </div>

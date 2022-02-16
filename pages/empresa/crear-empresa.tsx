@@ -3,19 +3,24 @@ import {
   Children,
   FC,
   useState,
-  useContext,
   cloneElement,
   useReducer,
   Reducer,
+  useEffect,
+  useRef,
+  LegacyRef
 } from "react";
 import IndiceSteps from "../../components/Business/IndiceSteps";
 import { FormYourBusiness, FormQuestion } from "../../components/Forms";
 import { ButtonComponent } from "../../components/Inputs";
 import { AuthContextProvider } from "../../context";
-import { validations } from "../../components/Business/validations";
-import { GraphQL } from "../../utils/Fetching";
+import { fetchApi, GraphQL, queries } from '../../utils/Fetching';
 import FormImages from "../../components/Forms/FormImages";
 import PagesWithAuth from "../../HOC/PagesWithAuth";
+import { GetServerSidePropsContext, NextPage } from "next";
+import { business } from "../../interfaces";
+import { validations } from "../../components/Business/validations";
+import { useRouter } from "next/router";
 
 const reducer = (state: any, action: any) => {
   switch (action.type) {
@@ -28,9 +33,20 @@ const reducer = (state: any, action: any) => {
   }
 };
 
-const CreateBusiness = () => {
+const CreateBusiness : NextPage <{business : Partial<business>}> = (props) => {
   const [step, setStep] = useReducer<Reducer<number, number>>(reducer, 0);
-  const { user } = AuthContextProvider();
+  
+
+  const reduceBusiness = Object?.entries(props.business ?? {}).reduce((acc: any, item: any) => {
+    if(item[1]){
+      //@ts-ignore
+      acc[item[0]] = item[1]
+    }
+    return acc
+  },{})
+
+  const router = useRouter()
+  const refHeader = useRef<any>()
   return (
     <section className="w-full relative">
       <img
@@ -38,7 +54,7 @@ const CreateBusiness = () => {
         src={"/bannerCreateBusiness.webp"}
         className="w-full h-80 -mt-20 object-center object-cover absolute top-0 left-0 z-0 "
       />
-      <div className="max-w-screen-lg mx-auto inset-x-0 z-10 relative py-10">
+      <div ref={refHeader} tabIndex={0}  className="max-w-screen-lg mx-auto inset-x-0 z-10 relative py-10">
         <h2 className="text-3xl font-medium font-medium text-tertiary w-full text-center">
           ¡Empecemos el registro!
         </h2>
@@ -47,24 +63,29 @@ const CreateBusiness = () => {
 
       <div className="max-w-screen-md py-20 mx-auto inset-x-0">
         <FormikStepper
+        refHeader={refHeader}
           step={step}
           setStep={setStep}
           initialValues={{
-            userUid: user?.uid ?? "",
-            contactName: user?.displayName ?? "",
-            contactEmail: user?.email ?? "",
-            mobilePhone: user?.phoneNumber ?? "",
+            contactName: "",
+            contactEmail: "",
+            webPage: "",
+            mobilePhone: "",
+            landline: "",
             businessName: "",
             country: "",
             city: "",
-            zip: "",
+            zip : "",
             address: "",
             description: "",
+            coordinates : null,
+            imgLogo: null,
+            imgMiniatura: null,
             subcategories: [],
-            questionsAndAnswers: [],
+            ...reduceBusiness
           }}
           onSubmit={async (values) => {
-            console.log("values", values);
+            await router.push("/empresa")
           }}
         >
           <FormikStep
@@ -74,6 +95,7 @@ const CreateBusiness = () => {
             <FormYourBusiness />
           </FormikStep>
           <FormikStep label={"Datos Basicos"}>
+            {/* @ts-ignore */}
             <FormQuestion />
           </FormikStep>
           <FormikStep label={"Imagenes"}>
@@ -98,26 +120,37 @@ export const SectionForm: FC = ({ children }) => {
 interface FormikStepper extends FormikConfig<FormikValues> {
   step: number;
   setStep: any;
+  refHeader: any
 }
 
 const FormikStepper = ({
   children,
   step,
   setStep,
+  refHeader,
   ...props
 }: FormikStepper) => {
   const [ChildrenArray, setChildrenArray] = useState<any>(
-    Children.toArray(children)
+    Children.toArray(children) ?? []
   );
-  const currentChild = ChildrenArray[step];
+  const [totalSections, setTotalSections] = useState<number>(ChildrenArray?.length)
+  const currentChild = ChildrenArray[step] ?? {};
   const { user } = AuthContextProvider();
+  const [data, setData] = useState()
+
+  useEffect(() => {
+   setTotalSections(ChildrenArray?.length)
+  }, [ChildrenArray])
+  
 
   const isLastStep = () => {
-    return step === ChildrenArray.length - 1;
+    return step === totalSections - 1;
   };
 
-  const handleSubmit = async (values: any, actions: any) => {
+  const handleSubmit = async (values: FormikValues, actions: any) => {
+    
     values.userUid = user?.uid;
+    
 
     if (isLastStep()) {
       await props.onSubmit(values, actions);
@@ -126,24 +159,35 @@ const FormikStepper = ({
     switch (step) {
       //Form Business | Primer formulario
       case 0:
-        setStep({ type: "NEXT" });
-
         const createBusinessAndGetQuestions = async () => {
-          if (!values._id) {
-            const data = await GraphQL.createBusiness({
-              ...values,
-              mobilePhone: JSON.stringify(values.mobilePhone),
-              landline: JSON.stringify(values.landline),
-            });
+          const valuesModified = {...values}
 
-            await actions.setValues((state: any) => ({ ...state, ...data }));
-          }
+          delete valuesModified.imgBanner
+          delete valuesModified.updatedAt
+          delete valuesModified.createdAt
+          delete valuesModified.questionsAndAnswers
+          delete valuesModified.characteristics
+          
+          //if (!values._id) {
+            const data = await fetchApi(queries.createBusiness,{
+              ...valuesModified,
+              mobilePhone: typeof values.mobilePhone === "number" ? JSON.stringify(values.mobilePhone) : values.mobilePhone,
+              landline: typeof values.landline === "number" ? JSON.stringify(values.landline) : values.landline,
+            }, "formData");
+            setData(data)
+             await actions.setFieldValue("_id", values._id ?? data?._id );
+             await actions.setFieldValue("imgMiniatura", data.imgMiniatura );
+             await actions.setFieldValue("imgLogo", data.imgLogo );
+             
+         // }
         };
 
         try {
           createBusinessAndGetQuestions();
         } catch (error) {
           console.log(error);
+        } finally {
+          setStep({ type: "NEXT" });
         }
 
         break;
@@ -151,10 +195,12 @@ const FormikStepper = ({
       case 1:
         setStep({ type: "NEXT" });
         try {
-          await GraphQL.createBusiness({
+          await fetchApi(queries.createBusiness,{
             ...values,
-            mobilePhone: JSON.stringify(values.mobilePhone),
+            mobilePhone: typeof values.mobilePhone === "number" ? JSON.stringify(values.mobilePhone) : values.mobilePhone,
+            landline: typeof values.landline === "number" ? JSON.stringify(values.landline) : values.landline,
             fase: "fase2",
+            status: true
           });
         } catch (error) {
           console.log(error);
@@ -164,7 +210,27 @@ const FormikStepper = ({
       default:
         break;
     }
+    
+    refHeader.current.focus()
   };
+
+  const canNext = (step: number) : boolean | undefined => {
+    if(step >= 0 && step < totalSections){
+      return false
+    } else {
+      return true
+    }
+
+  }
+  const canPrevious = (step: number) : boolean | undefined => {
+    
+    if(step > 0 && step <= totalSections - 1){
+      return false
+    } else {
+      return true
+    }
+
+  }
 
   return (
     <Formik
@@ -172,31 +238,19 @@ const FormikStepper = ({
       onSubmit={handleSubmit}
       validationSchema={currentChild?.props?.validationSchema}
     >
-      {(formik) => {
-       
-       setChildrenArray(
-        Children.map(children, (child: any) =>
-          cloneElement(child, {
-            values: formik.values,
-            setValues: formik.setValues,
-          })
-        )
-      );
-        
-        return (
-          <Form autoComplete={"off"}>
-            {currentChild}
-            <div className="w-max p-10 mx-auto inset-x-0">
-              {step > 0 && (
-                <ButtonComponent onClick={() => setStep({ type: "PREV" })}>
-                  Atras
-                </ButtonComponent>
-              )}
-            </div>
-            <ButtonComponent type={"submit"}>Siguiente</ButtonComponent>
-          </Form>
-        );
-      }}
+      <Form autoComplete={"off"}>
+        {cloneElement(currentChild, {data})}
+        <div className="flex items-center justify-between w-full py-4 px-10">
+          
+            <ButtonComponent type="button" disabled={canPrevious(step)} onClick={() => {
+              setStep({ type: "PREV" })
+            }}>
+              Atras
+            </ButtonComponent>
+         
+        <ButtonComponent disabled={canNext(step)} variant={"primary"} type={"submit"}>{step + 1 === totalSections ? "Finalizar" : "Siguiente"}</ButtonComponent>
+        </div>
+      </Form>
     </Formik>
   );
 };
@@ -212,3 +266,25 @@ const FormikStep = ({ children, ...props }: FormikStepProps) => {
   );
   return <>{childrenWithProps}</>;
 };
+
+
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  try {
+    
+    if(context.query.id){
+      const result = await fetchApi(queries.getOneBusiness,{id : context.query.id})
+      return {
+        props: {business : result},
+      };
+    }
+    
+    return {
+      props: {},
+    };
+  } catch (error) {
+    console.log(error);
+    return {
+      props: {},
+    };
+  }
+}

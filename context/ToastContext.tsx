@@ -30,7 +30,6 @@ const ToastContext = createContext<Context>(initialContext);
 const toastReducer = (state : Toast[], action: any) => {
   switch(action.type){
     case "ADD_TOAST": {
-      console.log([...state, action.toast])
         return [...state, action.toast]
     }
     case "DELETE_TOAST" : {

@@ -1,7 +1,11 @@
 import { Formik, Form } from "formik";
 import { FC, useContext, Children, memo } from "react";
 import { DatePicker, InputField, SelectField } from "../../../Inputs";
-import { EmailIcon, EmailIcon as PasswordIcon, EmailIcon as UserForm } from "../../../Icons";
+import {
+  EmailIcon,
+  EmailIcon as PasswordIcon,
+  EmailIcon as UserForm,
+} from "../../../Icons";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -10,10 +14,14 @@ import {
 } from "@firebase/auth";
 import * as yup from "yup";
 import { UserMax } from "../../../../context/AuthContext";
-import { AuthContextProvider, LoadingContextProvider } from "../../../../context";
+import {
+  AuthContextProvider,
+  LoadingContextProvider,
+} from "../../../../context";
 import router from "next/router";
 import { ValidationSchemaRegister } from "./ValidationRegister";
-import { GraphQL } from "../../../../utils/Fetching";
+import { GraphQL, fetchApi, queries } from "../../../../utils/Fetching";
+import SelectFieldCoutries from "../../../Inputs/SelectFieldCoutries";
 
 // Interfaces para el InitialValues del formulario de registro
 interface userInitialValuesPartial {
@@ -142,7 +150,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
       });
 
       // Crear usuario en MongoDB
-      const moreInfo = await GraphQL.createUser({
+      const moreInfo = await fetchApi(queries.createUser, {
         ...values,
         phoneNumber: JSON.stringify(values.phoneNumber),
       });
@@ -303,7 +311,7 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
         </span>
 
         <span className="w-full relative ">
-          <SelectField name="country" placeholder={"Pais"} label={"País"} />
+          <SelectFieldCoutries name="country" label={"País"} />
         </span>
 
         <span className="w-full relative ">
@@ -358,7 +366,7 @@ const UserDataAPI: FC<propsForm> = () => {
         </span>
 
         <span className="w-full relative ">
-          <SelectField name="country" placeholder={"Pais"} />
+          <SelectFieldCoutries name="country" label={"Pais"} />
         </span>
 
         <span className="w-full relative ">

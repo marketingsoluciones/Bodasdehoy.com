@@ -1,16 +1,14 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
-  purge: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}', './layouts/**/*.{js,ts,jsx,tsx}'],
-  darkMode: false, // or 'media' or 'class'
+  content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}', './layouts/**/*.{js,ts,jsx,tsx}'],
   theme: {
     fontFamily: {
       "body": ['Montserrat', ...defaultTheme.fontFamily.sans],
       "display": ['Poppins', ...defaultTheme.fontFamily.sans],
       "title": ['Italiana', ...defaultTheme.fontFamily.sans],
     },
-   
-    extend: {
+      extend: {
       colors: {
         primary: "#F7628C",  
         secondary: "#87F3B5",
@@ -19,12 +17,9 @@ module.exports = {
       }
     },
   },
-  variants: {
-    extend: {
-      backgroundColor: ['active', 'checked'],
-      appearance: ['hover', 'focus'],
-    },
-  },
+  // corePlugins: {
+  //   preflight: false,
+  // },
   plugins: [
     require('@tailwindcss/forms'),
   ],

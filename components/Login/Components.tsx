@@ -4,7 +4,7 @@ import { Icon } from "../Surface/Footer";
 import { AppleIcon, FacebookIcon, GoogleIcon } from "../Icons";
 import { getAuth, signInWithPopup, UserCredential } from "firebase/auth";
 import router from "next/router";
-import { GraphQL } from '../../utils/Fetching';
+import { GraphQL, fetchApi, queries } from '../../utils/Fetching';
 import { useToast } from "../../hooks/useToast";
 import { AuthContextProvider } from "../../context";
 
@@ -36,7 +36,7 @@ export const Providers: FC = () => {
       const res: UserCredential = await signInWithPopup(auth, provider);
 
       // Solicitar datos adicionales del usuario
-      const moreInfo = await GraphQL.getUser(res.user.uid)
+      const moreInfo = await fetchApi(queries.getUser,{uid: res.user.uid})
 
       // Actualizar estado con los dos datos
       setUser({ ...res.user, ...moreInfo });

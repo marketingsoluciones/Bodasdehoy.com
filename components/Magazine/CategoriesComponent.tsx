@@ -12,7 +12,6 @@ type Category = {
 }
 
 export const CategoriesComponent : FC <{data: Partial<fetchCategory>[]}> = ({data = []}) => {
-    console.log(data)
     const Categories : Category[] = [
         {title: "Antes de la boda", icon: <CameraIcon className="w-12 h-12" />, route: "/"},
         {title: "Ceremonia", icon: <CarIcon className="h-12"  />, route: "/"},

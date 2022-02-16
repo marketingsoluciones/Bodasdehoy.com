@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Post } from "../../interfaces";
 import { createURL } from "../../utils/UrlImage";
 import Image from 'next/image';
+import { createSrcSet } from '../../utils/CreateSrcSet';
 ;
 
 
@@ -21,12 +22,8 @@ export const Banner : FC <Partial<Post>> = ({title, subTitle, authorUsername, im
         <img
           alt={"mascara"}
           className="w-5/6 md:w-3/5 bg-gray-300 h-80 md:h-96 rounded-xl object-cover object-center"
-          src={createURL(imgMiniatura?.smallUrl)}
-          srcSet={`
-          ${createURL(imgMiniatura?.thumbnailUrl)} 300w,
-          ${createURL(imgMiniatura?.smallUrl)} 994w,
-          ${createURL(imgMiniatura?.mediumUrl)} 1240w
-          `}
+          src={createURL(imgMiniatura?.i640)}
+          srcSet={createSrcSet(imgMiniatura)}
         />
       </div>
     </div>

@@ -6,12 +6,12 @@ interface propsIndiceSteps {
 const IndiceSteps : FC <propsIndiceSteps> = ({step}) => {
   const steps = [
     "Información personal",
-    "Galeria de fotos",
     "Preguntas frecuentes",
-    "Promociones",
+    "Galeria de fotos",
+    // "Promociones",
   ];
 
-  const stages : any = [0, 32, 64, 100]
+  const stages : any = [0, 50, 100]
 
   return (
     <div className="w-full flex items-center gap-32 relative w-max mx-auto inset-x-0 py-6">

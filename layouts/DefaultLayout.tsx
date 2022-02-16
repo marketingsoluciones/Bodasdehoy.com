@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import { FC } from 'react';
+import { LoadingProvider } from '../context';
 const DynamicAuthProvider = dynamic(() : any => import('../context').then(mod => mod.AuthProvider))
 const DynamicToastProvider = dynamic(() : any => import('../context').then(mod => mod.ToastProvider))
 const DynamicLoadingProvider = dynamic(() : any => import('../context').then(mod => mod.LoadingProvider))
@@ -11,7 +12,7 @@ const DefaultLayout: FC = ({ children }) => {
   
   return (
     <DynamicAuthProvider>
-      <DynamicLoadingProvider>
+      <LoadingProvider>
       <DynamicToastProvider>
         <div className="bg-color-base relative min-h-screen w-full">
           <DynamicNavigation />
@@ -21,7 +22,7 @@ const DefaultLayout: FC = ({ children }) => {
           <DynamicFooterMobile />
         </div>
       </DynamicToastProvider>
-      </DynamicLoadingProvider>
+      </LoadingProvider>
     </DynamicAuthProvider>
   );
 };

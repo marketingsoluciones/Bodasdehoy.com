@@ -1,6 +1,6 @@
 import { FC, useState, useEffect } from 'react';
 import { Post } from '../../interfaces';
-import { GraphQL } from '../../utils/Fetching';
+import { GraphQL, fetchApi, queries } from '../../utils/Fetching';
 import Link from 'next/link';
 
 
@@ -13,7 +13,7 @@ export const AsideLastestArticles : FC <props> = ({title, ...props}) => {
 
     const fetchData = async () => {
         try {
-            const {results} = await GraphQL.getTopFivePost()
+            const {results} = await fetchApi(queries.getAllPost, {sort: {createdAt : 1}, limit: 5})
             setPost(results)
         } catch (error) {
             console.log(error);

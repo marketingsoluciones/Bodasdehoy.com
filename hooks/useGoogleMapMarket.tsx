@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const eventMapping = {
+const eventMapping : any = {
   onClick: "click",
   onDoubleClick: "dblclick"
 };
@@ -20,8 +20,7 @@ export default function useGoogleMapMarker({
       map,
       title
     });
-    Object.keys(events).forEach(eventName =>
-      //@ts-ignore
+    Object.keys(events?? {}).forEach(eventName =>
       marker.addListener(eventMapping[eventName], events[eventName])
     );
     setMarker(marker);

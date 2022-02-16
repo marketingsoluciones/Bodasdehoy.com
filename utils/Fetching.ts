@@ -1,191 +1,570 @@
 import { api } from "../api";
-import { SearchCriteria } from "../interfaces";
 
-export const GraphQL = {
-  createUser: async (variables: any) => {
-    const query = `mutation crearUsuario ($uid : ID, $city: String, $country : String, $weddingDate : String, $phoneNumber : String, $role : [String]) {
-            createUser(uid: $uid, city : $city, country : $country, weddingDate : $weddingDate, phoneNumber : $phoneNumber, role: $role){
-                  city
-                  country
-                  weddingDate
-                  phoneNumber
-                  role
+const types = {
+  json : "",
+  formData : ""
+}
+
+export const fetchApi: CallableFunction = async (
+  query: string = ``,
+  variables: object = {},
+  type: keyof typeof types = "json"
+): Promise<any> => {
+  try {
+    
+    if(type === "json"){
+      const {
+        data: { data },
+      } = await api.graphql({ query, variables });
+      return Object.values(data)[0];
+      
+    } else if (type === "formData"){
+      
+      const formData = new FormData();
+      const values = Object?.entries(variables);
+
+      // Generar el map del Form Data para las imagenes
+      const map = values?.reduce((acc : any, item : any) => {
+        if (item[1] instanceof File) {
+          acc[item[0]] = [`variables.${item[0]}`];
+        }
+        if (item[1] instanceof Object) {
+          Object.entries(item[1]).forEach((el) => {
+            if (el[1] instanceof File) {
+              acc[el[0]] = [`variables.${item[0]}.${el[0]}`];
+            }
+            if (el[1] instanceof Object) {
+              Object.entries(el[1]).forEach((elemento) => {
+                if (elemento[1] instanceof File) {
+                  acc[elemento[0]] = [
+                    `variables.${item[0]}.${el[0]}.${elemento[0]}`,
+                  ];
                 }
-              }
-            `;
-    const {
-      data: {
-        data: { createUser },
-      },
-    } = await api.graphql({ query, variables });
-    return createUser;
-  },
-
-  getBusinessByUID: async (variables: any) => {
-    const query = `query getBusiness($uid : ID){
-      getBusinesses(uid:$uid){
-          _id,
-          userUid,
-          businessName,
-          country,
-          city,
-          zip,
-          address,
-          coordinates,
-          description,
-          categories,
-          subCategories,
-          photos{
-            _id
-            mediumUrl
-          }
+              });
+            }
+          });
         }
-    }
-    `;
-    const {
-      data: {
-        data: { getBusinesses },
-      },
-    } = await api.graphql({ query, variables });
-    return getBusinesses;
-  },
+        return acc;
+      }, {});
 
-  getBusinessByID: async (variables: any) => {
-    const query = `query getBusiness($_id : ID){
-      getBussines(id:$_id){
-          _id,
-          userUid,
-          businessName,
-          country,
-          city,
-          zip,
-          address,
-          coordinates,
-          description,
-          categories,
-          subCategories,
-          photos{
-            _id
-            mediumUrl
-          }
+      // Agregar filas al FORM DATA
+
+      formData.append("operations", JSON.stringify({query, variables}));
+      formData.append("map", JSON.stringify(map));
+      values.forEach((item) => {
+        if (item[1] instanceof File) {
+          formData.append(item[0], item[1]);
         }
-    }
-    `;
-    const {
-      data: {
-        data: { getBussines },
-      },
-    } = await api.graphql({ query, variables });
-    return getBussines;
-  },
-
-  getPhotosBusinessByID: async (variables: any) => {
-    const query = `query getBusiness($_id : ID){
-      getBussines(id:$_id){
-          _id,
-          photos{
-            _id
-            mediumUrl
-          }
+        if (item[1] instanceof Object) {
+          Object.entries(item[1]).forEach((el) => {
+            if (el[1] instanceof File) {
+              formData.append(el[0], el[1]);
+            }
+            if (el[1] instanceof Object) {
+              Object.entries(el[1]).forEach((elemento) => {
+                if (elemento[1] instanceof File) {
+                  formData.append(elemento[0], elemento[1]);
+                }
+              });
+            }
+          });
         }
-    }
-    `;
-    const {
-      data: {
-        data: { getBussines },
-      },
-    } = await api.graphql({ query, variables });
-    return getBussines;
-  },
+      });
 
-  //getUser con error en peticion 
-  getUser: async (uid: string) => {
-    const query = `query getUser ($uid: ID) {
-        getUser(uid:$uid){
-          phoneNumber
-          role
-          typeRole
+      const { data } = await api.graphql(formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      
+      if (data.errors) {
+        throw new Error(JSON.stringify(data.errors));
+      }
+
+      return Object.values(data.data)[0];
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+};
+
+
+
+type queries = {
+  createUser: string;
+  createBusiness : string
+  getAllPost: string
+  getAllCategoryBusiness : string
+  getAllBusiness : string
+  getHome : string
+  getCategories : string
+  getUser : string
+  getSlugBusiness: string
+  getOneBusiness: string;
+  getSlugPosts: string
+  getMagazine : string
+  deleteImages : string
+  deleteBusiness : string
+};
+
+export const queries: queries = {
+  createUser: `mutation  ($uid : ID, $city: String, $country : String, $weddingDate : String, $phoneNumber : String, $role : [String]) {
+    createUser(uid: $uid, city : $city, country : $country, weddingDate : $weddingDate, phoneNumber : $phoneNumber, role: $role){
           city
           country
           weddingDate
-          signUpProgress
-          status
-          createdAt
-          updatedAt
+          phoneNumber
+          role
         }
-      }`;
-    const {
-      data: {
-        data: { getUser },
-      },
-    } = await api.graphql({ query, variables: { uid } });
-    return getUser;
-  },
-
-  createBusiness: async (variables: any) => {
-    const query = `mutation getQuestions ($fase: String, $_id: ID, $userUid : ID, $contactName: String, $contactEmail : String, $mobilePhone : String, $businessName: String, $country : String, $city: String, $zip : String, $address : String, $description : String, $subcategories : [String], $questionsAndAnswers : [inputQuestionsAndAnswers] ) {
-      createBusiness(
-        fase : $fase,
-        id: $_id,
-        inputBusiness:{
-          userUid : $userUid,
-          contactName: $contactName,
-          contactEmail: $contactEmail,
-          mobilePhone: $mobilePhone,
-          businessName: $businessName,
-          country: $country,
-          city: $city,
-          zip: $zip,
-          address: $address,
-          description: $description,
-          subCategories: $subcategories,
-          questionsAndAnswers : $questionsAndAnswers
-        }){
-        _id,
-        fase,
-        questionsAndAnswers{
-            answers
-            frequentQuestions
-          },
-        accessories,
-            services,
+      }`,
+      getAllBusiness: `query ($criteria :searchCriteriaBusiness, $sort : sortCriteriaBusiness, $skip :Int, $limit : Int) {
+        getAllBusinesses(searchCriteria:$criteria, sort: $sort, skip: $skip, limit: $limit){
+          total
+          results{
+             _id
+            businessName
+            slug
+            imgMiniatura{
+              i1024
+              i800
+              i640
+              i320
+            }
+            
+          }
+        }
+      }`,
+  getOneBusiness: `query ($id: ID, $slug : String) {
+    getOneBusiness(_id: $id, slug: $slug){
+      _id
+      slug
+      tags
+      contactName
+      contactEmail
+      businessName
+      webPage
+      landline
+      mobilePhone
+      whatsapp
+      twitter
+      facebook
+      linkedin
+      youtube
+      instagram
+      country
+      city
+      zip
+      address
+      description
+      content
+      subCategories{
+        _id
       }
-    }`;
-    const {
-      data: {
-        data: { createBusiness },
-      },
-    } = await api.graphql({ query, variables });
-    return createBusiness;
-  },
-
-  getCategories: async () => {
-    const query = `query {
-      getCategories{
-        categorie{
+      questionsAndAnswers{
+        questions{
+          _id
           title
-          imgMiniatura
-          imgBanner
+        }
+        answers
+      }
+      coordinates{
+        lat
+        lng
+      }
+      categories{
+        _id
+      }
+      subCategories{
+        _id
+      }
+      imgMiniatura{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      imgLogo{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      status
+      createdAt
+      updatedAt
+      characteristics{
+        characteristic{
+          _id
+          title
+          items{
+            _id
+            title
+            clicked
+          }
+        }
+        items{
+          _id
+          title
+          clicked
+        }
+        
+      }
+      imgCarrusel {
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+    }
+  }`,
+  getUser : `query ($uid: ID) {
+    getUser(uid:$uid){
+      phoneNumber
+      role
+      typeRole
+      city
+      country
+      weddingDate
+      signUpProgress
+      status
+      createdAt
+      updatedAt
+    }
+  }`,
+  createBusiness : `mutation ($fase: String,
+    $_id: ID,
+    $userUid : ID,
+    $contactName: String,
+    $contactEmail : String,
+    $mobilePhone : String,
+    $businessName: String!,
+    $country : String,
+    $city: String,
+    $webPage : String,
+    $landline : String,
+    $zip : String,
+    $address : String,
+    $description : String,
+    $subCategories : [inputObjectID]
+    $questionsAndAnswers : [inputQuestionsAndAnswers]
+    $characteristics: [inputCharacteristicsCms]
+    $coordinates : inputCoordinates
+    $imgLogo : Upload
+    $imgMiniatura : Upload
+    $status : Boolean
+    ) {
+        createBusiness(
+          fase : $fase,
+          id: $_id,
+          inputBusiness:{
+            userUid : $userUid,
+            contactName: $contactName,
+            contactEmail: $contactEmail,
+            mobilePhone: $mobilePhone,
+            businessName: $businessName,
+            country: $country,
+            city: $city,
+            zip: $zip,
+            address: $address,
+            description: $description,
+            subCategories: $subCategories,
+            questionsAndAnswers : $questionsAndAnswers
+            characteristics : $characteristics
+            webPage: $webPage
+            landline: $landline
+            coordinates: $coordinates
+            imgLogo : $imgLogo
+            imgMiniatura : $imgMiniatura
+            status: $status
+          }){
+          _id,
+          fase,
+          imgMiniatura{
+            i1024
+            i800
+            i640
+            i320
+          }
+          imgLogo{
+            i1024
+            i800
+            i640
+            i320
+          }
+          questionsAndAnswers{
+            questions{
+              _id
+              title
+            }
+            answers
+          }
+          characteristics{
+            characteristic{
+              _id
+              title
+              items{
+                _id
+                title
+              }
+            }
+            
+          }
+        }
+      }`,
+  getCategories : `query {
+    getCategoryBusiness{
+      total
+      results{
+        _id
+        title
+        imgMiniatura{
+          i1024
+          i800
+          i640
+          i320
+        }
+        imgBanner{
+          i1024
+          i800
+          i640
+          i320
+        }
+        slug
+        description
+        subCategories{
+          _id
+          title
+          imgMiniatura{
+          i1024
+          i800
+          i640
+          i320
+        }
           slug
           description
+        }
+      }
+    }
+  }`,
+  deleteImages: `mutation  ($idImage :ID, $idBusiness:ID, $use : String) {
+    deleteUpload(_id:$idImage, businessID:$idBusiness, use:$use)
+  }`,
+  getHome : `query {
+    getHome{
+      business{
+        _id
+        slug
+        description
+        businessName
+        imgMiniatura{
+          i1024
+          i800
+          i640
+          i320
+        }
+      }
+      categoriesBusiness{
+          title
+          subCategories{
+            _id
+            title
+            imgMiniatura{
+              i1024
+              i800
+              i640
+              i320
+            }
+          }
+          slug
+          imgMiniatura{
+            i1024
+            i800
+            i640
+            i320
+          }
+          icon{
+            i1024
+            i800
+            i640
+            i320
+          }
+      }
+      post{
+        _id
+        title
+        slug
+        seoDescription
+        content
+        createdAt
+        imgMiniatura{
+          i1024
+          i800
+          i640
+          i320
+        }
+      }
+      categoriesPost{
+        title
+        imgMiniatura{
+            i1024
+            i800
+            i640
+            i320
         }
         subCategories{
+          _id
           title
-          imgMiniatura
-          imgBanner
           slug
-          description
+          imgMiniatura{
+            i1024
+            i800
+            i640
+            i320
+          }
+        }
+        slug
+      }
+    }
+  }`,
+  getSlugBusiness : `query{
+    getSlugBusiness
+  }`,
+  getSlugPosts : `query {
+    getSlugPosts
+  }`,
+  getAllPost : `query ($criteria : searchCriteriaPost, $sort: sortCriteriaPost, $limit : Int, $skip : Int) {
+    getAllPost(searchCriteria:$criteria, limit : $limit, skip: $skip){
+      total
+      results{
+        _id
+        title
+        subTitle
+        content
+        permaLink
+        slug
+        seoDescription
+        categories
+        groupSubCategories
+        subCategories
+        tags
+        imgCarrusel{
+          _id
+          mediumUrl
+        }
+        imgMiniatura{
+          _id
+          mediumUrl
+        }
+        authorUsername
+        status
+        createdAt
+        updatedAt
+      }
+    }
+  }`,
+  getMagazine : `query {
+    getMagazine{
+      lastestPosts{
+        _id
+        content
+        title
+        slug
+        categories
+        updatedAt
+        imgMiniatura{
+          _id
+          mediumUrl
         }
       }
-    }`;
-    const variables = {};
-    const {
-      data: {
-        data: { getCategories },
-      },
-    } = await api.graphql({ query, variables });
-    return getCategories;
-  },
+      postsByCategory{
+        _id
+        title
+        seoDescription
+        slug
+        imgMiniatura{
+          _id
+          mediumUrl
+        }
+      }
+      postsMoreViews{
+        _id
+        title
+        slug
+        imgMiniatura{
+          _id
+          mediumUrl
+        }
+      }
+      categoriesPost{
+        categorie{
+          title
+          slug
+        }
+      }
+    }
+  }`,
+  deleteBusiness : `mutation ($id : [ID]){
+    deleteBusinesses(id: $id)
+  }`,
+  getAllCategoryBusiness : `query ($criteria : searchCriteriaCategory, $sort : sortCriteriaCategory, $skip : Int, $limit: Int) {
+    getAllCategoryBusiness(searchCriteria: $criteria, sort: $sort, skip: $skip, limit: $limit){
+      total
+      results{
+        _id
+        title
+        heading
+        slug
+        description
+        imgBanner{
+          i1024
+          i800
+          i640
+          i320
+        }
+        subCategories{
+          _id
+          title
+          heading
+          slug
+          description
+          imgMiniatura{
+            i1024
+            i800
+            i640
+            i320
+          }
+        }
+      }
+    }
+  }`
+};
+
+export const GraphQL = {
+  // getPhotosBusinessByID: async (variables: any) => {
+  //   const query = `query getBusiness($_id : ID){
+  //     getBussines(id:$_id){
+  //         _id,
+  //         photos{
+  //           _id
+  //           mediumUrl
+  //         }
+  //       }
+  //   }
+  //   `;
+  //   const {
+  //     data: {
+  //       data: { getBussines },
+  //     },
+  //   } = await api.graphql({ query, variables });
+  //   return getBussines;
+  // },
+
+
+
 
   uploadImage: async (file: any, id: string, use: string) => {
     const newFile = new FormData();
@@ -193,10 +572,10 @@ export const GraphQL = {
       query: `mutation ($file: Upload!, $businessID : String, $use : String) {
                 singleUpload(file: $file, businessID:$businessID, use : $use){
                   _id
-                  thumbnailUrl
-                  smallUrl
-                  mediumUrl
-                  largeUrl
+                  i1024
+                  i800
+                  i640
+                  i320
                   createdAt
                 }
               }
@@ -232,340 +611,6 @@ export const GraphQL = {
     return singleUpload;
   },
 
-  deleteImage: async ({
-    idImage,
-    idBusiness,
-    use,
-  }: {
-    idImage: string;
-    idBusiness: string;
-    use: string;
-  }) => {
-    const query = `mutation deleteUpload ($_id :ID, $businessID:ID, $use : String) {
-      deleteUpload(_id:$_id, businessID:$businessID, use:$use)
-    }`;
-    const variables = { _id: idImage, businessID: idBusiness, use: use };
-    const {
-      data: {
-        data: { deleteUpload },
-      },
-    } = await api.graphql({ query, variables });
-    return deleteUpload;
-  },
 
-  getHome: async () => {
-    const query = `query {
-      getHome{
-        business{
-          _id
-          slug
-          description
-          businessName
-          imgMiniatura{
-            _id
-            i1024
-            i800
-            i640
-            i320
-          }
-        }
-        categoriesBusiness{
-          title
-          imgMiniatura{
-            _id
-            i1024
-            i800
-            i640
-            i320
-          }
-          slug
-          subCategories{
-            title
-            imgMiniatura{
-              _id
-              i1024
-              i800
-              i640
-              i320
-            }
-            slug
-          }
-        }
-        post{
-          _id
-          title
-          slug
-          seoDescription
-          content
-          categories{
-            _id
-            title
-          }
-          createdAt
-          imgMiniatura{
-            _id
-            i1024
-            i800
-            i640
-            i320
-          }
-        }
-        categoriesPost{
-          title
-          imgMiniatura{
-            _id
-            i1024
-            i800
-            i640
-            i320
-          }
-          slug
-          subCategories {
-            title
-            imgMiniatura{
-              _id
-              i1024
-              i800
-              i640
-              i320
-            }
-            slug
-          }
-        }
-      }
-    }`;
-    const {
-      data: {
-        data: { getHome },
-      },
-    } = await api.graphql({ query, variables: {} });
-    return getHome;
-  },
-
-  getSlugBusiness: async () => {
-    const query = `query{
-      getSlugBusiness
-    }`;
-    const variables = {};
-
-    const {
-      data: {
-        data: { getSlugBusiness },
-      },
-    } = await api.graphql({ query, variables });
-    return getSlugBusiness;
-  },
-
-  getBusinessBySlug: async (slug : string) => {
-    const query = `query ($slug: String){
-      getBussines(slug: $slug){
-        _id
-          slug
-          userUid
-          tags
-          contactName
-          contactEmail
-          businessName
-          webPage
-          landline
-          mobilePhone
-          whatsapp
-          twitter
-          facebook
-          linkedin
-          youtube
-          instagram
-          country
-          city
-          zip
-          address
-          description
-          content
-          coordinates
-          categories
-          subCategories
-          questionsAndAnswers{
-            frequentQuestions
-            answers
-          }
-          accessories
-          services
-          servicesList{
-            title
-            check
-          }
-          accessoriesList{
-            title
-            check
-          }
-          imgMiniatura{
-            _id
-            thumbnailUrl
-            smallUrl
-            mediumUrl
-          }
-          imgLogo{
-            _id
-            thumbnailUrl
-            smallUrl
-            mediumUrl
-          }
-          fase
-          status
-          createdAt
-          updatedAt
-    }}`;
-    const variables = {
-      slug
-    };
-    const {
-      data: {
-        data: { getBussines },
-      },
-    } = await api.graphql({ query, variables });
-
-    return getBussines;
-  },
-
-  getSlugPosts: async () => {
-    const query = `query {
-      getSlugPosts
-    }`;
-    const variables = {};
-    const {
-      data: {
-        data: { getSlugPosts },
-      },
-    } = await api.graphql({ query, variables });
-
-    return getSlugPosts;
-  },
-
-  getPostByCriteria: async (criteria: Partial<SearchCriteria>) => {
-    const query = `query ($criteria : searchCriteriaPost) {
-      getAllPost(searchCriteria:$criteria){
-        total
-        results{
-          _id
-          title
-          subTitle
-          content
-          permaLink
-          slug
-          seoDescription
-          categories
-          groupSubCategories
-          subCategories
-          tags
-          imgCarrusel{
-            _id
-            mediumUrl
-          }
-          imgMiniatura{
-            _id
-            mediumUrl
-          }
-          authorUsername
-          status
-          createdAt
-          updatedAt
-        }
-      }
-    }`;
-    const variables = {
-      criteria,
-    };
-    const {
-      data: {
-        data: { getAllPost },
-      },
-    } = await api.graphql({ query, variables });
-
-    return getAllPost;
-  },
-
-  getTopFivePost : async () => {
-    const query = `
-    query  {
-      getAllPost(sort: {createdAt : 1} limit: 5){
-        total
-        results{
-          _id
-          title
-          subTitle
-          content
-          permaLink
-          slug
-          seoDescription
-          categories
-          groupSubCategories
-          subCategories
-          tags
-          imgCarrusel{
-            _id
-            mediumUrl
-          }
-          imgMiniatura{
-            _id
-            mediumUrl
-          }
-          authorUsername
-          status
-          createdAt
-          updatedAt
-        }
-      }
-    }`
-
-    const {data: {data : {getAllPost}}} = await api.graphql({query, variables: {}})
-    return getAllPost
-  },
-
-  getMagazine : async () => {
-    const query = `query {
-      getMagazine{
-        lastestPosts{
-          _id
-          content
-          title
-          slug
-          categories
-          updatedAt
-          imgMiniatura{
-            _id
-            mediumUrl
-          }
-        }
-        postsByCategory{
-          _id
-          title
-          seoDescription
-          slug
-          imgMiniatura{
-            _id
-            mediumUrl
-          }
-        }
-        postsMoreViews{
-          _id
-          title
-          slug
-          imgMiniatura{
-            _id
-            mediumUrl
-          }
-        }
-        categoriesPost{
-          categorie{
-            title
-            slug
-          }
-        }
-      }
-    }`
-    const variables = {}
-
-    const {data:{data:{getMagazine}}} = await api.graphql({query, variables})
-    return getMagazine
-  }
+  
 };

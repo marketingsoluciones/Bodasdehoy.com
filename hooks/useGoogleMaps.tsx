@@ -5,9 +5,10 @@ import GoogleMapsApiLoader from 'google-maps-api-loader';
 
 const apiKey = process.env.NEXT_PUBLIC_API_KEY_CONSOLE_GOOGLE
 
-const eventsMapping = {
+const eventsMapping : any = {
   onCenterChanged: ["center_changed", (map: any) => map.getCenter()],
-  onBoundsChangerd: ["bounds_changed", (map: any) => map.getBounds()]
+  onBoundsChangerd: ["bounds_changed", (map: any) => map.getBounds()],
+  onClick : ["click", (map : any) => map.getBounds()]
 };
 
 export default function useGoogleMap({ zoom, center, disableDefaultUI, events } : any) {
@@ -18,9 +19,7 @@ export default function useGoogleMap({ zoom, center, disableDefaultUI, events } 
     GoogleMapsApiLoader({ apiKey }).then((google : any) => {
       const map = new google.maps.Map(mapRef.current, { zoom, center, disableDefaultUI });
       Object.keys(events).forEach(eventName =>
-         //@ts-ignore
         map.addListener(eventsMapping[eventName][0], () =>
-         //@ts-ignore
           events[eventName](eventsMapping[eventName][1](map))
         )
       );

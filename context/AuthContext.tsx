@@ -8,7 +8,7 @@ import {
   useEffect,
   useContext,
 } from "react";
-import { GraphQL } from "../utils/Fetching";
+import { GraphQL, fetchApi, queries } from '../utils/Fetching';
 
 export interface UserMax extends User {
   city?: string;
@@ -38,7 +38,7 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
     const auth = getAuth();
     auth.onAuthStateChanged(async (user: any) => {
       if (user) {
-        const moreInfo = await GraphQL.getUser(user?.uid);
+        const moreInfo = await fetchApi(queries.getUser,{uid: user?.uid});
         setUser({ ...user, ...moreInfo });
 
         // Setear en localStorage token JWT

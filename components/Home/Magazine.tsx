@@ -4,28 +4,30 @@ import Slider from "react-slick";
 import { PlusButton } from "../Inputs";
 import { format } from "../../utils/FormatTime";
 import { Markup } from "interweave";
-import { fetchCategory, Post } from "../../interfaces";
+import { fetchCategory, Post, category } from "../../interfaces";
 import { createURL } from "../../utils/UrlImage";
+import { createSrcSet } from '../../utils/CreateSrcSet';
 
 interface propsMagazine {
   posts: Post[];
-  categories: fetchCategory[];
+  categories: Partial<category>[];
 }
-export const Magazine: FC<propsMagazine> = ({ posts: data, categories }) => {
+export const Magazine: FC<propsMagazine> = ({ posts: data = [], categories }) => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     setPosts(data);
   }, [data]);
+
   return (
     <div className="w-full bg-color-base py-10 md:py-20 relative px-5">
       <div className="max-w-screen-lg mx-auto inset-x-0">
         <h2 className="md:hidden font-title text-6xl md:text-7xl w-full text-center md:text-left text-primary">
           Magazine
         </h2>
-        <Principal {...posts[0]} />
+        {posts?.length > 0 && <Principal {...posts[0]} />}
         <BlogCategories categories={categories} />
-        <GridPost data={posts.slice(1)} />
+        <GridPost data={posts?.slice(1)} />
         <span className="absolute bottom-0 mx-auto inset-x-0 transform translate-y-2 hover:scale-105 transition">
           <PlusButton size={"medium"} />
         </span>
@@ -39,7 +41,6 @@ export default Magazine;
 export const Principal: FC<Post> = ({
   title,
   content,
-  seoDescription,
   categories,
   createdAt,
   imgMiniatura,
@@ -58,8 +59,8 @@ export const Principal: FC<Post> = ({
               {createdAt && format(new Date(createdAt), "es", { dateStyle: "long" })}
             </p>
           </div>
-          <div className="col-span-6 px-4 flex items-center">
-            <p className="text-xs">{seoDescription}</p>
+          <div className="col-span-6 px-4 flex items-center text-xs">
+            <Markup content={content.slice(0,300)} noHtml />
           </div>
         </div>
       </div>
@@ -67,34 +68,30 @@ export const Principal: FC<Post> = ({
       <img
           alt={title}
           className="h-80 w-full rounded-2xl object-cover float-right"
-          src={createURL(imgMiniatura?.thumbnailUrl)}
-          srcSet={`
-          ${createURL(imgMiniatura?.thumbnailUrl)} 300w,
-          ${createURL(imgMiniatura?.smallUrl)} 994w,
-          ${createURL(imgMiniatura?.mediumUrl)} 1240w
-          `}
+          src={createURL(imgMiniatura?.i640)}
+          srcSet={createSrcSet(imgMiniatura)}
         />
     </div>
   );
 };
 
-const BlogCategories: FC<{ categories: fetchCategory[] }> = ({
+const BlogCategories: FC<{ categories: Partial<category>[] }> = ({
   categories: data,
 }) => {
-  const [categories, setCategories] = useState<fetchCategory[]>([]);
+  const [categories, setCategories] = useState<Partial<category>[]>([]);
 
   useEffect(() => {
     setCategories(data);
   }, [data]);
 
   interface propsCategory {
-    title: string;
-    route: string;
+    title: string | undefined;
+    route: string | undefined;
   }
 
   const Category: FC<propsCategory> = ({ title, route }) => {
     return (
-      <Link href={route} passHref>
+      <Link href={route ?? "/"} passHref>
         <button className="rounded-full px-4 w-95 text-sm flex items-center py-2 justify-center text-tertiary font-medium border border-primary bg-white hover:bg-primary hover:text-white transition ease-in duration-200 cursor-pointer flex-wrap">
           {title}
         </button>
@@ -131,8 +128,8 @@ const BlogCategories: FC<{ categories: fetchCategory[] }> = ({
         {categories?.map((item, idx) => (
           <Category
             key={idx}
-            title={item.categorie.title}
-            route={item.categorie.slug}
+            title={item?.title}
+            route={item?.slug}
           />
         ))}
       </Slider>
@@ -140,25 +137,32 @@ const BlogCategories: FC<{ categories: fetchCategory[] }> = ({
   );
 };
 
-export const GridPost: FC<{ data: Post[] }> = ({ data }) => {
-  const [posts, setPosts] = useState<Post[]>([]);
+export const GridPost: FC<{ data: Partial<Post>[] }> = ({ data }) => {
+  const [posts, setPosts] = useState<Partial<Post>[]>([]);
 
   useEffect(() => {
     setPosts(data);
   }, [data]);
 
   const settings = {
-    autoplay: true,
-    accessibility: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 3,
+    speed: 200,
+    infinite: false,
+    slidesToShow: 4,
+    arrows: false,
     responsive: [
       {
         breakpoint: 600,
         settings: {
-          slidesToScroll: 1,
-          slidesToShow: 1,
+          slidesToShow: 2,
+          rows: 2,
+        },
+      },
+
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 3,
+          rows: 1,
         },
       },
     ],
@@ -166,8 +170,8 @@ export const GridPost: FC<{ data: Post[] }> = ({ data }) => {
   return (
     <div className="w-full grid grid-cols-1 h-full overflow-hidden">
       <Slider {...settings}>
-        {posts?.map((item: Post) => (
-          <PostComponent key={item._id} {...item} />
+        {posts?.map((item: Partial<Post>) => (
+          <PostComponent key={item?._id} {...item} />
         ))}
       </Slider>
     </div>
@@ -177,19 +181,14 @@ export const GridPost: FC<{ data: Post[] }> = ({ data }) => {
 export const PostComponent: FC<Partial<Post>> = memo(
   (props) => {
     const { title, content, updatedAt, imgMiniatura, slug } = props
-    console.log(props)
     return (
       <div className="w-60 h-full mx-auto my-6 inset-x-0 bg-white rounded-3xl overflow-hidden hover:shadow-xl hover:opacity-95 transition-all cursor-pointer duration-400 border ">
         
         <img
           alt={title}
           className="h-40 w-full object-cover object-center"
-          src={createURL(imgMiniatura?.thumbnailUrl)}
-          srcSet={`
-          ${createURL(imgMiniatura?.thumbnailUrl)} 300w,
-          ${createURL(imgMiniatura?.smallUrl)} 994w,
-          ${createURL(imgMiniatura?.mediumUrl)} 1240w
-          `}
+          src={createURL(imgMiniatura?.i640)}
+          srcSet={createSrcSet(imgMiniatura)}
         />
         <div className="py-5 text-center h-full">
           <Link href={`/magazine/${slug}`} passHref>

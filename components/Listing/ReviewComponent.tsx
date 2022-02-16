@@ -6,7 +6,7 @@ import { ReviewIconPrincipal } from "../Icons";
 import FormReviewComponent from "./FormReviewComponent";
 import { business } from "../../interfaces";
 
-const ReviewComponent: FC<business> = ({ businessName }) => {
+const ReviewComponent: FC<Partial<business>> = ({ businessName }) => {
   const [isOpen, setOpen] = useState(false);
   const possibleReviews = [
     { title: "Profesionalidad", value: 5 },
@@ -15,10 +15,10 @@ const ReviewComponent: FC<business> = ({ businessName }) => {
     { title: "Flexibilidad", value: 0 },
   ];
   return (
-    <div className="p-3 md:p-6 bg-color-base w-full rounded-lg flex flex-col gap-4 transition-all h-auto">
+    <div id={"reviews"} className="p-3 md:p-6 bg-color-base w-full rounded-lg flex flex-col gap-4 transition-all h-auto">
       <div className="flex items-center gap-3">
-        <ReviewIconPrincipal />
-        <h2 className="text-xl text-gray-500">
+        <ReviewIconPrincipal className="w-10 h-10" />
+        <h2 className="text-lg text-gray-500">
           Opiniones sobre {businessName}
         </h2>
       </div>

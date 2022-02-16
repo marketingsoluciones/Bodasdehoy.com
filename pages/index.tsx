@@ -4,7 +4,7 @@ const Slider : any = dynamic(() : any => import('react-slick'))
 
 import Image from "next/image";
 import dynamic from 'next/dynamic';
-import { GraphQL } from '../utils/Fetching';
+import { fetchApi, queries } from '../utils/Fetching';
 import { business, fetchCategory, Post } from '../interfaces';
 import { AdsApp, FeaturedCompanies, Magazine, PlaceDiscovery, PodcastList } from '../components/Home';
 import RecommendCategories from '../components/Home/RecommendCategories';
@@ -18,13 +18,7 @@ interface propsHome {
 }
 
 
-
-
-
-
 const Home: FC<propsHome> = (props) => {
-  
-  
   return (
     <section className="w-full">
       <div className="sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg banner pt-6 md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full">
@@ -50,7 +44,7 @@ export default Home;
 export const Welcome: FC = (props) => {
   return (
     <>
-      <div className="relative grid md:grid-cols-2 px-5 sm:px-0 pb-16 pb-0 relative">
+      <div className=" before:absolute before:w-full before:h-1/2 before:bg-gradient-to-t before:from-color-base before:to-transparent before:via-color-base before:z-10 before:bottom-20 before:left-0 relative grid md:grid-cols-2 px-5 sm:px-0 pb-16 pb-0 relative">
         <div className="flex flex-col gap-5 z-10 relative">
           <h1 className="text-2xl md:text-4xl text-tertiary relative subpixel-antialiased font-bold w-full flex flex-col gap-2">
             <span className="relative w-max h-max  font-light">
@@ -69,7 +63,7 @@ export const Welcome: FC = (props) => {
           <Features />
         </div>
 
-        <div className="md:w-full w-1/2 md:relative absolute z-0 -bottom-16 md:bottom-0 right-0 md:-mt-20">
+        <div className=" md:w-full w-1/2 md:relative absolute z-0 -bottom-16 md:bottom-0 right-0 md:-mt-20 relative">
           <Image
             src={"/photo-principal.webp"}
             alt='Bodas de hoy'
@@ -81,6 +75,14 @@ export const Welcome: FC = (props) => {
           />
         </div>
       </div>
+      {/* <style jsx>
+        {`
+          .image-principal::before{
+            content: "''";
+            position: absolute
+          }
+        `}
+      </style> */}
     </>
   );
 };
@@ -181,11 +183,10 @@ const ButtonProviders = () => {
 
 export async function getServerSideProps() {
   try {
-    console.log("empezo")
-    console.time("hola")
-    const data = await GraphQL.getHome()
-    console.timeEnd("hola")
-    return { props: data };
+    console.time("getHome")
+    const data = await fetchApi(queries.getHome)
+    console.timeEnd("getHome")
+    return { props: data ?? {} };
   } catch (error) {
     console.log(error);
     return {

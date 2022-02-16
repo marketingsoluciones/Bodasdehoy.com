@@ -11,7 +11,7 @@ import { TagIcon } from "../../components/Icons";
 import { RelatedArticles, AsideLastestArticles, SuscribeComponent } from "../../components/Magazine";
 import { BreadCumbs, DisqusComponent } from "../../components/Surface";
 import { Post } from "../../interfaces";
-import { GraphQL } from '../../utils/Fetching';
+import { GraphQL, fetchApi, queries } from '../../utils/Fetching';
 
 const Article : FC <Partial<Post>> = (props) => {
   const {content, tags = []} = props
@@ -57,9 +57,9 @@ export default Article;
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   
   try {
-    const {results} = await GraphQL.getPostByCriteria({slug : params.slug})
+    const {results} = await fetchApi(queries.getAllPost, {criteria : {slug : params.slug}})
     return {
-      props: results.length > 0 && results[0],
+      props: results.length > 0 ? results[0] : {},
     };
   } catch (error) {
     console.log(error)
@@ -72,7 +72,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
-    const data = await GraphQL.getSlugPosts()
+    const data = await fetchApi(queries.getSlugPosts)
     return {
       paths: data.map((slug : string) => ({params: {slug}})) ,
       fallback: "blocking",

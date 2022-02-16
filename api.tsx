@@ -5,6 +5,7 @@ import axios, { AxiosInstance, AxiosResponse } from 'axios'
 type Fetching = {
     graphql : CallableFunction
     youtube : CallableFunction
+    restCountries : CallableFunction
 }
 
 
@@ -24,7 +25,10 @@ export const api : Fetching = {
                 channelId : "UCuQNm4bt_zQc5miwSm4WYXA"
             }
         })
-    }
+    },
+    restCountries: async () : Promise<AxiosResponse> => {
+        return await axios.get('https://restcountries.com/v3.1/all')
+    },
 }
 
 

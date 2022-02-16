@@ -2,11 +2,26 @@ import { FC } from 'react';
 const Loading : FC = () => {
   return (
     <div className="text-primary w-screen h-screen bg-white flex items-center justify-center fixed z-50  top-0 left-0">
+      <LoadingItem text={"Procesando, espere un momento"} />
+    </div>
+  );
+};
+
+export default Loading;
+
+const sizes = {
+  small : "w-10 h-10",
+  medium: "w-16 h-16",
+  large : "w-20 h-20"
+}
+export const LoadingItem : FC <{text: string, size?: keyof typeof sizes}> = ({text, size = "large"}) => {
+  return (
+    <div className='w-max flex items-center gap-2'>
       <svg
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 100 100"
-        className="w-20 h-20 m-0 p-0 "
+        className={`${sizes[size]} m-0 p-0 `}
       >
         <path
           fill="currentColor"
@@ -23,9 +38,7 @@ const Loading : FC = () => {
           />
         </path>
       </svg>
-      Procesando, espere un momento
+      {text}
     </div>
-  );
-};
-
-export default Loading;
+  )
+}

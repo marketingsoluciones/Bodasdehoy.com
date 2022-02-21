@@ -4,9 +4,6 @@ import PreguntasFrecuentes from "../../components/Dasboard/EmpresaRegistro/Pregu
 import Promociones from "../../components/Dasboard/EmpresaRegistro/Promociones"
 
 const CrearEmpresa = () => {
-
-    
-
     return <div className=" max-w-screen-lg mx-auto inset-x-0 w-full space-y-10" >
         <header className="flex flex-row mt-5 justify-center  ">
             <h1>1</h1>

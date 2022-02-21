@@ -10,11 +10,10 @@ const EmpresaInicio = () => {
       <h1 className="text-primary text-2xl  font-bold ">Estadísticas</h1>
       <Header />
       <div className="flex space-x-2 flex-col">
-      <div className="grid grid-cols-6 gap-10 ">
-        <Panel />
-        <PanelDerecho />
-      </div>
-          
+        <div className="grid grid-cols-6 gap-10 ">
+          <Panel />
+          <PanelDerecho />
+        </div>
       </div>
     </div>
   );

@@ -28,7 +28,7 @@ export const Footer: FC = () => {
   ];
 
   return (
-    <div className="hidden md:block bg-color-base w-full pb-8 pt-10 container mx-auto inset-x-0 max-w-screen-lg">
+    <div className="hidden md:block bg-color-base w-full pb-8 pt-10 container mx-auto inset-x-0 max-w-screen-lg 2xl:max-w-screen-xl">
       <div className="max-w-screen-lg 2xl:max-w-screen-2xl mx-auto inset-x-0">
         <div className="border-b border-primary pt-10 pb-8">
           <img src="/logo.webp" alt={"Logo bodasdehoy.com"} className="h-7 object-contain object-center" />

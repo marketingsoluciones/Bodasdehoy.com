@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { InputField, Checkbox } from "../Inputs";
 import { SectionForm } from "../../pages/empresa/crear-empresa";
 import { category } from "../../interfaces";
-import { FieldArray, useFormikContext } from "formik";
+import { FieldArray, useFormikContext, FormikValues } from 'formik';
 import {
   UserIcon as UserIcon2,
   EmailIcon,
@@ -15,6 +15,7 @@ import { subCategory } from '../../interfaces/index';
 import SelectFieldCoutries from "../Inputs/SelectFieldCoutries";
 import GoogleMapsField from "../GoogleMaps/GoogleMapsField";
 import UploadImage from '../Inputs/UploadImage';
+import InputCity from "../Inputs/InputCity";
 const TextEditorRich = dynamic(() => import("../TextEditorRich"), {
   ssr: false,
 });
@@ -23,6 +24,7 @@ interface propsFormYourBusiness {
   values?: any;
 }
 export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
+ 
   return (
     <div className="flex flex-col gap-10">
       <SectionForm>
@@ -112,10 +114,9 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
             </span>
 
             <SelectFieldCoutries name={"country"} label={"País"} />
-            <InputField
+            <InputCity
               name={"city"}
               type="text"
-              placeholder={"Ciudad"}
               label={"Ciudad"}
             />
             <InputField
@@ -163,6 +164,7 @@ const CategoriesComponent: FC = () => {
   const [categories, setCategories] = useState<Partial<category>[]>([]);
   const {errors, touched} = useFormikContext<any>()
 
+ 
   const fetchData = async () => {
       try {
         const {results} = await fetchApi(queries.getCategories);

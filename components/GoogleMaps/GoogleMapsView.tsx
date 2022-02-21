@@ -5,6 +5,7 @@ import {
 } from "@react-google-maps/api";
 import { useCallback, useRef, useState, FC } from "react";
 import { coordinates } from '../../interfaces/index';
+import { marker } from './GoogleMapsField';
 
 const mapContainerStyle = {
   width: "100%",
@@ -22,7 +23,7 @@ const options = {
   zoomControl: false,
 };
 
-const GoogleMapsView : FC <coordinates> = ({lat, lng}) => {
+const GoogleMapsView : FC <marker> = ({lat, lng}) => {
   const [ libraries ] = useState(['places']);
 
   const { isLoaded, loadError } = useLoadScript({

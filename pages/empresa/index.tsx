@@ -19,6 +19,7 @@ import {
 } from "../../components/Icons";
 import IconButton from "../../components/Inputs/IconButton";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import EmptyComponent from "../../components/Surface/EmptyComponent";
 
 const query = `query ($uid : ID){
   getBusinesses(uid:$uid){
@@ -38,20 +39,23 @@ const query = `query ($uid : ID){
     }
     }
 }`;
+
 const Empresas = () => {
   const { user } = AuthContextProvider();
 
-  const [dato, loading, error, fetchy] = useFetch({
+  const initialQuery = {
     query,
     variables: { uid: user?.uid },
-  });
+  }
+  const [dato, loading, error, fetchy] = useFetch(initialQuery);
 
 
   const toast = useToast();
+
   const handleRemove = async (_id: string) => {
     try {
       await fetchApi(queries.deleteBusiness, { id: _id });
-      fetchy()
+      fetchy(initialQuery)
       toast("success", "Eliminado con exito");
     } catch (error) {
       toast("error", JSON.stringify(error));
@@ -85,10 +89,7 @@ const Empresas = () => {
         )}
 
         {!loading && !error && dato?.length === 0 && (
-          <div className="w-full h-40 min-h-40 flex items-center justify-center text-gray-500 gap-5">
-              <EmptyIcon className="w-10 h-10 text-gray-500" />
-              <p>No hay empresas creadas</p>
-            </div>
+          <EmptyComponent text={"No hay empresas creadas"} />
         )}
         </div>
     </div>
@@ -110,6 +111,7 @@ const BusinessItem: FC<propsBusinessItem> = ({
   fase,
   slug,
 }) => {
+
   const router = useRouter();
 
   const fases: any = {
@@ -122,6 +124,7 @@ const BusinessItem: FC<propsBusinessItem> = ({
       text: "Publicado",
     },
   };
+
   return (
     <>
       <div className="w-full border border-gray-300 rounded-lg min-h-16  hover:bg-gray-200 transition flex items-center p-4 justify-between gap-10 relative overflow-hidden">

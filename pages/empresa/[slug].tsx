@@ -1,6 +1,6 @@
 import { Markup } from "interweave";
 import Link from "next/link";
-import { FC, ReactNode, useState, useEffect } from 'react';
+import { FC, ReactNode, useState } from 'react';
 import { GetStaticPaths, GetStaticProps } from "next";
 
 import { FormListing } from "../../components/Forms";
@@ -28,7 +28,6 @@ import ReviewComponent from "../../components/Listing/ReviewComponent";
 import { business } from "../../interfaces";
 import { fetchApi, queries } from '../../utils/Fetching';
 import { InstagramIcon } from "../../components/Icons/index";
-import { BreadCumbs } from "../../components/Surface";
 import { createURL } from "../../utils/UrlImage";
 import { createSrcSet } from '../../utils/CreateSrcSet';
 import GoogleMapsView from '../../components/GoogleMaps/GoogleMapsView';
@@ -41,6 +40,7 @@ type Boton = {
 };
 
 const Listing: FC<business> = (props) => {
+  
   
   const {
     imgMiniatura,
@@ -154,10 +154,14 @@ const Listing: FC<business> = (props) => {
                     <FAQ data={questionsAndAnswers} />
                     </>
                   )}
+                  {coordinates?.coordinates?.length > 0 && (
+                    <>
                   <div id={"maps"} className="rounded-xl overflow-hidden w-full h-64">
-                  <GoogleMapsView {...coordinates}/>
+                   <GoogleMapsView lng={coordinates?.coordinates[0]} lat={coordinates?.coordinates[1]}/>
                   </div>
                   <hr />
+                  </>
+                  )}
                   <ReviewComponent {...props} />
               </div>
             </section>

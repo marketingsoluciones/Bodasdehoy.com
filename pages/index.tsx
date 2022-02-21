@@ -25,6 +25,7 @@ const Home: FC<propsHome> = (props) => {
         <Welcome />
       </div>
       <PlaceDiscovery data={props?.categoriesBusiness} />
+      
       <div className="bg-white flex flex-col gap-24 w-full pb-20">
         <FeaturedCompanies business={props?.business} />
         <ButtonProviders />
@@ -91,6 +92,7 @@ interface propsSearcher {
   autoFocus?: boolean;
   placeholder: string;
 }
+
 export const Searcher: FC<propsSearcher> = (props) => {
   return (
     <div className="relative w-full">

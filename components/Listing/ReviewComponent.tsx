@@ -15,27 +15,42 @@ const ReviewComponent: FC<Partial<business>> = ({ businessName }) => {
     { title: "Flexibilidad", value: 0 },
   ];
   return (
-    <div id={"reviews"} className="p-3 md:p-6 bg-color-base w-full rounded-lg flex flex-col gap-4 transition-all h-auto">
-      <div className="flex items-center gap-3">
-        <ReviewIconPrincipal className="w-10 h-10" />
-        <h2 className="text-lg text-gray-500">
-          Opiniones sobre {businessName}
-        </h2>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 border-b pb-6 pt-4 border-gray-100 ">
-        <AverageComponent />
-        <div className="col-span-2 grid grid-cols-2 gap-6 py-2">
-          {possibleReviews.map((item, idx) => (
-            <SelectReviewComponent
-              key={idx}
-              title={item.title}
-              value={item.value}
-            />
-          ))}
+    <div
+      id={"reviews"}
+      className="w-full col-span-4 flex flex-col gap-10 transition-all h-auto"
+    >
+      <div className="w-full bg-color-base p-3 md:p-6 rounded-xl">
+        <div className="flex items-center gap-3 bg-color-base">
+          <ReviewIconPrincipal className="w-10 h-10" />
+          <h2 className="text-lg text-gray-500">
+            Opiniones sobre {businessName}
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 pt-4 ">
+          <AverageComponent />
+          <div className="col-span-2 grid grid-cols-2 gap-6 py-2">
+            {possibleReviews.map((item, idx) => (
+              <SelectReviewComponent
+                key={idx}
+                title={item.title}
+                value={item.value}
+              />
+            ))}
+          </div>
         </div>
       </div>
       <UsersGalleryComponent />
-      <CommentComponent />
+
+      <div className="flex flex-col justify-center">
+        <div className=" flex items-center justify-between px-1 pb-4">
+          <p className="text-sm text-tertiary ">Mostrando 105 opiniones</p>
+        </div>
+        {/* GRID COMMENTS */}
+        <div className="grid place-items-center gap-10">
+          <CommentComponent />
+          <CommentComponent />
+        </div>
+      </div>
       <ButtonComponent
         onClick={() => setOpen(!isOpen)}
         className="ml-auto right-0"
@@ -52,7 +67,7 @@ export default ReviewComponent;
 
 const AverageComponent: FC = () => {
   return (
-    <div className="w-full flex flex-col items-center text-gray-500 py-6 gap-1 md:border-r border-tertiary">
+    <div className="w-full flex flex-col items-center text-gray-500 py-6 gap-1 md:border-r border-gray-400">
       <h2 className="font-light text-5xl text-tertiary">4.5</h2>
       <RatingStars rating={2} size={"lg"} visibleText={false} />
       <p className="text-sm">2 Opiniones</p>
@@ -80,7 +95,7 @@ export const UsersGalleryComponent: FC = () => {
   const settings = {
     autoplay: true,
     infinite: true,
-    slidesToShow: 3,
+    slidesToShow: 4,
     rows: 1,
     arrows: false,
     centerMode: true,
@@ -98,7 +113,7 @@ export const UsersGalleryComponent: FC = () => {
 
   const Image: FC = () => {
     return (
-      <div className="overflow-hidden w-40 h-40 rounded-lg relative mx-auto inset-x-0">
+      <div className="overflow-hidden w-32 h-32 rounded-lg relative mx-auto inset-x-0">
         <img
           alt={"hola"}
           src="/mask_1.png"
@@ -117,6 +132,10 @@ export const UsersGalleryComponent: FC = () => {
           <Image />
           <Image />
           <Image />
+          <Image />
+          <Image />
+          <Image />
+          <Image />
         </Slider>
       </div>
     </div>
@@ -126,57 +145,58 @@ export const UsersGalleryComponent: FC = () => {
 const CommentComponent: FC = () => {
   const ProfileComponent: FC = () => {
     return (
-      <div className="flex items-center gap-2">
-        <div className="w-12 h-12 rounded-full relative overflow-hidden border border-primary">
+      <div className="flex w-full  items-center gap-3">
+        <div className="w-14 h-14 relative overflow-hidden rounded-full border-white border-2">
           <img
             src="/mask_1.png"
             className="absolute w-full h-full object-cover"
           />
         </div>
-        <div className="flex flex-col gap-1 text-gray-500 leading-3">
-          <p className="">Por Carolina Perez</p>
-          <p className="text-sm">21 de marzo de 2021</p>
-        </div>
-      </div>
-    );
-  };
 
-  const RatingAndRole: FC = () => {
-    return (
-      <div className="w-full flex items-center justify-start">
-        <RatingStars rating={5} visibleText={false} size={"lg"} />
-        <p className="ml-2 pl-2 border-l border-gray-300 text-sm text-gray-500">
-          Estuve como invitada en una boda
-        </p>
+        <div className="flex items-start justify-center flex-col">
+          <p className="font-medium text-gray-700 pl-1">Carolina Perez</p>
+          <div className="flex items-center gap-1 ">
+            <RatingStars rating={5} visibleText={false} size={"lg"} />
+            <p className="ml-2 pl-2 border-l border-gray-300 text-xs text-gray-500">
+              Estuve como invitada en una boda
+            </p>
+          </div>
+        </div>
       </div>
     );
   };
 
   const ListingAnswer: FC = () => {
     return (
-      <div className="bg-white rounded-xl w-full p-4 flex flex-col gap-2">
-        <h3 className="text-primary">Respuesta de Manga Club</h3>
-        <p className="text-tertiary text-sm">
-          Hola Carolina Lopéz. Muchísimas gracias por tus palabras tan
-          cariñosas. Fue un verdadero placer haber participado, estamos super
-          agradecidos que nos hayáis escogido
-        </p>
+      <div className="w-full flex flex-col gap-1 pl-6">
+          <h3 className="text-primary text-sm ">Respuesta de Manga Club:</h3>
+          <p className="text-tertiary text-xs">
+            Hola Carolina Lopéz. Muchísimas gracias por tus palabras tan
+            cariñosas. Fue un verdadero placer haber participado, estamos super
+            agradecidos que nos hayáis escogido
+          </p>
       </div>
     );
   };
 
   return (
-    <div className="flex flex-col gap-4 py-4">
+    <div className="flex flex-col gap-4 py-4 bg-color-base p-6 rounded-xl relative float-left w-full h-auto transition">
       <ProfileComponent />
-      <RatingAndRole />
-      <p className="text-gray-500 text-sm text-justify">
-        En este maravilloso lugar se celebró la boda de mi mejor amiga. Nos
-        encantó todo, la atención maravillosa desde el minuto 0 (yo ayudé a mi
-        amiga mucho con los preparativos), las instalaciones, los preciosos
-        paisajes... Fue un sueño, nos encantó todo. Sin duda, un lugar ideal
-        para casarse.
-      </p>
-      <ListingAnswer />
+      {/* <RatingAndRole /> */}
+      <div className="px-6 pt-3 flex flex-col gap-3">
+        <p className="text-gray-500 text-sm text-justify text-xs">
+          En este maravilloso lugar se celebró la boda de mi mejor amiga. Nos
+          encantó todo, la atención maravillosa desde el minuto 0 (yo ayudé a mi
+          amiga mucho con los preparativos), las instalaciones, los preciosos
+          paisajes... Fue un sueño, nos encantó todo. Sin duda, un lugar ideal
+          para casarse.
+        <div className="flex items-center justify-end pb-2">
+      <button className="text-xs bg-white text-primary w-max px-3 py-1 rounded-md hover:bg-primary hover:text-white transition">Ver respuesta de Jaihom</button>
+        </div>
+        </p>
+      <ListingAnswer/>
+      </div>
+      
     </div>
   );
 };

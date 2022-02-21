@@ -12,6 +12,7 @@ export type subCategory = {
   imgBanner : image
   slug : string
   description : string
+  characteristics?: characteristicSubCategory[]
 }
 
 export type category = {
@@ -24,6 +25,7 @@ export type category = {
   slug : string
   description : string
   subCategories : subCategory[]
+  
 }
 
 // @@Business Interfaces de business / listing / empresas
@@ -71,13 +73,21 @@ export interface business {
   characteristics: characteristic[]
 }
 
+enum TypesCoordinates {
+  "Point" 
+}
 export type coordinates = {
-  lat : number
-  lng : number
+  type : keyof typeof TypesCoordinates,
+  coordinates: number[]
 }
 
 export type characteristic = {
   characteristic : itemCharacteristic
+  items: character[]
+}
+
+export interface characteristicSubCategory {
+  title: string,
   items: character[]
 }
 
@@ -90,7 +100,7 @@ export interface itemCharacteristic {
 export type character = {
   _id : string
   title: string
-  clicked: boolean
+  clicked?: boolean
 }
 
 export interface questionsAndAnswers {
@@ -164,3 +174,8 @@ export interface Post {
   createdAt: number
   updatedAt: number
  }
+
+ export type geolocation = {
+  lat : number
+  lng : number
+}

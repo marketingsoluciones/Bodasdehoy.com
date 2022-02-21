@@ -1,4 +1,4 @@
-import { Form, Formik, FormikConfig, FormikValues } from "formik";
+import { Form, Formik, FormikConfig, FormikValues, useFormikContext } from "formik";
 import {
   Children,
   FC,
@@ -167,6 +167,12 @@ const FormikStepper = ({
           delete valuesModified.createdAt
           delete valuesModified.questionsAndAnswers
           delete valuesModified.characteristics
+          if(valuesModified.coordinates.lat){
+            valuesModified.coordinates = {
+              type: "Point",
+              coordinates: [valuesModified.coordinates.lng, valuesModified.coordinates.lat]
+            }
+          }
           
           //if (!values._id) {
             const data = await fetchApi(queries.createBusiness,{
@@ -176,8 +182,8 @@ const FormikStepper = ({
             }, "formData");
             setData(data)
              await actions.setFieldValue("_id", values._id ?? data?._id );
-             await actions.setFieldValue("imgMiniatura", data.imgMiniatura );
-             await actions.setFieldValue("imgLogo", data.imgLogo );
+             await actions.setFieldValue("imgMiniatura", data?.imgMiniatura );
+             await actions.setFieldValue("imgLogo", data?.imgLogo );
              
          // }
         };
@@ -251,6 +257,7 @@ const FormikStepper = ({
         <ButtonComponent disabled={canNext(step)} variant={"primary"} type={"submit"}>{step + 1 === totalSections ? "Finalizar" : "Siguiente"}</ButtonComponent>
         </div>
       </Form>
+
     </Formik>
   );
 };
@@ -264,8 +271,10 @@ const FormikStep = ({ children, ...props }: FormikStepProps) => {
   const childrenWithProps = Children.map(children, (child: any) =>
     cloneElement(child, { ...props })
   );
+
+
   return <>{childrenWithProps}</>;
-};
+}
 
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
@@ -273,6 +282,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
     
     if(context.query.id){
       const result = await fetchApi(queries.getOneBusiness,{id : context.query.id})
+      console.log(result)
       return {
         props: {business : result},
       };

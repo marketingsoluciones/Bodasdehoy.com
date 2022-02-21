@@ -123,6 +123,7 @@ export const queries: queries = {
           total
           results{
              _id
+             city
             businessName
             slug
             imgMiniatura{
@@ -169,8 +170,8 @@ export const queries: queries = {
         answers
       }
       coordinates{
-        lat
-        lng
+        type
+        coordinates
       }
       categories{
         _id
@@ -252,7 +253,7 @@ export const queries: queries = {
     $subCategories : [inputObjectID]
     $questionsAndAnswers : [inputQuestionsAndAnswers]
     $characteristics: [inputCharacteristicsCms]
-    $coordinates : inputCoordinates
+    $coordinates : inputCoordinate
     $imgLogo : Upload
     $imgMiniatura : Upload
     $status : Boolean
@@ -531,6 +532,13 @@ export const queries: queries = {
           heading
           slug
           description
+          characteristics{
+          title
+          items{
+            _id
+            title
+          }
+        }
           imgMiniatura{
             i1024
             i800

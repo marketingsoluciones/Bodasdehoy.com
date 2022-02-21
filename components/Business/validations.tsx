@@ -17,8 +17,8 @@ export const validations = {
         country: yup.string().required(message),
         city: yup.string().required(message),
         coordinates : yup.object().shape({
-          lat : yup.number(),
-          lng: yup.number()
+          type : yup.string(),
+          coordinates: yup.array().of(yup.number())
         }).nullable().required("Requerido: Debes marcar un punto en el mapa"),
         zip: yup.number().required(message),
         address: yup.string().required(message),

@@ -42,6 +42,25 @@ export const Navigation: FC = () => {
   const [selected, setSelect] = useState<any>(initialSelected);
   const [state, setState] = useState<any>("");
   const [isSearch, setSearch] = useState(false)
+  const {setLoading} = LoadingContextProvider()
+  const router = useRouter()
+
+  useEffect(() => {
+    const start = () => {
+        setLoading(true);
+      };
+      const end = () => {
+        setLoading(false);
+      };
+    router.events.on("routeChangeStart", start);
+    router.events.on("routeChangeComplete", end);
+    router.events.on("routeChangeError", end);
+    return () => {
+        router.events.off("routeChangeStart", start);
+        router.events.off("routeChangeComplete", end);
+        router.events.off("routeChangeError", end);
+      };
+}, [router])
 
   type DicCategories = {
     Novia: ReactNode;
@@ -61,7 +80,7 @@ export const Navigation: FC = () => {
         set={(act: boolean) => setShowSidebar(act)}
         state={showSidebar}
       />
-      <header className="container max-w-screen-lg w-full px-3 sm:px-0 mx-auto inset-x-0 mt-3 absolute ">
+      <header className="container max-w-screen-lg 2xl:max-w-screen-xl w-full px-3 sm:px-0 mx-auto inset-x-0 mt-3 absolute ">
         {
           // @ts-ignore
           state && <MultiMenu>{categories[state]}</MultiMenu>

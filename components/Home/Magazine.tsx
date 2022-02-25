@@ -153,8 +153,8 @@ export const GridPost: FC<{ data: Partial<Post>[] }> = ({ data }) => {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 2,
-          rows: 2,
+          slidesToShow: 1,
+          rows: 1,
         },
       },
 

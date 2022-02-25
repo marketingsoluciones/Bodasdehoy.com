@@ -53,7 +53,7 @@ export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({ data }) => {
             principal={"Descubre"}
             secondary={"lugares para bodas"}
           />
-          <div className="z-20 relative w-full pb-8 pt-4 overflow-hidden ">
+          <div className=" z-20 relative w-full pb-8 pt-4 overflow-hidden ">
             {state && state?.subCategories && state.subCategories.length > 0 && (
               <Slider {...settings}>
                 {state?.subCategories?.map((item: any, idx: any) => (

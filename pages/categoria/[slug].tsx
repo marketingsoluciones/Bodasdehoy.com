@@ -1,37 +1,16 @@
 import Slider from "react-slick";
-import {
-  FC,
-  ReactNode,
-  useState,
-  useEffect,
-} from "react";
+import {FC,ReactNode,useState,useEffect,} from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { fetchApi, queries } from "../../utils/Fetching";
-import {
-  business,
-  category,
-  characteristicSubCategory,
-  subCategory,
-} from "../../interfaces";
-import {
-  AireLibreIcon,
-  EnLaCiudadIcon,
-  PlayaIcon,
-} from "../../components/Icons";
+import {business,category,characteristicSubCategory,subCategory,} from "../../interfaces";
+import {AireLibreIcon,EnLaCiudadIcon,PlayaIcon} from "../../components/Icons";
 import { useHover } from "../../hooks";
 import { createURL } from "../../utils/UrlImage";
-import {
-  CardBusiness,
-  HeaderCategory,
-  ItemSubCategory,
-} from "../../components/Category";
+import {CardBusiness,HeaderCategory,ItemSubCategory} from "../../components/Category";
 import useFetch from "../../hooks/useFetch";
 import { LoadingItem } from "../../components/Loading";
 import EmptyComponent from "../../components/Surface/EmptyComponent";
-import {
-  FiltersContextProvider,
-  FiltersProvider,
-} from "../../context/FiltersContext";
+import {FiltersContextProvider,FiltersProvider} from "../../context/FiltersContext";
 import { LocationFilter, CheckBoxFilter } from "../../components/Inputs/Filters";
 
 const CategoryPage: FC<category> = (props) => {
@@ -97,7 +76,7 @@ const CategoryPage: FC<category> = (props) => {
       </div>
 
       {/* Grid Cards */}
-      <div className="max-w-screen-lg 2xl:max-w-screen-xl w-full mx-auto inset-x-0 grid grid-cols-1 items-center justify-between top-0  px-10">
+      <div className="max-w-screen-lg 2xl:max-w-screen-xl w-full mx-auto inset-x-0 grid grid-cols-1 items-center justify-between top-0  px-10 ">
         <Slider {...settings}>
           {subCategories?.length > 0 &&
             subCategories.map((item: subCategory) => (
@@ -145,11 +124,10 @@ const GridCards: FC<{ _id: string }> = ({ _id }) => {
         <p className="text-sm text-gray-500 ">
           Resultados encontrados: {data?.total ?? 0}
         </p>
-
-        {JSON.stringify(filters)}
+        {/* {JSON.stringify(filters)} */}
       </div>
       {!loading && !error && data?.results?.length > 0 && (
-        <div className="grid md:grid-cols-3 2xl:grid-cols-4 gap-6 pl-6 py-6 place-items-center">
+        <div className="grid md:grid-cols-3 2xl:grid-cols-4 gap-6 px-5 py-6 place-items-center">
           {data?.results.map((business: business) => (
             <CardBusiness key={business._id} {...business} />
           ))}

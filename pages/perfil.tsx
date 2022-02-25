@@ -14,9 +14,9 @@ const Perfil = () => {
     const components = [
         {component: <MiPerfil />, id: 0},
         {component: <Notificaciones/>, id: 1},
-        {component: <Mensajeria/>, id: 2},
-        {component: <Favoritos/>, id: 3},
-        {component: <Guardados/>, id: 4},
+        {component: <Favoritos/>, id: 2},
+        {component: <Guardados/>, id: 3},
+        {component: <Mensajeria/>, id: 4},
         {component: <Configuraciones/>, id: 5},
     ]
     
@@ -25,12 +25,14 @@ const Perfil = () => {
     }
     
     return (
-        <section className="flex flex-row mt-7 justify-center max-w-screen-lg mx-auto inset-x-0 w-full"> 
-            <div className="w-1/5">
+        <section className="md:flex  justify-center max-w-screen-lg mx-auto md:inset-x-0 w-full mt-7"> 
+            <div className="flex justify-center md:flex-col md:w-1/5 md:justify-start  ">
                 <PerfilFoto/>
-                <PerfilOpciones onClick={handleClickOption}/>
+                <div className="hidden md:block">
+                    <PerfilOpciones onClick={handleClickOption}/>
+                </div>                
             </div>
-            <div className="w-4/5">
+            <div className="md:w-4/5">
               {components[isActive].component}
             </div>
             

@@ -8,7 +8,7 @@ const ChatComponent = () => {
   return (
      <>
     <div
-      className={`w-96 h-96 bg-white pb-10 shadow-lg fixed bottom-0 right-5 z-50 border overflow-hidden rounded-t-xl transform transition chat`}
+      className={`md:w-96 h-96 bg-white pb-10 shadow-lg fixed bottom-0 right-5 z-50 border overflow-hidden rounded-t-xl transform transition chat`}
     >
       <div
         className="bg-primary p-3 w-full h-10 flex justify-between cursor-pointer"

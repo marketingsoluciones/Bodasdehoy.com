@@ -35,12 +35,12 @@ export const RelatedArticles : FC <propsRelatedArticles> = ({title}) => {
     <div className="w-full grid grid-cols-1 relative py-10 overflow-hidden md:overflow-visible">
       <h2 className="text-center text-primary w-full text-lg">{title}</h2>
       <button 
-        onClick={() => refSlider.current.slickPrev()}
+        onClick={() => refSlider?.current?.slickPrev()}
         className="w-12 h-12 absolute top-0 inset-y-0 my-auto rotate-180 transform -translate-x-full text-primary hover:bg-gray-100 flex flex-col items-center justify-center rounded-full transition">
         <ArrowIcon className="w-8 h-8" />
       </button>
       <button 
-        onClick={() => refSlider.current.slickNext()}
+        onClick={() => refSlider?.current?.slickNext()}
         className="w-12 h-12 absolute top-0 inset-y-0 my-auto right-0 transform translate-x-full text-primary hover:bg-gray-100 flex flex-col items-center justify-center rounded-full transition">
         <ArrowIcon className="w-8 h-8" />
       </button>

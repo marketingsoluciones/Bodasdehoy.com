@@ -151,6 +151,7 @@ interface propsFilter {
     characteristics : characteristicSubCategory[]
   }
 }
+
 const Filters : FC <propsFilter> = ({optionsCheckbox}) => {
   const {characteristics} = optionsCheckbox
   const { filters, setFilters } = FiltersContextProvider();

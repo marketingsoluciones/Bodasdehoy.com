@@ -203,7 +203,7 @@ const FieldArrayWithProps: FC<propsFieldArrayWithProps> = ({
       <h3 className="text-primary font-medium capitalize">{label}</h3>
       <FieldArray name={name}>
         {({ remove, push }) => (
-          <div className="grid grid-cols-3 gap-3 py-2">
+          <div className="grid md:grid-cols-3 gap-3 py-2 ">
             {dataArray?.map((item: character) => (
               <Checkbox
                 key={item._id}

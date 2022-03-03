@@ -52,16 +52,18 @@ const CreateBusiness : NextPage <{business : Partial<business>}> = (props) => {
       <img
         alt={"banner"}
         src={"/bannerCreateBusiness.webp"}
-        className="w-full h-80 -mt-20 object-center object-cover absolute top-0 left-0 z-0 "
+        className="md:w-full   md:h-80 -mt-20 md:object-center object-cover absolute top-0 md:left-0 z-0 "
       />
-      <div ref={refHeader} tabIndex={0}  className="max-w-screen-lg mx-auto inset-x-0 z-10 relative py-10">
-        <h2 className="text-3xl font-medium font-medium text-tertiary w-full text-center">
+      <div ref={refHeader} tabIndex={0}  className="max-w-screen-lg mx-auto inset-x-0 z-10 relative md:py-10 py-5">
+        <h2 className="text-3xl font-medium font-medium text-tertiary w-full text-center mt-6">
           ¡Empecemos el registro!
         </h2>
-        <IndiceSteps step={step} />
+        <div className="hidden md:block">
+          <IndiceSteps step={step} />  
+        </div>
       </div>
 
-      <div className="max-w-screen-md py-20 mx-auto inset-x-0">
+      <div className="max-w-screen-md md:py-20 mx-auto inset-x-0 px-3 md:px-0 py-18">
         <FormikStepper
         refHeader={refHeader}
           step={step}

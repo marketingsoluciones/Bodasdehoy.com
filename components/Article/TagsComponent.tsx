@@ -1,16 +1,25 @@
 import { FC } from "react"
-import { Post } from "../../interfaces"
+import { OnePost } from "../../interfaces"
+import React from "react"
 
-export const TagsComponent: FC <Partial<Post>> = ({categories = [], subCategories = []}) => {
-    const iteration = [...categories, ...subCategories]
+export const TagsComponent: FC <Partial<OnePost>> = ({categories = [], subCategories = []}) => {
+    const iteration = [...categories, ...subCategories ]
+   console.log(iteration)
+   
+   
+  
+  
     return (
-        <div className="flex items-center gap-4 flex-wrap col-span-5">
-            {iteration?.map((item,idx) => (
-                <Item key={idx}>
-                    {item}
-                </Item>
-            ))}
-        </div>
+         <div className="flex items-center gap-4 flex-wrap col-span-5">
+            
+           {iteration.map((item,idx)=>(
+               <Item key={idx}>
+                  {item.title}
+                  {console.log(item.title)}
+               </Item>
+           ))}
+        </div> 
+        
     )
 }
 

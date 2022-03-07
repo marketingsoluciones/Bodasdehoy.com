@@ -32,6 +32,7 @@ const Magazine : NextPage <propsMagazine> = ({categoriesPost, lastestPosts, post
             size={"xl"}
           />
           <GridPost data={[]}  />
+
         </div>
       </div>
       {/* 2da sección */}
@@ -53,8 +54,8 @@ export default Magazine;
 
 export async function getServerSideProps() {
   try {
-    
     const data = await fetchApi(queries.getMagazine)
+    console.log(data)
     return { props: data };
   } catch (error) {
     console.log(error);

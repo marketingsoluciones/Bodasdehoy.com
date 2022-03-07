@@ -95,6 +95,7 @@ type queries = {
   createUser: string;
   createBusiness : string
   getAllPost: string
+  getOnePost: string
   getAllCategoryBusiness : string
   getAllBusiness : string
   getHome : string
@@ -117,111 +118,111 @@ export const queries: queries = {
           phoneNumber
           role
         }
-      }`,
-      getAllBusiness: `query ($criteria :searchCriteriaBusiness, $sort : sortCriteriaBusiness, $skip :Int, $limit : Int) {
-        getAllBusinesses(searchCriteria:$criteria, sort: $sort, skip: $skip, limit: $limit){
-          total
-          results{
-             _id
-             city
-            businessName
-            slug
-            imgMiniatura{
-              i1024
-              i800
-              i640
-              i320
-            }
-            
-          }
+    }`,
+  getAllBusiness: `query ($criteria :searchCriteriaBusiness, $sort : sortCriteriaBusiness, $skip :Int, $limit : Int) {
+    getAllBusinesses(searchCriteria:$criteria, sort: $sort, skip: $skip, limit: $limit){
+      total
+      results{
+          _id
+          city
+        businessName
+        slug
+        imgMiniatura{
+          i1024
+          i800
+          i640
+          i320
         }
-      }`,
+        
+      }
+    }
+    }`,
   getOneBusiness: `query ($id: ID, $slug : String) {
-    getOneBusiness(_id: $id, slug: $slug){
+  getOneBusiness(_id: $id, slug: $slug){
+    _id
+    slug
+    tags
+    contactName
+    contactEmail
+    businessName
+    webPage
+    landline
+    mobilePhone
+    whatsapp
+    twitter
+    facebook
+    linkedin
+    youtube
+    instagram
+    country
+    city
+    zip
+    address
+    description
+    content
+    subCategories{
       _id
-      slug
-      tags
-      contactName
-      contactEmail
-      businessName
-      webPage
-      landline
-      mobilePhone
-      whatsapp
-      twitter
-      facebook
-      linkedin
-      youtube
-      instagram
-      country
-      city
-      zip
-      address
-      description
-      content
-      subCategories{
+    }
+    questionsAndAnswers{
+      questions{
         _id
+        title
       }
-      questionsAndAnswers{
-        questions{
-          _id
-          title
-        }
-        answers
-      }
-      coordinates{
-        type
-        coordinates
-      }
-      categories{
+      answers
+    }
+    coordinates{
+      type
+      coordinates
+    }
+    categories{
+      _id
+    }
+    subCategories{
+      _id
+    }
+    imgMiniatura{
+      _id
+      i1024
+      i800
+      i640
+      i320
+    }
+    imgLogo{
+      _id
+      i1024
+      i800
+      i640
+      i320
+    }
+    status
+    createdAt
+    updatedAt
+    characteristics{
+      characteristic{
         _id
-      }
-      subCategories{
-        _id
-      }
-      imgMiniatura{
-        _id
-        i1024
-        i800
-        i640
-        i320
-      }
-      imgLogo{
-        _id
-        i1024
-        i800
-        i640
-        i320
-      }
-      status
-      createdAt
-      updatedAt
-      characteristics{
-        characteristic{
-          _id
-          title
-          items{
-            _id
-            title
-            clicked
-          }
-        }
+        title
         items{
           _id
           title
           clicked
         }
-        
       }
-      imgCarrusel {
+      items{
         _id
-        i1024
-        i800
-        i640
-        i320
+        title
+        clicked
       }
+      
     }
-  }`,
+    imgCarrusel {
+      _id
+      i1024
+      i800
+      i640
+      i320
+    }
+  }
+    }`,
   getUser : `query ($uid: ID) {
     getUser(uid:$uid){
       phoneNumber
@@ -235,7 +236,7 @@ export const queries: queries = {
       createdAt
       updatedAt
     }
-  }`,
+    }`,
   createBusiness : `mutation ($fase: String,
     $_id: ID,
     $userUid : ID,
@@ -315,7 +316,7 @@ export const queries: queries = {
             
           }
         }
-      }`,
+    }`,
   getCategories : `query {
     getCategoryBusiness{
       total
@@ -350,10 +351,10 @@ export const queries: queries = {
         }
       }
     }
-  }`,
+    }`,
   deleteImages: `mutation  ($idImage :ID, $idBusiness:ID, $use : String) {
     deleteUpload(_id:$idImage, businessID:$idBusiness, use:$use)
-  }`,
+    }`,
   getHome : `query {
     getHome{
       business{
@@ -430,15 +431,15 @@ export const queries: queries = {
         slug
       }
     }
-  }`,
+    }`,
   getSlugBusiness : `query{
     getSlugBusiness
-  }`,
+    }`,
   getSlugPosts : `query {
     getSlugPosts
-  }`,
+    }`,
   getAllPost : `query ($criteria : searchCriteriaPost, $sort: sortCriteriaPost, $limit : Int, $skip : Int) {
-    getAllPost(searchCriteria:$criteria, limit : $limit, skip: $skip){
+    getAllPost(searchCriteria:$criteria, limit : $limit, skip: $skip,sort:$sort){
       total
       results{
         _id
@@ -448,25 +449,66 @@ export const queries: queries = {
         permaLink
         slug
         seoDescription
-        categories
-        groupSubCategories
-        subCategories
+        categories{
+          _id
+          title
+          imgMiniatura{
+            i1024
+            i800
+            i640
+            i320
+            _id
+          }
+        }
+        subCategories{
+          _id
+          title
+          heading
+          description
+          imgBanner{
+            _id
+            i1024
+            i800
+            i640
+            i320
+          }
+          imgMiniatura{
+            _id
+            i1024
+            i800
+            i640
+            i320
+          }
+          icon{
+            _id
+            i1024
+            i800
+            i640
+            i320
+          }
+        }
         tags
         imgCarrusel{
-          _id
-          mediumUrl
-        }
+            _id
+            i1024
+            i800
+            i640
+            i320
+          }
         imgMiniatura{
-          _id
-          mediumUrl
-        }
+            _id
+            i1024
+            i800
+            i640
+            i320
+          }
         authorUsername
         status
         createdAt
         updatedAt
       }
     }
-  }`,
+    }`,
   getMagazine : `query {
     getMagazine{
       lastestPosts{
@@ -474,11 +516,29 @@ export const queries: queries = {
         content
         title
         slug
-        categories
+        categories{
+          _id
+          title
+          heading
+          description
+          imgBanner{
+            _id
+            i640
+            i800
+            i320
+            i1024
+          }
+          imgMiniatura{
+            _id
+            i640
+            i800
+            i320
+            i1024
+          }
+        }
         updatedAt
         imgMiniatura{
           _id
-          mediumUrl
         }
       }
       postsByCategory{
@@ -488,7 +548,10 @@ export const queries: queries = {
         slug
         imgMiniatura{
           _id
-          mediumUrl
+          i1024
+          i800
+          i640
+          i320
         }
       }
       postsMoreViews{
@@ -497,7 +560,10 @@ export const queries: queries = {
         slug
         imgMiniatura{
           _id
-          mediumUrl
+          i1024
+          i800
+          i640
+          i320
         }
       }
       categoriesPost{
@@ -507,10 +573,10 @@ export const queries: queries = {
         }
       }
     }
-  }`,
+    }`,
   deleteBusiness : `mutation ($id : [ID]){
     deleteBusinesses(id: $id)
-  }`,
+    }`,
   getAllCategoryBusiness : `query ($criteria : searchCriteriaCategory, $sort : sortCriteriaCategory, $skip : Int, $limit: Int) {
     getAllCategoryBusiness(searchCriteria: $criteria, sort: $sort, skip: $skip, limit: $limit){
       total
@@ -548,7 +614,51 @@ export const queries: queries = {
         }
       }
     }
-  }`
+    }`,
+  getOnePost :`query ($id:ID, $slug:String ) {
+    getOnePost(_id:$id, slug:$slug){
+    title
+    subTitle
+    content
+    permaLink
+    slug
+    seoDescription
+    categories{
+      _id
+      title
+    }
+    subCategories{
+      _id
+      title
+    }
+    tags
+    imgCarrusel{
+      _id
+      i1024
+      i800
+      i640
+      i320
+    }
+    imgMiniatura{
+      _id
+      i1024
+      i800
+      i640
+      i320
+    }
+    imgTexto{
+      _id
+      i1024
+      i800
+      i640
+      i320
+    }
+    authorUsername
+    status
+    createdAt
+    updatedAt
+    }
+    }`,
 };
 
 export const GraphQL = {

@@ -115,9 +115,77 @@ type queries = {
   deleteImages: string;
   deleteBusiness: string;
   deleteReview: string
+  getOnePost: string
+  getAllPage: string
 };
 
 export const queries: queries = {
+  getOnePost :`query ($id:ID, $slug:String ) {
+    getOnePost(_id:$id, slug:$slug){
+    title
+    subTitle
+    content
+    permaLink
+    slug
+    seoDescription
+    categories{
+      _id
+      title
+    }
+    subCategories{
+      _id
+      title
+    }
+    tags
+    imgCarrusel{
+      _id
+      i1024
+      i800
+      i640
+      i320
+    }
+    imgMiniatura{
+      _id
+      i1024
+      i800
+      i640
+      i320
+    }
+    imgTexto{
+      _id
+      i1024
+      i800
+      i640
+      i320
+    }
+    authorUsername
+    status
+    createdAt
+    updatedAt
+    }
+    }`,
+  getAllPage:`query ( $sort:sortCriteriaPage, $skip: Int, $limit: Int ) {
+    getAllPage( sort:$sort,skip:$skip, limit:$limit){
+    total
+    results{
+      _id
+      title
+      content
+      slug
+      imgTexto{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      authorUsername
+      status
+      createdAt
+      updatedAt
+    	}
+    }
+  }`,
   getOneChat: `query($IDChat :ID){
     getOneChat(_id: $IDChat){
       _id

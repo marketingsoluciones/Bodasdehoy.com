@@ -102,11 +102,12 @@ type queries = {
   getCategories : string
   getUser : string
   getSlugBusiness: string
-  getOneBusiness: string;
+  getOneBusiness: string
   getSlugPosts: string
   getMagazine : string
   deleteImages : string
   deleteBusiness : string
+  getAllPage: string
 };
 
 export const queries: queries = {
@@ -659,6 +660,28 @@ export const queries: queries = {
     updatedAt
     }
     }`,
+  getAllPage:`query ( $sort:sortCriteriaPage, $skip: Int, $limit: Int ) {
+    getAllPage( sort:$sort,skip:$skip, limit:$limit){
+    total
+    results{
+      _id
+      title
+      content
+      slug
+      imgTexto{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      authorUsername
+      status
+      createdAt
+      updatedAt
+    	}
+    }
+  }`  
 };
 
 export const GraphQL = {

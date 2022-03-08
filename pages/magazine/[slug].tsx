@@ -53,7 +53,6 @@ export default Article;
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   try {
     const {results} = await fetchApi(queries.getAllPost, {criteria : {slug : params.slug}})
-    console.log("resultado de la query GetOnePost",results)
     return {
       props: results.length > 0 ? results[0] : {},
     };

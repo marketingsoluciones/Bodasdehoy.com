@@ -158,6 +158,18 @@ export interface Post {
   updatedAt: number
 }
 
+export interface Page {
+  _id: string
+  title: string
+  content: string
+  slug: string
+  imgTexto: image[]
+  authorUsername: string
+  status: string
+  createdAt: number
+  updatedAt: number
+}
+
 export interface OnePost {
   _id: string
   title: string

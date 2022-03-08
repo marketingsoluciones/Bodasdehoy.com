@@ -19,7 +19,6 @@ export async function getStaticProps() {
   }
 
 export async function getStaticPaths() {
-    
     try{
         const data = await fetchApi({query: queries.getAllPage})
         console.log("DATAAAA",data)
@@ -33,8 +32,6 @@ export async function getStaticPaths() {
             paths: [],
             fallback: true,
           };
-    }
-    
-    
+        }
 }
 

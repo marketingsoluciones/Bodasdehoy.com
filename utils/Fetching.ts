@@ -317,19 +317,26 @@ export const queries: queries = {
       questionsAndAnswers{
         questions{
           _id
-          city
-        businessName
-        slug
-        imgMiniatura{
-          i1024
-          i800
-          i640
-          i320
-        }
-        
+          title
       }
+        answers
     }
-    }`,
+    imgLogo{
+      _id
+      i1024
+      i800
+      i640
+      i320
+    }
+    imgMiniatura{
+      _id
+      i1024
+      i800
+      i640
+      i320
+    }
+    }
+}`,
   getUser: `query ($uid: ID) {
     getUser(uid:$uid){
       phoneNumber

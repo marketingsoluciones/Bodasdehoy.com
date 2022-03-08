@@ -41,7 +41,7 @@ export const Header: FC = () => {
   return (
     <div className="bg-white rounded-lg shadow-lg flex p-10 justify-between">
       {HeaderOptions.map((item, idx) => (
-        <div className="text-center flex flex-col text-sm items-center gap-3">
+        <div key={idx} className="text-center flex flex-col text-sm items-center gap-3">
           <div className="flex items-center gap-2">
             {item.icon}
             <p className="text-xl font-bold text-gray-900">0</p>

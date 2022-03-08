@@ -13,7 +13,7 @@ export const AsideLastestArticles : FC <props> = ({title, ...props}) => {
 
     const fetchData = async () => {
         try {
-            const {results} = await fetchApi(queries.getAllPost, {sort: {createdAt : 1}, limit: 5})
+            const {results} = await fetchApi({query : queries.getAllPost, variables: {sort: {createdAt : 1}, limit: 5}})
             setPost(results)
         } catch (error) {
             console.log(error);

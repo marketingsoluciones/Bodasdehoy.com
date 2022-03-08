@@ -28,6 +28,7 @@ import { HeartIconFill, StarRating } from '../Icons/index';
 import {TransitionGroup, CSSTransition } from 'react-transition-group'
 import { useRouter } from 'next/router';
 import { ButtonClose } from "../Inputs";
+import { deleteCookie, getCookie } from "../../utils/Cookies";
 
 const initialSelected = {
   ["Lugares para bodas"]: false,
@@ -198,7 +199,7 @@ export const Icons : FC <propsIcons> = ({handleClickSearch}) => {
   const [hoverRef, isHovered] = useHover();
   const router = useRouter()
   const HandleClickUser = () => {
-    !localStorage.getItem("auth")
+    !getCookie("token-bodas")
       ? router.push("/login")
       : router.push("/perfil");
   };
@@ -223,22 +224,22 @@ export const Icons : FC <propsIcons> = ({handleClickSearch}) => {
             </span>
           </>
         ) : (
-          <span
-            className=" border-gray-100 border-l text-gray-500 pl-3 flex items-center gap-1"
+          <div
+            className=" border-gray-100 border-l text-gray-500 pl-3 flex items-center gap-1 z-40"
             ref={hoverRef}
           >
             <img
               alt={user?.displayName ?? "nombre"}
               src={user.photoURL ?? "/placeholder/user.png"}
               className="w-10 h-10 border border-primary rounded-full cursor-pointer"
-            />
+              />
             <ArrowIcon className="w-4 h-4 rotate-90 transform cursor-pointer" />
               <CSSTransition in={isHovered} unmountOnExit mountOnEnter timeout={300} classNames={"fade"}>
               <ProfileMenu />
               </CSSTransition>
             
 
-          </span>
+          </div>
         )}
       </div>
       
@@ -258,7 +259,7 @@ const ProfileMenu = () => {
   const options : Option[] = [
     {
       title: "Mi perfil",
-      route: "/",
+      route: "/perfil",
       icon: <UserIcon />
     },
     {
@@ -276,8 +277,10 @@ const ProfileMenu = () => {
       icon: <UserIcon />,
       onClick: async () => {
         setLoading(true);
-        setUser(await autenticacion.SignOut());
-        localStorage.removeItem("auth");
+        await autenticacion.SignOut()
+        setUser(null);
+        deleteCookie("token-bodas")
+        //localStorage.removeItem("auth");
         await router.push("/");
         setLoading(false);
       },
@@ -285,13 +288,14 @@ const ProfileMenu = () => {
   ];
   return (
     <>
+     
     <div
       className={`w-80 p-3 h-20 rounded-xl h-max bg-white shadow-md absolute bottom-0 right-0 inset-y-full overflow-hidden z-50
-      }`}
+    }`}
     >
       <div className="w-full border-b border-gray-100 pb-2">
         <p className="text-gray-500 font-extralight uppercase tracking-wider	text-xs text-center ">
-          Empresa
+          {user?.role && user?.role?.length > 0 && user?.role[0]}
         </p>
         <h3 className="text-primary font-medium w-full text-center">
           {user?.displayName}
@@ -302,6 +306,7 @@ const ProfileMenu = () => {
           <ListItemProfile key={idx} {...item}/>
         ))}
       </ul>
+      
     </div>
     <style jsx global>
         {`

@@ -9,6 +9,7 @@ import { business, fetchCategory, Post } from '../interfaces';
 import { AdsApp, FeaturedCompanies, Magazine, PlaceDiscovery, PodcastList } from '../components/Home';
 import RecommendCategories from '../components/Home/RecommendCategories';
 import { CommunityIcon, DownloadFileIcon, GuestAppIcon, InspirationIcon, Isologo, SearchIcon } from '../components/Icons';
+import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 
 interface propsHome {
   business: business[];
@@ -183,10 +184,10 @@ const ButtonProviders = () => {
   );
 };
 
-export async function getServerSideProps() {
+export async function getServerSideProps () {
   try {
     console.time("getHome")
-    const data = await fetchApi(queries.getHome)
+    const data = await fetchApi({query : queries.getHome})
     console.timeEnd("getHome")
     return { props: data ?? {} };
   } catch (error) {

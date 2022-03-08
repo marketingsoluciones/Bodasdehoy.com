@@ -137,6 +137,8 @@ const FormikStepper = ({
   const currentChild = ChildrenArray[step] ?? {};
   const { user } = AuthContextProvider();
   const [data, setData] = useState()
+  const [canNext, setCanNext] = useState(true)
+  const [canNextForce, setCanNextForce] = useState(false)
 
   useEffect(() => {
    setTotalSections(ChildrenArray?.length)
@@ -160,6 +162,7 @@ const FormikStepper = ({
       //Form Business | Primer formulario
       case 0:
         const createBusinessAndGetQuestions = async () => {
+          setCanNextForce(true)
           const valuesModified = {...values}
 
           delete valuesModified.imgBanner
@@ -175,39 +178,44 @@ const FormikStepper = ({
           }
           
           //if (!values._id) {
-            const data = await fetchApi(queries.createBusiness,{
+            const data = await fetchApi({query : queries.createBusiness, variables: {
               ...valuesModified,
               mobilePhone: typeof values.mobilePhone === "number" ? JSON.stringify(values.mobilePhone) : values.mobilePhone,
               landline: typeof values.landline === "number" ? JSON.stringify(values.landline) : values.landline,
-            }, "formData");
-            setData(data)
-             await actions.setFieldValue("_id", values._id ?? data?._id );
-             await actions.setFieldValue("imgMiniatura", data?.imgMiniatura );
-             await actions.setFieldValue("imgLogo", data?.imgLogo );
-             
-         // }
-        };
-
-        try {
+            }, type: "formData"});
+            if(data){
+              await actions.setFieldValue("_id", values._id ?? data?._id );
+              await actions.setFieldValue("imgMiniatura", data?.imgMiniatura );
+              await actions.setFieldValue("imgLogo", data?.imgLogo );
+              setData(data)
+              setCanNextForce(false)
+            }
+            
+            
+          };
+          
+          try {
           createBusinessAndGetQuestions();
         } catch (error) {
           console.log(error);
         } finally {
           setStep({ type: "NEXT" });
+          setCanNext(true)
         }
 
         break;
       //Form Questions | Segundo formulario
       case 1:
+        
         setStep({ type: "NEXT" });
         try {
-          await fetchApi(queries.createBusiness,{
+          await fetchApi({query : queries.createBusiness, variables: {
             ...values,
             mobilePhone: typeof values.mobilePhone === "number" ? JSON.stringify(values.mobilePhone) : values.mobilePhone,
             landline: typeof values.landline === "number" ? JSON.stringify(values.landline) : values.landline,
             fase: "fase2",
             status: true
-          });
+          }});
         } catch (error) {
           console.log(error);
         }
@@ -220,14 +228,16 @@ const FormikStepper = ({
     refHeader.current.focus()
   };
 
-  const canNext = (step: number) : boolean | undefined => {
-    if(step >= 0 && step < totalSections){
-      return false
-    } else {
-      return true
+  useEffect(() => {
+    if(!canNextForce){
+      if(step >= 0 && step < totalSections){
+        setCanNext(false)
+      } else {
+        setCanNext(true)
+      }
     }
-
-  }
+  }, [step, totalSections, canNextForce])
+  
   const canPrevious = (step: number) : boolean | undefined => {
     
     if(step > 0 && step <= totalSections - 1){
@@ -245,7 +255,7 @@ const FormikStepper = ({
       validationSchema={currentChild?.props?.validationSchema}
     >
       <Form autoComplete={"off"}>
-        {cloneElement(currentChild, {data})}
+        {cloneElement(currentChild, {data, setCanNext})}
         <div className="flex items-center justify-between w-full py-4 px-10">
           
             <ButtonComponent type="button" disabled={canPrevious(step)} onClick={() => {
@@ -254,7 +264,7 @@ const FormikStepper = ({
               Atras
             </ButtonComponent>
          
-        <ButtonComponent disabled={canNext(step)} variant={"primary"} type={"submit"}>{step + 1 === totalSections ? "Finalizar" : "Siguiente"}</ButtonComponent>
+        <ButtonComponent disabled={canNext} variant={"primary"} type={"submit"}>{step + 1 === totalSections ? "Finalizar" : "Siguiente"}</ButtonComponent>
         </div>
       </Form>
 
@@ -281,8 +291,7 @@ export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
     
     if(context.query.id){
-      const result = await fetchApi(queries.getOneBusiness,{id : context.query.id})
-      console.log(result)
+      const result = await fetchApi({query : queries.getOneBusiness, variables: {id : context.query.id}})
       return {
         props: {business : result},
       };

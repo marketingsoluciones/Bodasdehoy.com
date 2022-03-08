@@ -3,7 +3,7 @@ import { api } from '../api';
 
 interface propsUseFetch {
     query : string | undefined
-    variables: object | undefined
+    variables?: object | undefined
     config?: object | undefined
 }
 
@@ -13,11 +13,11 @@ const useFetch = ({query, variables, config = {}} : propsUseFetch) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean | null>(null);
 
-  // useEffect(() => {
-  //   return () => {
-  //     isMounted.current = false;
-  //   };
-  // }, []);
+   useEffect(() => {
+     return () => {
+       isMounted.current = false;
+     };
+   }, []);
 
   const fetchData = async ({query, variables, config = {}} : Partial<propsUseFetch>) => {
     try {
@@ -44,7 +44,7 @@ const useFetch = ({query, variables, config = {}} : propsUseFetch) => {
     isMounted.current && fetchData({query, variables, config})
   }, [query]);
   
-    return [data, loading, error, fetchData]
+    return [data, setData, loading, error, fetchData]
 };
 
 export default useFetch;

@@ -14,6 +14,9 @@ module.exports = {
         secondary: "#87F3B5",
         tertiary: "#49516F", 
         "color-base": "#F2F2F2",
+      },
+      transitionProperty: {
+        'height': 'height'
       }
     },
   },

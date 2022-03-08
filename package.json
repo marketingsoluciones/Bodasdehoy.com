@@ -28,6 +28,7 @@
     "react-slick": "^0.28.1",
     "react-transition-group": "^4.4.2",
     "slick-carousel": "^1.8.1",
+    "socket.io-client": "^4.4.1",
     "use-places-autocomplete": "^1.11.0",
     "yup": "^0.32.11"
   },

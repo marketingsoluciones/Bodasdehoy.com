@@ -1,30 +1,34 @@
 import { api } from "../api";
 
 const types = {
-  json : "",
-  formData : ""
-}
+  json: "",
+  formData: "",
+};
 
-export const fetchApi: CallableFunction = async (
-  query: string = ``,
-  variables: object = {},
-  type: keyof typeof types = "json"
-): Promise<any> => {
+interface fetchApiProps {
+  query : string
+  variables: object
+  type : keyof typeof types
+  token?: string
+}
+export const fetchApi: CallableFunction = async ({
+  query = ``,
+  variables = {},
+  type= "json",
+  token
+} : fetchApiProps): Promise<any> => {
   try {
-    
-    if(type === "json"){
+    if (type === "json") {
       const {
         data: { data },
-      } = await api.graphql({ query, variables });
+      } = await api.graphql({query, variables}, null, token);
       return Object.values(data)[0];
-      
-    } else if (type === "formData"){
-      
+    } else if (type === "formData") {
       const formData = new FormData();
       const values = Object?.entries(variables);
 
       // Generar el map del Form Data para las imagenes
-      const map = values?.reduce((acc : any, item : any) => {
+      const map = values?.reduce((acc: any, item: any) => {
         if (item[1] instanceof File) {
           acc[item[0]] = [`variables.${item[0]}`];
         }
@@ -49,7 +53,7 @@ export const fetchApi: CallableFunction = async (
 
       // Agregar filas al FORM DATA
 
-      formData.append("operations", JSON.stringify({query, variables}));
+      formData.append("operations", JSON.stringify({ query, variables }));
       formData.append("map", JSON.stringify(map));
       values.forEach((item) => {
         if (item[1] instanceof File) {
@@ -75,40 +79,175 @@ export const fetchApi: CallableFunction = async (
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      });
-      
+      }, token);
+
       if (data.errors) {
         throw new Error(JSON.stringify(data.errors));
       }
 
       return Object.values(data.data)[0];
     }
-
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 
-
-
 type queries = {
   createUser: string;
-  createBusiness : string
-  getAllPost: string
-  getAllCategoryBusiness : string
-  getAllBusiness : string
-  getHome : string
-  getCategories : string
-  getUser : string
-  getSlugBusiness: string
+  createBusiness: string;
+  createReviews: string;
+  updateReview : string
+  getAllPost: string;
+  getAllCategoryBusiness: string;
+  getAllBusiness: string;
+  getAllReviews: string;
+  getChats: string;
+  getOneChat: string
+  getHome: string;
+  getCategories: string;
+  getUser: string;
+  getSlugBusiness: string;
   getOneBusiness: string;
-  getSlugPosts: string
-  getMagazine : string
-  deleteImages : string
-  deleteBusiness : string
+  getAverageBusiness : string
+  getChatIdForBusiness : string
+  getSlugPosts: string;
+  getMagazine: string;
+  deleteImages: string;
+  deleteBusiness: string;
+  deleteReview: string
 };
 
 export const queries: queries = {
+  getOneChat: `query($IDChat :ID){
+    getOneChat(_id: $IDChat){
+      _id
+      title
+      onLine{
+        status
+        dateConection
+      }
+      type
+      photoURL
+      addedes{
+        userUid
+        type
+      }
+      messages{
+        type
+        emitUserUid
+        message
+        fileUrl
+        createdAt
+        received
+        read
+        deletedEmit
+        deletedReceiv
+      }
+      createdAt
+      updatedAt
+    }
+  }`,
+  getChatIdForBusiness: `query ($businessID : ID){
+    getChatIdForBusiness(_id: $businessID)
+  }`,
+  getChats : `query ($uid: [ID], $skip :Int, $limit : Int) {
+    getChats(uid :$uid, skip: $skip, limit: $limit){
+      total
+      results{
+        _id
+        title
+        onLine{
+          status
+          dateConection
+        }
+        type
+        addedes{
+          userUid
+          type
+        }
+        messages{
+          type
+          emitUserUid
+          message
+          fileUrl
+          createdAt
+          received
+          read
+          deletedEmit
+          deletedReceiv
+        }
+        createdAt
+        updatedAt
+        photoURL
+      }
+    }
+  }`,
+  getAverageBusiness: `query ($id: ID, $slug : String) {
+    getOneBusiness(_id: $id, slug: $slug){
+      _id
+      review
+    	reviewsT {
+        total
+        professionalism
+        recommended
+        priceQuality
+        flexibility
+      }
+    }
+  }`,
+  deleteReview : `mutation ($id : [ID]){
+    deleteReview(_id: $id)
+  }`,
+  updateReview: `mutation ($id : ID, $args:inputReview){
+    updateReview(_id: $id, args:$args){
+      _id
+      business{
+        _id
+      }
+      user {
+        _id
+      }
+      average
+      professionalism
+      recommended
+      priceQuality
+      flexibility
+      comment
+    }
+  }`,
+  getAllReviews: `query ($criteria :searchCriteriaReview, $sort: sortCriteriaReview, $skip: Int, $limit :Int) {
+    getAllReview(searchCriteria: $criteria, sort: $sort, skip: $skip, limit: $limit){
+      total
+      results{
+       _id
+      business{
+        _id
+      }
+      user{
+        _id
+        photoURL
+        displayName
+      }
+      average
+      reference
+      professionalism
+      recommended
+      priceQuality
+      flexibility
+      comment
+      createdAt
+      answer
+      imgCarrusel{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      
+      }
+    }
+  }`,
   createUser: `mutation  ($uid : ID, $city: String, $country : String, $weddingDate : String, $phoneNumber : String, $role : [String]) {
     createUser(uid: $uid, city : $city, country : $country, weddingDate : $weddingDate, phoneNumber : $phoneNumber, role: $role){
           city
@@ -118,7 +257,7 @@ export const queries: queries = {
           role
         }
       }`,
-      getAllBusiness: `query ($criteria :searchCriteriaBusiness, $sort : sortCriteriaBusiness, $skip :Int, $limit : Int) {
+  getAllBusiness: `query ($criteria :searchCriteriaBusiness, $sort : sortCriteriaBusiness, $skip :Int, $limit : Int) {
         getAllBusinesses(searchCriteria:$criteria, sort: $sort, skip: $skip, limit: $limit){
           total
           results{
@@ -141,9 +280,14 @@ export const queries: queries = {
       _id
       slug
       tags
+      userUid
       contactName
       contactEmail
       businessName
+      onLine{
+        status
+        dateConection
+      }
       webPage
       landline
       mobilePhone
@@ -159,6 +303,14 @@ export const queries: queries = {
       address
       description
       content
+      review
+    	reviewsT {
+        total
+        professionalism
+        recommended
+        priceQuality
+        flexibility
+      }
       subCategories{
         _id
       }
@@ -220,9 +372,29 @@ export const queries: queries = {
         i640
         i320
       }
+    reviews{
+      _id
+          average
+          comment
+          answer
+          imgCarrusel{
+            _id
+            i1024
+            i800
+            i640
+            i320
+          }
+          user{
+            _id
+            uid
+            photoURL
+            displayName
+          }
     }
+    }
+   
   }`,
-  getUser : `query ($uid: ID) {
+  getUser: `query ($uid: ID) {
     getUser(uid:$uid){
       phoneNumber
       role
@@ -236,7 +408,7 @@ export const queries: queries = {
       updatedAt
     }
   }`,
-  createBusiness : `mutation ($fase: String,
+  createBusiness: `mutation ($fase: String,
     $_id: ID,
     $userUid : ID,
     $contactName: String,
@@ -316,7 +488,39 @@ export const queries: queries = {
           }
         }
       }`,
-  getCategories : `query {
+  createReviews: `mutation ($args : inputReview){
+    createReview(args:$args){
+      _id
+      business{
+        _id
+      }
+      user{
+        _id
+      }
+      average
+      professionalism
+      recommended
+      priceQuality
+      flexibility
+      comment
+      answer
+      reference
+      imgCarrusel{
+          _id
+          i1024
+          i800
+          i640
+          i320
+      }
+      user{
+          _id
+          uid
+          photoURL
+          displayName
+      }
+    }
+  }`,
+  getCategories: `query {
     getCategoryBusiness{
       total
       results{
@@ -354,7 +558,7 @@ export const queries: queries = {
   deleteImages: `mutation  ($idImage :ID, $idBusiness:ID, $use : String) {
     deleteUpload(_id:$idImage, businessID:$idBusiness, use:$use)
   }`,
-  getHome : `query {
+  getHome: `query {
     getHome{
       business{
         _id
@@ -431,13 +635,13 @@ export const queries: queries = {
       }
     }
   }`,
-  getSlugBusiness : `query{
+  getSlugBusiness: `query{
     getSlugBusiness
   }`,
-  getSlugPosts : `query {
+  getSlugPosts: `query {
     getSlugPosts
   }`,
-  getAllPost : `query ($criteria : searchCriteriaPost, $sort: sortCriteriaPost, $limit : Int, $skip : Int) {
+  getAllPost: `query ($criteria : searchCriteriaPost, $sort: sortCriteriaPost, $limit : Int, $skip : Int) {
     getAllPost(searchCriteria:$criteria, limit : $limit, skip: $skip){
       total
       results{
@@ -467,7 +671,7 @@ export const queries: queries = {
       }
     }
   }`,
-  getMagazine : `query {
+  getMagazine: `query {
     getMagazine{
       lastestPosts{
         _id
@@ -508,10 +712,10 @@ export const queries: queries = {
       }
     }
   }`,
-  deleteBusiness : `mutation ($id : [ID]){
+  deleteBusiness: `mutation ($id : [ID]){
     deleteBusinesses(id: $id)
   }`,
-  getAllCategoryBusiness : `query ($criteria : searchCriteriaCategory, $sort : sortCriteriaCategory, $skip : Int, $limit: Int) {
+  getAllCategoryBusiness: `query ($criteria : searchCriteriaCategory, $sort : sortCriteriaCategory, $skip : Int, $limit: Int) {
     getAllCategoryBusiness(searchCriteria: $criteria, sort: $sort, skip: $skip, limit: $limit){
       total
       results{
@@ -548,7 +752,7 @@ export const queries: queries = {
         }
       }
     }
-  }`
+  }`,
 };
 
 export const GraphQL = {
@@ -570,9 +774,6 @@ export const GraphQL = {
   //   } = await api.graphql({ query, variables });
   //   return getBussines;
   // },
-
-
-
 
   uploadImage: async (file: any, id: string, use: string) => {
     const newFile = new FormData();
@@ -618,7 +819,4 @@ export const GraphQL = {
     } = await api.graphql(newFile, config);
     return singleUpload;
   },
-
-
-  
 };

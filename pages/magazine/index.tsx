@@ -54,7 +54,7 @@ export default Magazine;
 export async function getServerSideProps() {
   try {
     
-    const data = await fetchApi(queries.getMagazine)
+    const data = await fetchApi({query: queries.getMagazine})
     return { props: data };
   } catch (error) {
     console.log(error);

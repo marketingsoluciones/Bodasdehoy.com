@@ -1,8 +1,6 @@
-import { getAuth, signOut, User } from "@firebase/auth";
-import { firebaseClient } from "../firebase";
+import { signOut, User } from "@firebase/auth";
+import { auth, firebaseClient } from "../firebase";
 import { UserMax } from "../context/AuthContext";
-firebaseClient;
-const auth = getAuth();
 
 export const autenticacion = {
   SignOut: async (): Promise<Partial<UserMax | null>> => {

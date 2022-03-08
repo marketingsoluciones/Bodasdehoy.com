@@ -1,13 +1,15 @@
 import { Formik, Form, ErrorMessage } from "formik";
 import { FC, useContext, useState } from "react";
 import { EmailIcon, EmailIcon as PasswordIcon } from "../../Icons";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { InputField, ButtonComponent } from "../../Inputs";
 import * as yup from "yup";
 import router from "next/router";
 import { GraphQL, fetchApi, queries } from '../../../utils/Fetching';
 import { useToast } from '../../../hooks/useToast';
 import { AuthContextProvider } from "../../../context";
+import { auth } from "../../../firebase";
+import { setCookie } from "../../../utils/Cookies";
 
 type MyFormValues = {
   identifier: string;
@@ -33,15 +35,15 @@ const FormLogin: FC = () => {
   const handleSubmit = async (values: MyFormValues, actions: any) => {
     try {
       const res = await signInWithEmailAndPassword(
-        getAuth(),
+        auth,
         values.identifier,
         values.password
       );
       if(res.user){
-        const moreInfo = await fetchApi(queries.getUser, {uid : res.user.uid})
+        const moreInfo = await fetchApi({query: queries.getUser, variables: {uid : res.user.uid}})
         setUser({...res.user, ...moreInfo});
       }
-      localStorage.setItem('auth', (await res?.user?.getIdTokenResult())?.token)
+      setCookie({nombre: "token-bodas", valor: (await res?.user?.getIdTokenResult())?.token, dias: 1})
       await router.push("/");
       toast("success", "Inicio de sesión con exito")
     } catch (error: any) {
@@ -76,9 +78,7 @@ const FormLogin: FC = () => {
 
         <ButtonComponent
           onClick={() => {}}
-          color={"primary"}
           type="submit"
-          className="mx-auto inset-x-0 px-20"
         >
           Iniciar sesión
         </ButtonComponent>

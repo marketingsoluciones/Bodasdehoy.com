@@ -71,9 +71,9 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
         <Slider {...settings}>
           {categories &&
             categories.length > 0 &&
-            categories?.map((item: Partial<category>) => (
+            categories?.map((item: Partial<category>, idx: number) => (
               <Category
-                key={item._id}
+                key={idx}
                 {...item}
               />
             ))}

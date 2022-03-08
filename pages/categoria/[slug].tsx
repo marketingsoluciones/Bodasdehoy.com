@@ -193,8 +193,8 @@ const Filters : FC <propsFilter> = ({optionsCheckbox}) => {
         </button>
       </div>
       <LocationFilter />
-      {characteristics?.map((item)=> (
-        <CheckBoxFilter label={item.title} options={item.items.map(item => ({label: item.title, _id: item.title}))} />
+      {characteristics?.map((item, idx)=> (
+        <CheckBoxFilter key={idx} label={item.title} options={item.items.map(item => ({label: item.title, _id: item.title}))} />
 
       ))}
       {/* <EventType title="Tipo de boda" list={List} />
@@ -306,9 +306,9 @@ export const getStaticProps: GetStaticProps = async ({
     console.time("Category Page queries");
     const {
       results: [category],
-    } = await fetchApi(queries.getAllCategoryBusiness, {
+    } = await fetchApi({query : queries.getAllCategoryBusiness, variables: {
       criteria: { slug: params.slug },
-    });
+    }});
 
     console.timeEnd("Category Page queries");
     return {
@@ -325,7 +325,7 @@ export const getStaticProps: GetStaticProps = async ({
 
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
-    const { results } = await fetchApi(queries.getCategories);
+    const { results } = await fetchApi({query :queries.getCategories});
 
     const paths = results.reduce(
       (acc: { params: { slug: string } }[], category: category) => {

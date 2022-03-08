@@ -1,3 +1,5 @@
+import { UserMax } from "../context/AuthContext"
+import { User } from "./FirebaseInterface"
 
 //  @@Categories Interfaces de Categorias de empresas / posts
 export interface fetchCategory {
@@ -38,6 +40,7 @@ export interface business {
   contactName: string
   contactEmail: string
   businessName: string
+  onLine: online
   webPage: string
   landline: string
   mobilePhone: string
@@ -71,6 +74,29 @@ export interface business {
   createdAt: number
   updatedAt: number
   characteristics: characteristic[]
+  reviews : review[],
+  review : number,
+  reviewsT : reviewsT
+    
+}
+
+export type reviewsT = {
+  total: number
+  professionalism: number
+  recommended: number
+  priceQuality: number
+  flexibility: number
+}
+
+export type review = {
+  _id: string
+  average: number
+  comment: string
+  answer: string
+  imgCarrusel : image
+  user : UserMax
+  reference: string
+  createdAt : number
 }
 
 enum TypesCoordinates {
@@ -208,4 +234,41 @@ export interface OnePost {
  export type geolocation = {
   lat : number
   lng : number
+}
+
+
+// @CHATS Interfaces de chats
+export interface Chat {
+  _id : string
+  addedes: addedes[]
+  messages: messageChat[]
+  createdAt: number
+  updatedAt: number
+  onLine: online
+  title: string
+  type: string
+  photoURL: string
+}
+
+interface addedes {
+  userUid: string
+  type: string
+  online: boolean
+}
+
+export interface messageChat {
+  type: string
+  emitUserUid: string
+  message: string
+  fileUrl: string
+  createdAt: number
+  received: boolean
+  read: boolean
+  deletedEmit: boolean
+  deletedReceiv: boolean
+}
+
+interface online {
+  status : boolean
+  dateConection: number
 }

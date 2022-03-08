@@ -13,7 +13,7 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
       <div className="flex flex-col gap-2 items-center justify-center">
         <LogoFullColor className="w-auto h-10" />
       </div>
-      <Providers />
+      <Providers setStage={setStage} />
       <FormLogin />
         <RegisterQuestion onClick={() => setStage("register")} />
       {/* <BusinessAccess /> */}

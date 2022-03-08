@@ -18,10 +18,10 @@ export const SelectField: FC<propsSelectField> = memo(
     return (
       <div className="w-full relative">
         <span className="flex items-center gap-2">
-        <label className="text-sm text-gray-500">{label}</label>
+        <label className="text-sm text-gray-500 pb-1">{label}</label>
         {meta.touched && meta.error ? (
           <span className="text-red-500 text-xs font-medium ">
-            {meta.error}
+            *
           </span>
         ) : null}
       </span>

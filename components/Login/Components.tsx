@@ -1,12 +1,13 @@
 import { FC, MouseEventHandler, useContext } from "react";
-import { GoogleProvider, FacebookProvider } from "../../firebase";
+import { GoogleProvider, FacebookProvider, auth } from "../../firebase";
 import { Icon } from "../Surface/Footer";
 import { AppleIcon, FacebookIcon, GoogleIcon } from "../Icons";
-import { getAuth, signInWithPopup, UserCredential } from "firebase/auth";
+import { signInWithPopup, UserCredential } from "firebase/auth";
 import router from "next/router";
 import { GraphQL, fetchApi, queries } from '../../utils/Fetching';
 import { useToast } from "../../hooks/useToast";
 import { AuthContextProvider } from "../../context";
+import { setCookie } from "../../utils/Cookies";
 
 interface propsRegisterQuestion {
   onClick: MouseEventHandler;
@@ -25,26 +26,33 @@ export const RegisterQuestion: FC<propsRegisterQuestion> = ({ onClick }) => {
   );
 };
 
-export const Providers: FC = () => {
+export const Providers: FC <any> = ({setStage}) => {
   const { setUser} = AuthContextProvider();
   const toast = useToast()
 
   const handleClick = async (provider: any) => {
     try {
       // Autenticar con firebase
-      const auth = getAuth();
-      const res: UserCredential = await signInWithPopup(auth, provider);
-
-      // Solicitar datos adicionales del usuario
-      const moreInfo = await fetchApi(queries.getUser,{uid: res.user.uid})
-
+      const res: UserCredential = await signInWithPopup(auth, provider)
       // Actualizar estado con los dos datos
-      setUser({ ...res.user, ...moreInfo });
+      setUser(res.user);
 
       // Setear en localStorage token JWT
-      localStorage.setItem('auth', (await res?.user?.getIdTokenResult())?.token)
-      toast("success", "Inicio de sesión con exito")
-      await router.push("/");
+      setCookie({nombre: "token-bodas", valor: (await res?.user?.getIdTokenResult())?.token, dias: 1})
+
+      // Solicitar datos adicionales del usuario
+      const moreInfo = await fetchApi({query : queries.getUser, variables: {uid: res.user.uid}})
+      if(moreInfo.errors){
+        setStage("register")
+      } else {
+        toast("success", "Inicio de sesión con exito")
+        await router.push("/");
+      }
+
+      
+
+      
+      
     } catch (error) {
       toast("error", JSON.stringify(error))
       console.log(error);

@@ -171,7 +171,7 @@ const CategoriesComponent: FC = () => {
  
   const fetchData = async () => {
       try {
-        const {results} = await fetchApi(queries.getCategories);
+        const {results} = await fetchApi({query: queries.getCategories});
         const mapResults = results.filter((item: any) => item.subCategories.length > 0 && item)
         setCategories(mapResults);
       } catch (error) {

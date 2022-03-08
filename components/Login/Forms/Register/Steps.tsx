@@ -20,10 +20,10 @@ export const FirstStep: FC<propsFirstStep> = ({ value }) => {
 
   // Array con opciones de tipo de perfil
   const List: TypeOption[] = [
-    { title: "Novia", icon: "/FormRegister/icon-women.webp" },
-    { title: "Novio", icon: "/FormRegister/icon-men.webp" },
-    { title: "Otro", icon: "/FormRegister/icon-heart.webp" },
-    { title: "Empresa", icon: "/FormRegister/icon-business.webp" },
+    { title: "novia", icon: "/FormRegister/icon-women.webp" },
+    { title: "novio", icon: "/FormRegister/icon-men.webp" },
+    { title: "otro", icon: "/FormRegister/icon-heart.webp" },
+    { title: "empresa", icon: "/FormRegister/icon-business.webp" },
   ];
 
   return (
@@ -74,7 +74,7 @@ const Option: FC<propsOption> = ({ icon, title, onClick, color = false }) => {
   return (
     <>
       <div
-        className={`flex flex-col items-center justify-center gap-2 ${
+        className={`flex flex-col items-center justify-center gap-2 capitalize ${
           color ? "selected" : "option"
         }`}
       >
@@ -121,7 +121,7 @@ interface propsSecondStep {
 }
 export const SecondStep: FC<propsSecondStep> = (props) => {
   return (
-    <div className="gap-4 flex flex-col justify-center items-center">
+    <div className="gap-4 flex flex-col justify-center items-center w-full">
       <LogoFullColor />
       <FormRegister {...props} />
     </div>

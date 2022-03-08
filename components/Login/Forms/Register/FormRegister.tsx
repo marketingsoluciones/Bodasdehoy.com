@@ -8,7 +8,6 @@ import {
 } from "../../../Icons";
 import {
   createUserWithEmailAndPassword,
-  getAuth,
   updateProfile,
   UserCredential,
 } from "@firebase/auth";
@@ -22,6 +21,8 @@ import router from "next/router";
 import { ValidationSchemaRegister } from "./ValidationRegister";
 import { GraphQL, fetchApi, queries } from "../../../../utils/Fetching";
 import SelectFieldCoutries from "../../../Inputs/SelectFieldCoutries";
+import { auth } from "../../../../firebase";
+import { setCookie } from '../../../../utils/Cookies';
 
 // Interfaces para el InitialValues del formulario de registro
 interface userInitialValuesPartial {
@@ -30,8 +31,7 @@ interface userInitialValuesPartial {
   weddingDate: Date;
   phoneNumber: string;
   role: string;
-  uid: String;
-  typeRole: String;
+  uid: string;
 }
 
 interface userInitialValuesTotal extends userInitialValuesPartial {
@@ -43,19 +43,20 @@ interface userInitialValuesTotal extends userInitialValuesPartial {
   weddingDate: Date;
   phoneNumber: string;
   role: string;
-  uid: String;
-  typeRole: string;
+  uid: string;
 }
 
 interface businessInitialValuesPartial {
   fullName: string;
   phoneNumber: string;
+  role: string
 }
 interface businessInitialValuesTotal {
   fullName: string;
   email: string;
   password: string;
   phoneNumber: string;
+  role: string
 }
 
 // Set de mensajes de error
@@ -85,7 +86,6 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
     phoneNumber: "",
     role: whoYouAre || "",
     uid: "",
-    typeRole: whoYouAre || "",
   };
 
   const userInitialValuesTotal: userInitialValuesTotal = {
@@ -98,9 +98,8 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
     country: "",
     weddingDate: new Date(),
     phoneNumber: "",
-    role: "clientes",
+    role: whoYouAre || "",
     uid: "",
-    typeRole: whoYouAre || "",
   };
 
   const businessInitialValuesPartial: businessInitialValuesPartial = {
@@ -108,6 +107,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
     fullName: "",
     //Envio a la api
     phoneNumber: "",
+    role: whoYouAre || "",
   };
 
   const businessInitialValuesTotal: businessInitialValuesTotal = {
@@ -117,6 +117,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
     password: "",
     //Envio a la api
     phoneNumber: "",
+    role: whoYouAre || "",
   };
 
   // Funcion a ejecutar para el submit del formulario
@@ -124,7 +125,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
     try {
       setLoading(true);
       let UserFirebase: Partial<UserMax> = user ?? {};
-      const auth = getAuth();
+     
 
       // Si es registro completo
       if (!user?.uid) {
@@ -150,19 +151,16 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
       });
 
       // Crear usuario en MongoDB
-      const moreInfo = await fetchApi(queries.createUser, {
+      const moreInfo = await fetchApi({query : queries.createUser, variables: {
         ...values,
         phoneNumber: JSON.stringify(values.phoneNumber),
-      });
+      }});
 
       // Almacenar en contexto USER con toda la info
       setUser({ ...UserFirebase, ...moreInfo });
 
       // Almacenar token en localStorage
-      localStorage.setItem(
-        "auth",
-        UserFirebase?.accessToken ?? "Error al acceder al token"
-      );
+      setCookie({nombre: "token-bodas", valor: UserFirebase.accessToken, dias: 1})
 
       //Redirigir al home
       await router.push("/");
@@ -176,7 +174,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
   return (
     <>
       <FormikStepper handleSubmit={handleSubmit}>
-        <Form className="w-full text-gray-200 flex flex-col gap-8 py-4 w-full">
+        <Form className="w-2/3 text-gray-200 grid grid-cols-2 gap-6">
           {(() => {
             if (whoYouAre.toLowerCase() !== "empresa") {
               if (!user?.uid) {
@@ -223,7 +221,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
 
           <button
             type={"submit"}
-            className="bg-primary rounded-full px-10 py-2 text-white font-medium w-max mx-auto inset-x-0 hover:bg-tertiary transition"
+            className="col-span-2 bg-primary rounded-full px-10 py-2 text-white font-medium w-max mx-auto inset-x-0 hover:bg-tertiary transition"
           >
             Registrar
           </button>
@@ -267,10 +265,12 @@ interface propsForm {
   initialValues: any;
   validationSchema: any;
 }
+
+
 const UserWithEmailAndPassword: FC<propsForm> = () => {
   return (
     <>
-      <span className="w-full relative ">
+      <div className="w-full col-span-2">
         <InputField
           name="fullName"
           placeholder="Jhon Doe"
@@ -281,10 +281,9 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
           }
           label={"Nombre y apellidos"}
         />
-      </span>
+      </div>
 
-      <div className="grid grid-cols-2 gap-8">
-        <span className="w-full relative ">
+        <div className="w-full relative ">
           <InputField
             name="email"
             placeholder="jhondoe@gmail.com"
@@ -295,12 +294,11 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
             }
             label={"Correo electronico"}
           />
-        </span>
+        </div>
 
-        <span className="w-full relative ">
+        <div className="w-full relative ">
           <InputField
             name="password"
-            placeholder=""
             type="password"
             autoComplete="off"
             icon={
@@ -308,36 +306,33 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
             }
             label={"Contraseña"}
           />
-        </span>
+        </div>
 
-        <span className="w-full relative ">
+        <div className="w-full relative ">
           <SelectFieldCoutries name="country" label={"País"} />
-        </span>
+        </div>
 
-        <span className="w-full relative ">
+        <div className="w-full relative ">
           <InputField
             name="city"
-            placeholder="Vives en"
             type="text"
             autoComplete="off"
             label={"Ciudad"}
           />
-        </span>
+        </div>
 
-        <span className="w-full relative ">
+        <div className="w-full relative ">
           <DatePicker name={"weddingDate"} label={"Fecha de la boda"} />
-        </span>
+        </div>
 
-        <span className="w-full relative ">
+        <div className="w-full relative ">
           <InputField
             name="phoneNumber"
-            placeholder=""
             type="number"
             autoComplete="off"
             label={"Número de telefono"}
           />
-        </span>
-      </div>
+        </div>
     </>
   );
 };
@@ -345,43 +340,41 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
 const UserDataAPI: FC<propsForm> = () => {
   return (
     <>
-      <span className="w-full relative ">
+      <div className="w-full relative ">
         <InputField
           name="fullName"
-          placeholder="Nombre y apellidos"
+          label="Nombre y apellidos"
           type="text"
           autoComplete="off"
         />
         <UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto" />
-      </span>
+      </div>
 
-      <div className="grid grid-cols-2 gap-8">
-        <span className="w-full relative ">
+        <div className="w-full relative ">
           <InputField
             name="city"
-            placeholder="Vives en"
+            label="Vives en"
             type="text"
             autoComplete="off"
           />
-        </span>
+        </div>
 
-        <span className="w-full relative ">
+        <div className="w-full relative ">
           <SelectFieldCoutries name="country" label={"Pais"} />
-        </span>
+        </div>
 
-        <span className="w-full relative ">
-          <DatePicker name={"weddingDate"} />
-        </span>
+        <div className="w-full relative ">
+          <DatePicker label={"Fecha de la boda"} name={"weddingDate"} />
+        </div>
 
-        <span className="w-full relative ">
+        <div className="w-full relative ">
           <InputField
             name="phoneNumber"
-            placeholder="Número de telefono"
+            label="Número de telefono"
             type="number"
             autoComplete="off"
           />
-        </span>
-      </div>
+        </div>
     </>
   );
 };
@@ -389,49 +382,47 @@ const UserDataAPI: FC<propsForm> = () => {
 const BusinessWithEmailAndPassword: FC<propsForm> = () => {
   return (
     <>
-      <span className="w-full relative ">
+      <div className="w-full relative ">
         <InputField
           name="fullName"
-          placeholder="Nombre y apellidos"
+          label="Nombre y apellidos"
           type="text"
           autoComplete="off"
           icon={true}
         />
         <UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto" />
-      </span>
+      </div>
 
-      <div className="grid grid-cols-2 gap-8">
-        <span className="w-full relative ">
+        <div className="w-full relative ">
           <InputField
             name="email"
-            placeholder="Email"
+            label="Correo electronico"
             type="email"
             autoComplete="off"
             icon={true}
           />
           <EmailIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4 text-gray-500" />
-        </span>
+        </div>
 
-        <span className="w-full relative ">
+        <div className="w-full relative ">
           <InputField
             name="password"
-            placeholder="Contraseña"
+            label="Contraseña"
             type="password"
             autoComplete="off"
             icon={true}
           />
           <PasswordIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4 text-gray-500" />
-        </span>
+        </div>
 
-        <span className="w-full relative ">
+        <div className="w-full relative ">
           <InputField
             name="phoneNumber"
-            placeholder="Número de telefono"
+            label="Número de telefono"
             type="number"
             autoComplete="off"
           />
-        </span>
-      </div>
+        </div>
     </>
   );
 };
@@ -439,26 +430,24 @@ const BusinessWithEmailAndPassword: FC<propsForm> = () => {
 const BusinessDataAPI: FC<propsForm> = () => {
   return (
     <>
-      <div className="grid grid-cols-2 gap-8">
-        <span className="w-full relative ">
+        <div className="w-full relative ">
           <InputField
             name="fullName"
-            placeholder="Nombre y apellidos"
+            label="Nombre y apellidos"
             type="text"
             autoComplete="off"
           />
           <UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto" />
-        </span>
+        </div>
 
-        <span className="w-full relative ">
+        <div className="w-full relative ">
           <InputField
             name="phoneNumber"
-            placeholder="Número de telefono"
+            label="Número de telefono"
             type="number"
             autoComplete="off"
           />
-        </span>
-      </div>
+        </div>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { getAuth, User } from "@firebase/auth";
+import { User } from "@firebase/auth";
 import {
   createContext,
   FC,
@@ -8,6 +8,8 @@ import {
   useEffect,
   useContext,
 } from "react";
+import { auth } from "../firebase";
+import { setCookie } from "../utils/Cookies";
 import { GraphQL, fetchApi, queries } from '../utils/Fetching';
 
 export interface UserMax extends User {
@@ -24,7 +26,7 @@ type Context = {
 };
 
 const initialContext: Context = {
-  user: {},
+  user: null,
   setUser: (user) => {},
 };
 
@@ -35,14 +37,14 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
 
 
   useEffect(() => {
-    const auth = getAuth();
+    
     auth.onAuthStateChanged(async (user: any) => {
       if (user) {
-        const moreInfo = await fetchApi(queries.getUser,{uid: user?.uid});
+        const moreInfo = await fetchApi({query: queries.getUser, variables: {uid: user?.uid}});
         setUser({ ...user, ...moreInfo });
 
         // Setear en localStorage token JWT
-        localStorage.setItem('auth', (await user?.getIdTokenResult())?.token)
+        setCookie({nombre: "token-bodas", valor: (await user?.getIdTokenResult())?.token, dias: 1})
       }
     });
   }, []);

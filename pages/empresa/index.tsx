@@ -54,7 +54,7 @@ const Empresas = () => {
 
   const handleRemove = async (_id: string) => {
     try {
-      await fetchApi(queries.deleteBusiness, { id: _id });
+      await fetchApi({query : queries.deleteBusiness, variables: { id: _id }});
       fetchy(initialQuery)
       toast("success", "Eliminado con exito");
     } catch (error) {
@@ -96,7 +96,7 @@ const Empresas = () => {
   );
 };
 
-export default PagesWithAuth(Empresas);
+export default PagesWithAuth(Empresas, "empresa");
 
 interface propsBusinessItem extends business {
   handleRemove: any;

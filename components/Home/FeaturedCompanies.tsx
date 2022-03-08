@@ -137,14 +137,14 @@ export const CompanyCard: FC<propsCompanyCard> = memo(({ data, pricing = true })
 interface propsRatings {
   rating: number;
   size?: string;
-  visibleText?: boolean;
+  visibleText?: number;
   outValue?: any;
 }
 
 export const RatingStars: FC<propsRatings> = ({
   rating,
   size = "base",
-  visibleText = true,
+  visibleText,
   outValue = () => {},
 }) => {
   const matriz: number[] = [1, 2, 3, 4, 5];
@@ -168,7 +168,7 @@ export const RatingStars: FC<propsRatings> = ({
           />
         ))}
       </div>
-      {visibleText && <p className="text-xs text-gray-700">12</p>}
+      {visibleText && <p className="text-xs text-gray-700">{visibleText}</p>}
     </div>
   );
 };

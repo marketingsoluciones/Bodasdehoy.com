@@ -5,34 +5,34 @@ export const ValidationSchemaRegister = {
 
   // Schema de validacion user con todos los valores
   userValidationTotal: yup.object().shape({
-    fullName: yup.string().required(),
-    email: yup.string().email().required(),
-    password: yup.string().required().min(8),
-    city: yup.string().required(),
-    country: yup.string().required(),
-    weddingDate: yup.date().required(),
-    phoneNumber: yup.number().required(),
+    fullName: yup.string().required("Campo requerido"),
+    email: yup.string().email().required("Campo requerido"),
+    password: yup.string().required("Campo requerido").min(8),
+    city: yup.string().required("Campo requerido"),
+    country: yup.string().required("Campo requerido"),
+    weddingDate: yup.date().required("Campo requerido"),
+    phoneNumber: yup.number().required("Campo requerido"),
   }),
   // Schema de validacion user con valores parciales
   userValidationPartial: yup.object().shape({
-    city: yup.string().required(),
-    country: yup.string().required(),
-    weddingDate: yup.date().required(),
-    phoneNumber: yup.number().required(),
+    city: yup.string().required("Campo requerido"),
+    country: yup.string().required("Campo requerido"),
+    weddingDate: yup.date().required("Campo requerido"),
+    phoneNumber: yup.number().required("Campo requerido"),
   }),
 
   // ########### BUSINESS #############
 
   // Schema de validacion business con todos los valores
   businessValidationTotal: yup.object().shape({
-    fullName: yup.string().required(),
-    email: yup.string().email().required(),
-    password: yup.string().required().min(8),
-    phoneNumber: yup.number().required(),
+    fullName: yup.string().required("Campo requerido"),
+    email: yup.string().email().required("Campo requerido"),
+    password: yup.string().required("Campo requerido").min(8),
+    phoneNumber: yup.number().required("Campo requerido"),
   }),
   // Schema de validacion business con valores parciales
   businessValidationPartial: yup.object().shape({
-    fullName: yup.string().required(),
-    phoneNumber: yup.number().required(),
+    fullName: yup.string().required("Campo requerido"),
+    phoneNumber: yup.number().required("Campo requerido"),
   }),
 };

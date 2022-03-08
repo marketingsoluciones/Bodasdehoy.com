@@ -1,6 +1,6 @@
 import { Markup } from "interweave";
 import Link from "next/link";
-import { FC, ReactNode, useState } from 'react';
+import { FC, ReactNode, useEffect, useState } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 
 import { FormListing } from "../../components/Forms";
@@ -26,12 +26,17 @@ import FloatingButton from "../../components/Listing/FloatingButton";
 import PromoActiva from "../../components/Listing/PromoActiva";
 import ReviewComponent from "../../components/Listing/ReviewComponent";
 import { business } from "../../interfaces";
-import { fetchApi, queries } from '../../utils/Fetching';
+import { fetchApi, queries } from "../../utils/Fetching";
 import { InstagramIcon } from "../../components/Icons/index";
 import { createURL } from "../../utils/UrlImage";
-import { createSrcSet } from '../../utils/CreateSrcSet';
-import GoogleMapsView from '../../components/GoogleMaps/GoogleMapsView';
+import { createSrcSet } from "../../utils/CreateSrcSet";
+import GoogleMapsView from "../../components/GoogleMaps/GoogleMapsView";
 import ChatComponentView from "../../components/Listing/ChatComponentView";
+import ModalReview from "../../components/Listing/ModalReview";
+import { capitalize } from "../../utils/Capitalize";
+import { useDisclosure } from "../../hooks/useDisclosure";
+import { ButtonComponent } from "../../components/Inputs";
+import { AuthContextProvider } from "../../context";
 
 type Boton = {
   title: string;
@@ -40,12 +45,10 @@ type Boton = {
 };
 
 const Listing: FC<business> = (props) => {
-  
-  
   const {
     imgMiniatura,
     businessName,
-    content,
+    description,
     accessoriesList,
     questionsAndAnswers,
     coordinates,
@@ -54,14 +57,13 @@ const Listing: FC<business> = (props) => {
     facebook,
     instagram,
     youtube,
-    servicesList,
+    reviewsT,
     characteristics,
-    _id
-  } = props
+    _id,
+    userUid,
+    reviews: opiniones,
+  } = props;
 
-
-  
-  
   const [sendMessage, setMessage] = useState(false);
   const List: Boton[] = [
     { title: "Descripción", route: "#description", icon: <DocsIcon /> },
@@ -69,6 +71,7 @@ const Listing: FC<business> = (props) => {
     { title: "Comó llegar", route: "#maps", icon: <Location2Icon /> },
     { title: "Preguntas", route: "#questions", icon: <PreguntasIcon /> },
   ];
+  const { user } = AuthContextProvider();
 
   return (
     <>
@@ -92,7 +95,7 @@ const Listing: FC<business> = (props) => {
             <FacebookIcon className="text-primary h-5 w-5" />
           </span>
         </div>
-        
+
         <img
           alt={businessName}
           className="w-full object-cover h-80"
@@ -100,19 +103,22 @@ const Listing: FC<business> = (props) => {
           srcSet={createSrcSet(imgMiniatura)}
         />
       </div>
-      
-      <div id={"listing"} className="mx-auto inset-x-0 flex flex-col gap-6 mt-6">
+
+      <div
+        id={"listing"}
+        className="mx-auto inset-x-0 flex flex-col gap-6 mt-6"
+      >
         {/* <BreadCumbs /> */}
         <HeaderListing {...props} />
         <div className="md:bg-white w-full px-5">
           <div className="lg:max-w-screen-lg inset-x-0 mx-auto w-full grid md:grid-cols-3 gap-10 ">
             <section className="w-full md:col-span-2">
               <img
-          alt={businessName}
-          className="w-full object-cover h-96 hidden md:block"
-          src={createURL(imgMiniatura?.i640)}
-          srcSet={createSrcSet(imgMiniatura)}
-        />
+                alt={businessName}
+                className="w-full object-cover h-96 hidden md:block"
+                src={createURL(imgMiniatura?.i640)}
+                srcSet={createSrcSet(imgMiniatura)}
+              />
               <div className="hidden md:block bg-gray-200 w-full h-max -mt-4 rounded-lg relative z-10 bg-opacity-30">
                 <div className="bg-white rounded-lg py-3 w-full border border-primary flex items-center justify-between px-16">
                   {List.map((item, idx) => (
@@ -132,45 +138,53 @@ const Listing: FC<business> = (props) => {
                 </div> */}
               </div>
               <div className="flex flex-col flex-wrap gap-12 py-6 ">
-                <ContentListing text={content} />
+                <ContentListing text={description} />
                 <hr />
-               
+
                 {/* <FeaturesListing /> */}
                 <div id="questions" className="transition flex flex-col gap-6">
-                    {characteristics?.map((item) => (
-                      <Feautres2Listing
+                  {characteristics?.map((item) => (
+                    <Feautres2Listing
                       key={item.characteristic._id}
                       title={item?.characteristic.title}
                       provider={businessName ?? ""}
                       items={item?.characteristic.items}
                     />
-                    ))}
+                  ))}
                 </div>
                 <hr />
-                
-                {questionsAndAnswers && questionsAndAnswers?.filter(
-                  (item) => item.answers !== "").length > 0 && (
+
+                {questionsAndAnswers &&
+                  questionsAndAnswers?.filter((item) => item.answers !== "")
+                    .length > 0 && (
                     <>
-                    <FAQ data={questionsAndAnswers} />
+                      <FAQ data={questionsAndAnswers} />
                     </>
                   )}
-                  {coordinates?.coordinates?.length > 0 && (
-                    <>
-                  <div id={"maps"} className="rounded-xl overflow-hidden w-full h-64">
-                   <GoogleMapsView lng={coordinates?.coordinates[0]} lat={coordinates?.coordinates[1]}/>
-                  </div>
-                  <hr />
+                {coordinates?.coordinates?.length > 0 && (
+                  <>
+                    <div
+                      id={"maps"}
+                      className="rounded-xl overflow-hidden w-full h-64"
+                    >
+                      <GoogleMapsView
+                        lng={coordinates?.coordinates[0]}
+                        lat={coordinates?.coordinates[1]}
+                      />
+                    </div>
+                    <hr />
                   </>
-                  )}
-                  <ReviewComponent {...props} />
+                )}
+
+                <ReviewComponent {...props} />
               </div>
             </section>
             <div className="hidden md:block w-full ... relative ">
               <div className="bg-white shadow md:-mt-12 rounded-xl  p-4 relative">
                 <div className="flex gap-4 items-center text-primary w-full justify-center flex-col">
-                <ChatComponentView {...props} />
-               
-                  
+                  {/* Si soy el dueño de la empresa no aparece */}
+                  {userUid !== user?.uid && <ChatComponentView {...props} />}
+
                   {webPage && (
                     <ItemContact
                       icon={<WebSiteIcon className="w-5 h-5" />}
@@ -207,15 +221,14 @@ const Listing: FC<business> = (props) => {
                     />
                   )}
                 </div>
-
-               
               </div>
             </div>
-        <p className="text-xs w-full text-gray-300 -mt-10"><strong>Business ID: </strong> {_id}</p>
+            <p className="text-xs w-full text-gray-300 -mt-10">
+              <strong>Business ID: </strong> {_id}
+            </p>
           </div>
         </div>
       </div>
-      
     </>
   );
 };
@@ -237,20 +250,33 @@ const ItemContact: FC<{ icon: ReactNode; title: string; route: string }> = ({
   );
 };
 
-const HeaderListing: FC<Partial<business>> = ({ businessName, imgLogo }) => {
+const HeaderListing: FC<business> = ({
+  businessName,
+  imgLogo,
+  reviewsT,
+  review,
+}) => {
   return (
     <div className="lg:max-w-screen-lg mx-auto w-full inset-x-0 flex items-center justify-between px-5 sm:px-0">
       <div className="flex items-center gap-2">
-      <img
+        <img
           alt={businessName}
           className="object-cover w-24 h-24 rounded-full border-2 border-primary"
-          src={imgLogo?.i640 ? createURL(imgLogo.i640) : "/placeholder/logo.png"}
+          src={
+            imgLogo?.i640 ? createURL(imgLogo.i640) : "/placeholder/logo.png"
+          }
           srcSet={createSrcSet(imgLogo)}
         />
-        
+
         <div className="flex flex-col items-start md:items-start justify-center gap-y-2 ">
-          <h1 className="md:text-4xl text-3xl text-tertiary pl-1">{businessName}</h1>
-          <RatingStars rating={4} size={"lg"} />
+          <h1 className="md:text-4xl text-3xl text-tertiary pl-1">
+            {businessName}
+          </h1>
+          <RatingStars
+            rating={review}
+            size={"lg"}
+            visibleText={reviewsT?.total}
+          />
         </div>
       </div>
     </div>
@@ -270,7 +296,9 @@ const ContentListing: FC<propsContentListing> = ({ text }) => {
           seeMore ? "max-h-full" : "max-h-48 md:max-h-full"
         }`}
       >
-        {text ? <Markup className="text-sm text-justify" content={text} /> : (
+        {text ? (
+          <Markup className="text-sm text-justify" content={text} />
+        ) : (
           <div className="min-h-40 h-40 flex items-center justify-center text-xs text-gray-400">
             No content
           </div>
@@ -294,7 +322,13 @@ const ContentListing: FC<propsContentListing> = ({ text }) => {
 
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   try {
-    const data = await fetchApi(queries.getOneBusiness, {slug : params.slug});
+    const data = await fetchApi({
+      query: queries.getOneBusiness,
+      variables: { slug: params.slug },
+    });
+    if (data.errors) {
+      throw new Error("Error al traer los datos");
+    }
     return {
       props: data,
     };
@@ -306,13 +340,17 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   }
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async (context) => {
+  console.log(context);
   try {
-    const data = await fetchApi(queries.getSlugBusiness);
-    const paths = data.reduce((acc: {params: {slug : string}}[], slug : string) => {
-      slug && acc.push({params: {slug}})
-      return acc
-    }, [])
+    const data = await fetchApi({ query: queries.getSlugBusiness });
+    const paths = data.reduce(
+      (acc: { params: { slug: string } }[], slug: string) => {
+        slug && acc.push({ params: { slug } });
+        return acc;
+      },
+      []
+    );
     return {
       paths: paths,
       fallback: "blocking",

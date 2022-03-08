@@ -52,7 +52,11 @@ export default Article;
 
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   try {
+<<<<<<< HEAD
     const {results} = await fetchApi(queries.getAllPost, {criteria : {slug : params.slug}})
+=======
+    const {results} = await fetchApi({query: queries.getAllPost, variables: {criteria : {slug : params.slug}}})
+>>>>>>> 1f779d10dc35bdc4cbc40b620df8564eeff448eb
     return {
       props: results.length > 0 ? results[0] : {},
     };
@@ -66,7 +70,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
 
 export const getStaticPaths: GetStaticPaths = async() => {
   try {
-    const data = await fetchApi(queries.getSlugPosts)
+    const data = await fetchApi({query : queries.getSlugPosts})
     return {
       paths: data.map((slug : string) => ({params: {slug}})),
       fallback: "blocking",

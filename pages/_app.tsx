@@ -8,9 +8,11 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import '../styles/Editor.css'
 import ChatComponent from "../components/Chat/ChatComponent";
+import { AuthContextProvider } from "../context";
 
 
 function MyApp({ Component, pageProps }: AppProps) {
+  
   return (
     <>
       <DefaultLayout>

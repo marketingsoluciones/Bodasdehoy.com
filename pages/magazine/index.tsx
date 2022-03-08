@@ -32,6 +32,7 @@ const Magazine : NextPage <propsMagazine> = ({categoriesPost, lastestPosts, post
             size={"xl"}
           />
           <GridPost data={[]}  />
+
         </div>
       </div>
       {/* 2da sección */}

@@ -64,7 +64,7 @@ const Empresas = () => {
   };
 
   return (
-    <div className="container max-w-screen-lg mx-auto inset-x-0 py-10 w-full">
+    <div className="container max-w-screen-lg mx-auto inset-x-0 py-10 w-full px-2 md:px-0">
       <div className="flex items-center w-full justify-between">
         <h1 className="text-primary text-2xl font-semibold">Mis empresas</h1>
         <Link href={"/empresa/crear-empresa"} passHref>
@@ -127,11 +127,9 @@ const BusinessItem: FC<propsBusinessItem> = ({
 
   return (
     <>
-      <div className="w-full border border-gray-300 rounded-lg min-h-16  hover:bg-gray-200 transition flex items-center p-4 justify-between gap-10 relative overflow-hidden">
+      <div className="w-full border border-gray-300 rounded-lg min-h-16  hover:bg-gray-200 transition flex md:flex-row items-center p-4 justify-between gap-10 relative overflow-hidden">
         {/* @ts-ignore */}
-        <div
-          className={`absolute h-6 w-28 ${fases[fase]?.color} top-0 left-0 opacity-80 flex items-center`}
-        >
+        <div className={`absolute h-6 w-28 ${fases[fase]?.color} top-0 left-0 opacity-80 flex items-center`}>
           {/* @ts-ignore */}
           <p className="text-white text-sm text-center w-full">
             {fases[fase]?.text}
@@ -142,42 +140,45 @@ const BusinessItem: FC<propsBusinessItem> = ({
           src={imgLogo?.i320 ? createURL(imgLogo?.i320) : "/mask_1.png"}
           srcSet={createSrcSet(imgLogo)}
         />
-        <div>
-          <p className="text-md text-gray-600 font-bold tracking-tight">
-            {businessName ?? "Titulo de prueba"}
-          </p>
-          <p className="text-xs text-gray-600">
-            <strong>Identificador: </strong>
-            {_id}
-          </p>
-          <div className="flex items-center gap-5 flex-wrap">
-            {subCategories.map((subcategory) => (
-              <Badge key={subcategory._id} text={subcategory.title} />
-            ))}
+        <div className="flex flex-col md:flex-row md:space-x-20">
+          <div>
+            <p className="text-md text-gray-600 font-bold tracking-tight">
+              {businessName ?? "Titulo de prueba"}
+            </p>
+            <p className="text-xs text-gray-600">
+              <strong>Identificador: </strong>
+              {_id}
+            </p>
+            <div className="flex items-center gap-5 flex-wrap">
+              {subCategories.map((subcategory) => (
+                <Badge key={subcategory._id} text={subcategory.title} />
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <IconButton
-            onClick={() => router.push(`/empresa/${slug}`)}
-            size={"sm"}
-            variant={"primary"}
-          >
-            <ViewIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => router.push(`/empresa/crear-empresa?id=${_id}`)}
-            size={"sm"}
-            variant={"primary"}
-          >
-            <EditIcon />
-          </IconButton>
-          <IconButton
-            onClick={() => handleRemove(_id)}
-            size={"sm"}
-            variant={"primary"}
-          >
-            <DeleteIcon />
-          </IconButton>
+
+          <div className="flex items-center gap-1.5">
+            <IconButton
+              onClick={() => router.push(`/empresa/${slug}`)}
+              size={"sm"}
+              variant={"primary"}
+            >
+              <ViewIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => router.push(`/empresa/crear-empresa?id=${_id}`)}
+              size={"sm"}
+              variant={"primary"}
+            >
+              <EditIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => handleRemove(_id)}
+              size={"sm"}
+              variant={"primary"}
+            >
+              <DeleteIcon />
+            </IconButton>
+          </div>
         </div>
       </div>
     </>

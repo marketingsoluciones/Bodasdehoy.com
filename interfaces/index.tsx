@@ -172,9 +172,8 @@ export interface Post {
   permaLink: string
   slug: string
   seoDescription: string
-  categories: string[]
-  groupSubCategories: string[]
-  subCategories: string[]
+  categories: category []
+  subCategories: subCategory[]
   tags: string[]
   imgCarrusel: image[]
   imgMiniatura: image
@@ -183,7 +182,26 @@ export interface Post {
   status: string
   createdAt: number
   updatedAt: number
+}
 
+export interface OnePost {
+  _id: string
+  title: string
+  subTitle: string
+  content: string
+  permaLink: string
+  slug: string
+  seoDescription: string
+  categories: category []
+  subCategories: subCategory[]
+  tags: string[]
+  imgCarrusel: image[]
+  imgMiniatura: image
+  imgTexto: image[]
+  authorUsername: string
+  status: string
+  createdAt: number
+  updatedAt: number
 }
 
 

@@ -204,7 +204,7 @@ const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
     refBoxMsg.current.scrollIntoView({ behavior: 'smooth' })
   }
 
-  
+
   // Socket para escuchar evento(ID Chat) para recibir mensajes
   const handleSocket = (data : any) => {
     setMessages(old => [...old, data])

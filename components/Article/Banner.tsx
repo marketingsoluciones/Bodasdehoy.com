@@ -1,12 +1,13 @@
 import { FC } from "react";
-import { Post } from "../../interfaces";
+import { OnePost } from "../../interfaces";
 import { createURL } from "../../utils/UrlImage";
 import Image from 'next/image';
 import { createSrcSet } from '../../utils/CreateSrcSet';
 ;
 
 
-export const Banner : FC <Partial<Post>> = ({title, subTitle, authorUsername, imgMiniatura}) => {
+export const Banner : FC <Partial<OnePost>> = ({authorUsername, subTitle,imgMiniatura, title}) => {
+  console.log(subTitle)
   return (
     <div className="w-full relative">
       <div className="relative w-full flex items-center justify-end h-full overflow-hidden pb-28 md:pb-0 ">

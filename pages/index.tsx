@@ -25,9 +25,10 @@ const Home: FC<propsHome> = (props) => {
       <div className="sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg banner pt-6 md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full">
         <Welcome />
       </div>
+
       <PlaceDiscovery data={props?.categoriesBusiness} />
       
-      <div className="bg-white flex flex-col gap-24 w-full pb-20">
+      <div className=" bg-white flex flex-col gap-24 w-full pb-20">
         <FeaturedCompanies business={props?.business} />
         <ButtonProviders />
         <RecommendCategories data={props?.categoriesBusiness} />
@@ -46,8 +47,8 @@ export default Home;
 export const Welcome: FC = (props) => {
   return (
     <>
-      <div className=" before:absolute before:w-full before:h-1/2 before:bg-gradient-to-t before:from-color-base before:to-transparent before:via-color-base before:z-10 before:bottom-20 before:left-0 relative grid md:grid-cols-2 px-5 sm:px-0 pb-16 pb-0 relative">
-        <div className="flex flex-col gap-5 z-10 relative">
+      <div className="before:absolute before:w-full before:h-1/6 md:before:h-1/2 before:bg-gradient-to-t before:from-color-base before:to-transparent before:via-color-base before:z-10 before:bottom-16 md:before:bottom-20 before:left-0 relative grid md:grid-cols-2 px-5 sm:px-0 pb-16 pb-0 relative">
+        <div className="flex flex-col gap-5 z-10 md:relative">
           <h1 className="text-2xl md:text-4xl text-tertiary relative subpixel-antialiased font-bold w-full flex flex-col gap-2">
             <span className="relative w-max h-max  font-light">
               Encuentra tod<b className="hidden">o</b>
@@ -62,10 +63,12 @@ export const Welcome: FC = (props) => {
             autoFocus={true}
             placeholder="catering, hoteles, fincas, vestidos"
           />
-          <Features />
+          <div className='md:static'>
+            <Features />
+          </div>
         </div>
 
-        <div className=" md:w-full w-1/2 md:relative absolute z-0 -bottom-16 md:bottom-0 right-0 md:-mt-20 relative">
+        <div className="  md:w-full w-1/2 md:relative absolute -bottom-18 md:bottom-0 right-0 md:-mt-20 relative z-5 ">
           <Image
             src={"/photo-principal.webp"}
             alt='Bodas de hoy'
@@ -166,7 +169,7 @@ export const Features: FC = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 overflow-visible z-50">
+    <div className=" grid grid-cols-1 overflow-visible z-0">
       <Slider {...settings}>
         {List.map((item, idx) => (
           <Feature key={idx} item={item} />

@@ -26,11 +26,10 @@ const settings = {
     {
       breakpoint: 600,
       settings: {
-        slidesToShow: 2,
-        rows: 2,
+        slidesToShow: 1,
+        rows: 1,
       },
     },
-
     {
       breakpoint: 1200,
       settings: {
@@ -60,7 +59,7 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({business}) => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 w-full overflow-hidden">
+      <div className="md:grid md:grid-cols-1  w-full ">
         <Slider {...settings}>
           {data?.map((item : business) => (
             <CompanyCard key={item._id} data={item} />

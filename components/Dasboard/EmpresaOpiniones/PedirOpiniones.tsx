@@ -1,51 +1,78 @@
+import {IconExclamacion , IconReloj, IconInterrogacion, IconEstrella, IconImportar } from "../../Icons/index"
+import { ButtonComponent, InputField } from "../../Inputs" 
+import { Formik, Form } from "formik"
 
 export const HeaderOpiniones = () => {
-    return <div className="flex flex-row p-5 bg-white rounded-lg shadow-lg space-x-4">
-        <div>
-            <img src="" alt="img" />
-        </div>
-        <div>
-            <h1 className="text-primary text-2xl text-bold">Has conseguido 0 opiniones</h1>
-            <div className="flex flex-row space-x-5">
-                <div className="flex flex-row space-x-2">
-                    <img src="" alt="img" />
-                    <h1>0 peticiones enviadas</h1>
-                </div>
-                <div className="flex flex-row space-x-2">
-                    <img src="" alt="img" />
-                    <h1>0 sin contestar</h1>
-                </div>
-                <div className="flex flex-row space-x-2">
-                    <img src="" alt="img" />
-                    <h1>0 sin contestar</h1>
-                </div>
+    
+    const DatosOpiniones = [
+        {icon:<IconExclamacion/>,descripcion:"0 Peticiones Enviadas"},
+        {icon:<IconReloj/>,descripcion:"0 Sin Contestar"},
+        {icon:<IconInterrogacion/>,descripcion:"0 Sin Contestar"},
+    ] 
+
+    return <div className="flex p-10 bg-white rounded-lg shadow-lg gap-5 items-center">
+        
+        <IconEstrella/>
+        
+        <div className="w-full">
+            <h2 className="text-primary text-md text-bold">Has conseguido 0 opiniones</h2>
+            <div className="flex space-x-10 justify-between pt-5  ">
+                {DatosOpiniones.map((item,idx)=>(
+                    <div key={idx} className ="flex ">
+                        {item.icon}
+                        {item.descripcion}
+                    </div>
+                ))}
             </div>
         </div>
+
     </div>
 }
 
 export const BodyOpiniones = () =>{
+    const initialValues={
+
+    }
+    const handleSubmit = () =>{
+
+    }
     return <div className=" space-y-5">
 
-        <div className="bg-white rounded-lg shadow-lg p-5 space-y-5">
-            <h1 className="text-primary text-2xl text-bold">Pedir ipiniones</h1>
+            <div className="bg-white rounded-lg shadow-lg p-10 space-y-5">
 
-            <h1>Destinatarios</h1>
-            <p>Edita y envía este email para pedir opiniones a tus clientes. Tú también recibirás una copia en tu correo elecetrónico.</p>
-            <h1>Para:</h1>
-            <div>
-                <input type="text" name="" id="" />
-                <input type="email" name="" id="" />
-                <input type="submit" />
+                <h1 className="text-primary text-xl font-bold">Pedir ipiniones</h1>
+                <h2 className="text-xl">Destinatarios</h2>
+                <h3 className="text-md">Edita y envía este email para pedir opiniones a tus clientes. Tú también recibirás una copia en tu correo elecetrónico.</h3>
+                <h3 className="text-md">Para:</h3>
+                
+                <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+                    <Form className="flex gap-5">
+                        <InputField
+                            name={"usuario"}
+                            type={"text"}
+                            placeholder="Nombre"
+                        />
+                        <InputField
+                            name={"email"}
+                            type={"email"}
+                            placeholder="Email"
+                        />
+                        <ButtonComponent>Añadir</ButtonComponent>
+                    </Form>
+                </Formik>
+
+                <div className="flex gap-5">
+                    <IconImportar/>
+                    <h2>Importar Clientes</h2>
+                </div>
+
+                <h3>CC: ejemplosxs@gmail.com</h3>
+                <h3 className="text-primary text-md font-bold">Mensaje</h3>
+                <ButtonComponent>Enviar</ButtonComponent>
             </div>
-            <h1>Importar Clientes</h1>
-            <h1>CC: ejemplosxs@gmail.com</h1>
-            <h1>Mensaje</h1>
-            <button>Enviar</button>
-        </div>
 
-        <div className="bg-white rounded-lg shadow-lg p-5 space-y-5 pb-5">
-            <h1 className="text-primary text-2xl text-bold">Comparte tu enlace y consigue opiniones</h1>
+        <div className="bg-white rounded-lg shadow-lg p-10 space-y-5">
+            <h3 className="text-primary text-2xl font-bold">Comparte tu enlace y consigue opiniones</h3>
             <p>Envía este enlace personalizado a tus clientes para poder opinar de forma rápida</p>
             <input type="text" />
 
@@ -56,7 +83,7 @@ export const BodyOpiniones = () =>{
 }
 
 export const PedirOpiniones = () =>{
-    return <div className="space-y-5">
+    return <div className="space-y-5 col-span-4">
         <HeaderOpiniones/>
         <BodyOpiniones/>
     </div>

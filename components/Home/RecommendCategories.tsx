@@ -67,7 +67,7 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
         secondary={"para tu boda"}
         size={"xl"}
       />
-      <div className="w-full py-10 mx-auto  md:pl-0 overflow-hidden text-white">
+      <div className="w-full py-10 mx-auto pl-10 md:pl-0 overflow-hidden text-white">
         <Slider {...settings}>
           {categories &&
             categories.length > 0 &&

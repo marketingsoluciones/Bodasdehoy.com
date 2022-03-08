@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import { PlusButton } from "../Inputs";
 import { format } from "../../utils/FormatTime";
 import { Markup } from "interweave";
-import { fetchCategory, Post, category } from "../../interfaces";
+import { fetchCategory, Post, category,OnePost } from "../../interfaces";
 import { createURL } from "../../utils/UrlImage";
 import { createSrcSet } from '../../utils/CreateSrcSet';
 
@@ -23,7 +23,7 @@ export const Magazine: FC<propsMagazine> = ({ posts: data = [], categories }) =>
     <div className="w-full bg-color-base py-10 md:py-20 relative px-5">
       <div className="max-w-screen-lg mx-auto inset-x-0">
         <h2 className="md:hidden font-title text-6xl md:text-7xl w-full text-center md:text-left text-primary">
-          Magazine
+          Magazinee
         </h2>
         {posts?.length > 0 && <Principal {...posts[0]} />}
         <BlogCategories categories={categories} />
@@ -38,7 +38,7 @@ export const Magazine: FC<propsMagazine> = ({ posts: data = [], categories }) =>
 
 export default Magazine;
 
-export const Principal: FC<Post> = ({
+export const Principal: FC<OnePost> = ({
   title,
   content,
   categories,
@@ -153,8 +153,8 @@ export const GridPost: FC<{ data: Partial<Post>[] }> = ({ data }) => {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 2,
-          rows: 2,
+          slidesToShow: 1,
+          rows: 1,
         },
       },
 

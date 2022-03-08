@@ -46,7 +46,7 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
               }
             />
           </span>
-          <span className="relative ">
+          <span className="relative col-span-2 md:col-span-1 ">
             <InputField
               name={"contactEmail"}
               placeholder={""}
@@ -57,7 +57,7 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
               }
             />
           </span>
-          <span className="relative ">
+          <span className="relative col-span-2 md:col-span-1">
             <InputField
               name={"webPage"}
               placeholder={""}
@@ -68,7 +68,7 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
               }
             />
           </span>
-          <span className="relative ">
+          <span className="relative col-span-2 md:col-span-1 ">
             <InputField
               name={"landline"}
               placeholder={""}
@@ -76,7 +76,7 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
               type={"number"}
             />
           </span>
-          <span className="relative ">
+          <span className="relative col-span-2 md:col-span-1 ">
             <InputField
               name={"mobilePhone"}
               placeholder={""}
@@ -89,17 +89,19 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
       <SectionForm>
         <div className="flex flex-col w-full gap-3">
           <h2 className="text-primary text-lg font-semibold">Tu empresa</h2>
-          <div className="grid grid-cols-2 gap-4 text-gray-300">
-          <UploadImage 
-                label={"Imagen Logo"}
-                name={"imgLogo"}
-              />
+          <div className=" text-gray-300">
+            <span className="grid md:grid-cols-2 md:gap-4">
               <UploadImage 
-                label={"Imagen Miniatura"}
-                name={"imgMiniatura"}
-              />
-            <span className="relative col-span-2">
-              
+                    label={"Imagen Logo"}
+                    name={"imgLogo"}
+                  />
+              <UploadImage 
+                    label={"Imagen Miniatura"}
+                    name={"imgMiniatura"}
+                  />
+            </span>
+          
+            <span className="">
               <InputField
                 name={"businessName"}
                 label={"Nombre de tu empresa"}
@@ -113,24 +115,28 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
               />
             </span>
 
-            <SelectFieldCoutries name={"country"} label={"País"} />
-            <InputCity
-              name={"city"}
-              type="text"
-              label={"Ciudad"}
-            />
-            <InputField
-              name={"zip"}
-              label={"Codigo Postal"}
-              placeholder={"33198"}
-              type={"text"}
-            />
-            <InputField
-              name={"address"}
-              placeholder={"Calle 173 Avenida 9"}
-              label={"Dirección"}
-              type={"text"}
-            />
+            <span className="grid md:grid-cols-2 gap-4 mt-4">
+              <SelectFieldCoutries name={"country"} label={"País"} />
+              
+              <InputCity
+                name={"city"}
+                type="text"
+                label={"Ciudad"}
+              />
+              <InputField
+                name={"zip"}
+                label={"Codigo Postal"}
+                placeholder={"33198"}
+                type={"text"}
+              />
+              <InputField
+                name={"address"}
+                placeholder={"Calle 173 Avenida 9"}
+                label={"Dirección"}
+                type={"text"}
+              />
+            </span>
+            
           </div>
         </div>
         <div className="flex flex-col w-full gap-3">
@@ -148,11 +154,9 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
           </div>
         </div>
       </SectionForm>
-
       <SectionForm>
         <CategoriesComponent />
       </SectionForm>
-
       <SectionForm>
         <GoogleMapsField name="coordinates" label="Ubicación" />
       </SectionForm>
@@ -194,7 +198,7 @@ const CategoriesComponent: FC = () => {
         ) : null}
       </span>
       
-      <div className="grid grid-cols-3 gap-10 text-gray-300">
+      <div className="grid md:grid-cols-3 gap-10 text-gray-300 justify-center">
         <FieldArray name={"subCategories"}>
           {({ insert, remove, push, form }) =>
             categories?.map((category: Partial<category>) => (

@@ -276,101 +276,79 @@ export const queries: queries = {
         }
       }`,
   getOneBusiness: `query ($id: ID, $slug : String) {
-    getOneBusiness(_id: $id, slug: $slug){
+  getOneBusiness(_id: $id, slug: $slug){
+    _id
+    slug
+    tags
+    contactName
+    contactEmail
+    businessName
+    webPage
+    landline
+    mobilePhone
+    whatsapp
+    twitter
+    facebook
+    linkedin
+    youtube
+    instagram
+    country
+    city
+    zip
+    address
+    description
+    content
+    subCategories{
       _id
-      slug
-      tags
-      userUid
-      contactName
-      contactEmail
-      businessName
-      onLine{
-        status
-        dateConection
-      }
-      webPage
-      landline
-      mobilePhone
-      whatsapp
-      twitter
-      facebook
-      linkedin
-      youtube
-      instagram
-      country
-      city
-      zip
-      address
-      description
-      content
-      review
-    	reviewsT {
-        total
-        professionalism
-        recommended
-        priceQuality
-        flexibility
-      }
-      subCategories{
+    }
+    questionsAndAnswers{
+      questions{
         _id
+        title
       }
-      questionsAndAnswers{
-        questions{
-          _id
-          title
-        }
-        answers
-      }
-      coordinates{
-        type
-        coordinates
-      }
-      categories{
+      answers
+    }
+    coordinates{
+      type
+      coordinates
+    }
+    categories{
+      _id
+    }
+    subCategories{
+      _id
+    }
+    imgMiniatura{
+      _id
+      i1024
+      i800
+      i640
+      i320
+    }
+    imgLogo{
+      _id
+      i1024
+      i800
+      i640
+      i320
+    }
+    status
+    createdAt
+    updatedAt
+    characteristics{
+      characteristic{
         _id
-      }
-      subCategories{
-        _id
-      }
-      imgMiniatura{
-        _id
-        i1024
-        i800
-        i640
-        i320
-      }
-      imgLogo{
-        _id
-        i1024
-        i800
-        i640
-        i320
-      }
-      status
-      createdAt
-      updatedAt
-      characteristics{
-        characteristic{
-          _id
-          title
-          items{
-            _id
-            title
-            clicked
-          }
-        }
+        title
         items{
           _id
           title
           clicked
         }
-        
       }
-      imgCarrusel {
+      items{
         _id
-        i1024
-        i800
-        i640
-        i320
+        title
+        clicked
       }
     reviews{
       _id
@@ -554,7 +532,7 @@ export const queries: queries = {
         }
       }
     }
-  }`,
+    }`,
   deleteImages: `mutation  ($idImage :ID, $idBusiness:ID, $use : String) {
     deleteUpload(_id:$idImage, businessID:$idBusiness, use:$use)
   }`,
@@ -652,18 +630,59 @@ export const queries: queries = {
         permaLink
         slug
         seoDescription
-        categories
-        groupSubCategories
-        subCategories
+        categories{
+          _id
+          title
+          imgMiniatura{
+            i1024
+            i800
+            i640
+            i320
+            _id
+          }
+        }
+        subCategories{
+          _id
+          title
+          heading
+          description
+          imgBanner{
+            _id
+            i1024
+            i800
+            i640
+            i320
+          }
+          imgMiniatura{
+            _id
+            i1024
+            i800
+            i640
+            i320
+          }
+          icon{
+            _id
+            i1024
+            i800
+            i640
+            i320
+          }
+        }
         tags
         imgCarrusel{
-          _id
-          mediumUrl
-        }
+            _id
+            i1024
+            i800
+            i640
+            i320
+          }
         imgMiniatura{
-          _id
-          mediumUrl
-        }
+            _id
+            i1024
+            i800
+            i640
+            i320
+          }
         authorUsername
         status
         createdAt
@@ -678,11 +697,29 @@ export const queries: queries = {
         content
         title
         slug
-        categories
+        categories{
+          _id
+          title
+          heading
+          description
+          imgBanner{
+            _id
+            i640
+            i800
+            i320
+            i1024
+          }
+          imgMiniatura{
+            _id
+            i640
+            i800
+            i320
+            i1024
+          }
+        }
         updatedAt
         imgMiniatura{
           _id
-          mediumUrl
         }
       }
       postsByCategory{
@@ -692,7 +729,10 @@ export const queries: queries = {
         slug
         imgMiniatura{
           _id
-          mediumUrl
+          i1024
+          i800
+          i640
+          i320
         }
       }
       postsMoreViews{
@@ -701,7 +741,10 @@ export const queries: queries = {
         slug
         imgMiniatura{
           _id
-          mediumUrl
+          i1024
+          i800
+          i640
+          i320
         }
       }
       categoriesPost{

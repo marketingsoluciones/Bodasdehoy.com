@@ -22,9 +22,9 @@ export const CardBusiness: FC <propsCardBusiness> = ({promocion = false, imgMini
                 </div>
                 <div className="flex items-end gap-2">
                 <LocationIcon className="text-primary w-4 h-4"/>
-                <p className="text-gray-500 text-xs">{city}</p>
+                <p className={"text-gray-500 text-xs"}>{city}</p>
                 </div>
-                <button className="bg-primary rounded-lg mt-3 text-white text-sm py-1 hover:bg-pink-600 transition-all duration-300">Visitar</button>
+                <button className="bg-primary rounded-lg text-white text-sm mt-8 py-1 hover:bg-pink-600 transition-all duration-300 ">Visitar</button>
             </div>
         </div>
     )

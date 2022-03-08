@@ -2,22 +2,18 @@ import { Markup } from "interweave";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { FC } from "react";
 import { Searcher } from "..";
-import {
-  Banner,
-  ShareComponent,
-  TagsComponent,
-} from "../../components/Article";
+import {Banner, ShareComponent, TagsComponent} from "../../components/Article";
 import { TagIcon } from "../../components/Icons";
 import { RelatedArticles, AsideLastestArticles, SuscribeComponent } from "../../components/Magazine";
 import { BreadCumbs, DisqusComponent } from "../../components/Surface";
-import { Post } from "../../interfaces";
+import { OnePost } from "../../interfaces";
 import { GraphQL, fetchApi, queries } from '../../utils/Fetching';
 
-const Article : FC <Partial<Post>> = (props) => {
+const Article : FC <Partial<OnePost>> = (props) => {
   const {content, tags = []} = props
   return (
-    <section className="w-full flex flex-col items-center ">
-       <div className="max-w-screen-lg mx-auto inset-x-0 px-5 md:px-0">
+    <section className="w-full flex flex-col items-center mt-3 ">
+      <div className="max-w-screen-lg mx-auto inset-x-0 px-5 md:px-0">
         <BreadCumbs />
         <Banner {...props} />
         <div className="grid md:grid-cols-3 w-full gap-6 py-8">
@@ -55,7 +51,6 @@ const Article : FC <Partial<Post>> = (props) => {
 export default Article;
 
 export const getStaticProps: GetStaticProps = async ({ params }: any) => {
-  
   try {
     const {results} = await fetchApi({query: queries.getAllPost, variables: {criteria : {slug : params.slug}}})
     return {
@@ -67,17 +62,15 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
       props: {},
     };
   }
-  
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths: GetStaticPaths = async() => {
   try {
     const data = await fetchApi({query : queries.getSlugPosts})
     return {
-      paths: data.map((slug : string) => ({params: {slug}})) ,
+      paths: data.map((slug : string) => ({params: {slug}})),
       fallback: "blocking",
     };
-    
   } catch (error) {
     console.log(error)
     return {

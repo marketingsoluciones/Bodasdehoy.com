@@ -94,9 +94,8 @@ export const fetchApi: CallableFunction = async ({
 
 type queries = {
   createUser: string;
-  getOnePost: string
-  getAllPage: string
   createBusiness: string;
+  createReviews: string;
   updateReview : string
   getAllPost: string;
   getAllCategoryBusiness: string;
@@ -118,7 +117,7 @@ type queries = {
   deleteReview: string
 };
 
-export const queries = {
+export const queries: queries = {
   getOneChat: `query($IDChat :ID){
     getOneChat(_id: $IDChat){
       _id
@@ -277,102 +276,60 @@ export const queries = {
         }
       }`,
   getOneBusiness: `query ($id: ID, $slug : String) {
-  getOneBusiness(_id: $id, slug: $slug){
-    _id
-    slug
-    tags
-    contactName
-    contactEmail
-    businessName
-    webPage
-    landline
-    mobilePhone
-    whatsapp
-    twitter
-    facebook
-    linkedin
-    youtube
-    instagram
-    country
-    city
-    zip
-    address
-    description
-    content
-    subCategories{
+    getOneBusiness(_id: $id, slug: $slug){
       _id
-    }
-    questionsAndAnswers{
-      questions{
-        _id
-        title
+      slug
+      tags
+      userUid
+      contactName
+      contactEmail
+      businessName
+      onLine{
+        status
+        dateConection
       }
-      answers
-    }
-    coordinates{
-      type
-      coordinates
-    }
-    categories{
-      _id
-    }
-    subCategories{
-      _id
-    }
-    imgMiniatura{
-      _id
-      i1024
-      i800
-      i640
-      i320
-    }
-    imgLogo{
-      _id
-      i1024
-      i800
-      i640
-      i320
-    }
-    status
-    createdAt
-    updatedAt
-    characteristics{
-      characteristic{
+      webPage
+      landline
+      mobilePhone
+      whatsapp
+      twitter
+      facebook
+      linkedin
+      youtube
+      instagram
+      country
+      city
+      zip
+      address
+      description
+      content
+      review
+    	reviewsT {
+        total
+        professionalism
+        recommended
+        priceQuality
+        flexibility
+      }
+      subCategories{
         _id
-        title
-        items{
+      }
+      questionsAndAnswers{
+        questions{
           _id
-          title
-          clicked
+          city
+        businessName
+        slug
+        imgMiniatura{
+          i1024
+          i800
+          i640
+          i320
         }
+        
       }
-      items{
-        _id
-        title
-        clicked
-      }
-    reviews{
-      _id
-          average
-          comment
-          answer
-          imgCarrusel{
-            _id
-            i1024
-            i800
-            i640
-            i320
-          }
-          user{
-            _id
-            uid
-            photoURL
-            displayName
-          }
     }
-    }
-   
-  }`,
+    }`,
   getUser: `query ($uid: ID) {
     getUser(uid:$uid){
       phoneNumber
@@ -796,73 +753,7 @@ export const queries = {
         }
       }
     }
-    }`,
-  getOnePost :`query ($id:ID, $slug:String ) {
-    getOnePost(_id:$id, slug:$slug){
-    title
-    subTitle
-    content
-    permaLink
-    slug
-    seoDescription
-    categories{
-      _id
-      title
-    }
-    subCategories{
-      _id
-      title
-    }
-    tags
-    imgCarrusel{
-      _id
-      i1024
-      i800
-      i640
-      i320
-    }
-    imgMiniatura{
-      _id
-      i1024
-      i800
-      i640
-      i320
-    }
-    imgTexto{
-      _id
-      i1024
-      i800
-      i640
-      i320
-    }
-    authorUsername
-    status
-    createdAt
-    updatedAt
-    }
-    }`,
-  getAllPage:`query ( $sort:sortCriteriaPage, $skip: Int, $limit: Int ) {
-    getAllPage( sort:$sort,skip:$skip, limit:$limit){
-    total
-    results{
-      _id
-      title
-      content
-      slug
-      imgTexto{
-        _id
-        i1024
-        i800
-        i640
-        i320
-      }
-      authorUsername
-      status
-      createdAt
-      updatedAt
-    	}
-    }
-  }`  
+  }`,
 };
 
 export const GraphQL = {

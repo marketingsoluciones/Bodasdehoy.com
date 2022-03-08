@@ -1,23 +1,13 @@
-import { GraphQL, fetchApi, queries } from "../../utils/Fetching";
 import { Page } from "../../interfaces";
 import { FC } from "react";
 
-export const IndexPoliticas:FC<Partial<Page>> = () =>{
-  
+export const IndexPoliticas:FC<Partial<Page>> = ({content}) =>{
     return <>
-      
+      <div className="m-5 p-10 bg-white rounded-lg shadow-lg">
+        <p>
+          {content}
+       </p>
+      </div>
     </>
 }
 
-export async function getServerSideProps() {
-    try {
-      const data = await fetchApi(queries.getAllPage)
-      console.log(await data)
-      return {props:data ?? {}};
-    } catch (error) {
-      console.log(error);
-      return {
-        props:{}
-      };
-    }
-  }

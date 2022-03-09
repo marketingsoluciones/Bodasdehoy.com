@@ -20,10 +20,9 @@ const initialState = { state: false, data: null };
 
 const ChatComponent = () => {
   const { user } = AuthContextProvider();
-  const { socket } = SocketContextProvider();
-  const { loadingChats, chats, conversation, setConversation } =
-    ChatContextProvider();
   const [show, setShow] = useState(false);
+  const { loadingChats, chats, conversation, setConversation, fetch } =
+    ChatContextProvider();
 
   useEffect(() => {
     if (conversation?.state) {
@@ -31,6 +30,11 @@ const ChatComponent = () => {
     }
   }, [conversation?.state]);
 
+
+  useEffect(() => {
+    show && fetch()
+  }, [show])
+  
   return (
     user && (
       <>
@@ -71,7 +75,9 @@ const ChatComponent = () => {
                       />
                     ))
                   ) : (
-                    <EmptyComponent text={"No hay chats"} />
+                    <div className="text-primary h-full w-full flex items-center justify-center top-0 left-0 bg-white">
+                <EmptyComponent text={"No hay chats"} />
+              </div>
                   )}
                 </div>
               ) : (
@@ -81,7 +87,7 @@ const ChatComponent = () => {
                 />
               )
             ) : (
-              <div className="text-primary h-full w-full flex items-center justify-center absolute top-0 left-0 bg-white">
+              <div className="text-primary h-full w-full flex items-center justify-center top-0 left-0 bg-white">
                 <LoadingItem size="small" text="Cargando chats" />
               </div>
             )}
@@ -178,39 +184,36 @@ interface propsModuleChat {
   data: Chat | null;
 }
 const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
-  const [messages, setMessages] = useState(data?.messages ?? []);
+  const [limitMsg, setLimitMsg] = useState(10)
+  const [skipMsg, setSkipMsg] = useState(0)
+  const [messages, setMessages, loading, error, fetch] = useFetch({query: queries.getOneChat,variables: {IDChat: data?._id}});
   const { user } = AuthContextProvider();
   const { socket } = SocketContextProvider();
   const [value, setValue] = useState("");
 
   // Ref del div que continene los mensajes para hacer el scroll bottom
-  const refBoxMsg : any = createRef()
+  const refBoxMsg : any = useRef()
 
-  // Al montar el componente traer todos los mensajes de la base de datos
-  const fetchMessages = useCallback(async () => {
-    const {messages} = await fetchApi({
-      query: queries.getOneChat,
-      variables: {IDChat: data?._id}
-    })
-    setMessages(messages)
-  }, [data?._id])
-  
+
   useEffect(() => {
-    fetchMessages()
-  }, [fetchMessages])
-  
-  
-  const scrollToBottom = () => {
-    refBoxMsg.current.scrollIntoView({ behavior: 'smooth' })
-  }
+    if(refBoxMsg && refBoxMsg.current) {
+      console.log("ALLLLLLLL")
+      const element = refBoxMsg.current;
+      element.scroll({
+        top: element.scrollHeight,
+        left: 0,
+        behavior: "smooth"
+      })
+    }
+
+  }, [refBoxMsg, messages, loading])
 
 
   // Socket para escuchar evento(ID Chat) para recibir mensajes
   const handleSocket = (data : any) => {
-    setMessages(old => [...old, data])
-    console.log(refBoxMsg)
-    scrollToBottom()
+    setMessages((old : Chat) => ({...old, messages: [...old?.messages, data]}))
   }
+
   useEffect(() => {
     // PARA RECIBIR MENSAJES
     socket?.on(`${data?._id}`, handleSocket);
@@ -226,7 +229,8 @@ const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
   };
 
   // Al enviar el mensaje
-  const handleClick = () => {
+  const handleClick = (e) => {
+    e.preventDefault()
     //PARA ENVIAR MENSAJES
     socket?.emit(`chat:message`, {
       chatID: data?._id,
@@ -242,15 +246,22 @@ const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
   
   return (
     <div className="flex flex-col p-3 h-full absolute top-0 left-0 w-full z-10 bg-white rounded-t-xl">
+      
       <HeaderChat data={data} setConversation={setConversation} />
       {/* BODY */}
-      <div ref={refBoxMsg} className="w-full h-full flex flex-col gap-3 overflow-auto px-5">
-        {messages?.map(({ emitUserUid, ...message }, idx : number) => (
-          <MessageItem key={idx} isSender={user?.uid === emitUserUid} {...message} />
-        ))}
+      <div ref={refBoxMsg} className="w-full h-full flex flex-col gap-5 overflow-auto px-5 pb-6">
+        {!loading ? (
+          messages?.messages?.map(({ emitUserUid, ...message }, idx : number) => (
+            <MessageItem key={idx} isSender={user?.uid === emitUserUid} {...message} />
+          ))
+        ) : (
+          <span className="text-gray-400 w-full h-full flex items-center justify-center">
+            <LoadingItem size="small" text="" />
+          </span>
+        )}
       </div>
       {/* INPUT */}
-      <span className="relative w-full">
+      <form className="relative w-full" onSubmit={handleClick}>
         <input
           onChange={handleChangeInput}
           value={value}
@@ -259,7 +270,7 @@ const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
         <button onClick={handleClick}>
           <CheckIcon className="cursor-pointer w-8 h-8 text-white absolute inset-y-0 my-auto right-2 bg-primary rounded-full " />
         </button>
-      </span>
+      </form>
     </div>
   );
 };
@@ -350,7 +361,8 @@ const MessageItem: FC<Partial<propsMessageItem>> = ({
           dateView ? "opacity-100" : "opacity-0"
         } text-[0.65rem] text-gray-600  absolute -bottom-0.5 transform translate-y-full transition-all`}
       >
-        {/* {createdAt && getRelativeTime(createdAt)} */}
+        {/* {createdAt && typeof createdAt === "string" ? getRelativeTime(Date(createdAt)) : getRelativeTime(createdAt)} */}
+        {createdAt && getRelativeTime(parseInt(createdAt))}
       </small>
     </div>
   );

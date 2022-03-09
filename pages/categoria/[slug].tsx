@@ -326,7 +326,6 @@ export const getStaticProps: GetStaticProps = async ({
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const { results } = await fetchApi({query :queries.getCategories});
-
     const paths = results.reduce(
       (acc: { params: { slug: string } }[], category: category) => {
         category.slug && acc.push({ params: { slug: category.slug } });

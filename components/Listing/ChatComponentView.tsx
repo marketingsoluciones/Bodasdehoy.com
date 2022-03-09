@@ -72,7 +72,6 @@ const ChatComponentView: FC<business> = ({
   };
 
   const handleCreateChat = (data : Chat) => {
-    console.log(data)
     setIDChat(data._id)
     }
 

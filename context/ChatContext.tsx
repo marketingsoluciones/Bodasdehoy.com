@@ -1,5 +1,5 @@
 import { Chat } from '../interfaces/index';
-import { SetStateAction, useEffect, useState } from 'react';
+import { SetStateAction, useEffect, useState, useCallback } from 'react';
 import { queries } from '../utils/Fetching';
 import { AuthContextProvider, SocketContextProvider } from '.';
 import {
@@ -21,7 +21,7 @@ interface ResultFetchChats {
     setChats : Dispatch<SetStateAction<ResultFetchChats>>
     loadingChats? : boolean
     errorChats? : boolean
-    fetchy? : any
+    fetch? : any
     conversation?: stateConversation | null,
     setConversation: Dispatch<SetStateAction<stateConversation>>
   };
@@ -34,7 +34,7 @@ interface ResultFetchChats {
     setChats: () => null,
     loadingChats : false,
     errorChats : false,
-    fetchy : () => {},
+    fetch : () => {},
     conversation: null,
     setConversation: () => {}
 
@@ -74,7 +74,7 @@ interface stateConversation {
      fetch()
    }, [user?.uid]);
 
-   const handleCreateChat = (data : Chat) => {
+   const handleCreateChat = useCallback((data : Chat) => {
     console.log(data)
     setConversation({state: true, data})
     setChats((old : any) => {
@@ -87,17 +87,17 @@ interface stateConversation {
           return old
         }
       });
-    }
+    }, [])
 
   useEffect(() => {
     socket?.on("chatBusiness:create", handleCreateChat );
     return () => {
       socket?.off('chatBusiness:create', handleCreateChat)
     }
-  }, [socket]);
+  }, [socket, handleCreateChat]);
 
     return (
-      <ChatContext.Provider value={{ chats, setChats, loadingChats, errorChats, fetchy, conversation, setConversation }}>
+      <ChatContext.Provider value={{ chats, setChats, loadingChats, errorChats, fetch, conversation, setConversation }}>
         {children}
       </ChatContext.Provider>
     );

@@ -29,7 +29,7 @@ export const FirstStep: FC<propsFirstStep> = ({ value }) => {
   return (
     <div className="flex flex-col items-center justify-center gap-8">
       <h2 className="text-2xl text-primary ">¿Quien eres?</h2>
-      <div className="grid grid-cols-4 gap-28">
+      <div className="grid md:grid-cols-4 grid-cols-2 md:gap-28 gap-16">
         {List.map((item, idx) => (
           <Option
             key={idx}

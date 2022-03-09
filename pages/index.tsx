@@ -47,7 +47,7 @@ export default Home;
 export const Welcome: FC = (props) => {
   return (
     <>
-      <div className="before:absolute before:w-full before:h-1/6 md:before:h-1/2 before:bg-gradient-to-t before:from-color-base before:to-transparent before:via-color-base before:z-10 before:bottom-16 md:before:bottom-20 before:left-0 relative grid md:grid-cols-2 px-5 sm:px-0 pb-16 pb-0 relative">
+      <div className="before:absolute before:w-full before:h-1/6 md:before:h-1/2 before:bg-gradient-to-t before:from-color-base before:to-transparent before:via-color-base before:z-10 before:bottom-5 md:before:bottom-20 before:left-0 relative grid md:grid-cols-2 px-5 sm:px-0 pb-20 relative">
         <div className="flex flex-col gap-5 z-10 md:relative">
           <h1 className="text-2xl md:text-4xl text-tertiary relative subpixel-antialiased font-bold w-full flex flex-col gap-2">
             <span className="relative w-max h-max  font-light">
@@ -68,7 +68,7 @@ export const Welcome: FC = (props) => {
           </div>
         </div>
 
-        <div className="  md:w-full w-1/2 md:relative absolute -bottom-18 md:bottom-0 right-0 md:-mt-20 relative z-5 ">
+        <div className=" w-1/2 z-5 absolute right-0 -bottom-16 md:w-full md:relative md:-bottom-18 md:bottom-0 md:right-0 md:-mt-20   ">
           <Image
             src={"/photo-principal.webp"}
             alt='Bodas de hoy'

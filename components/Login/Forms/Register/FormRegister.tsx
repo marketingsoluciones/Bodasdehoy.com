@@ -174,7 +174,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
   return (
     <>
       <FormikStepper handleSubmit={handleSubmit}>
-        <Form className="w-2/3 text-gray-200 grid grid-cols-2 gap-6">
+        <Form className="w-2/3 text-gray-200 md:grid md:grid-cols-2 md:gap-6 space-y-5 md:space-y-0 ">
           {(() => {
             if (whoYouAre.toLowerCase() !== "empresa") {
               if (!user?.uid) {

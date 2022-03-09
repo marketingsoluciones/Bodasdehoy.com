@@ -11,10 +11,9 @@ const PageComponent: FC<Partial<Page>> = (props) => {
     }) */
 
     return (
-        <div className=" gap-5 max-w-screen-lg mx-auto inset-x-0 w-full space-y-10 mt-5 mb-5">
-            <h1 className="mt-7 text-lg  font-bold">{title}</h1>
+        <div className="  max-w-screen-lg mx-auto inset-x-0 w-full space-y-10 m-5 ">
+            <h1 className="m-7 mb-0 text-lg  font-bold">{title}</h1>
             <IndexPoliticas {...props}  />
-
         </div>
     )
 }

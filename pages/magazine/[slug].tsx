@@ -1,5 +1,5 @@
 import { Markup } from "interweave";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage,GetStaticPropsContext } from "next";
 import { FC } from "react";
 import { Searcher } from "..";
 import {Banner, ShareComponent, TagsComponent} from "../../components/Article";
@@ -50,7 +50,20 @@ const Article : FC <Partial<OnePost>> = (props) => {
 
 export default Article;
 
-export const getStaticProps: GetStaticProps = async ({ params }: any) => {
+export async function getStaticProps({ params }: GetStaticPropsContext) {
+  try {
+      const dataProps = await fetchApi({ query: queries.getOnePost, variables: { slug: params?.slug } })
+      return {
+          props: dataProps , // will be passed to the page component as props
+      }
+  } catch (error) {
+      return {
+          error
+      }
+  }
+}
+
+/* export const getStaticProps: GetStaticProps = async ({ params }: any) => {
   try {
     const {results} = await fetchApi({query: queries.getAllPost, variables: {criteria : {slug : params.slug}}})
     return {
@@ -62,7 +75,7 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
       props: {},
     };
   }
-};
+}; */
 
 export const getStaticPaths: GetStaticPaths = async() => {
   try {

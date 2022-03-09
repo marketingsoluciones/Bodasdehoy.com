@@ -117,6 +117,7 @@ type queries = {
   deleteReview: string
   getOnePost: string
   getAllPage: string
+  getOnePage: string
 };
 
 export const queries: queries = {
@@ -184,6 +185,26 @@ export const queries: queries = {
       createdAt
       updatedAt
     	}
+    }
+  }`,
+  getOnePage:`query($id:ID, $slug:String){
+    getOnePage(_id:$id, slug:$slug){
+      _id
+      title
+      content
+      slug
+      imgTexto{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      authorUsername
+      status
+      views
+      createdAt
+      updatedAt
     }
   }`,
   getOneChat: `query($IDChat :ID){
@@ -653,7 +674,7 @@ export const queries: queries = {
     getSlugPosts
   }`,
   getAllPost: `query ($criteria : searchCriteriaPost, $sort: sortCriteriaPost, $limit : Int, $skip : Int) {
-    getAllPost(searchCriteria:$criteria, limit : $limit, skip: $skip){
+    getAllPost(searchCriteria:$criteria, limit : $limit, skip: $skip, sort:$sort){
       total
       results{
         _id

@@ -1,5 +1,14 @@
 import { ArrowIcon, CheckIcon, ExitIcon, MessageIcon } from "../Icons";
-import { useState, FC, MouseEventHandler, useEffect, useCallback, useRef, MutableRefObject, createRef } from 'react';
+import {
+  useState,
+  FC,
+  MouseEventHandler,
+  useEffect,
+  useCallback,
+  useRef,
+  MutableRefObject,
+  createRef,
+} from "react";
 import { ImageProfile } from "./ImageProfile";
 import { SearchIcon } from "../Icons/index";
 import { Tooltip } from "../Tooltip";
@@ -9,7 +18,7 @@ import {
   ChatContextProvider,
 } from "../../context";
 import useFetch from "../../hooks/useFetch";
-import { queries, fetchApi } from '../../utils/Fetching';
+import { queries, fetchApi } from "../../utils/Fetching";
 import { Chat, messageChat } from "../../interfaces";
 import { LoadingItem } from "../Loading/index";
 import EmptyComponent from "../Surface/EmptyComponent";
@@ -18,10 +27,29 @@ import { createURL } from "../../utils/UrlImage";
 
 const initialState = { state: false, data: null };
 
+
+const SearchChat: FC <any> = ({onChange}) => {
+  const [ value, setValue ]= useState("")
+  const handleChange = (e : any) => {
+    setValue(e.target.value)
+  }
+
+  useEffect(() => {
+    onChange(value)
+  }, [value])
+  
+  return (
+    <div className="w-full h-10">
+      <input placeholder="Buscar chat" value={value} onChange={handleChange} className="pl-4 text-sm py-2 w-full rounded-md focus:outline-none border-b border-color-base" />
+    </div>
+  )
+}
+
+
 const ChatComponent = () => {
   const { user } = AuthContextProvider();
   const [show, setShow] = useState(false);
-  const { loadingChats, chats, conversation, setConversation, fetch } =
+  const { loadingChats, chats, setChats, conversation, setConversation, fetch, fetchy } =
     ChatContextProvider();
 
   useEffect(() => {
@@ -30,16 +58,21 @@ const ChatComponent = () => {
     }
   }, [conversation?.state]);
 
-
   useEffect(() => {
-    show && fetch()
-  }, [show])
+    show && fetch();
+  }, [show]);
+
+
   
+  
+  const handleChangeSearch = (value: string) => {
+    fetchy({query: queries.getChats, variables: {uid: user?.uid, text: value, skip: 0, limit: 5}})
+  }
   return (
     user && (
       <>
         <div
-          className={`w-96 h-96 bg-white pb-10 shadow-lg fixed bottom-0 right-5 z-50 rounded-t-xl transform transition chat`}
+          className={`w-96 h-96 bg-white shadow-lg fixed bottom-0 right-5 z-50 rounded-t-xl transform transition chat`}
         >
           <div className="w-full h-full relative rounded-t-xl">
             <div
@@ -57,14 +90,14 @@ const ChatComponent = () => {
                 }`}
               />
             </div>
-
+                <SearchChat onChange={(value: string) => handleChangeSearch(value)} />
             {!loadingChats ? (
               !conversation?.state ? (
-                <div className="flex flex-col overflow-auto h-full">
+                <div id={"listConversation"} className="flex flex-col overflow-auto h-[19rem] no-scrollbar">
                   {chats?.results?.length > 0 ? (
-                    chats?.results?.map((item: Chat) => (
+                    [...chats.results, ...chats.results, ...chats.results, ...chats.results, ...chats.results, ...chats.results, ...chats.results].map((item: Chat, idx : number) => (
                       <ConversationItem
-                        key={item._id}
+                        key={idx}
                         {...item}
                         onClick={() =>
                           setConversation({
@@ -76,8 +109,8 @@ const ChatComponent = () => {
                     ))
                   ) : (
                     <div className="text-primary h-full w-full flex items-center justify-center top-0 left-0 bg-white">
-                <EmptyComponent text={"No hay chats"} />
-              </div>
+                      <EmptyComponent text={"No hay chats"} />
+                    </div>
                   )}
                 </div>
               ) : (
@@ -112,38 +145,34 @@ interface propsConversationItem extends Chat {
 }
 const ConversationItem: FC<propsConversationItem> = ({ onClick, ...props }) => {
   const { _id, title, messages, photoURL, onLine, addedes } = props;
-  const [messages2, setMessages] = useState(messages ?? [])
+  const [messages2, setMessages] = useState(messages ?? []);
   const { socket } = SocketContextProvider();
-  const [countMsg, setCountMsg] = useState<number>(0)
+  const [countMsg, setCountMsg] = useState<number>(0);
   const [isOnline, setOnline] = useState<boolean | null>(onLine.status);
 
   const handleSocket = (data: { status: boolean; dateConection: number }) => {
     setOnline(data?.status);
-  }
+  };
 
-  const handleCount = useCallback(
-    () => {
-      setCountMsg(countMsg + 1)
-    },
-    [countMsg],
-  )
-  
+  const handleCount = useCallback(() => {
+    setCountMsg(countMsg + 1);
+  }, [countMsg]);
+
   // Escuchar mensajes que lleguen para añadir al contador
   useEffect(() => {
-    socket?.on("chatBusiness:create", handleCount );
+    socket?.on("chatBusiness:create", handleCount);
     return () => {
-      socket?.off('chatBusiness:create', handleCount)
-    }
+      socket?.off("chatBusiness:create", handleCount);
+    };
   }, [socket, handleCount]);
 
   useEffect(() => {
     if (addedes[0].userUid) {
-      socket?.on(
-        `${addedes[0].userUid}`, handleSocket);
+      socket?.on(`${addedes[0].userUid}`, handleSocket);
     }
     return () => {
-      socket?.off(`${addedes[0].userUid}`, handleSocket)
-    }
+      socket?.off(`${addedes[0].userUid}`, handleSocket);
+    };
   }, [socket, addedes]);
 
   return (
@@ -184,43 +213,45 @@ interface propsModuleChat {
   data: Chat | null;
 }
 const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
-  const [limitMsg, setLimitMsg] = useState(10)
-  const [skipMsg, setSkipMsg] = useState(0)
-  const [messages, setMessages, loading, error, fetch] = useFetch({query: queries.getOneChat,variables: {IDChat: data?._id}});
+  const [limitMsg, setLimitMsg] = useState(10);
+  const [skipMsg, setSkipMsg] = useState(0);
+  const [messages, setMessages, loading, error, fetch] = useFetch({
+    query: queries.getOneChat,
+    variables: { IDChat: data?._id },
+  });
   const { user } = AuthContextProvider();
   const { socket } = SocketContextProvider();
   const [value, setValue] = useState("");
 
   // Ref del div que continene los mensajes para hacer el scroll bottom
-  const refBoxMsg : any = useRef()
-
+  const refBoxMsg: any = useRef();
 
   useEffect(() => {
-    if(refBoxMsg && refBoxMsg.current) {
-      console.log("ALLLLLLLL")
+    if (refBoxMsg && refBoxMsg.current) {
       const element = refBoxMsg.current;
       element.scroll({
         top: element.scrollHeight,
         left: 0,
-        behavior: "smooth"
-      })
+        behavior: "smooth",
+      });
     }
-
-  }, [refBoxMsg, messages, loading])
-
+  }, [refBoxMsg, messages, loading]);
 
   // Socket para escuchar evento(ID Chat) para recibir mensajes
-  const handleSocket = (data : any) => {
-    setMessages((old : Chat) => ({...old, messages: [...old?.messages, data]}))
-  }
+  const handleSocket = (data: any) => {
+    setMessages((old: Chat) => ({
+      ...old,
+      messages: [...old?.messages, data],
+    }));
+  };
 
   useEffect(() => {
     // PARA RECIBIR MENSAJES
     socket?.on(`${data?._id}`, handleSocket);
 
     return () => {
-      socket?.off(`${data?._id}`, handleSocket)
-    }
+      socket?.off(`${data?._id}`, handleSocket);
+    };
   }, [socket, data?._id]);
 
   // Controlador de input mensaje
@@ -229,31 +260,40 @@ const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
   };
 
   // Al enviar el mensaje
-  const handleClick = (e) => {
-    e.preventDefault()
+  const handleClick = (e: any) => {
+    e.preventDefault();
     //PARA ENVIAR MENSAJES
-    socket?.emit(`chat:message`, {
-      chatID: data?._id,
-      receiver:data?.addedes,
-      data : {
-        type: "text",
-        message: value
-      }
-    });
-    setValue("")
+    if (value !== "") {
+      socket?.emit(`chat:message`, {
+        chatID: data?._id,
+        receiver: data?.addedes,
+        data: {
+          type: "text",
+          message: value,
+        },
+      });
+      setValue("");
+    }
   };
 
-  
   return (
     <div className="flex flex-col p-3 h-full absolute top-0 left-0 w-full z-10 bg-white rounded-t-xl">
-      
       <HeaderChat data={data} setConversation={setConversation} />
       {/* BODY */}
-      <div ref={refBoxMsg} className="w-full h-full flex flex-col gap-5 overflow-auto px-5 pb-6">
+      <div
+        ref={refBoxMsg}
+        className="w-full h-full flex flex-col gap-5 overflow-auto px-5 pb-6"
+      >
         {!loading ? (
-          messages?.messages?.map(({ emitUserUid, ...message }, idx : number) => (
-            <MessageItem key={idx} isSender={user?.uid === emitUserUid} {...message} />
-          ))
+          // @ts-ignore
+          messages?.messages?.map( ({ emitUserUid, ...message }, idx: number) => (
+              <MessageItem
+                key={idx}
+                isSender={user?.uid === emitUserUid}
+                {...message}
+              />
+            )
+          )
         ) : (
           <span className="text-gray-400 w-full h-full flex items-center justify-center">
             <LoadingItem size="small" text="" />
@@ -265,10 +305,17 @@ const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
         <input
           onChange={handleChangeInput}
           value={value}
-          className="focus:outline-none bg-white h-10 border rounded-lg w-full pr-10 pl-3"
+          className="focus:outline-none bg-white h-10 border rounded-lg w-full pr-10 pl-3 text-sm"
         />
         <button onClick={handleClick}>
-          <CheckIcon className="cursor-pointer w-8 h-8 text-white absolute inset-y-0 my-auto right-2 bg-primary rounded-full " />
+          <svg
+            className="cursor-pointer w-6 h-6 rotate-90 hover:bg-color-base transition p-0.5 absolute inset-y-0 my-auto right-2 text-primary rounded-full "
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+          </svg>
         </button>
       </form>
     </div>
@@ -278,7 +325,9 @@ const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
 const HeaderChat: FC<propsModuleChat> = ({ data, setConversation }) => {
   const { user } = AuthContextProvider();
   const { socket } = SocketContextProvider();
-  const [isOnline, setOnline] = useState<boolean>(data?.onLine?.status ?? false);
+  const [isOnline, setOnline] = useState<boolean>(
+    data?.onLine?.status ?? false
+  );
   const [latestConnection, setLatestConnection] = useState<number | null>(
     data?.onLine?.dateConection ?? null
   );
@@ -286,13 +335,12 @@ const HeaderChat: FC<propsModuleChat> = ({ data, setConversation }) => {
   const handleSocket = (data: { status: boolean; dateConection: number }) => {
     setOnline(data?.status);
     setLatestConnection(data?.dateConection);
-  }
+  };
   useEffect(() => {
-    socket?.on(
-      `${data?.addedes[0]?.userUid}`, handleSocket);
-      return () => {
-        socket?.off(`${data?.addedes[0]?.userUid}`, handleSocket)
-      }
+    socket?.on(`${data?.addedes[0]?.userUid}`, handleSocket);
+    return () => {
+      socket?.off(`${data?.addedes[0]?.userUid}`, handleSocket);
+    };
   }, [socket, data?.addedes]);
   return (
     <div className="p-2 border-b border-color-base mb-3 w-full flex items-center justify-between">
@@ -362,7 +410,10 @@ const MessageItem: FC<Partial<propsMessageItem>> = ({
         } text-[0.65rem] text-gray-600  absolute -bottom-0.5 transform translate-y-full transition-all`}
       >
         {/* {createdAt && typeof createdAt === "string" ? getRelativeTime(Date(createdAt)) : getRelativeTime(createdAt)} */}
-        {createdAt && getRelativeTime(parseInt(createdAt))}
+        {createdAt &&
+          getRelativeTime(
+            typeof createdAt !== "number" ? parseInt(createdAt) : createdAt
+          )}
       </small>
     </div>
   );

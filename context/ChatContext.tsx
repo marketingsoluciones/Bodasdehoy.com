@@ -22,6 +22,7 @@ interface ResultFetchChats {
     loadingChats? : boolean
     errorChats? : boolean
     fetch? : any
+    fetchy? : any
     conversation?: stateConversation | null,
     setConversation: Dispatch<SetStateAction<stateConversation>>
   };
@@ -35,6 +36,7 @@ interface ResultFetchChats {
     loadingChats : false,
     errorChats : false,
     fetch : () => {},
+    fetchy : () => {},
     conversation: null,
     setConversation: () => {}
 
@@ -97,7 +99,7 @@ interface stateConversation {
   }, [socket, handleCreateChat]);
 
     return (
-      <ChatContext.Provider value={{ chats, setChats, loadingChats, errorChats, fetch, conversation, setConversation }}>
+      <ChatContext.Provider value={{ chats, setChats, loadingChats, errorChats, fetch, conversation, setConversation, fetchy }}>
         {children}
       </ChatContext.Provider>
     );

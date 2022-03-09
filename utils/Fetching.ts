@@ -239,8 +239,8 @@ export const queries: queries = {
   getChatIdForBusiness: `query ($businessID : ID){
     getChatIdForBusiness(_id: $businessID)
   }`,
-  getChats : `query ($uid: [ID], $skip :Int, $limit : Int) {
-    getChats(uid :$uid, skip: $skip, limit: $limit){
+  getChats : `query ($uid: [ID], $skip :Int!, $limit : Int!, $text : String) {
+    getChats(uid :$uid, skip: $skip, limit: $limit, include: $text){
       total
       results{
         _id

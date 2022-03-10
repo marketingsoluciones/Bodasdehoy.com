@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { category, fetchCategory, subCategory } from "../../interfaces";
 import { createURL } from "../../utils/UrlImage";
 import { createSrcSet } from "../../utils/CreateSrcSet";
+import { useRouter } from "next/router";
 
 interface propsPlaceDiscovery {
   data: Partial<category>[];
@@ -46,7 +47,7 @@ export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({ data }) => {
 
   return (
     <>
-      <div className="grid-cards relative w-full -mt-12 md:-mt-52 lg:-mt-80">
+      <div className="grid-cards relative w-full -mt-6 md:-mt-52 lg:-mt-80">
         <div className="w-full xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto inset-x-0 pt-20 flex flex-col gap-5 md:gap-6 md:pt-32 pb-20 z-20 px-5">
           <TitleSection
             className="text-normal md:text-xl "
@@ -93,7 +94,7 @@ export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({ data }) => {
           @media (max-width: 600px) {
             .grid-cards::after {
               background-size: contain;
-              top: 5%;
+              top: 6%;
               background-position: left top;
             }
             .grid-cards::before {
@@ -108,9 +109,10 @@ export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({ data }) => {
 
 const PlaceCard: FC<subCategory> = memo(({ title, imgMiniatura, slug }) => {
   
-
+const router = useRouter()
   return (
-    <div className="px-4">
+    <Link href={`/lugares-para-bodas/${slug}` ?? "/"} passHref>
+    <div className="px-4 cursor-pointer">
       <img
         alt={title}
         className="w-full h-32 md:h-52 bg-gray-100 rounded-2xl object-center object-cover"
@@ -118,11 +120,10 @@ const PlaceCard: FC<subCategory> = memo(({ title, imgMiniatura, slug }) => {
         srcSet={createSrcSet(imgMiniatura)}
       />
 
-      <Link href={slug ?? "/"} passHref>
         <h2 className="px-2 py-1 font-light md:text-base text-sm text-gray-600 tracking-widest capitalize cursor-pointer hover:text-gray-900">
           {title}
         </h2>
-      </Link>
     </div>
+      </Link>
   );
 });

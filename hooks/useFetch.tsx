@@ -21,14 +21,12 @@ const useFetch = ({query, variables, config = {}} : propsUseFetch) => {
 
   const fetchData = async ({query, variables, config = {}} : Partial<propsUseFetch>) => {
     try {
-      console.log("ENTREO")
       setData(null)
       setError(false)
       setLoading(true)
         if(query && variables){
           const {data : {data}} = await api.graphql({query, variables}, config)
         isMounted.current && setData(Object.values(data)[0])
-        console.log(data)
         } else {
           throw new Error("No tengo query o variables")
         }

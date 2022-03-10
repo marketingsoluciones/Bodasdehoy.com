@@ -47,7 +47,7 @@ const Empresas = () => {
     query,
     variables: { uid: user?.uid },
   }
-  const [dato, loading, error, fetchy] = useFetch(initialQuery);
+  const [dato, setDato, loading, error, fetchy] = useFetch(initialQuery);
 
 
   const toast = useToast();

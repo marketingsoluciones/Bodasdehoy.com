@@ -40,7 +40,7 @@ const PageLogin: FC = () => {
     <>
       <div className="w-screen fixed h-full top-0 left-0 md:grid z-30 grid-cols-5">
         <div className="bg-white w-full h-full col-span-3 relative flex items-center justify-center">
-          <ButtonClose onClick={() => router.push("/")} />
+          <ButtonClose onClick={() => router.back()} />
           <div className="flex flex-col items-center gap-4 w-full px-10 md:px-0 sm:w-3/4 md:w-2/3">
             {Stages[stage]}
           </div>

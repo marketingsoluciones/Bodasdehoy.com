@@ -81,7 +81,7 @@ export const Navigation: FC = () => {
         set={(act: boolean) => setShowSidebar(act)}
         state={showSidebar}
       />
-      <header className="container max-w-screen-lg 2xl:max-w-screen-xl w-full px-3 sm:px-0 mx-auto inset-x-0 mt-3 absolute ">
+      <header className="container max-w-screen-lg 2xl:max-w-screen-xl w-full px-3 sm:px-0 mx-auto inset-x-0 mt-3 absolute hidden sm:block ">
         {
           // @ts-ignore
           state && <MultiMenu>{categories[state]}</MultiMenu>
@@ -220,7 +220,7 @@ export const Icons : FC <propsIcons> = ({handleClickSearch}) => {
               className="hidden md:block pl-3 cursor-pointer transition transform hover:-rotate-6 hover:scale-110"
               onClick={() => router.push("empresa/crear-empresa")}
             >
-              <CompanyIcon className="icon text-gray-200" />
+              <CompanyIcon className="icon text-gray-500" />
             </span>
           </>
         ) : (
@@ -290,7 +290,7 @@ const ProfileMenu = () => {
     <>
      
     <div
-      className={`w-80 p-3 h-20 rounded-xl h-max bg-white shadow-md absolute bottom-0 right-0 inset-y-full overflow-hidden z-50
+      className={`w-80 p-3 h-20 rounded-xl h-max bg-white shadow-md absolute bottom-0 right-0 inset-y-full overflow-hidden z-50 
     }`}
     >
       <div className="w-full border-b border-gray-100 pb-2">

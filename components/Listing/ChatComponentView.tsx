@@ -114,7 +114,7 @@ const ChatComponentView: FC<business> = ({
         </span>
         <div className="flex ml-2 items-start flex-col justify-end">
           <span className="block font-bold text-gray-600 capitalize">
-            {contactName === "" ? businessName : contactName}
+            {(!contactName || contactName === "") ? businessName : contactName}
           </span>
           <span className="text-xs text-gray-400">
             {isOnline

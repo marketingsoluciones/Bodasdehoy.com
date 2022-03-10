@@ -354,6 +354,7 @@ export const queries: queries = {
              city
             businessName
             slug
+            content
             imgMiniatura{
               i1024
               i800
@@ -597,6 +598,8 @@ export const queries: queries = {
         slug
         description
         businessName
+        content
+        city
         imgMiniatura{
           i1024
           i800
@@ -609,6 +612,7 @@ export const queries: queries = {
           subCategories{
             _id
             title
+            slug
             imgMiniatura{
               i1024
               i800

@@ -7,6 +7,7 @@ import { Markup } from "interweave";
 import { fetchCategory, Post, category,OnePost } from "../../interfaces";
 import { createURL } from "../../utils/UrlImage";
 import { createSrcSet } from '../../utils/CreateSrcSet';
+import { capitalize } from '../../utils/Capitalize';
 
 interface propsMagazine {
   posts: Post[];
@@ -23,7 +24,7 @@ export const Magazine: FC<propsMagazine> = ({ posts: data = [], categories }) =>
     <div className="w-full bg-color-base py-10 md:py-20 relative px-5">
       <div className="max-w-screen-lg mx-auto inset-x-0">
         <h2 className="md:hidden font-title text-6xl md:text-7xl w-full text-center md:text-left text-primary">
-          Magazinee
+          Magazine
         </h2>
         {posts?.length > 0 && <Principal {...posts[0]} />}
         <BlogCategories categories={categories} />
@@ -44,12 +45,17 @@ export const Principal: FC<OnePost> = ({
   categories,
   createdAt,
   imgMiniatura,
+  slug
 }) => {
   return (
-    <div className="w-full relative  grid-cols-2 hidden md:grid">
-      <h2 className="font-title text-6xl md:text-7xl text-primary">Magazine</h2>
+    <div className="w-full relative  grid-cols-2 hidden md:grid ">
+      <Link href={"/magazine"} passHref>
+      <h2 className="font-title text-6xl md:text-7xl text-primary cursor-pointer hover:text-rose-400 transition">Magazine</h2>
+      </Link>
       <div className="bg-white w-3/5 rounded-2xl shadow-lg h-max absolute top-1/3 py-6 px-12">
-        <h2 className="font-medium text-2xl">{title}</h2>
+      <Link href={`/magazine/${slug}`} passHref>
+        <h2 className="font-bold text-xl cursor-pointer hover:text-gray-700 transition text-gray-800">{title}</h2>
+        </Link>
         <div className="grid grid-cols-8 pt-3">
           <div className="col-span-2 flex flex-col justify-center items-start border-r pr-3 border-primary py-1">
             <h3 className="text-primary text-xs">
@@ -59,7 +65,7 @@ export const Principal: FC<OnePost> = ({
               {createdAt && format(new Date(createdAt), "es", { dateStyle: "long" })}
             </p>
           </div>
-          <div className="col-span-6 px-4 flex items-center text-xs">
+          <div className="col-span-6 px-4 flex items-center text-xs text-gray-700">
             <Markup content={content.slice(0,300)} noHtml />
           </div>
         </div>
@@ -92,8 +98,8 @@ const BlogCategories: FC<{ categories: Partial<category>[] }> = ({
   const Category: FC<propsCategory> = ({ title, route }) => {
     return (
       <Link href={route ?? "/"} passHref>
-        <button className="rounded-full px-4 w-95 text-sm flex items-center py-2 justify-center text-tertiary font-medium border border-primary bg-white hover:bg-primary hover:text-white transition ease-in duration-200 cursor-pointer flex-wrap">
-          {title}
+        <button className="rounded-full px-4 w-[90%] mx-auto inset-x-0 text-sm flex items-center py-2 justify-center text-tertiary font-medium border border-primary bg-white hover:bg-primary hover:text-white transition ease-in duration-200 cursor-pointer flex-wrap">
+          {title && capitalize(title)}
         </button>
       </Link>
     );
@@ -104,12 +110,13 @@ const BlogCategories: FC<{ categories: Partial<category>[] }> = ({
     infinite: false,
     slidesToShow: 4,
     arrows: false,
+    autoplay: true,
     responsive: [
       {
         breakpoint: 600,
         settings: {
           slidesToShow: 2,
-          rows: 2,
+          rows: 1,
         },
       },
 
@@ -149,6 +156,7 @@ export const GridPost: FC<{ data: Partial<Post>[] }> = ({ data }) => {
     infinite: false,
     slidesToShow: 4,
     arrows: false,
+    autoplay: true,
     responsive: [
       {
         breakpoint: 600,
@@ -192,7 +200,7 @@ export const PostComponent: FC<Partial<Post>> = memo(
         />
         <div className="py-5 text-center h-full">
           <Link href={`/magazine/${slug}`} passHref>
-          <h2 className="text-gray-500 text-md font-medium border-b border-primary pb-3 px-5 leading-5 cursor-pointer hover:text-gray-800">
+          <h2 className="text-gray-700 text-md font-semibold border-b border-primary pb-3 px-5 leading-5 cursor-pointer hover:text-gray-800">
             {title}
           </h2>
           </Link>

@@ -76,7 +76,7 @@ const CategoryPage: FC<category> = (props) => {
       </div>
 
       {/* Grid Cards */}
-      <div className="max-w-screen-lg 2xl:max-w-screen-xl w-full mx-auto inset-x-0 grid grid-cols-1 items-center justify-between top-0  px-10 ">
+      <div className="max-w-screen-lg 2xl:max-w-screen-xl w-full mx-auto inset-x-0 grid grid-cols-1 items-center justify-between top-0 px-10 ">
         <Slider {...settings}>
           {subCategories?.length > 0 &&
             subCategories.map((item: subCategory) => (
@@ -86,7 +86,7 @@ const CategoryPage: FC<category> = (props) => {
       </div>
 
       {/* Aside Filters */}
-      <div className="xl:max-w-screen-lg 2xl:max-w-screen-xl mx-auto inset-x-0 grid md:grid-cols-7 2xl:grid-cols-5 w-full">
+      <div className="xl:max-w-screen-lg 2xl:max-w-screen-xl gap-10 mx-auto inset-x-0 grid md:grid-cols-7 2xl:grid-cols-5 w-full">
         <FiltersProvider>
           <Filters optionsCheckbox={{characteristics}} />
           <GridCards _id={_id} />
@@ -104,7 +104,7 @@ const GridCards: FC<{ _id: string }> = ({ _id }) => {
     query: queries.getAllBusiness,
     variables: { criteria: { categories: _id } },
   };
-  const [data, loading, error, fetchy] = useFetch({ ...query });
+  const [data, setData, loading, error, fetchy] = useFetch({ ...query });
 
   useEffect(() => {
     setFilters({ type: "RESET_FILTER", payload: {} });
@@ -127,7 +127,7 @@ const GridCards: FC<{ _id: string }> = ({ _id }) => {
         {/* {JSON.stringify(filters)} */}
       </div>
       {!loading && !error && data?.results?.length > 0 && (
-        <div className="grid md:grid-cols-3 2xl:grid-cols-4 gap-6 px-5 py-6 place-items-center">
+        <div className=" w-full grid md:grid-cols-3 2xl:grid-cols-4 gap-10 ">
           {data?.results.map((business: business) => (
             <CardBusiness key={business._id} {...business} />
           ))}
@@ -155,24 +155,7 @@ interface propsFilter {
 const Filters : FC <propsFilter> = ({optionsCheckbox}) => {
   const {characteristics} = optionsCheckbox
   const { filters, setFilters } = FiltersContextProvider();
-  const List = [
-    { title: "En la playa", icon: <PlayaIcon /> },
-    { title: "Al aire libre", icon: <AireLibreIcon /> },
-    { title: "En la ciudad", icon: <EnLaCiudadIcon /> },
-  ];
-
-  const ListF = [
-    { title: "Terraza" },
-    { title: "Zona ajardinada" },
-    { title: "Zona de baile" },
-    { title: "Zona para ceremonia" },
-    { title: "Salones de banquetes" },
-    { title: "Carpa" },
-    { title: "Cocina para catering" },
-    { title: "Hospedaje para invitados" },
-    { title: "Parking" },
-  ];
-
+  
   const handleResetFilters = () => {
     setFilters({ type: "RESET_FILTER", payload: {} });
   };

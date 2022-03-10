@@ -7,14 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
-    
-    
   },
   "dependencies": {
     "@fontsource/italiana": "^4.5.2",
     "@fontsource/montserrat": "^4.5.0",
     "@fontsource/poppins": "^4.5.1",
     "@react-google-maps/api": "^2.7.0",
+    "@tailwindcss/line-clamp": "^0.3.1",
     "axios": "^0.21.1",
     "disqus-react": "^1.1.2",
     "firebase": "^9.0.0-beta.6",

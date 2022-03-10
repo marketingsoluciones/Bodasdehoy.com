@@ -8,7 +8,7 @@ import { fetchApi, queries } from '../utils/Fetching';
 import { business, fetchCategory, Post } from '../interfaces';
 import { AdsApp, FeaturedCompanies, Magazine, PlaceDiscovery, PodcastList } from '../components/Home';
 import RecommendCategories from '../components/Home/RecommendCategories';
-import { CommunityIcon, DownloadFileIcon, GuestAppIcon, InspirationIcon, Isologo, SearchIcon } from '../components/Icons';
+import { CommunityIcon, DownloadFileIcon, GuestAppIcon, InspirationIcon, Isologo, LogoFullColor, SearchIcon } from '../components/Icons';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
 
 interface propsHome {
@@ -22,12 +22,13 @@ interface propsHome {
 const Home: FC<propsHome> = (props) => {
   return (
     <section className="w-full">
-      <div className="sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg banner pt-6 md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full">
+        <div className="mx-auto inset-x-0 w-max sm:hidden relative cursor-pointer -mt-10 pb-10  ">
+              <LogoFullColor className="h-auto w-48" />
+            </div>
+      <div className="sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg banner  md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full">
         <Welcome />
       </div>
-
       <PlaceDiscovery data={props?.categoriesBusiness} />
-      
       <div className=" bg-white flex flex-col gap-24 w-full pb-20">
         <FeaturedCompanies business={props?.business} />
         <ButtonProviders />
@@ -47,7 +48,7 @@ export default Home;
 export const Welcome: FC = (props) => {
   return (
     <>
-      <div className="before:absolute before:w-full before:h-1/6 md:before:h-1/2 before:bg-gradient-to-t before:from-color-base before:to-transparent before:via-color-base before:z-10 before:bottom-5 md:before:bottom-20 before:left-0 relative grid md:grid-cols-2 px-5 sm:px-0 pb-20 relative">
+      <div className="before:absolute before:w-full before:h-1/6 md:before:h-1/2 before:bg-gradient-to-t before:from-color-base before:to-transparent before:via-color-base before:z-10 before:bottom-0 md:before:bottom-20 before:left-0 relative grid md:grid-cols-2 px-5 sm:px-0 pb-20 relative">
         <div className="flex flex-col gap-5 z-10 md:relative">
           <h1 className="text-2xl md:text-4xl text-tertiary relative subpixel-antialiased font-bold w-full flex flex-col gap-2">
             <span className="relative w-max h-max  font-light">

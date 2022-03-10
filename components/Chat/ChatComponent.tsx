@@ -8,6 +8,7 @@ import {
   useRef,
   MutableRefObject,
   createRef,
+  Dispatch,
 } from "react";
 import { ImageProfile } from "./ImageProfile";
 import { SearchIcon } from "../Icons/index";
@@ -24,59 +25,45 @@ import { LoadingItem } from "../Loading/index";
 import EmptyComponent from "../Surface/EmptyComponent";
 import { getRelativeTime } from "../../utils/FormatTime";
 import { createURL } from "../../utils/UrlImage";
+import { SetStateAction } from "react";
 
 const initialState = { state: false, data: null };
 
-
-const SearchChat: FC <any> = ({onChange}) => {
-  const [ value, setValue ]= useState("")
-  const handleChange = (e : any) => {
-    setValue(e.target.value)
-  }
+const SearchChat: FC<any> = ({ onChange }) => {
+  const [value, setValue] = useState("");
+  const handleChange = (e: any) => {
+    setValue(e.target.value);
+  };
 
   useEffect(() => {
-    onChange(value)
-  }, [value])
-  
+    onChange(value);
+  }, [value]);
+
   return (
     <div className="w-full h-10">
-      <input placeholder="Buscar chat" value={value} onChange={handleChange} className="pl-4 text-sm py-2 w-full rounded-md focus:outline-none border-b border-color-base" />
+      <input
+        placeholder="Buscar chat"
+        value={value}
+        onChange={handleChange}
+        className="pl-4 text-sm py-2 w-full rounded-md focus:outline-none border-b border-color-base"
+      />
     </div>
-  )
-}
-
+  );
+};
 
 const ChatComponent = () => {
   const { user } = AuthContextProvider();
-  const [show, setShow] = useState(false);
-  const { loadingChats, chats, setChats, conversation, setConversation, fetch, fetchy } =
-    ChatContextProvider();
-
-  useEffect(() => {
-    if (conversation?.state) {
-      setShow(true);
-    }
-  }, [conversation?.state]);
-
-  useEffect(() => {
-    show && fetch();
-  }, [show]);
-
-
   
-  
-  const handleChangeSearch = (value: string) => {
-    fetchy({query: queries.getChats, variables: {uid: user?.uid, text: value, skip: 0, limit: 5}})
-  }
+  const { conversation, setConversation, show, setShow } = ChatContextProvider();
   return (
     user && (
       <>
         <div
-          className={`w-96 h-96 bg-white shadow-lg fixed bottom-0 right-5 z-50 rounded-t-xl transform transition chat`}
+          className={`sm:w-96 sm:h-96 w-full h-full sm:block bg-white shadow-lg fixed bottom-0 sm:right-5 z-40 sm:sm:rounded-t-xl ${show ? "translate-y-0" : "sm:translate-y-[90%] translate-y-[100%]"} transition chat`}
         >
-          <div className="w-full h-full relative rounded-t-xl">
+          <div className="w-full h-full relative sm:rounded-t-xl">
             <div
-              className="bg-primary p-3 w-full h-10 flex justify-between cursor-pointer rounded-t-xl z-40 "
+              className="bg-primary p-3 w-full h-10 flex justify-between cursor-pointer sm:rounded-t-xl z-40 "
               onClick={() => setShow(!show)}
             >
               <div className="flex items-center text-white text-sm gap-2">
@@ -90,55 +77,100 @@ const ChatComponent = () => {
                 }`}
               />
             </div>
-                <SearchChat onChange={(value: string) => handleChangeSearch(value)} />
-            {!loadingChats ? (
-              !conversation?.state ? (
-                <div id={"listConversation"} className="flex flex-col overflow-auto h-[19rem] no-scrollbar">
-                  {chats?.results?.length > 0 ? (
-                    [...chats.results, ...chats.results, ...chats.results, ...chats.results, ...chats.results, ...chats.results, ...chats.results].map((item: Chat, idx : number) => (
-                      <ConversationItem
-                        key={idx}
-                        {...item}
-                        onClick={() =>
-                          setConversation({
-                            state: true,
-                            data: item,
-                          })
-                        }
-                      />
-                    ))
-                  ) : (
-                    <div className="text-primary h-full w-full flex items-center justify-center top-0 left-0 bg-white">
-                      <EmptyComponent text={"No hay chats"} />
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <ModuleChat
-                  data={conversation.data}
-                  setConversation={setConversation}
-                />
-              )
+
+            {!conversation?.state ? (
+              <ListChats show={show} setShow={setShow} />
             ) : (
-              <div className="text-primary h-full w-full flex items-center justify-center top-0 left-0 bg-white">
-                <LoadingItem size="small" text="Cargando chats" />
-              </div>
+              <ModuleChat
+                data={conversation.data}
+                setConversation={setConversation}
+              />
             )}
           </div>
         </div>
-        <style jsx>
-          {`
-            .chat {
-              transform: translateY(${show ? "0%" : "90%"});
-            }
-          `}
-        </style>
+       
       </>
     )
   );
 };
 
 export default ChatComponent;
+
+interface propsListChats {
+  show: boolean | undefined;
+  setShow: Dispatch<SetStateAction<boolean>>;
+}
+const ListChats: FC<propsListChats> = ({ show, setShow }) => {
+  const { user } = AuthContextProvider();
+  const {
+    loadingChats,
+    chats,
+    setChats,
+    conversation,
+    setConversation,
+    fetch,
+    fetchy,
+  } = ChatContextProvider();
+
+  useEffect(() => {
+    if (conversation?.state) {
+      setShow(true);
+    }
+  }, [conversation?.state]);
+
+  useEffect(() => {
+    show && fetch();
+  }, [show]);
+
+  const handleChangeSearch = (value: string) => {
+    fetchy({
+      query: queries.getChats,
+      variables: { uid: user?.uid, text: value, skip: 0, limit: 5 },
+    });
+  };
+  return (
+    <>
+      <SearchChat onChange={(value: string) => handleChangeSearch(value)} />
+      {!loadingChats ? (
+        <div
+          id={"listConversation"}
+          className="flex flex-col overflow-auto h-[19rem] no-scrollbar"
+        >
+          {chats?.results?.length > 0 ? (
+            [
+              ...chats.results,
+              ...chats.results,
+              ...chats.results,
+              ...chats.results,
+              ...chats.results,
+              ...chats.results,
+              ...chats.results,
+            ].map((item: Chat, idx: number) => (
+              <ConversationItem
+                key={idx}
+                {...item}
+                onClick={() =>
+                  setConversation({
+                    state: true,
+                    data: item,
+                  })
+                }
+              />
+            ))
+          ) : (
+            <div className="text-primary h-full w-full flex items-center justify-center top-0 left-0 bg-white">
+              <EmptyComponent text={"No hay chats"} />
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="text-primary h-full w-full flex items-center justify-center top-0 left-0 bg-white">
+          <LoadingItem size="small" text="Cargando chats" />
+        </div>
+      )}
+    </>
+  );
+};
 
 interface propsConversationItem extends Chat {
   onClick: MouseEventHandler;
@@ -201,7 +233,9 @@ const ConversationItem: FC<propsConversationItem> = ({ onClick, ...props }) => {
       <div className="flex flex-col">
         <h2 className="text-sm text-tertiary font-bold">{title}</h2>
         {messages2?.length > 0 && (
-          <small className="text-gray-600">{messages2[0]?.message}</small>
+          <small className="text-gray-600">
+            {messages2[messages2.length - 1].message}
+          </small>
         )}
       </div>
     </div>
@@ -277,7 +311,7 @@ const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
   };
 
   return (
-    <div className="flex flex-col p-3 h-full absolute top-0 left-0 w-full z-10 bg-white rounded-t-xl">
+    <div className=" flex-col p-3 h-full absolute top-0 left-0 w-full z-10 bg-white sm:rounded-t-xl ">
       <HeaderChat data={data} setConversation={setConversation} />
       {/* BODY */}
       <div
@@ -286,7 +320,7 @@ const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
       >
         {!loading ? (
           // @ts-ignore
-          messages?.messages?.map( ({ emitUserUid, ...message }, idx: number) => (
+          messages?.messages?.map(({ emitUserUid, ...message }, idx: number) => (
               <MessageItem
                 key={idx}
                 isSender={user?.uid === emitUserUid}

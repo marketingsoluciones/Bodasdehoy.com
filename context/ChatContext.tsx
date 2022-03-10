@@ -25,6 +25,8 @@ interface ResultFetchChats {
     fetchy? : any
     conversation?: stateConversation | null,
     setConversation: Dispatch<SetStateAction<stateConversation>>
+    show?: boolean,
+    setShow: Dispatch<SetStateAction<boolean>>
   };
   
   const initialContext: Context = {
@@ -38,7 +40,9 @@ interface ResultFetchChats {
     fetch : () => {},
     fetchy : () => {},
     conversation: null,
-    setConversation: () => {}
+    setConversation: () => {},
+    show : false,
+    setShow: () => {}
 
   };
   
@@ -61,6 +65,7 @@ interface stateConversation {
     const { socket } = SocketContextProvider();
     const [limit, setLimit] = useState(5)
     const [skip, setSkip] = useState(0)
+    const [show, setShow] = useState(false);
     const [conversation, setConversation] =
     useState<stateConversation>(initialState);
     const [chats, setChats, loadingChats, errorChats, fetchy] = useFetch({
@@ -99,7 +104,7 @@ interface stateConversation {
   }, [socket, handleCreateChat]);
 
     return (
-      <ChatContext.Provider value={{ chats, setChats, loadingChats, errorChats, fetch, conversation, setConversation, fetchy }}>
+      <ChatContext.Provider value={{ chats, setChats, loadingChats, errorChats, fetch, conversation, setConversation, fetchy, show, setShow }}>
         {children}
       </ChatContext.Provider>
     );

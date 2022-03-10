@@ -17,6 +17,7 @@ import {
   WebSiteIcon,
   PhoneIcon,
   YoutubeIcon,
+  ArrowIcon,
 } from "../../components/Icons";
 import EmpresaDestacada from "../../components/Listing/EmpresaDestacada";
 import FAQ from "../../components/Listing/FAQ";
@@ -37,6 +38,8 @@ import { capitalize } from "../../utils/Capitalize";
 import { useDisclosure } from "../../hooks/useDisclosure";
 import { ButtonComponent } from "../../components/Inputs";
 import { AuthContextProvider } from "../../context";
+import { BreadCumbs } from "../../components/Surface";
+import { useRouter } from "next/router";
 
 type Boton = {
   title: string;
@@ -72,7 +75,7 @@ const Listing: FC<business> = (props) => {
     { title: "Preguntas", route: "#questions", icon: <PreguntasIcon /> },
   ];
   const { user } = AuthContextProvider();
-
+  const router = useRouter()
   return (
     <>
       {/* Imagenes solo para moviles */}
@@ -90,12 +93,6 @@ const Listing: FC<business> = (props) => {
         ) : (
           <FloatingButton onClick={() => setMessage(true)} />
         )}
-        <div className="buttons flex gap-3 absolute top-3 right-3">
-          <span className="bg-white rounded-full border border-primary z-20 w-8 h-8 grid place-items-center">
-            <FacebookIcon className="text-primary h-5 w-5" />
-          </span>
-        </div>
-
         <img
           alt={businessName}
           className="w-full object-cover h-80"
@@ -109,6 +106,12 @@ const Listing: FC<business> = (props) => {
         className="mx-auto inset-x-0 flex flex-col gap-6 mt-6"
       >
         {/* <BreadCumbs /> */}
+        <div className="hidden sm:block mx-auto inset-x-0 max-w-screen-lg w-full">
+          <span className="flex items-center gap-1 overflow-hidden rounded-md bg-gray-100 text-sm text-gray-500 ">
+            <button className="bg-white rotate-180 p-1 border-l hover:bg-gray-100 transition" onClick={() => router.back()}> <ArrowIcon className="w-6 h-6" /> </button>
+            <span className="px-2 ">Ir atrás</span>
+          </span>
+        </div>
         <HeaderListing {...props} />
         <div className="md:bg-white w-full px-5">
           <div className="lg:max-w-screen-lg inset-x-0 mx-auto w-full grid md:grid-cols-3 gap-10 ">
@@ -138,11 +141,17 @@ const Listing: FC<business> = (props) => {
                 </div> */}
               </div>
               <div className="flex flex-col flex-wrap gap-12 py-6 ">
-                <ContentListing text={description} />
+                {description && (
+                  <>
+                  <ContentListing text={description} />
                 <hr />
+                </>
+                )}
 
                 {/* <FeaturesListing /> */}
-                <div id="questions" className="transition flex flex-col gap-6">
+                {characteristics && characteristics?.length > 0 && (
+                  <>
+                  <div id="questions" className="transition flex flex-col gap-6">
                   {characteristics?.map((item) => (
                     <Feautres2Listing
                       key={item.characteristic._id}
@@ -153,6 +162,8 @@ const Listing: FC<business> = (props) => {
                   ))}
                 </div>
                 <hr />
+                </>
+                )}
 
                 {questionsAndAnswers &&
                   questionsAndAnswers?.filter((item) => item.answers !== "")
@@ -288,7 +299,8 @@ interface propsContentListing {
 }
 
 const ContentListing: FC<propsContentListing> = ({ text }) => {
-  const [seeMore, setSeeMore] = useState(false);
+  const [seeMore, setSeeMore] = useState<boolean>(text ? text.repeat(3)?.length > 250 : false);
+  const [showContent, setShowContent] = useState<boolean>(false)
   return (
     <div id="description" className="max-h-full w-full">
       <div
@@ -297,25 +309,27 @@ const ContentListing: FC<propsContentListing> = ({ text }) => {
         }`}
       >
         {text ? (
-          <Markup className="text-sm text-justify" content={text} />
+          <Markup className="text-sm text-justify transition-all" content={showContent ? text.repeat(3) : text.repeat(2)?.slice(0,250)} />
         ) : (
           <div className="min-h-40 h-40 flex items-center justify-center text-xs text-gray-400">
             No content
           </div>
         )}
       </div>
-      <button
-        className="text-primary text-sm w-full justify-end flex gap-2 items-center md:hidden"
+      {seeMore && (
+        <button
+        className="text-primary text-sm w-full justify-end flex gap-2 py-4 w-max float-right items-center md:hidden"
         type={"button"}
-        onClick={() => setSeeMore(!seeMore)}
+        onClick={() => setShowContent(!showContent)}
       >
-        {seeMore ? (
+        {showContent ? (
           <LessIcon className="w-3 h-3" />
         ) : (
           <CrossIcon className="w-3 h-3" />
         )}
-        {seeMore ? "Leer menos" : "Leer más"}
+        {showContent ? "Leer menos" : "Leer más"}
       </button>
+      )}
     </div>
   );
 };

@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 import { FC } from 'react';
 import { LoadingProvider } from '../context';
 import ButtonCrearEmpresa from '../components/ButtonCrearEmpresa';
+import { NavigationMobile } from '../components/Surface';
 const DynamicAuthProvider = dynamic(() : any => import('../context').then(mod => mod.AuthProvider))
 const DynamicToastProvider = dynamic(() : any => import('../context').then(mod => mod.ToastProvider))
 const DynamicSocketProvider = dynamic(() : any => import('../context').then(mod => mod.SocketProvider))
@@ -21,7 +22,7 @@ const DefaultLayout: FC = ({ children }) => {
         <div className="bg-color-base relative min-h-screen w-full">
           <ButtonCrearEmpresa />
           <DynamicNavigation />
-          {/* <NavigationMobile /> */}
+          <NavigationMobile />
           <main className="w-full pt-20">
             {children}
             </main>

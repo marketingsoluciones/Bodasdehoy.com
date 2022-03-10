@@ -13,6 +13,7 @@ import Link from 'next/link'
 import { createURL } from '../../utils/UrlImage';
 import { business } from '../../interfaces';
 import { createSrcSet } from '../../utils/CreateSrcSet';
+import { CardBusiness } from '../Category';
 
 interface propsFeaturedCompanies {
   business: business[];
@@ -62,7 +63,10 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({business}) => {
       <div className="md:grid md:grid-cols-1  w-full ">
         <Slider {...settings}>
           {data?.map((item : business) => (
-            <CompanyCard key={item._id} data={item} />
+            <>
+            {/* <CompanyCard key={item._id} data={item} /> */}
+            <CardBusiness key={item._id} {...item} size={'lg'}/>
+            </>
           ))}
         </Slider>
       </div>

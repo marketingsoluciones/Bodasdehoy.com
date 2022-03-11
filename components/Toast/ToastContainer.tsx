@@ -2,6 +2,7 @@ import { Toast as toastType } from '../../context/ToastContext';
 import { FC, useState } from 'react';
 import {ToastContextProvider} from '../../context/ToastContext'
 import { IconError, IconError as IconSuccess, IconError as IconWarning, IconError as IconUpdate } from '../Icons';
+
 const ToastContainer = ({toasts} : {toasts : toastType[]}) => {
     return (
         <div className="fixed top-10  w-full z-50">
@@ -21,7 +22,7 @@ const Toast : FC <toastType> = ({message, type, id}) => {
     const {dispatch} = ToastContextProvider()
     const [isVisible, setVisible] = useState(false)
     const types = {
-        success : {icon : <IconSuccess />, color: "green"},
+        success : {icon : <IconSuccess/>, color: "green"},
         error : {icon: <IconError />, color: "red"},
         warning : {icon: <IconWarning />, color : "yellow"},
         update : {icon: <IconUpdate />, color: "blue"}

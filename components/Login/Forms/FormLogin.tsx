@@ -45,7 +45,7 @@ const FormLogin: FC = () => {
       }
       setCookie({nombre: "token-bodas", valor: (await res?.user?.getIdTokenResult())?.token, dias: 1})
       await router.push("/");
-      toast("success", "Inicio de sesión con exito")
+      /* toast("success", "Inicio de sesión con exito") */ //desabilitado porque salta invisible al iniciar sesion
     } catch (error: any) {
       console.error(JSON.stringify(error));
       toast("error", JSON.stringify(errorsCode[error.code]))

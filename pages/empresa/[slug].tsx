@@ -40,6 +40,7 @@ import { ButtonComponent } from "../../components/Inputs";
 import { AuthContextProvider } from "../../context";
 import { BreadCumbs } from "../../components/Surface";
 import { useRouter } from "next/router";
+import { reviewsT } from '../../interfaces/index';
 
 type Boton = {
   title: string;
@@ -60,11 +61,11 @@ const Listing: FC<business> = (props) => {
     facebook,
     instagram,
     youtube,
-    reviewsT,
     characteristics,
     _id,
     userUid,
-    reviews: opiniones,
+    review,
+    reviewsT
   } = props;
 
   const [sendMessage, setMessage] = useState(false);
@@ -76,6 +77,10 @@ const Listing: FC<business> = (props) => {
   ];
   const { user } = AuthContextProvider();
   const router = useRouter()
+  const [averageTotal, setAverageTotal] = useState<number>(review);
+  const [totalReviews, setTotalReviews] = useState(0);
+  const [reviewsProps, setReviewsProps] = useState<reviewsT>(reviewsT);
+
   return (
     <>
       {/* Imagenes solo para moviles */}
@@ -107,12 +112,16 @@ const Listing: FC<business> = (props) => {
       >
         {/* <BreadCumbs /> */}
         <div className="hidden sm:block mx-auto inset-x-0 max-w-screen-lg w-full">
-          <span className="flex items-center gap-1 overflow-hidden rounded-md bg-gray-100 text-sm text-gray-500 ">
-            <button className="bg-white rotate-180 p-1 border-l hover:bg-gray-100 transition" onClick={() => router.back()}> <ArrowIcon className="w-6 h-6" /> </button>
+          <span className="flex items-center gap-1 overflow-hidden rounded-md bg-gray-100 text-sm text-gray-500 w-max ">
+            <button className="bg-white w-max rotate-180 p-1 border-l hover:bg-gray-100 transition" onClick={() => router.back()}> <ArrowIcon className="w-6 h-6" /> </button>
             <span className="px-2 ">Ir atrás</span>
           </span>
         </div>
-        <HeaderListing {...props} />
+        <HeaderListing
+          {...props}
+          totalReviews={totalReviews}
+          averageTotal={averageTotal}
+        />
         <div className="md:bg-white w-full px-5">
           <div className="lg:max-w-screen-lg inset-x-0 mx-auto w-full grid md:grid-cols-3 gap-10 ">
             <section className="w-full md:col-span-2">
@@ -187,7 +196,15 @@ const Listing: FC<business> = (props) => {
                   </>
                 )}
 
-                <ReviewComponent {...props} />
+                <ReviewComponent 
+                  {...props}
+                  totalReviews={totalReviews}
+                  averageTotal={averageTotal}
+                  setTotalReviews={setTotalReviews}
+                  reviewsProps={reviewsProps}
+                  setAverageTotal={setAverageTotal}
+                  setReviewsProps={setReviewsProps}
+                />
               </div>
             </section>
             <div className="hidden md:block w-full ... relative ">
@@ -261,11 +278,15 @@ const ItemContact: FC<{ icon: ReactNode; title: string; route: string }> = ({
   );
 };
 
-const HeaderListing: FC<business> = ({
+interface propsHeaderListing extends business {
+  totalReviews: number
+  averageTotal: number
+}
+const HeaderListing: FC<propsHeaderListing> = ({
   businessName,
   imgLogo,
-  reviewsT,
-  review,
+  averageTotal,
+  totalReviews
 }) => {
   return (
     <div className="lg:max-w-screen-lg mx-auto w-full inset-x-0 flex items-center justify-between px-5 sm:px-0">
@@ -284,9 +305,9 @@ const HeaderListing: FC<business> = ({
             {businessName}
           </h1>
           <RatingStars
-            rating={review}
+            rating={averageTotal}
             size={"lg"}
-            visibleText={reviewsT?.total}
+            visibleText={totalReviews}
           />
         </div>
       </div>

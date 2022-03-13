@@ -17,16 +17,29 @@ import { AuthContextProvider } from "../../context/AuthContext";
 import { EditIcon } from "../Icons/index";
 import { useRouter } from "next/router";
 
-const ReviewComponent: FC<business> = ({
+interface propsReviewComponent extends business {
+  totalReviews: number
+  averageTotal: number
+  setTotalReviews: Dispatch<SetStateAction<number>>
+  setAverageTotal: Dispatch<SetStateAction<number>>
+  setReviewsProps: Dispatch<SetStateAction<reviewsT>>
+  reviewsProps: any
+
+}
+const ReviewComponent: FC<propsReviewComponent> = ({
   businessName,
   _id,
   reviews: opiniones,
   review,
   reviewsT,
+  totalReviews,
+  setTotalReviews,
+  averageTotal,
+  reviewsProps,
+  setReviewsProps,
+  setAverageTotal
 }) => {
-  const [reviewsProps, setReviewsProps] = useState<reviewsT>(reviewsT);
-  const [averageTotal, setAverageTotal] = useState<number>(review);
-  const [totalReviews, setTotalReviews] = useState(0);
+  
   const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(5);
   const [data, setData, loading, error, fetch] = useFetch({
@@ -80,7 +93,20 @@ const ReviewComponent: FC<business> = ({
       console.log(error);
     }
   };
+  
+  const fetchAverageTotal = async () => {
+    const { review, reviewsT } = await fetchApi({
+      query: queries.getAverageBusiness,
+      variables: { id: _id },
+      token: user?.accessToken,
+    });
+    setReviewsProps(reviewsT);
+    setAverageTotal(review);
+  };
 
+  useEffect(() => {
+    fetchAverageTotal();
+  }, [])
   const fetchMyReview = async () => {
     if(user?.uid){
       const { results, total } = await fetchApi({
@@ -90,17 +116,6 @@ const ReviewComponent: FC<business> = ({
       });
       setMyReview(results[0]);
     }
-  };
-
-  const fetchAverageTotal = async () => {
-    console.log(_id);
-    const { review, reviewsT } = await fetchApi({
-      query: queries.getAverageBusiness,
-      variables: { id: _id },
-      token: user?.accessToken,
-    });
-    setReviewsProps(reviewsT);
-    setAverageTotal(review);
   };
 
   useEffect(() => {

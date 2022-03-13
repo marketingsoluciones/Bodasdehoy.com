@@ -59,9 +59,9 @@ const ChatComponent = () => {
     user && (
       <>
         <div
-          className={`sm:w-96 sm:h-96 w-full h-full sm:block bg-white shadow-lg fixed bottom-0 sm:right-5 z-40 sm:sm:rounded-t-xl ${show ? "translate-y-0" : "sm:translate-y-[90%] translate-y-[100%]"} transition chat`}
+          className={`sm:w-96 sm:h-96 w-full h-full chat bottom-0 sm:block bg-white shadow-lg fixed sm:right-5 z-40 sm:sm:rounded-t-xl ${show ? "translate-y-0" : "sm:translate-y-[90%] translate-y-[100%]"} transition duration-500`}
         >
-          <div className="w-full h-full relative sm:rounded-t-xl">
+          <div className="w-full h-[87%] md:h-full relative sm:rounded-t-xl">
             <div
               className="bg-primary p-3 w-full h-10 flex justify-between cursor-pointer sm:rounded-t-xl z-40 "
               onClick={() => setShow(!show)}
@@ -88,7 +88,15 @@ const ChatComponent = () => {
             )}
           </div>
         </div>
-       
+       <style jsx>
+         {`
+          @media (max-width: 639px) {
+            .chat {
+              top: 0
+            }
+          }
+         `}
+       </style>
       </>
     )
   );
@@ -311,12 +319,13 @@ const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
   };
 
   return (
+    <>
     <div className=" flex-col p-3 h-full absolute top-0 left-0 w-full z-10 bg-white sm:rounded-t-xl ">
       <HeaderChat data={data} setConversation={setConversation} />
       {/* BODY */}
       <div
         ref={refBoxMsg}
-        className="w-full h-full flex flex-col gap-5 overflow-auto px-5 pb-6"
+        className="moduleChat w-full flex flex-col gap-5 overflow-auto px-5 pb-6"
       >
         {!loading ? (
           // @ts-ignore
@@ -335,7 +344,7 @@ const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
         )}
       </div>
       {/* INPUT */}
-      <form className="relative w-full" onSubmit={handleClick}>
+      <form className="relative w-full mt-2" onSubmit={handleClick}>
         <input
           onChange={handleChangeInput}
           value={value}
@@ -353,6 +362,14 @@ const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
         </button>
       </form>
     </div>
+    <style jsx>
+      {`
+        .moduleChat{
+          height: calc(100% - 7rem)
+        }
+      `}
+    </style>
+    </>
   );
 };
 

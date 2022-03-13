@@ -33,7 +33,6 @@ interface userInitialValuesPartial {
   role: string;
   uid: string;
 }
-
 interface userInitialValuesTotal extends userInitialValuesPartial {
   fullName: string;
   email: string;
@@ -45,7 +44,6 @@ interface userInitialValuesTotal extends userInitialValuesPartial {
   role: string;
   uid: string;
 }
-
 interface businessInitialValuesPartial {
   fullName: string;
   phoneNumber: string;
@@ -73,6 +71,7 @@ yup.setLocale({
 interface propsFormRegister {
   whoYouAre: string;
 }
+
 const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
   const { setUser, user } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
@@ -174,7 +173,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
   return (
     <>
       <FormikStepper handleSubmit={handleSubmit}>
-        <Form className="w-2/3 text-gray-200 md:grid md:grid-cols-2 md:gap-6 space-y-5 md:space-y-0 ">
+        <Form className="md:w-2/3 text-gray-200 md:grid md:grid-cols-2 md:gap-6 space-y-5 md:space-y-0 flex flex-col">
           {(() => {
             if (whoYouAre.toLowerCase() !== "empresa") {
               if (!user?.uid) {
@@ -221,7 +220,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
 
           <button
             type={"submit"}
-            className="col-span-2 bg-primary rounded-full px-10 py-2 text-white font-medium w-max mx-auto inset-x-0 hover:bg-tertiary transition"
+            className=" col-span-2 bg-primary rounded-full px-10 py-2 text-white font-medium w-max mx-auto inset-x-0 hover:bg-tertiary transition"
           >
             Registrar
           </button>

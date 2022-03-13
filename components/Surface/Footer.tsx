@@ -14,18 +14,19 @@ type Item = {
 
 export const Footer: FC = () => {
   const ListInformacion: Item[] = [
-    { title: "Tarifas y condiciones generales", route: "/" },
-    { title: "Condiciones proveedores", route: "/" },
-    { title: "Condiciones generales", route: "/" },
-    { title: "Privacidad", route: "/" },
-    { title: "FAQ", route: "/" },
-    { title: "Contacto", route: "/" },
+    { title: "Tarifas y condiciones generales", route: "/tarifas-y-condiciones-generales" },
+    { title: "Condiciones proveedores", route: "/condiciones-proveedores" },
+    { title: "Condiciones generales", route: "/condiciones-generales" },
+    { title: "Privacidad", route: "/privacidad" },
+    { title: "FAQ", route: "/fac" },
+    { title: "Contacto", route: "/contacto" },
   ];
 
   const ListEmpresa: Item[] = [
     { title: "Añadir mi empresa", route: "/" },
     { title: "Herramienta para promocionar tus servicios", route: "/" },
   ];
+
 
   return (
     <div className="hidden md:block bg-color-base w-full pb-8 pt-10 container mx-auto inset-x-0 max-w-screen-lg 2xl:max-w-screen-xl">

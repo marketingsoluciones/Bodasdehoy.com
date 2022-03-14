@@ -269,10 +269,12 @@ const ItemContact: FC<{ icon: ReactNode; title: string; route: string }> = ({
   route,
 }) => {
   return (
-    <div className="flex items-center gap-2 text-xs justify-between w-full border-b border-gray-100 py-2">
+    <div className="flex items-center gap-10 text-xs justify-between w-full border-b border-gray-100 py-2 overflow-hidden relative">
+      <div className="w-5 h-5">
       {icon}
-      <a href={route} rel="noreferrer" target={"_blank"}>
-        <p className="text-tertiary">{title}</p>
+      </div>
+      <a className="w-full flex items-center justify-end" href={route} rel="noreferrer" target={"_blank"}>
+        <p className="text-tertiary truncate">{title}</p>
       </a>
     </div>
   );

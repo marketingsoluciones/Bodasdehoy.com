@@ -17,6 +17,7 @@ const sizes = {
   },
 }
 
+
 interface propsCardBusiness extends Partial<business> {
   promocion?: boolean;
   size? : keyof typeof sizes
@@ -34,9 +35,10 @@ export const CardBusiness: FC<propsCardBusiness> = ({
   const router = useRouter()
   
   return (
-    <div ref={hoverRef} onClick={() => router.push(`/empresa/${slug}`)} className={`rounded-xl ${sizes[size].dimensions} transition cursor-pointer mx-auto inset-x-0`}>
+    <div ref={hoverRef} onClick={() => router.push(`/empresa/${slug}`)} className={`rounded-xl h-full w-96 md:h-80 md:w-60  transition cursor-pointer mx-auto inset-x-0 mb-40 md:mb-0 `}>
+      
       <img
-        className={`h-2/3 rounded-xl w-full relative object-cover object-center transition ${isHovered ? "opacity-90" : "opacity-100"}`}
+        className={`md:h-2/3 h-full rounded-xl w-full relative object-cover object-center transition ${isHovered ? "opacity-90" : "opacity-100"}`}
         src={
           imgMiniatura?.i640
             ? createURL(imgMiniatura.i640)
@@ -44,8 +46,9 @@ export const CardBusiness: FC<propsCardBusiness> = ({
         }
         alt=""
       />
+      
       <div
-        className={`bg-white overflow-hidden shadow rounded-xl -mt-12 p-6 flex h-max flex-col  z-20 relative  ${
+        className={`bg-white overflow-hidden shadow rounded-xl md:-mt-16 -mt-10 p-6 flex h-max flex-col  z-20 relative  ${
           isHovered ? " -mt-16" : " "
         } transition-all duration-500`}
       >

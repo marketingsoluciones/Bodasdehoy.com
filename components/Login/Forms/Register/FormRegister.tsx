@@ -1,22 +1,11 @@
 import { Formik, Form } from "formik";
 import { FC, useContext, Children, memo } from "react";
 import { DatePicker, InputField, SelectField } from "../../../Inputs";
-import {
-  EmailIcon,
-  EmailIcon as PasswordIcon,
-  EmailIcon as UserForm,
-} from "../../../Icons";
-import {
-  createUserWithEmailAndPassword,
-  updateProfile,
-  UserCredential,
-} from "@firebase/auth";
+import {EmailIcon,EmailIcon as PasswordIcon,EmailIcon as UserForm,} from "../../../Icons";
+import {createUserWithEmailAndPassword,updateProfile,UserCredential,} from "@firebase/auth";
 import * as yup from "yup";
 import { UserMax } from "../../../../context/AuthContext";
-import {
-  AuthContextProvider,
-  LoadingContextProvider,
-} from "../../../../context";
+import {AuthContextProvider,LoadingContextProvider,} from "../../../../context";
 import router from "next/router";
 import { ValidationSchemaRegister } from "./ValidationRegister";
 import { GraphQL, fetchApi, queries } from "../../../../utils/Fetching";
@@ -289,7 +278,7 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
             type="email"
             autoComplete="off"
             icon={
-              <EmailIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4 text-gray-500" />
+              <EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />
             }
             label={"Correo electronico"}
           />
@@ -398,9 +387,9 @@ const BusinessWithEmailAndPassword: FC<propsForm> = () => {
             label="Correo electronico"
             type="email"
             autoComplete="off"
-            icon={true}
+            icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 m-auto left-4 text-gray-500" />}
           />
-          <EmailIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4 text-gray-500" />
+          
         </div>
 
         <div className="w-full relative ">
@@ -409,9 +398,9 @@ const BusinessWithEmailAndPassword: FC<propsForm> = () => {
             label="Contraseña"
             type="password"
             autoComplete="off"
-            icon={true}
+            icon={<PasswordIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4 text-gray-500" />}
           />
-          <PasswordIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4 text-gray-500" />
+          
         </div>
 
         <div className="w-full relative ">

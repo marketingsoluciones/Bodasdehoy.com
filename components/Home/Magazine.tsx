@@ -200,16 +200,16 @@ export const PostComponent: FC<Partial<Post>> = memo(
         />
         <div className="py-5 text-center h-full">
           <Link href={`/magazine/${slug}`} passHref>
-          <h2 className="text-gray-700 text-md font-semibold border-b border-primary pb-3 px-5 leading-5 cursor-pointer hover:text-gray-800">
-            {title}
+          <h2 className=" text-gray-700 text-md font-semibold border-b border-primary pb-3 px-5 leading-5 cursor-pointer hover:text-gray-800">
+           <Markup content={title} className="line-clamp-2"/> 
           </h2>
           </Link>
           <div className="flex justify-between items-center py-2 px-5">
             <p className="text-xs tracking-widest text-primary">CEREMONIA</p>
             {updatedAt && <p className="text-xs text-gray-500">{format(new Date(updatedAt), "es")}</p>}
           </div>
-          <p className="text-xs px-4 py-2 text-gray-500">
-            <Markup content={`${content?.slice(0, 250)}...`} noHtml />
+          <p className="text-xs px-4 py-2 text-gray-500 ">
+            <Markup className="line-clamp-6" content={content}/* {`${content?.slice(0, 250)}...`} */ noHtml />
           </p>
         </div>
       </div>

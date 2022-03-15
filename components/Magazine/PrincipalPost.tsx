@@ -18,11 +18,11 @@ export const PrincipalPost: FC<Partial<Post>> = ({
         <div className="grid grid-cols-8 pt-3">
           <div className="col-span-2 flex flex-col justify-center items-start border-r pr-3 border-primary py-1">
             {categories?.length > 0 && (
-              <h3 className="text-primary text-xs ">{categories[0]}</h3>
+              <h3 className="text-primary text-xs ">{categories[0].title}</h3>
             )}
             {updatedAt && (
               <p className="text-gray-500 text-xs">
-                {updatedAt && format(new Date(updatedAt), "es", {})}
+                {updatedAt && format(new Date(updatedAt), "es", { dateStyle: "long" })}
               </p>
             )}
           </div>

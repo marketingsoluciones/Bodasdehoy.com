@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import { useEffect } from "react";
 import { TitleSection } from "../../components/Home";
 import { GridPost } from "../../components/Home/Magazine";
 import { AsideLastestArticles, CategoriesComponent, LastestArticles, PrincipalPost, SuscribeComponent } from "../../components/Magazine";
@@ -13,10 +14,15 @@ interface propsMagazine {
   postsMoreViews : Partial<Post>[]
 }
 
-const Magazine : NextPage <propsMagazine> = ({categoriesPost, lastestPosts, postsByCategory, postsMoreViews}) => {
+const Magazine : NextPage <propsMagazine> = (props) => {
+  const {categoriesPost, lastestPosts, postsByCategory, postsMoreViews} = props
+  useEffect(() => {
+    console.log(props)
+  
+  }, [props])
+  
   return (
     <section className="w-full pt-4 md:pt-8 grid gap-6">
-      {/* 1era sección */}
       <div className="max-w-screen-lg mx-auto inset-x-0 grid gap-6 w-full ">
         <h1 className="text-5xl md:text-6xl  font-title text-primary w-full text-center">
           Magazine

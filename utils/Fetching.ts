@@ -777,7 +777,11 @@ export const queries: queries = {
         }
         updatedAt
         imgMiniatura{
-          _id
+            _id
+            i640
+            i800
+            i320
+            i1024
         }
       }
       postsByCategory{
@@ -806,10 +810,8 @@ export const queries: queries = {
         }
       }
       categoriesPost{
-        categorie{
-          title
-          slug
-        }
+        title
+        slug
       }
     }
   }`,

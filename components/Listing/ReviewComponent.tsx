@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState, MouseEventHandler } from 'react';
 import Slider from "react-slick";
 import { ButtonComponent } from "../Inputs";
 import { RatingStars } from "../Home/FeaturedCompanies";
@@ -18,6 +18,12 @@ import { EditIcon, CloseIcon, UploadImageIcon } from "../Icons/index";
 import { useRouter } from "next/router";
 import { createURL } from "../../utils/UrlImage";
 import ClickAwayListener from "react-click-away-listener";
+
+
+interface imagesReviews {
+  image: image;
+  review: review;
+}
 
 interface propsReviewComponent extends business {
   totalReviews: number;
@@ -142,15 +148,33 @@ const ReviewComponent: FC<propsReviewComponent> = ({
   };
   const router = useRouter();
 
+
+  const [images, setImages] = useState<imagesReviews[]>([]);
+
+  useEffect(() => {
+    if(reviews && reviews.length > 0){
+      const imagesReviews = reviews.reduce((acc: any, review) => {
+        review.imgCarrusel.forEach((image) => {
+          const obj = {
+            image,
+            review,
+          };
+          acc = [...acc, obj];
+        });
+        return acc;
+      }, []);
   
-  
+      setImages(imagesReviews);
+    }
+  }, [reviews]);
+
   return (
     <>
       {showPreview && (
         <PreviewComponent
-          reviews={reviews}
           state={showPreview}
           set={setShowPreview}
+          images={images}
         />
       )}
 
@@ -226,7 +250,7 @@ const ReviewComponent: FC<propsReviewComponent> = ({
           </ButtonComponent>
         )}
 
-        <UsersGalleryComponent />
+        {images && images.length > 0 && <UsersGalleryComponent images={images} set={setShowPreview}/>}
 
         <div className="flex flex-col justify-center">
           {/* GRID COMMENTS */}
@@ -292,14 +316,14 @@ const SelectReviewComponent: FC<propsSelectReviewComponent> = ({
   );
 };
 
-export const UsersGalleryComponent: FC = () => {
-  const Image: FC = () => {
+export const UsersGalleryComponent: FC <{images: imagesReviews[], set : CallableFunction}> = ({images, set}) => {
+  const Image: FC <imagesReviews> = ({image, review}) => {
     return (
-      <button>
+      <button onClick={() => set({source: image, data: review})}>
         <div className="overflow-hidden w-full h-full rounded-lg relative mx-auto inset-x-0">
           <img
-            alt={"hola"}
-            src="/mask_1.png"
+            alt={review?.user?.displayName ?? ""}
+            src={image.i320 ? createURL(image.i320) : "placeholder/image.png"}
             className="absolute w-full h-full object-cover object-center"
           />
         </div>
@@ -310,12 +334,11 @@ export const UsersGalleryComponent: FC = () => {
   return (
     <>
       <div className="border-b border-gray-100">
-        <p className="text-sm text-tertiary">12 fotos de usuarios</p>
+        <p className="text-sm text-tertiary">Imagenes de clientes</p>
         <div className="grid grid-cols-4 w-full gap-2 h-48 pb-6 py-3">
-          <Image />
-          <Image />
-          <Image />
-          <Image />
+          {images.slice(0,4).map((item, idx) => (
+            <Image key={idx} {...item}/>
+          ))}
         </div>
       </div>
     </>
@@ -325,13 +348,13 @@ export const UsersGalleryComponent: FC = () => {
 interface propsPreviewComponent {
   state: { data: review; source: image } | null;
   set: Dispatch<SetStateAction<{ data: review; source: image } | null>>;
-  reviews: review[];
+  images: imagesReviews[];
 }
 
 export const PreviewComponent: FC<propsPreviewComponent> = ({
   state,
   set,
-  reviews,
+  images,
 }) => {
   const [imagePrincipal, setImagePrincipal] = useState<image | undefined>(
     state?.source
@@ -342,109 +365,115 @@ export const PreviewComponent: FC<propsPreviewComponent> = ({
   };
 
   useEffect(() => {
-    setImagePrincipal(state?.source)
-  }, [state?.source])
-  
+    setImagePrincipal(state?.source);
+  }, [state?.source]);
 
   useEffect(() => {
-    setViewGrid(false)
-  }, [state])
+    setViewGrid(false);
+  }, [state]);
   return (
     <div className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-80 z-40 flex items-center justify-center ">
       <ClickAwayListener onClickAway={handleClose}>
-        <div className="bg-white w-2/4 h-1/2 m-auto inset-0 relative rounded-2xl overflow-auto no-scrollbar">
+        <div className="bg-white w-3/4 h-3/4 m-auto inset-0 relative rounded-2xl overflow-auto no-scrollbar">
           {/* HEADER */}
-          
+
           {!viewGrid ? (
             <>
-            <button
-            className="text-gray-500 absolute top-5 right-10 w-fit h-fit"
-            onClick={handleClose}
-          >
-            {<CloseIcon className="w-5 h-5" />}
-          </button>
-            <div className="grid grid-cols-2 h-full p-8 gap-5">
-              <div className="overflow-hidden h-full">
-                <button
-                  onClick={() => {
-                    setViewGrid(true)
-                  }}
-                  className="flex items-center gap-1 text-sm hover:bg-color-base transition rounded-md p-2 w-max"
-                >
-                  <ViewGrid className="w-5 h-5" />
-                  <p>Ver todas las imagenes</p>
-                </button>
+              <button
+                className="text-gray-500 absolute top-5 right-10 w-fit h-fit"
+                onClick={handleClose}
+              >
+                {<CloseIcon className="w-5 h-5" />}
+              </button>
+              <div className="grid grid-cols-2 h-full p-8 gap-5">
+                <div className="overflow-hidden h-full">
+                  <button
+                    onClick={() => {
+                      setViewGrid(true);
+                    }}
+                    className="flex items-center gap-1 text-sm hover:bg-color-base transition rounded-md p-2 w-max"
+                  >
+                    <ViewGrid className="w-5 h-5" />
+                    <p>Ver todas las imagenes</p>
+                  </button>
 
-                <img
-                  className="w-full h-[91%] object-cover object-center rounded-md overflow-hidden "
-                  src={imagePrincipal ? createURL(imagePrincipal.i640) : ""}
-                  alt={""}
-                />
-              </div>
+                  <img
+                    className="w-full h-[91%] bg-gray-300 object-contain border object-center rounded-md overflow-hidden "
+                    src={imagePrincipal ? createURL(imagePrincipal.i640) : ""}
+                    alt={""}
+                  />
+                </div>
 
-              <div className="no-scrollbar flex flex-col gap-4 h-full overflow-auto">
-                <div className="border-b border-color-base pb-4">
-                  <div className="flex gap-2">
-                    <img
-                      className="object-cover w-10 h-10 rounded-full border border-gray-200"
-                      src={state?.data.user.photoURL ?? "/placeholder/logo.png"}
-                      alt={"2"}
-                    />
-                    <div className="flex flex-col items-start">
-                      <h2 className="text-sm text-gray-700">
-                        {state?.data?.user?.displayName}
-                      </h2>
-                      <RatingStars rating={4} size={"lg"} />
+                <div className="no-scrollbar flex flex-col gap-4 h-full overflow-auto">
+                  <div className="border-b border-color-base pb-4">
+                    <div className="flex gap-2">
+                      <img
+                        className="object-cover w-10 h-10 rounded-full border border-gray-200"
+                        src={
+                          state?.data.user.photoURL ?? "/placeholder/logo.png"
+                        }
+                        alt={"2"}
+                      />
+                      <div className="flex flex-col items-start">
+                        <h2 className="text-sm text-gray-700 capitalize">
+                          {state?.data?.user?.displayName}
+                        </h2>
+                        <RatingStars
+                          rating={state?.data?.average ?? 0}
+                          size={"lg"}
+                        />
+                      </div>
+                    </div>
+                    {state?.data.createdAt && (
+                      <small className="text-xs text-gray-400 -mt-3">
+                        Opinion realizada el {format(state?.data.createdAt, "es", { dateStyle: "long" })}
+                      </small>
+                    )}
+                  </div>
+                  <h3 className="text-sm text-gray-700 font-semibold">
+                    {state?.data.reference}
+                  </h3>
+                  <p className="text-xs min-h-40 h-full">
+                    {state?.data.comment}
+                  </p>
+                  <div>
+                    <h4 className="pb-1 text-sm font-bold text-gray-400 ">
+                      Imagenes de esta reseña
+                    </h4>
+                    <div className="flex flex-wrap gap-2 ">
+                      {state?.data.imgCarrusel.map((item) => (
+                        <button
+                          key={item._id}
+                          onClick={() => setImagePrincipal(item)}
+                        >
+                          <img
+                            className="w-20 h-20 bg-red-500 rounded object-cover object-center border"
+                            src={
+                              item.i320
+                                ? createURL(item.i320)
+                                : "/placeholder/image.png"
+                            }
+                            alt={item._id}
+                          />
+                        </button>
+                      ))}
                     </div>
                   </div>
-                  {state?.data.createdAt && (
-                    <small className="text-xs text-gray-400 -mt-3">
-                      Opinion realizada el {format(state?.data.createdAt)}
-                    </small>
-                  )}
-                </div>
-                <h3 className="text-sm text-gray-700 font-semibold">
-                  {state?.data.reference}
-                </h3>
-                <p className="text-xs min-h-40 h-full">{state?.data.comment}</p>
-                <div>
-                  <h4 className="pb-1 text-sm font-bold text-gray-400 ">
-                    Imagenes de esta reseña
-                  </h4>
-                  <div className="flex flex-wrap gap-2 ">
-                    {state?.data.imgCarrusel.map((item) => (
-                      <button
-                        key={item._id}
-                        onClick={() => setImagePrincipal(item)}
-                      >
-                        <img
-                          className="w-20 h-20 bg-red-500 rounded object-cover object-center border"
-                          src={
-                            item.i320
-                              ? createURL(item.i320)
-                              : "/placeholder/image.png"
-                          }
-                          alt={item._id}
-                        />
-                      </button>
-                    ))}
-                  </div>
                 </div>
               </div>
-            </div>
             </>
           ) : (
             <>
-            <div className="bg-color-base p-4 px-10 flex justify-between items-center">
-            <h2 className="text-gray-700 font-bold">Galería de imagenes</h2>
-          <button
-            className="text-gray-500  top-5 right-5 w-fit h-fit"
-            onClick={handleClose}
-          >
-            {<CloseIcon className="w-5 h-5" />}
-          </button>
-          </div>
-            <ViewGridComponent set={set} reviews={reviews} />
+              <div className="bg-color-base p-4 px-10 flex justify-between items-center">
+                <h2 className="text-gray-700 font-bold">Galería de imagenes</h2>
+                <button
+                  className="text-gray-500  top-5 right-5 w-fit h-fit"
+                  onClick={handleClose}
+                >
+                  {<CloseIcon className="w-5 h-5" />}
+                </button>
+              </div>
+              <ViewGridComponent set={set} images={images} />
             </>
           )}
         </div>
@@ -453,34 +482,27 @@ export const PreviewComponent: FC<propsPreviewComponent> = ({
   );
 };
 
-
-export const ViewGridComponent: FC<{ reviews: review[], set: Dispatch<SetStateAction<{ data: review; source: image } | null>> }> = ({ reviews, set }) => {
-  const [images, setImages] = useState<{image: image, review: review}[]>(
-    reviews.reduce((acc: any, review) => {
-      review.imgCarrusel.forEach((image) => {
-        const obj = {
-          image,
-          review,
-        };
-        acc = [...acc, obj];
-      });
-      return acc;
-    }, [])
-  );
+export const ViewGridComponent: FC<{
+  set: Dispatch<SetStateAction<{ data: review; source: image } | null>>;
+  images: { image: image; review: review }[];
+}> = ({ set, images }) => {
   return (
     <div className="grid grid-cols-6 gap-3 p-6">
       {images?.map((item, idx) => (
-        <button key={idx} onClick={() => set({data: item.review, source: item.image})} >
-        <img
-        className="w-full h-full bg-red-500 rounded object-cover object-center border"
-        src={
-          item.image.i320
-            ? createURL(item.image.i320)
-            : "/placeholder/image.png"
-        }
-        alt={item.image._id}
-      />
-      </button>
+        <button
+          key={idx}
+          onClick={() => set({ data: item.review, source: item.image })}
+        >
+          <img
+            className="w-40 h-40 mx-auto bg-red-500 rounded object-cover object-center border"
+            src={
+              item.image.i320
+                ? createURL(item.image.i320)
+                : "/placeholder/image.png"
+            }
+            alt={item.image._id}
+          />
+        </button>
       ))}
     </div>
   );

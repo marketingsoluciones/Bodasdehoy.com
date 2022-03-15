@@ -257,7 +257,7 @@ const ReviewComponent: FC<propsReviewComponent> = ({
           <div className="grid place-items-center gap-10">
             {!loading ? (
               <>
-                {reviews?.map((review) => (
+                {reviews?.filter(review => review.user.uid !== myReview?.user.uid).map((review) => (
                   <CommentComponent
                     setPreview={setShowPreview}
                     key={review?._id}

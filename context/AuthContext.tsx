@@ -18,6 +18,7 @@ export interface UserMax extends User {
   weddingDate?: Date;
   role?: string;
   accessToken?: string;
+  _id? :string
 }
 
 type Context = {

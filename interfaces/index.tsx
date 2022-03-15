@@ -93,7 +93,7 @@ export type review = {
   average: number
   comment: string
   answer: string
-  imgCarrusel : image
+  imgCarrusel : image[]
   user : UserMax
   reference: string
   createdAt : number

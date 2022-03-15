@@ -1,4 +1,4 @@
-export const format = (date?: Date, locale?: string, options?: object) => {
+export const format = (date?: Date | number, locale?: string, options?: object) => {
   return new Intl.DateTimeFormat(locale, options).format(date);
 };
 

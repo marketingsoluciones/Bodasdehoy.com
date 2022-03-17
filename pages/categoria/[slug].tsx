@@ -12,6 +12,7 @@ import { LoadingItem } from "../../components/Loading";
 import EmptyComponent from "../../components/Surface/EmptyComponent";
 import {FiltersContextProvider,FiltersProvider} from "../../context/FiltersContext";
 import { LocationFilter, CheckBoxFilter } from "../../components/Inputs/Filters";
+import { BurgerIcon } from "../../components/Icons";
 
 const CategoryPage: FC<category> = (props) => {
   const { _id, imgBanner, subCategories, heading, title, description, slug } =
@@ -61,7 +62,7 @@ const CategoryPage: FC<category> = (props) => {
   }, [subCategories, _id]);
 
   return (
-    <section className="flex flex-col gap-10">
+    <section className="flex flex-col gap-10 ">
       <div>
         {/* Imagen Banner */}
         <img
@@ -86,7 +87,7 @@ const CategoryPage: FC<category> = (props) => {
       </div>
 
       {/* Aside Filters */}
-      <div className="xl:max-w-screen-lg 2xl:max-w-screen-xl gap-10 mx-auto inset-x-0 grid md:grid-cols-7 2xl:grid-cols-5 w-full">
+      <div className="xl:max-w-screen-lg 2xl:max-w-screen-xl gap-4 md:gap-10 mx-auto inset-x-0 grid md:grid-cols-7 2xl:grid-cols-5 w-full">
         <FiltersProvider>
           <Filters optionsCheckbox={{characteristics}} />
           <GridCards _id={_id} />
@@ -159,33 +160,43 @@ const Filters : FC <propsFilter> = ({optionsCheckbox}) => {
   const handleResetFilters = () => {
     setFilters({ type: "RESET_FILTER", payload: {} });
   };
-  return (
-    <aside className="md:col-span-2 2xl:col-span-1 bg-white h-max w-full rounded-lg shadow">
-      <div className="py-4 px-6 border-b border-base  flex items-center justify-between gap-2">
-        <span className="flex items-center gap-2">
-          <p className="text-sm text-gray-500">Filtros activos</p>
-          <span className="rounded-full border border-primary text-xs text-primary w-6 h-6 flex items-center justify-center">
-            {filters?.total}
-          </span>
-        </span>
-        <button
-          onClick={handleResetFilters}
-          className="px-2 w-max border border-primary focus:outline-none bg-white text-primary text-xs rounded-full py-1 hover:text-white hover:bg-primary transition"
-        >
-          Limpiar
-        </button>
-      </div>
-      <LocationFilter />
-      {characteristics?.map((item, idx)=> (
-        <CheckBoxFilter key={idx} label={item.title} options={item.items.map(item => ({label: item.title, _id: item.title}))} />
 
-      ))}
+  const [open,setOpen] = useState(true)
+  const onClick = () =>{
+    setOpen(!open)
+  }
+  return (
+    <>
+      <button onClick={onClick} className="md:hidden flex ml-3 gap-6"><BurgerIcon/>Filtros para tus categorias</button>
+
+    <aside  className="md:col-span-2 2xl:col-span-1 bg-white h-max w-full rounded-lg shadow " >
+      <div className={`md:block ${open?"hidden":"block"}`}>
+        <div  className="py-4 px-6 border-b border-base flex items-center justify-between gap-2 " >
+          <span className="flex items-center gap-2">
+            <p className="text-sm text-gray-500">Filtros activos</p>
+            <span className="rounded-full border border-primary text-xs text-primary w-6 h-6 flex items-center justify-center">
+              {filters?.total}
+            </span>
+          </span>
+          <button
+            onClick={handleResetFilters}
+            className="px-2 w-max border border-primary focus:outline-none bg-white text-primary text-xs rounded-full py-1 hover:text-white hover:bg-primary transition"
+          >
+            Limpiar
+          </button>
+        </div>
+        <LocationFilter />
+        {characteristics?.map((item, idx)=> (
+          <CheckBoxFilter key={idx} label={item.title} options={item.items.map(item => ({label: item.title, _id: item.title}))} />
+        ))}
+      </div>
       {/* <EventType title="Tipo de boda" list={List} />
         <RangeFilter title={"Capacidad del banquete"} min={0} max={100} />
         <RangeFilter title={"Capacidad del cóctel"} min={0} max={100} />
         <RangeFilter title={"Hora de cierre"} min={0} max={24} />
         <ListFilter title={"Instalaciones"} list={ListF} /> */}
     </aside>
+    </>
   );
 };
 

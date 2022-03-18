@@ -6,7 +6,6 @@ export interface PropsIcon {
   onClick?: MouseEventHandler;
   fill?: string;
 }
-
 // Iconos de sistema
 export const UserIcon: FC<PropsIcon> = (props) => {
   return (
@@ -82,8 +81,7 @@ export const ViewGrid: FC<PropsIcon> = (props) => {
   <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
 </svg>
   );
-};
-
+}
 export const DownloadFileIcon: FC<PropsIcon> = (props) => {
   return (
     <svg
@@ -104,7 +102,6 @@ export const DownloadFileIcon: FC<PropsIcon> = (props) => {
     </svg>
   );
 };
-
 export const CrossIcon: FC<PropsIcon> = (props) => {
   return (
     <svg
@@ -129,7 +126,6 @@ export const PlusCircle: FC<PropsIcon> = (props) => {
 </svg>
   );
 };
-
 export const CheckIcon: FC<PropsIcon> = (props) => {
   return (
     <svg
@@ -147,7 +143,6 @@ export const CheckIcon: FC<PropsIcon> = (props) => {
     </svg>
   );
 };
-
 export const UploadImageIcon: FC<PropsIcon> = (props) => {
   return (
     <svg
@@ -165,7 +160,6 @@ export const UploadImageIcon: FC<PropsIcon> = (props) => {
     </svg>
   );
 };
-
 export const DeleteIcon: FC<PropsIcon> = (props) => {
   return (
     <svg
@@ -185,7 +179,6 @@ export const DeleteIcon: FC<PropsIcon> = (props) => {
     </svg>
   );
 };
-
 export const BurgerIcon: FC<PropsIcon> = (props) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}>

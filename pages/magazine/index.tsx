@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TitleSection } from "../../components/Home";
 import { GridPost } from "../../components/Home/Magazine";
 import { AsideLastestArticles, CategoriesComponent, LastestArticles, PrincipalPost, SuscribeComponent } from "../../components/Magazine";
@@ -16,10 +16,22 @@ interface propsMagazine {
 
 const Magazine : NextPage <propsMagazine> = (props) => {
   const {categoriesPost, lastestPosts, postsByCategory, postsMoreViews} = props
-  useEffect(() => {
-    console.log(props)
-  
-  }, [props])
+  const [fivePost, setPost] = useState<Post[]>([])
+
+    const fetchData = async () => {
+        try {
+            const {results} = await fetchApi({query : queries.getAllPost, variables: {sort: {createdAt : 1}, limit: 5}})
+            setPost(results)
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+   useEffect(() => {
+    fetchData()
+   }, []);
+   
   
   return (
     <section className="w-full pt-4 md:pt-8 grid gap-6">
@@ -27,7 +39,7 @@ const Magazine : NextPage <propsMagazine> = (props) => {
         <h1 className="text-5xl md:text-6xl  font-title text-primary w-full text-center">
           Magazine
         </h1>
-        <div className="w-95 mx-auto instet-x-0 md:w-2/4">
+        <div className="w-[95%] md:w-2/3 mx-auto inset-x-0 ">
           <Searcher placeholder={"¿Qué necesitas para tu boda?"} autoFocus />
         </div>
         <PrincipalPost {...lastestPosts[0]} />
@@ -48,7 +60,7 @@ const Magazine : NextPage <propsMagazine> = (props) => {
       <div className="grid md:grid-cols-3 max-w-screen-lg w-full mx-auto inset-x-0 gap-6 px-5 md:px-0 overflow-hidden ">
         <LastestArticles data={lastestPosts.slice(1)} />
 
-        <AsideLastestArticles title={"TOP 5 más leidos"} className="... w-full  bg-white p-7 shadow-md rounded-xl" />
+        <AsideLastestArticles data={fivePost} title={"TOP 5 más leidos"} className="... w-full  bg-white p-7 shadow-md rounded-xl" />
       </div>
       <SuscribeComponent />
     </section>

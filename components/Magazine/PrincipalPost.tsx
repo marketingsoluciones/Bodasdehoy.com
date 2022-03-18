@@ -14,7 +14,7 @@ export const PrincipalPost: FC<Partial<Post>> = ({
   return (
     <div className="w-full relative  hidden md:grid pt-4">
       <div className="bg-white w-3/5 rounded-2xl shadow-lg h-max absolute top-1/4 py-6 px-12">
-        <h2 className="font-medium text-2xl">{title}</h2>
+        <h2 className="text-2xl font-semibold text-gray-700">{title}</h2>
         <div className="grid grid-cols-8 pt-3">
           <div className="col-span-2 flex flex-col justify-center items-start border-r pr-3 border-primary py-1">
             {categories?.length > 0 && (

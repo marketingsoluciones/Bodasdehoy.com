@@ -108,15 +108,15 @@ const Listing: FC<business> = (props) => {
 
       <div
         id={"listing"}
-        className="mx-auto inset-x-0 flex flex-col gap-6 mt-6"
+        className="mx-auto inset-x-0 flex flex-col gap-6 "
       >
-        {/* <BreadCumbs /> */}
-        <div className="hidden sm:block mx-auto inset-x-0 max-w-screen-lg w-full">
+        <BreadCumbs />
+        {/* <div className="hidden sm:block mx-auto inset-x-0 max-w-screen-lg w-full">
           <span className="flex items-center gap-1 overflow-hidden rounded-md bg-gray-100 text-sm text-gray-500 w-max ">
             <button className="bg-white w-max rotate-180 p-1 border-l hover:bg-gray-100 transition" onClick={() => router.back()}> <ArrowIcon className="w-6 h-6" /> </button>
             <span className="px-2 ">Ir atrás</span>
           </span>
-        </div>
+        </div> */}
         <HeaderListing
           {...props}
           totalReviews={totalReviews}

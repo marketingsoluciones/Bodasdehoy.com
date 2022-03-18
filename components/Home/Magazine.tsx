@@ -97,7 +97,7 @@ const BlogCategories: FC<{ categories: Partial<category>[] }> = ({
 
   const Category: FC<propsCategory> = ({ title, route }) => {
     return (
-      <Link href={route ?? "/"} passHref>
+      <Link href={route ? `/magazine/categoria/${route}` : ""} passHref>
         <button className="rounded-full px-4 w-[90%] mx-auto inset-x-0 text-sm flex items-center py-2 justify-center text-tertiary font-medium border border-primary bg-white hover:bg-primary hover:text-white transition ease-in duration-200 cursor-pointer flex-wrap">
           {title && capitalize(title)}
         </button>

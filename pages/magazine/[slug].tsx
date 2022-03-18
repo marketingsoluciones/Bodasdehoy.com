@@ -1,15 +1,30 @@
 import { Markup } from "interweave";
 import { GetStaticPaths, GetStaticProps, NextPage,GetStaticPropsContext } from "next";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { Searcher } from "..";
 import {Banner, ShareComponent, TagsComponent} from "../../components/Article";
 import { TagIcon } from "../../components/Icons";
 import { RelatedArticles, AsideLastestArticles, SuscribeComponent } from "../../components/Magazine";
 import { BreadCumbs, DisqusComponent } from "../../components/Surface";
-import { OnePost } from "../../interfaces";
+import { OnePost, Post } from "../../interfaces";
 import { GraphQL, fetchApi, queries } from '../../utils/Fetching';
 
 const Article : FC <Partial<OnePost>> = (props) => {
+  const [fivePost, setPost] = useState<Post[]>([])
+
+    const fetchData = async () => {
+        try {
+            const {results} = await fetchApi({query : queries.getAllPost, variables: {sort: {createdAt : 1}, limit: 5}})
+            setPost(results)
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+   useEffect(() => {
+    fetchData()
+   }, []);
   const {content, tags = []} = props
   return (
     <section className="w-full flex flex-col items-center mt-3 ">
@@ -38,7 +53,7 @@ const Article : FC <Partial<OnePost>> = (props) => {
 
           <aside className="hidden md:flex col-span-1 flex-col gap-8 mt-10">
             <Searcher placeholder="¿Que buscas?" />
-            <AsideLastestArticles title={"lo más leido"} />
+            <AsideLastestArticles data={fivePost} title={"lo más leido"} />
           </aside>
         </div>
       <RelatedArticles title={"Lee más sobre Pedir Matrimonio"} />
@@ -54,28 +69,15 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   try {
       const dataProps = await fetchApi({ query: queries.getOnePost, variables: { slug: params?.slug } })
       return {
-          props: dataProps , // will be passed to the page component as props
+          props: dataProps, 
       }
   } catch (error) {
       return {
-          error
+          props: {}
       }
   }
 }
 
-/* export const getStaticProps: GetStaticProps = async ({ params }: any) => {
-  try {
-    const {results} = await fetchApi({query: queries.getAllPost, variables: {criteria : {slug : params.slug}}})
-    return {
-      props: results.length > 0 ? results[0] : {},
-    };
-  } catch (error) {
-    console.log(error)
-    return {
-      props: {},
-    };
-  }
-}; */
 
 export const getStaticPaths: GetStaticPaths = async() => {
   try {

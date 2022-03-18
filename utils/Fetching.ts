@@ -6,22 +6,22 @@ const types = {
 };
 
 interface fetchApiProps {
-  query : string
-  variables: object
-  type : keyof typeof types
-  token?: string
+  query: string;
+  variables: object;
+  type: keyof typeof types;
+  token?: string;
 }
 export const fetchApi: CallableFunction = async ({
   query = ``,
   variables = {},
-  type= "json",
-  token
-} : fetchApiProps): Promise<any> => {
+  type = "json",
+  token,
+}: fetchApiProps): Promise<any> => {
   try {
     if (type === "json") {
       const {
         data: { data },
-      } = await api.graphql({query, variables}, null, token);
+      } = await api.graphql({ query, variables }, null, token);
       return Object.values(data)[0];
     } else if (type === "formData") {
       const formData = new FormData();
@@ -75,11 +75,15 @@ export const fetchApi: CallableFunction = async ({
         }
       });
 
-      const { data } = await api.graphql(formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
+      const { data } = await api.graphql(
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         },
-      }, token);
+        token
+      );
 
       if (data.errors) {
         throw new Error(JSON.stringify(data.errors));
@@ -96,32 +100,157 @@ type queries = {
   createUser: string;
   createBusiness: string;
   createReviews: string;
-  updateReview : string
+  updateReview: string;
   getAllPost: string;
   getAllCategoryBusiness: string;
   getAllBusiness: string;
   getAllReviews: string;
   getChats: string;
-  getOneChat: string
+  getOneChat: string;
+  getOneCategoryPost: string;
   getHome: string;
   getCategories: string;
   getUser: string;
   getSlugBusiness: string;
   getOneBusiness: string;
-  getAverageBusiness : string
-  getChatIdForBusiness : string
+  getAverageBusiness: string;
+  getChatIdForBusiness: string;
   getSlugPosts: string;
   getMagazine: string;
   deleteImages: string;
   deleteBusiness: string;
-  deleteReview: string
-  getOnePost: string
-  getAllPage: string
-  getOnePage: string
+  deleteReview: string;
+  getOnePost: string;
+  getAllPage: string;
+  getOnePage: string;
+  getAllCategoryPost: string;
+  getSubcategoriesPost: string;
+  getOneSubcategoryPost: string
 };
 
 export const queries: queries = {
-  getOnePost :`query ($id:ID, $slug:String ) {
+  getOneSubcategoryPost: `query ($id : ID, $slug : String){
+    getOneSubCategoryPost(_id: $id, slug:$slug){
+      _id
+      title
+      heading
+      slug
+      description
+      imgMiniatura{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      imgBanner{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      icon{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+    }
+  }`,
+  getSubcategoriesPost: `query {
+    getSubCategoryPost{
+      total
+      results{
+        _id
+        title
+        slug
+      }
+    }
+  }`,
+  getAllCategoryPost: `query {
+    getCategoryPost{
+      total
+      results{
+        _id
+        title
+        slug
+        subCategories{
+          _id
+          title
+          slug
+        }
+        icon{
+          _id
+          i1024
+          i800
+          i640
+          i320
+        }
+      }
+    }
+  }`,
+  getOneCategoryPost: `query ($slug:String) {
+    getOneCategoryPost(slug:$slug){
+      _id
+      title
+      heading
+      slug
+      description
+      imgMiniatura{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      imgBanner{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      icon{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      subCategories{
+        _id
+        title
+        heading
+        slug
+        description
+        imgMiniatura{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      imgBanner{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      icon{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      }
+      
+    }
+  }`,
+  getOnePost: `query ($id:ID, $slug:String ) {
     getOnePost(_id:$id, slug:$slug){
     title
     subTitle
@@ -165,7 +294,7 @@ export const queries: queries = {
     updatedAt
     }
     }`,
-  getAllPage:`query ( $sort:sortCriteriaPage, $skip: Int, $limit: Int ) {
+  getAllPage: `query ( $sort:sortCriteriaPage, $skip: Int, $limit: Int ) {
     getAllPage( sort:$sort,skip:$skip, limit:$limit){
     total
     results{
@@ -187,7 +316,7 @@ export const queries: queries = {
     	}
     }
   }`,
-  getOnePage:`query($id:ID, $slug:String){
+  getOnePage: `query($id:ID, $slug:String){
     getOnePage(_id:$id, slug:$slug){
       _id
       title
@@ -239,7 +368,7 @@ export const queries: queries = {
   getChatIdForBusiness: `query ($businessID : ID){
     getChatIdForBusiness(_id: $businessID)
   }`,
-  getChats : `query ($uid: [ID], $skip :Int!, $limit : Int!, $text : String) {
+  getChats: `query ($uid: [ID], $skip :Int!, $limit : Int!, $text : String) {
     getChats(uid :$uid, skip: $skip, limit: $limit, include: $text){
       total
       results{
@@ -284,7 +413,7 @@ export const queries: queries = {
       }
     }
   }`,
-  deleteReview : `mutation ($id : [ID]){
+  deleteReview: `mutation ($id : [ID]){
     deleteReview(_id: $id)
   }`,
   updateReview: `mutation ($id : ID, $args:inputReview){
@@ -812,6 +941,12 @@ export const queries: queries = {
       categoriesPost{
         title
         slug
+        _id
+        heading
+        icon{
+          _id
+          i320
+        }
       }
     }
   }`,

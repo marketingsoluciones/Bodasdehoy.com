@@ -8,8 +8,10 @@ import { AuthContextProvider } from "../../context";
 import { fetchApi, queries } from "../../utils/Fetching";
 import * as yup from "yup";
 import { IDGenerator } from "../../utils/IDGenerator";
-import { image } from '../../interfaces/index';
-import { createURL } from '../../utils/UrlImage';
+import { image } from "../../interfaces/index";
+import { createURL } from "../../utils/UrlImage";
+import { DeleteIcon } from "../Icons/index";
+import { useHover } from "../../hooks/useHover";
 
 const FormReviewComponent: FC<any> = forwardRef(
   ({ businessID, onClose, setReviews, fetchy, initialValues }, ref: any) => {
@@ -153,23 +155,27 @@ interface propsMessageField {
   placeholder: string;
   label: string;
 }
+interface imageUpload {
+  id: string;
+  file: File;
+  image: string;
+}
 const MessageField: FC<propsMessageField> = ({
   label,
   placeholder,
   ...props
 }) => {
-  interface imageUpload {
-    id: string;
-    file: File;
-    image: string;
-  }
   const [field, meta, helpers] = useField(props);
   const [fieldUpload, metaUpload, helpersUpload] = useField<image[] | null>({
     name: "imgCarrusel",
   });
   const [image, setImage] = useState<imageUpload[]>((): any => {
     if (fieldUpload.value) {
-      return fieldUpload.value.map((item, idx) => ({ id: item._id, image: item.i640 }))}
+      return fieldUpload.value.map((item, idx) => ({
+        id: item._id,
+        image: item.i640,
+      }));
+    }
   });
 
   const handleChange = async (e: any) => {
@@ -240,14 +246,31 @@ const MessageField: FC<propsMessageField> = ({
       </div>
       <div className="flex flex-wrap gap-2">
         {image?.map((item, idx) => (
-          <img
-            key={item.id}
-            src={item.image.includes("data") ? item.image : createURL(item.image)}
-            className={"w-24 h-24 object-cover object-center border rounded"}
-            alt={""}
-          />
+          <ImageItem key={idx} {...item} />
         ))}
       </div>
     </div>
+  );
+};
+
+const ImageItem: FC<imageUpload> = ({ image, id }) => {
+  const [hoverRef, isHovered] = useHover();
+  return (
+    <span className={"relative"} ref={hoverRef}>
+      <img
+        src={image.includes("data") ? image : createURL(image)}
+        className={"w-24 h-24 object-cover object-center border rounded"}
+        alt={""}
+      />
+      <button
+        onClick={() => alert(id)}
+        type="button"
+        className={`p-1 rounded bg-red-500 w-full absolute bottom-0 left-0 text-xs hover:bg-red-600 text-white ${
+          isHovered ? "opacity-100" : "opacity-0"
+        } transition`}
+      >
+        Borrar
+      </button>
+    </span>
   );
 };

@@ -3,6 +3,8 @@ import { CameraIcon as ActualidadIcon,  CameraIcon as BagIcon, CameraIcon as Ban
 import Link from 'next/link'
 import {useHover} from "../../hooks"
 import { category, fetchCategory } from "../../interfaces"
+import { createURL } from '../../utils/UrlImage';
+import { capitalize } from '../../utils/Capitalize';
 
 type Category = {
     title: string,
@@ -11,15 +13,7 @@ type Category = {
 
 }
 
-export const CategoriesComponent : FC <{data: Partial<fetchCategory>[]}> = ({data = []}) => {
-    const Categories : Category[] = [
-        {title: "Antes de la boda", icon: <CameraIcon className="w-12 h-12" />, route: "/"},
-        {title: "Ceremonia", icon: <CarIcon className="h-12"  />, route: "/"},
-        {title: "Banquete", icon: <BanqueteIcon className="w-12 h-12" />, route: "/"},
-        {title: "Moda Nupcial", icon: <DressIcon className="w-12 h-12" />, route: "/"},
-        {title: "Luna de Miel", icon: <BagIcon className="w-12 h-12" />, route: "/"},
-        {title: "Actualidad", icon: <ActualidadIcon className="w-12 h-12" />, route: "/"},
-    ]
+export const CategoriesComponent : FC <{data: Partial<category>[]}> = ({data = []}) => {
     return (
         <div className="bg-white w-full py-10">
         <div className="max-w-screen-lg mx-auto inset-x-0 grid gap-6 ">
@@ -27,9 +21,11 @@ export const CategoriesComponent : FC <{data: Partial<fetchCategory>[]}> = ({dat
             Articulos según temas
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-8 place-items-center">
-            {data?.map(({categorie}, idx) => (
-                <CategoryItem key={idx} {...categorie} />
-            ))}
+            {data?.map((categorie, idx) => {
+              if(categorie?.icon?.i320) {
+                return <CategoryItem key={idx} {...categorie} />
+              }
+            })}
           </div>
         </div>
       </div>
@@ -39,16 +35,17 @@ export const CategoriesComponent : FC <{data: Partial<fetchCategory>[]}> = ({dat
 
 
 
-const CategoryItem : FC <Partial<category>> = ({title, slug}) => {
-    console.log(title)
+const CategoryItem : FC <Partial<category>> = ({title, slug, icon, heading}) => {
     const [HoverRef, isHovered] = useHover()
     return (
-        <Link href={`/magazine/${slug}`} passHref>
-        <div ref={HoverRef} className="text-tertiary flex flex-col gap-2 items-center justify-center cursor-pointer ">
-            <span className={`p-3 rounded-full ${isHovered ? "bg-gray-100" : ""} transition w-20 h-20 grid place-items-center`}>H</span>
-            <p className="text-xs">{title}</p>
-        </div>
+      <div className="flex items-center justify-center flex-col">
+        <Link href={`/magazine/categoria/${slug}`} passHref>
+        <button ref={HoverRef} className={`text-tertiary flex flex-col gap-2 items-center justify-center cursor-pointer p-2 rounded-full p-4 ${isHovered ? "bg-gray-100" : ""} `}>
+          <img className={`p-3 transition w-20 h-20 flex justify-center items-center cursor-pointer`} src={createURL(icon?.i320)} alt={title}></img>
+        </button>
         </Link>
+        <small className="text-tertiary text-sm">{title && capitalize(title)}</small>
+        </div>
     )
 }
 

@@ -34,7 +34,7 @@ export const BreadCumbs: FC<propsBreadCumbs> = ({ className }) => {
   return (
     <>
       <div
-        className={`lg:max-w-screen-lg mx-auto inset-x-0 flex items-center w-full text-sm text-gray-500 capitalize font-light py-8 w-full hidden sm:flex`}
+        className={`lg:max-w-screen-lg mx-auto inset-x-0 flex items-center w-full text-sm text-gray-500 capitalize font-light py-4 w-full hidden sm:flex`}
       >
         <nav className="flex" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
@@ -46,7 +46,7 @@ export const BreadCumbs: FC<propsBreadCumbs> = ({ className }) => {
                 </span>
               </Link>
             </li>
-            {levels.map((item: crumb, idx: number) => (
+            {levels.filter(item => !["categoria", "empresa"].includes(item.crumb)).map((item: crumb, idx: number) => (
               <li key={idx}>
                 <div className="flex items-center">
                   <svg
@@ -54,6 +54,7 @@ export const BreadCumbs: FC<propsBreadCumbs> = ({ className }) => {
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
+                    
                   >
                     <path
                       fillRule="evenodd"

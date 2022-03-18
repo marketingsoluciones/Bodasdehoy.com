@@ -27,6 +27,12 @@ export const Footer: FC = () => {
     { title: "Herramienta para promocionar tus servicios", route: "/" },
   ];
 
+  const socialIcons = [
+    {icon: <FacebookIcon/>,link : "https://www.facebook.com/bodasdehoycom" },
+    {icon: <InstagramIcon/>,link : "https://www.instagram.com/bodasdehoycom/" },
+    {icon: <PinterestIcon/>,link : "https://www.pinterest.es/bodasdehoycom/" },
+    {icon: <YoutubeIcon/>,link : "https://www.youtube.com/bodasdehoy" },
+  ]
 
   return (
     <div className="hidden md:block bg-color-base w-full pb-8 pt-10 container mx-auto inset-x-0 max-w-screen-lg 2xl:max-w-screen-xl">
@@ -35,12 +41,20 @@ export const Footer: FC = () => {
           <img src="/logo.webp" alt={"Logo bodasdehoy.com"} className="h-7 object-contain object-center" />
         </div>
         <div className="grid grid-cols-3 gap-6 pt-6 pb-8">
+          
           <div className="flex gap-4">
+            {socialIcons.map((item,idx)=>(
+               
+                  <a href={item.link} target="_blank" ><Icon icon={item.icon}/></a>
+                
+            ))}
+          </div>
+          {/* <div className="flex gap-4">
             <Icon icon={<FacebookIcon />} />
             <Icon icon={<InstagramIcon />} />
             <Icon icon={<PinterestIcon />} />
             <Icon icon={<YoutubeIcon />} />
-          </div>
+          </div> */}
           <div className="w-full">
             <Title title={"Información"} />
             <ul className="flex flex-col gap-1 pt-4 w-full">

@@ -1,18 +1,39 @@
 import Slider from "react-slick";
-import {FC,ReactNode,useState,useEffect,} from "react";
+import { FC, ReactNode, useState, useEffect, useRef } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { fetchApi, queries } from "../../utils/Fetching";
-import {business,category,characteristicSubCategory,subCategory,} from "../../interfaces";
-import {AireLibreIcon,EnLaCiudadIcon,PlayaIcon} from "../../components/Icons";
+import {
+  business,
+  category,
+  characteristicSubCategory,
+  subCategory,
+} from "../../interfaces";
+import {
+  AireLibreIcon,
+  EnLaCiudadIcon,
+  PlayaIcon,
+} from "../../components/Icons";
 import { useHover } from "../../hooks";
 import { createURL } from "../../utils/UrlImage";
-import {CardBusiness,HeaderCategory,ItemSubCategory} from "../../components/Category";
+import {
+  CardBusiness,
+  HeaderCategory,
+  ItemSubCategory,
+} from "../../components/Category";
 import useFetch from "../../hooks/useFetch";
 import { LoadingItem } from "../../components/Loading";
 import EmptyComponent from "../../components/Surface/EmptyComponent";
-import {FiltersContextProvider,FiltersProvider} from "../../context/FiltersContext";
-import { LocationFilter, CheckBoxFilter } from "../../components/Inputs/Filters";
+import {
+  FiltersContextProvider,
+  FiltersProvider,
+} from "../../context/FiltersContext";
+import {
+  LocationFilter,
+  CheckBoxFilter,
+} from "../../components/Inputs/Filters";
 import { BurgerIcon } from "../../components/Icons";
+import useInfiniteScroll from "../../hooks/useInfiniteScroll";
+import SkeletonCardBusiness from "../../components/Category/SkeletonCardBusiness";
 
 const CategoryPage: FC<category> = (props) => {
   const { _id, imgBanner, subCategories, heading, title, description, slug } =
@@ -58,7 +79,6 @@ const CategoryPage: FC<category> = (props) => {
       []
     );
     setCharacteristics(characteristicsReduce);
-    
   }, [subCategories, _id]);
 
   return (
@@ -81,7 +101,7 @@ const CategoryPage: FC<category> = (props) => {
         <Slider {...settings} className="space-y-10">
           {subCategories?.length > 0 &&
             subCategories.map((item: subCategory) => (
-              <ItemSubCategory key={item._id} {...item} slugCategory={slug}  />
+              <ItemSubCategory key={item._id} {...item} slugCategory={slug} />
             ))}
         </Slider>
       </div>
@@ -89,7 +109,7 @@ const CategoryPage: FC<category> = (props) => {
       {/* Aside Filters */}
       <div className="xl:max-w-screen-lg 2xl:max-w-screen-xl gap-4 md:gap-10 mx-auto inset-x-0 grid md:grid-cols-7 2xl:grid-cols-5 w-full">
         <FiltersProvider>
-          <Filters optionsCheckbox={{characteristics}} />
+          <Filters optionsCheckbox={{ characteristics }} />
           <GridCards _id={_id} />
         </FiltersProvider>
       </div>
@@ -101,22 +121,50 @@ export default CategoryPage;
 
 const GridCards: FC<{ _id: string }> = ({ _id }) => {
   const { filters, setFilters } = FiltersContextProvider();
-  const query = {
+  const [limit, setLimit] = useState(9);
+  const [skip, setSkip] = useState(0);
+  const initialQuery = {
     query: queries.getAllBusiness,
-    variables: { criteria: { categories: _id } },
+    variables: { criteria: { categories: _id }, skip, limit },
   };
-  const [data, setData, loading, error, fetchy] = useFetch({ ...query });
+  const [data, setData, loading, error, fetchy] = useFetch(initialQuery);
 
+  const [isFetching, setIsFetching, stop] = useInfiniteScroll(getMoreFeed);
+
+  async function getMoreFeed() {
+    try {
+      if (skip >= data.total) {
+        stop.current = true;
+        return;
+      }
+      setSkip(skip + limit);
+      const additionalData = await fetchApi({
+        query: queries.getAllBusiness,
+        variables: {
+          criteria: { ...filters?.filters, categories: [_id] },
+          skip: skip + limit,
+          limit,
+        },
+      });
+
+      setData((old: { total: number; results: business[] }) => ({
+        total: additionalData.total,
+        results: [...old?.results, ...additionalData?.results],
+      }));
+    } catch (error) {
+      console.log(error);
+    } finally{
+      setIsFetching(false)
+    }
+  }
   useEffect(() => {
     setFilters({ type: "RESET_FILTER", payload: {} });
-    fetchy({ ...query });
+    fetchy(initialQuery);
   }, [_id]);
 
   useEffect(() => {
-    fetchy({
-      ...query,
-      variables: { criteria: { ...filters?.filters, categories: [_id] } },
-    });
+    setLimit(9);
+    setSkip(0);
   }, [filters]);
 
   return (
@@ -129,9 +177,20 @@ const GridCards: FC<{ _id: string }> = ({ _id }) => {
       </div>
       {!loading && !error && data?.results?.length > 0 && (
         <div className=" w-full grid md:grid-cols-3 2xl:grid-cols-4 md:gap-10 gap-y-24  ">
+          
           {data?.results.map((business: business) => (
-              <CardBusiness key={business._id} {...business} />
+            <CardBusiness key={business._id} {...business} />
           ))}
+          {isFetching && skip <= data.total  && (
+            <>
+            <SkeletonCardBusiness />
+            <SkeletonCardBusiness />
+            <SkeletonCardBusiness />
+            <SkeletonCardBusiness />
+            <SkeletonCardBusiness />
+            <SkeletonCardBusiness />
+            </>
+          )}
         </div>
       )}
       {loading && (
@@ -148,54 +207,64 @@ const GridCards: FC<{ _id: string }> = ({ _id }) => {
 };
 
 interface propsFilter {
-  optionsCheckbox : {
-    characteristics : characteristicSubCategory[]
-  }
+  optionsCheckbox: {
+    characteristics: characteristicSubCategory[];
+  };
 }
 
-const Filters : FC <propsFilter> = ({optionsCheckbox}) => {
-  const {characteristics} = optionsCheckbox
+const Filters: FC<propsFilter> = ({ optionsCheckbox }) => {
+  const { characteristics } = optionsCheckbox;
   const { filters, setFilters } = FiltersContextProvider();
-  
+
   const handleResetFilters = () => {
     setFilters({ type: "RESET_FILTER", payload: {} });
   };
 
-  const [open,setOpen] = useState(true)
-  const onClick = () =>{
-    setOpen(!open)
-  }
+  const [open, setOpen] = useState(true);
+  const onClick = () => {
+    setOpen(!open);
+  };
   return (
     <>
-      <button onClick={onClick} className="md:hidden flex ml-3 gap-6"><BurgerIcon/>Filtros para tus categorias</button>
+      <button onClick={onClick} className="md:hidden flex ml-3 gap-6">
+        <BurgerIcon />
+        Filtros para tus categorias
+      </button>
 
-    <aside  className="md:col-span-2 2xl:col-span-1 bg-white h-max w-full rounded-lg shadow " >
-      <div className={`md:block ${open?"hidden":"block"}`}>
-        <div  className="py-4 px-6 border-b border-base flex items-center justify-between gap-2 " >
-          <span className="flex items-center gap-2">
-            <p className="text-sm text-gray-500">Filtros activos</p>
-            <span className="rounded-full border border-primary text-xs text-primary w-6 h-6 flex items-center justify-center">
-              {filters?.total}
+      <aside className="md:col-span-2 2xl:col-span-1 bg-white h-max w-full rounded-lg shadow ">
+        <div className={`md:block ${open ? "hidden" : "block"}`}>
+          <div className="py-4 px-6 border-b border-base flex items-center justify-between gap-2 ">
+            <span className="flex items-center gap-2">
+              <p className="text-sm text-gray-500">Filtros activos</p>
+              <span className="rounded-full border border-primary text-xs text-primary w-6 h-6 flex items-center justify-center">
+                {filters?.total}
+              </span>
             </span>
-          </span>
-          <button
-            onClick={handleResetFilters}
-            className="px-2 w-max border border-primary focus:outline-none bg-white text-primary text-xs rounded-full py-1 hover:text-white hover:bg-primary transition"
-          >
-            Limpiar
-          </button>
+            <button
+              onClick={handleResetFilters}
+              className="px-2 w-max border border-primary focus:outline-none bg-white text-primary text-xs rounded-full py-1 hover:text-white hover:bg-primary transition"
+            >
+              Limpiar
+            </button>
+          </div>
+          <LocationFilter />
+          {characteristics?.map((item, idx) => (
+            <CheckBoxFilter
+              key={idx}
+              label={item.title}
+              options={item.items.map((item) => ({
+                label: item.title,
+                _id: item.title,
+              }))}
+            />
+          ))}
         </div>
-        <LocationFilter />
-        {characteristics?.map((item, idx)=> (
-          <CheckBoxFilter key={idx} label={item.title} options={item.items.map(item => ({label: item.title, _id: item.title}))} />
-        ))}
-      </div>
-      {/* <EventType title="Tipo de boda" list={List} />
+        {/* <EventType title="Tipo de boda" list={List} />
         <RangeFilter title={"Capacidad del banquete"} min={0} max={100} />
         <RangeFilter title={"Capacidad del cóctel"} min={0} max={100} />
         <RangeFilter title={"Hora de cierre"} min={0} max={24} />
         <ListFilter title={"Instalaciones"} list={ListF} /> */}
-    </aside>
+      </aside>
     </>
   );
 };
@@ -300,9 +369,12 @@ export const getStaticProps: GetStaticProps = async ({
     console.time("Category Page queries");
     const {
       results: [category],
-    } = await fetchApi({query : queries.getAllCategoryBusiness, variables: {
-      criteria: { slug: params.slug },
-    }});
+    } = await fetchApi({
+      query: queries.getAllCategoryBusiness,
+      variables: {
+        criteria: { slug: params.slug },
+      },
+    });
 
     console.timeEnd("Category Page queries");
     return {
@@ -319,7 +391,7 @@ export const getStaticProps: GetStaticProps = async ({
 
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
-    const { results } = await fetchApi({query :queries.getCategories});
+    const { results } = await fetchApi({ query: queries.getCategories });
     const paths = results.reduce(
       (acc: { params: { slug: string } }[], category: category) => {
         category.slug && acc.push({ params: { slug: category.slug } });

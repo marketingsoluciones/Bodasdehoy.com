@@ -125,7 +125,7 @@ const GridCards: FC<{ _id: string }> = ({ _id }) => {
   const [skip, setSkip] = useState(0);
   const initialQuery = {
     query: queries.getAllBusiness,
-    variables: { criteria: { categories: _id }, skip, limit },
+    variables: { criteria: { ...filters?.filters, categories: [_id] }, skip, limit },
   };
   const [data, setData, loading, error, fetchy] = useFetch(initialQuery);
 
@@ -165,6 +165,7 @@ const GridCards: FC<{ _id: string }> = ({ _id }) => {
   useEffect(() => {
     setLimit(9);
     setSkip(0);
+    fetchy(initialQuery)
   }, [filters]);
 
   return (
@@ -194,7 +195,7 @@ const GridCards: FC<{ _id: string }> = ({ _id }) => {
         </div>
       )}
       {loading && (
-        <div className="min-h-40 h-40 w-full grid place-items-center">
+        <div className="min-h-40 h-40 w-full grid place-items-center text-gray-700">
           <LoadingItem text={"Cargando"} size={"small"} />
         </div>
       )}

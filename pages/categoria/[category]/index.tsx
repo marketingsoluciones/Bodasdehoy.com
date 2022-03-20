@@ -1,39 +1,34 @@
 import Slider from "react-slick";
 import { FC, ReactNode, useState, useEffect, useRef } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { fetchApi, queries } from "../../utils/Fetching";
+import { fetchApi, queries } from "../../../utils/Fetching";
 import {
   business,
   category,
   characteristicSubCategory,
   subCategory,
-} from "../../interfaces";
-import {
-  AireLibreIcon,
-  EnLaCiudadIcon,
-  PlayaIcon,
-} from "../../components/Icons";
-import { useHover } from "../../hooks";
-import { createURL } from "../../utils/UrlImage";
+} from "../../../interfaces";
+import { useHover } from "../../../hooks";
+import { createURL } from "../../../utils/UrlImage";
 import {
   CardBusiness,
   HeaderCategory,
   ItemSubCategory,
-} from "../../components/Category";
-import useFetch from "../../hooks/useFetch";
-import { LoadingItem } from "../../components/Loading";
-import EmptyComponent from "../../components/Surface/EmptyComponent";
+} from "../../../components/Category";
+import useFetch from "../../../hooks/useFetch";
+import { LoadingItem } from "../../../components/Loading";
+import EmptyComponent from "../../../components/Surface/EmptyComponent";
 import {
   FiltersContextProvider,
   FiltersProvider,
-} from "../../context/FiltersContext";
+} from "../../../context/FiltersContext";
 import {
   LocationFilter,
   CheckBoxFilter,
-} from "../../components/Inputs/Filters";
-import { BurgerIcon } from "../../components/Icons";
-import useInfiniteScroll from "../../hooks/useInfiniteScroll";
-import SkeletonCardBusiness from "../../components/Category/SkeletonCardBusiness";
+} from "../../../components/Inputs/Filters";
+import { BurgerIcon } from "../../../components/Icons";
+import useInfiniteScroll from "../../../hooks/useInfiniteScroll";
+import SkeletonCardBusiness from "../../../components/Category/SkeletonCardBusiness";
 
 const CategoryPage: FC<category> = (props) => {
   const { _id, imgBanner, subCategories, heading, title, description, slug } =
@@ -91,6 +86,7 @@ const CategoryPage: FC<category> = (props) => {
               ? createURL(imgBanner?.i640)
               : "/placeholder/image.png"
           }
+          alt={title}
           className="w-full h-60 transform -mt-20 z-10 object-center object-cover"
         />
         <HeaderCategory {...props} />
@@ -110,7 +106,7 @@ const CategoryPage: FC<category> = (props) => {
       <div className="xl:max-w-screen-lg 2xl:max-w-screen-xl gap-4 md:gap-10 mx-auto inset-x-0 grid md:grid-cols-7 2xl:grid-cols-5 w-full">
         <FiltersProvider>
           <Filters optionsCheckbox={{ characteristics }} />
-          <GridCards _id={_id} />
+          <GridCards query={{categories : _id}} />
         </FiltersProvider>
       </div>
     </section>
@@ -119,13 +115,13 @@ const CategoryPage: FC<category> = (props) => {
 
 export default CategoryPage;
 
-const GridCards: FC<{ _id: string }> = ({ _id }) => {
+export const GridCards: FC<{ query: object }> = ({ query }) => {
   const { filters, setFilters } = FiltersContextProvider();
   const [limit, setLimit] = useState(9);
   const [skip, setSkip] = useState(0);
   const initialQuery = {
     query: queries.getAllBusiness,
-    variables: { criteria: { ...filters?.filters, categories: [_id] }, skip, limit },
+    variables: { criteria: { ...filters?.filters, ...query }, skip, limit },
   };
   const [data, setData, loading, error, fetchy] = useFetch(initialQuery);
 
@@ -141,7 +137,7 @@ const GridCards: FC<{ _id: string }> = ({ _id }) => {
       const additionalData = await fetchApi({
         query: queries.getAllBusiness,
         variables: {
-          criteria: { ...filters?.filters, categories: [_id] },
+          criteria: { ...filters?.filters, ...query },
           skip: skip + limit,
           limit,
         },
@@ -160,7 +156,7 @@ const GridCards: FC<{ _id: string }> = ({ _id }) => {
   useEffect(() => {
     setFilters({ type: "RESET_FILTER", payload: {} });
     fetchy(initialQuery);
-  }, [_id]);
+  }, [query]);
 
   useEffect(() => {
     setLimit(9);
@@ -213,7 +209,7 @@ interface propsFilter {
   };
 }
 
-const Filters: FC<propsFilter> = ({ optionsCheckbox }) => {
+export const Filters: FC<propsFilter> = ({ optionsCheckbox }) => {
   const { characteristics } = optionsCheckbox;
   const { filters, setFilters } = FiltersContextProvider();
 
@@ -260,11 +256,6 @@ const Filters: FC<propsFilter> = ({ optionsCheckbox }) => {
             />
           ))}
         </div>
-        {/* <EventType title="Tipo de boda" list={List} />
-        <RangeFilter title={"Capacidad del banquete"} min={0} max={100} />
-        <RangeFilter title={"Capacidad del cóctel"} min={0} max={100} />
-        <RangeFilter title={"Hora de cierre"} min={0} max={24} />
-        <ListFilter title={"Instalaciones"} list={ListF} /> */}
       </aside>
     </>
   );
@@ -275,92 +266,6 @@ interface propsEventType {
   list: { icon: ReactNode; title: string }[];
 }
 
-// const EventType: FC<propsEventType> = ({ title, list }) => {
-//   const [selected, setSelect] = useState<number>();
-//   return (
-//     <Accordion title={title}>
-//       <div className="w-full grid grid-cols-3 gap-2">
-//         {list.map((item: { title: string; icon: ReactNode }, idx: number) => (
-//           <div
-//             key={idx}
-//             className="w-full flex items-center justify-center flex-col"
-//           >
-//             <button
-//               onClick={() => setSelect(idx)}
-//               className={`${
-//                 selected === idx ? "text-primary" : "text-gray-200"
-//               } text-xs flex items-center justify-center  flex-col  gap-2 focus:outline-none cursor-pointer transition hover:text-primary `}
-//             >
-//               {item.icon}
-//               {item.title}
-//             </button>
-//           </div>
-//         ))}
-//       </div>
-//     </Accordion>
-//   );
-// };
-
-// interface propsRangeFilter {
-//   title: string;
-//   min: number;
-//   max: number;
-// }
-
-// const RangeFilter: FC<propsRangeFilter> = ({ title, min, max }) => {
-//   return (
-//     <Accordion title={title}>
-//       <div className="py-4 px-4">
-//         <RangeComponent min={min} max={max} />
-//       </div>
-//     </Accordion>
-//   );
-// };
-
-// interface propsListFilter {
-//   title: string;
-//   list: { title: string }[];
-// }
-
-// const ListFilter: FC<propsListFilter> = ({ title, list }) => {
-//   const [checked, setCheck] = useState<number[]>([]);
-
-//   const ActiveFilter = (idx: number) => {
-//     if (!checked.includes(idx)) {
-//       setCheck((old) => [...old, idx]);
-//     } else {
-//       setCheck((old) => old.filter((item) => item !== idx));
-//     }
-//   };
-
-//   const ItemList = ({ idx, item }: any) => {
-//     const [hoverRef, isHovered] = useHover();
-//     return (
-//       <li
-//         ref={hoverRef}
-//         className="text-gray-200 text-sm flex items-center gap-2 cursor-pointer"
-//         onClick={() => ActiveFilter(idx)}
-//       >
-//         {checked.includes(idx) || isHovered ? (
-//           <CheckIcon className="w-4 h-4" />
-//         ) : (
-//           <div className="w-4 h-4 border border-gray-200 rounded-full" />
-//         )}
-//         {item.title}
-//       </li>
-//     );
-//   };
-//   return (
-//     <Accordion title={title}>
-//       <ul className="flex flex-col gap-2">
-//         {list.map((item: any, idx: number) => (
-//           <ItemList key={idx} idx={idx} item={item} />
-//         ))}
-//       </ul>
-//     </Accordion>
-//   );
-// };
-
 export const getStaticProps: GetStaticProps = async ({
   params,
   ...rest
@@ -368,22 +273,22 @@ export const getStaticProps: GetStaticProps = async ({
   console.log(params, rest);
   try {
     console.time("Category Page queries");
-    const {
-      results: [category],
-    } = await fetchApi({
-      query: queries.getAllCategoryBusiness,
-      variables: {
-        criteria: { slug: params.slug },
-      },
-    });
-
+        const {
+          results: [category],
+        } = await fetchApi({
+          query: queries.getAllCategoryBusiness,
+          variables: {
+            criteria: { slug: params.category },
+          },
+        });
+        console.timeEnd("Category Page queries");
+        return {
+          props: category ?? {},
+        };
+    
+    } catch (error) {
     console.timeEnd("Category Page queries");
-    return {
-      props: category ?? {},
-    };
-  } catch (error) {
-    console.timeEnd("Category Page queries");
-    console.log(error);
+    //console.log(error);
     return {
       props: {},
     };
@@ -394,18 +299,18 @@ export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const { results } = await fetchApi({ query: queries.getCategories });
     const paths = results.reduce(
-      (acc: { params: { slug: string } }[], category: category) => {
-        category.slug && acc.push({ params: { slug: category.slug } });
+      (acc: { params: { category: string } }[], category: category) => {
+          category.slug && acc.push({ params: { category: category.slug } })
         return acc;
       },
       []
     );
     return {
-      paths: paths,
+      paths,
       fallback: "blocking",
     };
   } catch (error) {
-    console.log(error);
+    //console.log(error);
     return {
       paths: [],
       fallback: "blocking",

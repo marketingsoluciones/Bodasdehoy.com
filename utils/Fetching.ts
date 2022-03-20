@@ -125,10 +125,53 @@ type queries = {
   getOnePage: string;
   getAllCategoryPost: string;
   getSubcategoriesPost: string;
-  getOneSubcategoryPost: string
+  getOneSubcategoryPost: string;
+  getOneSubcategoryBusiness: string;
 };
 
 export const queries: queries = {
+  getOneSubcategoryBusiness: `query ($slug: String){
+    getOneSubCategoryBusiness(slug: $slug){
+      _id
+      slug
+      title
+      heading
+      description
+      imgMiniatura{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      imgBanner{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      icon{
+        _id
+        i1024
+        i800
+        i640
+        i320
+      }
+      characteristics{
+        _id
+        title
+        items{
+          _id
+          title
+        }
+      }
+      questions{
+        _id
+        title
+      }
+    }
+  }`,
   getOneSubcategoryPost: `query ($id : ID, $slug : String){
     getOneSubCategoryPost(_id: $id, slug:$slug){
       _id

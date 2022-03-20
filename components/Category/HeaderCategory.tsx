@@ -1,12 +1,12 @@
 import { FC } from "react";
-import { category } from "../../interfaces";
+import { category, subCategory } from "../../interfaces";
 import { capitalize } from "../../utils/Capitalize";
 import { ArrowIcon } from "../Icons";
 import IconButton from "../Inputs/IconButton";
 import { useRouter } from 'next/router';
 import { LoadingContextProvider } from "../../context";
 
-export const HeaderCategory: FC<category> = ({
+export const HeaderCategory: FC<category | subCategory> = ({
   heading,
   title,
   description,
@@ -17,7 +17,7 @@ export const HeaderCategory: FC<category> = ({
     
   return (
     <div className="bg-white relative overflow-hidden rounded-2xl max-w-screen-lg 2xl:max-w-screen-xl mx-auto inset-x-0 flex items-center justify-center p-4 relative -mt-12 shadow-md w-[95%] ">
-      <button onClick={() => router.back()} type="button" className="absolute hidden sm:flex left-5 text-primary hover:text-white border border-primary hover:bg-primary focus:ring-4 focus:ring-pink-200 font-medium rounded-lg text-sm px-3 py-2.5 text-center transition items-center gap-1 justify-center"><ArrowIcon className="w-5 h-5 rotate-180" /><h3 className="hidden md:block">Ir atras</h3></button>
+      {/* <button onClick={() => router.back()} type="button" className="absolute hidden sm:flex left-5 text-primary hover:text-white border border-primary hover:bg-primary focus:ring-4 focus:ring-pink-200 font-medium rounded-lg text-sm px-3 py-2.5 text-center transition items-center gap-1 justify-center"><ArrowIcon className="w-5 h-5 rotate-180" /><h3 className="hidden md:block">Ir atras</h3></button> */}
       <div className="flex flex-col justify-center items-center">
         <h1 className="font-semibold text-primary text-2xl capitalize z-10 relative ">
           {heading ?? title}

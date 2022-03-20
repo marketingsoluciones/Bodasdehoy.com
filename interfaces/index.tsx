@@ -15,6 +15,7 @@ export type subCategory = {
   slug : string
   description : string
   characteristics?: characteristicSubCategory[]
+  heading: string
 }
 
 export type category = {

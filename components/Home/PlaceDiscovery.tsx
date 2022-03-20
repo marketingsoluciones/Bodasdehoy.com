@@ -111,7 +111,7 @@ const PlaceCard: FC<subCategory> = memo(({ title, imgMiniatura, slug }) => {
   
 const router = useRouter()
   return (
-    <Link href={`/lugares-para-bodas/${slug}` ?? "/"} passHref>
+    <Link href={`/categoria/lugares-para-bodas/${slug}` ?? "/"} passHref>
     <div className="px-4 cursor-pointer">
       <img
         alt={title}

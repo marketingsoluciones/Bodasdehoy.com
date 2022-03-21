@@ -44,17 +44,9 @@ export const Footer: FC = () => {
           
           <div className="flex gap-4">
             {socialIcons.map((item,idx)=>(
-               
-                  <a href={item.link} target="_blank" ><Icon icon={item.icon}/></a>
-                
+                  <a key={idx} href={item.link} target="_blank" rel={"noreferrer"} ><Icon icon={item.icon}/></a>
             ))}
           </div>
-          {/* <div className="flex gap-4">
-            <Icon icon={<FacebookIcon />} />
-            <Icon icon={<InstagramIcon />} />
-            <Icon icon={<PinterestIcon />} />
-            <Icon icon={<YoutubeIcon />} />
-          </div> */}
           <div className="w-full">
             <Title title={"Información"} />
             <ul className="flex flex-col gap-1 pt-4 w-full">

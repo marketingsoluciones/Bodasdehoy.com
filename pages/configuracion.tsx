@@ -1,0 +1,79 @@
+import { Configuraciones } from "../components/perfil/CuadroDeAccion/Configuraciones";
+import { Favoritos } from "../components/perfil/CuadroDeAccion/Favoritos";
+import { Guardados } from "../components/perfil/CuadroDeAccion/Guardados";
+import { Mensajeria } from "../components/perfil/CuadroDeAccion/Mensajeria";
+import { MiPerfil } from "../components/perfil/CuadroDeAccion/MiPerfil";
+import { Notificaciones } from "../components/perfil/CuadroDeAccion/Notificaciones";
+import { PerfilFoto } from "../components/perfil/PerfilFoto";
+import { PerfilOpciones } from "../components/perfil/PerfilOpciones";
+import { FC, useState } from "react";
+import {
+  HeartIconOutline,
+  SettingsIconOutline,
+  StartIconOutline,
+  UserIcon,
+} from "../components/Icons";
+
+export type optionComponent = {
+  title: string;
+  icon: any;
+  component: any;
+};
+
+const Perfil = () => {
+  const [isActive, setActive] = useState(0);
+
+  const components: optionComponent[] = [
+    { title: "Mi perfil", icon: <UserIcon />, component: <MiPerfil /> },
+    {
+      title: "Notificaciones",
+      icon: <HeartIconOutline />,
+      component: <Notificaciones />,
+    },
+    {
+      title: "Favoritos",
+      icon: <StartIconOutline />,
+      component: <Favoritos />,
+    },
+    {
+      title: "Configuración",
+      icon: <SettingsIconOutline />,
+      component: <Configuraciones />,
+    },
+  ];
+
+  const handleClickOption = (idx: number) => {
+    setActive(idx);
+  };
+
+  return (
+    <section className="max-w-screen-lg mx-auto inset-x-0 grid grid-cols-1 md:grid-cols-4 md:pt-10 -mt-4 md:mt-0 md:gap-10">
+      <div className="flex flex-col items-center justify-start w-full text-sm gap-6">
+        <PerfilFoto />
+        <PerfilOpciones
+          components={components}
+          actived={isActive}
+          onClick={handleClickOption}
+        />
+      </div>
+      <div className="col-span-3">{components[isActive].component}</div>
+    </section>
+  );
+};
+export default Perfil;
+
+export const BlockConfiguration: FC<{ title: string; subtitle?: string }> = ({
+  title,
+  subtitle,
+  children,
+}) => {
+  return (
+    <div className="bg-white p-6 rounded-xl shadow flex flex-col gap-2">
+      <div>
+        <h2 className="text-primary font-bold text-lg">{title}</h2>
+        {subtitle && <small className="text-gray-600">{subtitle}</small>}
+      </div>
+      <div>{children}</div>
+    </div>
+  );
+};

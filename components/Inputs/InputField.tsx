@@ -8,6 +8,7 @@ interface propsField {
   autoComplete?: string;
   icon?: ReactNode;
   label?: string;
+  disabled?: boolean
 }
 export const InputField: FC<propsField> = ({
   icon = false,

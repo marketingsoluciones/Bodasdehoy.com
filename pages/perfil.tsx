@@ -1,42 +1,102 @@
-import { Configuraciones } from "../components/perfil/CuadroDeAccion/Configuraciones"
-import { Favoritos } from "../components/perfil/CuadroDeAccion/Favoritos"
-import { Guardados } from "../components/perfil/CuadroDeAccion/Guardados"
-import { Mensajeria } from "../components/perfil/CuadroDeAccion/Mensajeria"
-import { MiPerfil } from "../components/perfil/CuadroDeAccion/MiPerfil"
-import { Notificaciones } from "../components/perfil/CuadroDeAccion/Notificaciones"
-import { PerfilFoto } from "../components/perfil/PerfilFoto"
-import { PerfilOpciones } from "../components/perfil/PerfilOpciones"
-import { useState } from 'react';
+import { FC, MouseEventHandler } from "react";
+import { EditIcon } from "../components/Icons";
+import {AuthContextProvider} from '../context'
 
+const perfil = () => {
+    const { user } = AuthContextProvider()
 
-const Perfil = () => {
-    const [isActive, setActive] = useState(0)
-    const components = [
-        {component: <MiPerfil />, id: 0},
-        {component: <Notificaciones/>, id: 1},
-        {component: <Favoritos/>, id: 2},
-        {component: <Guardados/>, id: 3},
-        {component: <Mensajeria/>, id: 4},
-        {component: <Configuraciones/>, id: 5},
+    const ListaTabs = [
+        {title: "muro"},
+        {title: "amigos"},
+        {title: "visitas"},
+        {title: "favoritos"}
     ]
-    
-    const handleClickOption = (idx : number) => {
-        setActive(idx)
+
+    const MensajesMuro = [
+        {usuario: "Maria", mensaje: "Me encanta tu boda!!"}
+    ]
+
+    const handleClick = () => {
+      console.log("hola mundo")
     }
-    
-    return (
-        <section className="md:flex  justify-center max-w-screen-lg mx-auto md:inset-x-0 w-full mt-7"> 
-            <div className="flex justify-center md:flex-col md:w-1/5 md:justify-start  ">
-                <PerfilFoto/>
-                <div className="hidden md:block">
-                    <PerfilOpciones onClick={handleClickOption}/>
-                </div>                
+  return (
+    <>
+      <section className="w-full bg-base">
+       
+        <div className="max-w-screen-lg mx-auto inset-x-0 py-10 grid gap-10 font-display">
+          <div className="bg-white rounded-xl h-96 w-full shadow overflow-hidden relative">
+            <img alt={"1"} className="h-2/5 object-cover object-center w-full" src="/placeholder/image.png"/>
+              <EditIcon className="cursor-pointer transition hover:rotate-12 transform absolute top-4 right-4 text-primary w-6 h-6" />
+            <img alt={"2"} className="rounded-full p-1 bg-white h-40 w-40 object-cover absolute top-12 left-10" src="/placeholder/user.png" />
+            <div className="font-display pb-14 pt-16 px-10 leading-5 flex flex-col gap-1">
+             {!user ? <SkeletonHeader /> : (
+               <>
+               <h2 className="font-semibold text-xl text-primary">{user?.displayName}</h2>
+              <p className="font-regular text-md text-gray-600">{user.role && user?.role?.length > 0 && user?.role[0]}</p>
+              <p className="font-regular text-xs text-gray-600 flex gap-4 pt-2">{user?.city} <span className="font-semibold text-primary cursor-pointer hover:text-gray-700 transition">Informacion de contacto</span></p>
+              <div className="flex gap-6 pt-4">
+                <Button text="Seguir" variant={"primary"} onClick={handleClick} />
+                <Button text="Compartir perfil" variant={"inverse"} onClick={handleClick} />
+              </div>
+               </>
+             )}
             </div>
-            <div className="md:w-4/5">
-              {components[isActive].component}
-            </div>
+          </div>
+
+          <div className="bg-white rounded-xl h-max py-6 w-full shadow-lg overflow-hidden relative">
+            <svg className="absolute w-full h-1 top-0 bg-primary"/>
+            <EditIcon className="cursor-pointer transition hover:rotate-12 transform absolute top-4 right-4 text-primary w-6 h-6" />
+            <h2 className="text-xl text-primary px-10 py-2">Ultima Actividad</h2>
+            <p className="text-sm text-gray-500 px-10">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore quod quia sequi, assumenda sunt eius dicta eveniet eum. Soluta rem aliquid minima delectus nisi blanditiis impedit, deserunt voluptatibus incidunt quos.</p>
+
+          </div>
+        </div>
             
-        </section>
-    )
+      </section>
+      <style jsx>
+        {`
+          section {
+            min-height: calc(100vh - 9rem);
+          }
+
+        `}
+      </style>
+    </>
+  );
+};
+
+export default perfil;
+
+const variants = {
+  primary: `text-white bg-primary hover:text-primary hover:bg-color-base border border-primary`,
+  inverse: `text-primary bg-white border-primary border hover:text-white hover:bg-primary`
 }
-export default Perfil
+
+interface propsButton {
+  onClick : MouseEventHandler,
+  text: string,
+  variant: keyof typeof variants
+}
+const Button : FC <propsButton> = ({onClick, text, variant = "primary"}) => {
+  return (
+    <button
+    onClick={onClick}
+    className={`focus:outline-none rounded-xl px-4 py-2 transition text-sm ${variants[variant]}`}>
+      {text}
+    </button>
+  )
+}
+
+const SkeletonHeader = () => {
+  return (
+    <div className="flex flex-col gap-2 pt-2">
+      <div className="h-5 bg-slate-300 w-1/4 py-1 animate-pulse rounded-md"/>
+      <div className="h-5 bg-slate-300 w-1/6 py-1 animate-pulse rounded-md"/>
+      <div className="h-3 bg-slate-300 w-48 py-1 animate-pulse rounded-md"/>
+      <div className="flex gap-6 items-center pt-4">
+      <div className="h-8 bg-slate-300 rounded-full w-24 animate-pulse"/>
+      <div className="h-8 bg-slate-300 rounded-full w-32 animate-pulse"/>
+      </div>
+    </div>
+  )
+}

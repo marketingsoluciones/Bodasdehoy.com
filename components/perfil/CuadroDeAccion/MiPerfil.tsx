@@ -1,82 +1,144 @@
-import {Form,Formik} from "formik";
+import { updateEmail, updatePassword, updateProfile } from "firebase/auth";
+import { Form, Formik, useFormikContext, FormikValues } from "formik";
+import { useEffect, useState } from "react";
+import { AuthContextProvider } from "../../../context";
+import { auth } from "../../../firebase";
+import { BlockConfiguration } from "../../../pages/configuracion";
+import { EditIcon, IconExclamacion } from "../../Icons";
 import { ButtonComponent, InputField } from "../../Inputs";
 
-
 export const MiPerfil = () => {
-    const initialValues = {
-        Usuario:'',
-      };
-    const handleSubmit = () => { console.log({handleSubmit})};
+  const { user } = AuthContextProvider();
+  const initialValues = {
+    Usuario: "" + -+6,
+  };
+  const handleSubmit = () => {
+    console.log({ handleSubmit });
+  };
 
-      return (
-        <div className="space-y-5 mx-8 w-200"> {/* cuadro de datos */}
+  return (
+    <div className="flex flex-col w-full gap-6 container px-5 md:px-0 pt-10 md:pt-0">
+      <div className="ml-auto hidden md:block">
+        <button
+          className="bg-white text-primary border border-primary px-4 py-2 text-sm rounded-xl w-fit"
+          type="button"
+        >
+          Gestor de eventos
+        </button>
+      </div>
+      <Formik initialValues={{ email: user?.email }} onSubmit={() => {}}>
+        <DatosAcceso />
+      </Formik>
 
-            <div className=" hidden md:block"> 
-                <button className="bg-white text-primary border border-primary px-4 py-2 rounded-xl " color="primary" type="submit">Gestor de eventos</button>      
-            </div>
+    </div>
+  );
+};
 
-            <div className="bg-white p-7"> {/* cuadro de datos de acceso  */}
-                <h2 className="text-primary font-bold ml-3 mb-5 text-2xl">Datos de acceso</h2>
-                        <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                            <Form>
-                                <span>
-                                    <InputField
-                                        name={"Usuario"}
-                                        placeholder="Usuario"
-                                        type={"text"}
-                                    />
-                                </span>
-                            </Form>
-                        </Formik>
-                <small className="text-primary ml-4 mt-1 text-sm">Quiero Cambiar mi contraseña</small>
-            </div>
-            <div className="bg-white p-7">{/* Cuadro Del Formulario */}
+const DatosAcceso = () => {
+  const { user, setUser } = AuthContextProvider();
+  const { setFieldValue, values } =
+    useFormikContext<{ email: string; password: string, displayName : string }>();
+  const [canEditEmail, setCanEditEmail] = useState(false);
+  const [canEditPassword, setCanEditPassword] = useState(false);
+  const [canDisplayName, setCanDisplayName] = useState(false);
 
-                <h2 className="ml-3 text-primary font-bold text-2xl ">Datos de contacto</h2>
-                <h3 className="ml-3 mt-3 text-sm">Recibiras todas las novedades del portal en la direccion de email que hayas introducido.</h3>
+  useEffect(() => {
+    setFieldValue("email", user?.email);
+    setFieldValue("displayName", user?.displayName);
+  }, [user]);
 
-                <div> 
-                    <Formik initialValues={initialValues} onSubmit={handleSubmit}> 
-                        <Form className="flex flex-col justify-end">
-                            <div className="w-full p-3 space-y-3 ">
-                                <InputField
-                                    name={"Nombre"}
-                                    placeholder="Nombre y apellido"
-                                    type={"text"}
-                                /> 
-                                <InputField
-                                    name ={"Email"}
-                                    placeholder="Email"
-                                    type={"email"}
-                                />
-                                <div className="grid md:grid-cols-2 gap-4">
-                                    <InputField
-                                        name={"Vives"}
-                                        placeholder="Vives en"
-                                        type={"text"}
-                                    />
-                                    <InputField
-                                        name ={"Pais"}
-                                        placeholder="Pais"
-                                        type={"text"}
-                                    />
-                                    <InputField
-                                        name={"Date"}
-                                        placeholder="Nos casamos el"
-                                        type={"date"}
-                                    />
-                                    <InputField
-                                        name ={"Telefono"}
-                                        placeholder="Telefono"
-                                        type={"text"}
-                                    />
-                                </div>                                  
-                            </div>
-                            <ButtonComponent>Guardar</ButtonComponent>   
-                        </Form>
-                    </Formik>
-                </div>
-            </div>
+  const handleEditEmail = async () => {
+    if (canEditEmail && auth.currentUser) {
+      if(values.email !== ""){
+        try {
+          await updateEmail(auth?.currentUser, values?.email);
+          setCanEditEmail(!canEditEmail);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } else if (!canEditEmail) {
+      setCanEditEmail(!canEditEmail);
+    }
+  };
+
+  const handleEditPassword = async () => {
+    if (canEditPassword && auth.currentUser) {
+      try {
+        await updatePassword(auth.currentUser, values.password);
+        setCanEditPassword(!canEditPassword);
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (!canEditPassword) {
+      setCanEditPassword(!canEditPassword);
+    }
+  };
+
+  const handleEditDisplayName = async () => {
+    if (canDisplayName && auth.currentUser) {
+      try {
+        await updateProfile(auth.currentUser, {
+          displayName: values.displayName
+        });
+        setCanDisplayName(!canDisplayName);
+        setUser(old => ({...old, displayName: values.displayName}))
+      } catch (error) {
+        console.log(error);
+      }
+    } else if (!canDisplayName) {
+      setCanDisplayName(!canDisplayName);
+    }
+  }
+
+  return (
+    <BlockConfiguration title={"Datos de acceso"}>
+      <Form className="w-full flex flex-col gap-4">
+      <div className="w-full grid  flex items-center gap-2 relative">
+          <InputField
+            disabled={!canDisplayName}
+            label={"Nombre visible"}
+            name={"displayName"}
+            type={"text"}
+          />
+          <button
+            onClick={handleEditDisplayName}
+            className="absolute bg-primary px-2 py-1 text-white text-xs rounded-lg w-fit right-2 top-1/2"
+          >
+            {canDisplayName ? "Guardar" : "Editar"}
+          </button>
         </div>
-    )
-}
+        <div className="w-full grid flex items-center gap-2 relative">
+          <InputField
+            disabled={!canEditEmail}
+            label={"Correo electronico"}
+            name={"email"}
+            type={"text"}
+          />
+          <button
+            onClick={handleEditEmail}
+            className="absolute bg-primary px-2 py-1 text-white text-xs rounded-lg w-fit right-2 top-1/2"
+          >
+            {canEditEmail ? "Guardar" : "Editar"}
+          </button>
+        </div>
+        <div className="w-full grid  flex items-center gap-2 relative">
+          <InputField
+            disabled={!canEditPassword}
+            label={"Cambiar Contraseña"}
+            name={"password"}
+            placeholder={"**********"}
+            type={"text"}
+          />
+          <button
+            onClick={handleEditPassword}
+            className="absolute bg-primary px-2 py-1 text-white text-xs rounded-lg w-fit right-2 top-1/2"
+          >
+            {canEditPassword ? "Guardar" : "Editar"}
+          </button>
+        </div>
+        
+      </Form>
+    </BlockConfiguration>
+  );
+};

@@ -22,7 +22,7 @@ export const Tooltip : FC <propsTooltip> = ({ children, tooltipText }) => {
             onMouseLeave={handleMouseLeave}
         >
             <div
-                className="absolute whitespace-no-wrap bg-gradient-to-r from-black to-gray-700 text-white px-4 py-2 rounded flex items-center transition-all duration-150 text-xs"
+                className="absolute whitespace-no-wrap bg-gradient-to-r from-black to-gray-700 text-center  w-max text-white px-4 py-2 rounded flex items-center transition-all duration-150 text-xs"
                 style={{ bottom: "70%", left: "-50%", opacity: 0 }}
                 ref={tipRef}
             >

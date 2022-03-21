@@ -1,28 +1,44 @@
 import { BurbujaChat } from "./BurbujaChat";
+import {useState} from 'react';
+import { capitalize } from '../../../utils/Capitalize';
+import { Tooltip } from "../../Tooltip";
+import { BlockConfiguration } from "../../../pages/configuracion";
 
 export const Notificaciones = () =>{
-   
-
+    const [isActived, setActived] = useState(0)
+    const sections = [
+        {title: "no leídas"},
+        {title: "todas"},
+    ]
     return(
-        <div className="space-y-5 mx-8 rounded-lg ">   {/* cuerpo del cuadro de notificaciones */}
-
-            <div className="bg-white">{/* Contenedor de los datos*/}
-                <h2 className="ml-3 text-primary font-bold text-2xl p-7">Notificación</h2>
-
-                <div className="  flex flex-row border-t-2 border-b-2 ">{/* contenedor para botones  */}
-                    <button className="bg-none text-black px-4 py-2 rounded-xl ml-10" color="primary" type="submit">No Leídas</button>      
-                    <div className="border-l-2">
-                        <button className="bg-none text-grey px-4 py-2 rounded-xl ml-3" color="primary" type="submit">Leídas</button>      
-                    </div>
-                    
+      <BlockConfiguration title={"Notificaciones"}>
+                <div className=" flex border-t border-b border-color-base text-sm p-2 gap-2 ">
+                    {sections.map((section, idx) => (
+                        <button key={idx} onClick={() => setActived(idx)}
+                        className={`transition  px-3 py-1 rounded-xl ${isActived === idx ? "bg-primary text-white" : "text-gray-700 hover:bg-primary hover:text-white"}`} color="primary" type="submit">{section.title && capitalize(section.title)}</button>      
+                    ))}
                 </div>
-
-                <div className="p-7 h-screen overflow-hidden"> {/* contenedor de los mensajes */}
-                    <div className="border  flex flex-col overflow-auto h-3/4">
-                      <BurbujaChat/>
-                    </div>
+                <div className="grid grid-cols-1 gap-6 mt-6">
+                    <NotificationItem />
+                    <NotificationItem />
+                    <NotificationItem />
+                    <NotificationItem />
                 </div>
-            </div>
-        </div>
+        </BlockConfiguration>
     )
+}
+
+
+export const NotificationItem = () => {
+  return (
+    <div className="w-full bg-color-base h-20 rounded-xl flex items-center p-2 gap-3">
+        <img alt={""} className="w-14 h-14 rounded-full object-cover object-center border-2 border-white" src="/placeholder/user.png" />
+        <Tooltip tooltipText="Francisco Montilla">
+        <h2 className="text-xs truncate w-10 md:w-20">Francisco Montilla</h2>
+        </Tooltip>
+        <div className="w-full bg-white h-full rounded-xl text-xs md:text-sm p-3 overflow-auto no-scrollbar">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dicta, dolorum.
+        </div>
+    </div>
+  )
 }

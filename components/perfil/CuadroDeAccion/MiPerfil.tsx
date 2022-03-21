@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { AuthContextProvider } from "../../../context";
 import { auth } from "../../../firebase";
 import { BlockConfiguration } from "../../../pages/configuracion";
-import { EditIcon, IconExclamacion } from "../../Icons";
 import { ButtonComponent, InputField } from "../../Inputs";
 
 export const MiPerfil = () => {
@@ -17,7 +16,7 @@ export const MiPerfil = () => {
   };
 
   return (
-    <div className="flex flex-col w-full gap-6 container px-5 md:px-0 pt-10 md:pt-0">
+    <div className="flex flex-col w-full gap-6 container ">
       <div className="ml-auto hidden md:block">
         <button
           className="bg-white text-primary border border-primary px-4 py-2 text-sm rounded-xl w-fit"

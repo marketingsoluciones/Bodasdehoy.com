@@ -291,7 +291,7 @@ const HeaderListing: FC<propsHeaderListing> = ({
   totalReviews
 }) => {
   return (
-    <div className="lg:max-w-screen-lg mx-auto w-full inset-x-0 flex items-center justify-between px-5 sm:px-0">
+    <div className="lg:max-w-screen-lg mx-auto w-full inset-x-0 flex items-center justify-between px-5 sm:px-0 pt-10 md:pt-0">
       <div className="flex items-center gap-2">
         <img
           alt={businessName}

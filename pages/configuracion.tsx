@@ -56,7 +56,7 @@ const Perfil = () => {
           onClick={handleClickOption}
         />
       </div>
-      <div className="col-span-3">{components[isActive].component}</div>
+      <div className="col-span-3 p-5 md:p-0">{components[isActive].component}</div>
     </section>
   );
 };
@@ -70,7 +70,7 @@ export const BlockConfiguration: FC<{ title: string; subtitle?: string }> = ({
   return (
     <div className="bg-white p-6 rounded-xl shadow flex flex-col gap-2">
       <div>
-        <h2 className="text-primary font-bold text-lg">{title}</h2>
+        <h2 className="text-primary font-bold text-xl">{title}</h2>
         {subtitle && <small className="text-gray-600">{subtitle}</small>}
       </div>
       <div>{children}</div>

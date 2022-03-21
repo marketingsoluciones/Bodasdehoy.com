@@ -6,7 +6,7 @@ import { signInWithPopup, UserCredential } from "firebase/auth";
 import router from "next/router";
 import { GraphQL, fetchApi, queries } from '../../utils/Fetching';
 import { useToast } from "../../hooks/useToast";
-import { AuthContextProvider } from "../../context";
+import { AuthContextProvider, LoadingContextProvider } from "../../context";
 import { setCookie } from "../../utils/Cookies";
 
 interface propsRegisterQuestion {
@@ -14,7 +14,7 @@ interface propsRegisterQuestion {
 }
 export const RegisterQuestion: FC<propsRegisterQuestion> = ({ onClick }) => {
   return (
-    <h2 className={`font-light text-tertiary flex gap-2 items-center `}>
+    <h2 className={`font-light text-tertiary flex gap-2 items-center text-sm `}>
       ¿No dispones de una cuenta?
       <span
         className="text-primary font-semibold cursor-pointer hover:text-tertiary transition"
@@ -29,9 +29,11 @@ export const RegisterQuestion: FC<propsRegisterQuestion> = ({ onClick }) => {
 export const Providers: FC <any> = ({setStage}) => {
   const { setUser} = AuthContextProvider();
   const toast = useToast()
+  const {setLoading} = LoadingContextProvider()
 
   const handleClick = async (provider: any) => {
     try {
+      setLoading(true)
       // Autenticar con firebase
       const res: UserCredential = await signInWithPopup(auth, provider)
       // Actualizar estado con los dos datos
@@ -56,6 +58,8 @@ export const Providers: FC <any> = ({setStage}) => {
     } catch (error) {
       toast("error", JSON.stringify(error))
       console.log(error);
+    } finally{
+      setLoading(false)
     }
   };
 

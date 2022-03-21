@@ -8,8 +8,11 @@ import { fetchApi, queries } from '../utils/Fetching';
 import { business, fetchCategory, Post } from '../interfaces';
 import { AdsApp, FeaturedCompanies, Magazine, PlaceDiscovery, PodcastList } from '../components/Home';
 import RecommendCategories from '../components/Home/RecommendCategories';
-import { CommunityIcon, DownloadFileIcon, GuestAppIcon, InspirationIcon, Isologo, LogoFullColor, SearchIcon } from '../components/Icons';
-import { GetServerSideProps, GetServerSidePropsContext } from 'next';
+import { BurgerIcon, CommunityIcon, DownloadFileIcon, GuestAppIcon, InspirationIcon, Isologo, LogoFullColor, SearchIcon } from '../components/Icons';
+import { auth } from '../firebase';
+import { Sidebar } from '../components/Surface';
+import {useState} from 'react';
+import { SidebarContextProvider } from '../context';
 
 interface propsHome {
   business: business[];
@@ -20,10 +23,15 @@ interface propsHome {
 
 
 const Home: FC<propsHome> = (props) => {
+  const {showSidebar, setShowSidebar} = SidebarContextProvider()
   return (
     <section className="w-full">
-        <div className="mx-auto inset-x-0 w-max sm:hidden relative cursor-pointer -mt-10 pb-10  ">
+        <div className="mx-auto inset-x-0 w-full px-5 sm:hidden relative -mt-10 pb-10 flex items-center justify-between  ">
+          <button onClick={() => setShowSidebar(!showSidebar)} >
+          <BurgerIcon />
+          </button>
               <LogoFullColor className="h-auto w-48" />
+          <SearchIcon />
             </div>
       <div className="sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg banner  md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full">
         <Welcome />

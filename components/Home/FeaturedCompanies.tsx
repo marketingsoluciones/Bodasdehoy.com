@@ -65,7 +65,10 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({business}) => {
           {data?.map((item : business) => (
             <>
             {/* <CompanyCard key={item._id} data={item} /> */}
+            <div className='md:px-4'>
             <CardBusiness key={item._id} {...item} size={'lg'}/>
+
+            </div>
             </>
           ))}
         </Slider>

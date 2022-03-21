@@ -13,6 +13,13 @@ import {
   StartIconOutline,
   UserIcon,
 } from "../components/Icons";
+import PagesWithAuth from "../HOC/PagesWithAuth";
+import { ExitIcon } from '../components/Icons/index';
+import {AuthContextProvider, LoadingContextProvider} from '../context'
+import { autenticacion } from "../utils/Authentication";
+import { deleteCookie } from "../utils/Cookies";
+import { useRouter } from "next/router";
+import { useToast } from '../hooks/useToast';
 
 export type optionComponent = {
   title: string;
@@ -20,8 +27,12 @@ export type optionComponent = {
   component: any;
 };
 
-const Perfil = () => {
+const Configuration = () => {
   const [isActive, setActive] = useState(0);
+  const {setLoading} = LoadingContextProvider()
+  const {setUser} = AuthContextProvider()
+  const router = useRouter()
+  const toast = useToast()
 
   const components: optionComponent[] = [
     { title: "Mi perfil", icon: <UserIcon />, component: <MiPerfil /> },
@@ -46,10 +57,22 @@ const Perfil = () => {
     setActive(idx);
   };
 
+  const handleSignOut = async () => {
+      setLoading(true);
+      await autenticacion.SignOut()
+      setUser(null);
+      deleteCookie("token-bodas")
+      //localStorage.removeItem("auth");
+      await router.push("/");
+      toast("success", "Gracias por visitarnos, te esperamos luego 😀")
+      setLoading(false);
+  }
+
   return (
     <section className="max-w-screen-lg mx-auto inset-x-0 grid grid-cols-1 md:grid-cols-4 md:pt-10 -mt-4 md:mt-0 md:gap-10">
       <div className="flex flex-col items-center justify-start w-full text-sm gap-6">
         <PerfilFoto />
+        <button onClick={handleSignOut} className="bg-red-500 px-3 py-1 rounded text-white text-sm sm:hidden top-2 left-2 flex items-center gap-2"><ExitIcon/> Cerrar sesión</button>
         <PerfilOpciones
           components={components}
           actived={isActive}
@@ -60,7 +83,7 @@ const Perfil = () => {
     </section>
   );
 };
-export default Perfil;
+export default PagesWithAuth(Configuration);
 
 export const BlockConfiguration: FC<{ title: string; subtitle?: string }> = ({
   title,

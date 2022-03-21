@@ -9,7 +9,7 @@ import {
   useContext,
 } from "react";
 import { auth } from "../firebase";
-import { setCookie } from "../utils/Cookies";
+import { setCookie, deleteCookie } from '../utils/Cookies';
 import { GraphQL, fetchApi, queries } from '../utils/Fetching';
 
 export interface UserMax extends User {
@@ -46,6 +46,9 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
 
         // Setear en localStorage token JWT
         setCookie({nombre: "token-bodas", valor: (await user?.getIdTokenResult())?.token, dias: 1})
+      } else {
+        // Setear en localStorage token JWT
+        deleteCookie("token-bodas")
       }
     });
   }, []);

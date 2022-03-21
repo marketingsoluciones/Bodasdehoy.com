@@ -29,6 +29,7 @@ import {TransitionGroup, CSSTransition } from 'react-transition-group'
 import { useRouter } from 'next/router';
 import { ButtonClose } from "../Inputs";
 import { deleteCookie, getCookie } from "../../utils/Cookies";
+import { useToast } from '../../hooks/useToast';
 
 const initialSelected = {
   ["Lugares para bodas"]: false,
@@ -39,7 +40,7 @@ const initialSelected = {
 };
 
 export const Navigation: FC = () => {
-  const [showSidebar, setShowSidebar] = useState(false);
+  
   const [selected, setSelect] = useState<any>(initialSelected);
   const [state, setState] = useState<any>("");
   const [isSearch, setSearch] = useState(false)
@@ -77,10 +78,6 @@ export const Navigation: FC = () => {
 
   return (
     <>
-      <Sidebar
-        set={(act: boolean) => setShowSidebar(act)}
-        state={showSidebar}
-      />
       <header className="container max-w-screen-lg 2xl:max-w-screen-xl w-full px-3 sm:px-0 mx-auto inset-x-0 mt-3 absolute hidden sm:block ">
         {
           // @ts-ignore
@@ -99,12 +96,6 @@ export const Navigation: FC = () => {
          
          {!isSearch && (
            <>
-            <span
-            className="md:hidden "
-            onClick={() => setShowSidebar(!showSidebar)}
-          >
-            <BurgerIcon className="w-7 h-7 text-primary" />
-          </span>
           <Link href={"/"} passHref>
             <span className="relative cursor-pointer hover:opacity-95 transform hover:-translate-x-1 transition duration-700 ">
               <LogoFullColor className="h-auto w-40" />
@@ -255,11 +246,12 @@ const ProfileMenu = () => {
   const { setUser, user } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
   const router = useRouter()
+  const toast = useToast()
   
   const options : Option[] = [
     {
       title: "Mi perfil",
-      route: "/perfil",
+      route: "/configuracion",
       icon: <UserIcon />
     },
     {
@@ -282,6 +274,7 @@ const ProfileMenu = () => {
         deleteCookie("token-bodas")
         //localStorage.removeItem("auth");
         await router.push("/");
+        toast("success", "Gracias por visitarnos, te esperamos luego 😀")
         setLoading(false);
       },
     },
@@ -308,25 +301,7 @@ const ProfileMenu = () => {
       </ul>
       
     </div>
-    <style jsx global>
-        {`
-        .fade-enter {
-          opacity: 0;
-          transition: opacity 300ms;
-        }
-        .fade-enter-active {
-          opacity: 1;
-          transition: opacity 300ms;
-        }
-        .fade-exit {
-          opacity: 1;
-        }
-        .fade-exit-active {
-          opacity: 0;
-          transition: opacity 300ms;
-        }
-        `}
-      </style>
+   
     </>
   );
 };

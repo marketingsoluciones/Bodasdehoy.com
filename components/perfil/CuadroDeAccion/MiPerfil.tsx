@@ -5,6 +5,7 @@ import { AuthContextProvider } from "../../../context";
 import { auth } from "../../../firebase";
 import { BlockConfiguration } from "../../../pages/configuracion";
 import { ButtonComponent, InputField } from "../../Inputs";
+import { useToast } from '../../../hooks/useToast';
 
 export const MiPerfil = () => {
   const { user } = AuthContextProvider();
@@ -40,6 +41,7 @@ const DatosAcceso = () => {
   const [canEditEmail, setCanEditEmail] = useState(false);
   const [canEditPassword, setCanEditPassword] = useState(false);
   const [canDisplayName, setCanDisplayName] = useState(false);
+  const toast = useToast()
 
   useEffect(() => {
     setFieldValue("email", user?.email);
@@ -52,7 +54,9 @@ const DatosAcceso = () => {
         try {
           await updateEmail(auth?.currentUser, values?.email);
           setCanEditEmail(!canEditEmail);
+          toast("success", "Email actualizado con exito")
         } catch (error) {
+          toast("error", "Error al actualizar email")
           console.log(error);
         }
       }
@@ -66,7 +70,10 @@ const DatosAcceso = () => {
       try {
         await updatePassword(auth.currentUser, values.password);
         setCanEditPassword(!canEditPassword);
+        toast("success", "Contraseña actualizada con exito")
+        setFieldValue("password", "")
       } catch (error) {
+        toast("error", "Error al actualizar la contraseña")
         console.log(error);
       }
     } else if (!canEditPassword) {
@@ -82,7 +89,9 @@ const DatosAcceso = () => {
         });
         setCanDisplayName(!canDisplayName);
         setUser(old => ({...old, displayName: values.displayName}))
+        toast("success", "Nombre actualizado con exito")
       } catch (error) {
+        toast("success", "Error al actualizar el nombre")
         console.log(error);
       }
     } else if (!canDisplayName) {

@@ -1,5 +1,5 @@
 import { Formik, Form } from "formik";
-import { FC, useContext, Children, memo } from "react";
+import { FC, useContext, Children, memo, Dispatch, SetStateAction } from "react";
 import { DatePicker, InputField, SelectField } from "../../../Inputs";
 import {EmailIcon,EmailIcon as PasswordIcon,EmailIcon as UserForm,} from "../../../Icons";
 import {createUserWithEmailAndPassword,updateProfile,UserCredential,} from "@firebase/auth";
@@ -12,6 +12,7 @@ import { GraphQL, fetchApi, queries } from "../../../../utils/Fetching";
 import SelectFieldCoutries from "../../../Inputs/SelectFieldCoutries";
 import { auth } from "../../../../firebase";
 import { setCookie } from '../../../../utils/Cookies';
+import InputCity from "../../../Inputs/InputCity";
 
 // Interfaces para el InitialValues del formulario de registro
 interface userInitialValuesPartial {
@@ -59,9 +60,11 @@ yup.setLocale({
 */
 interface propsFormRegister {
   whoYouAre: string;
+  setStageRegister: Dispatch<SetStateAction<number>>
+  stageRegister : number
 }
 
-const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
+const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stageRegister }) => {
   const { setUser, user } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
 
@@ -162,7 +165,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
   return (
     <>
       <FormikStepper handleSubmit={handleSubmit}>
-        <Form className="md:w-2/3 text-gray-200 md:grid md:grid-cols-2 md:gap-6 space-y-5 md:space-y-0 flex flex-col">
+        <Form className="w-full text-gray-200 md:grid md:grid-cols-2 md:gap-6 space-y-5 md:space-y-0 flex flex-col">
           {(() => {
             if (whoYouAre.toLowerCase() !== "empresa") {
               if (!user?.uid) {
@@ -206,13 +209,23 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre }) => {
               }
             }
           })()}
-
+<div className="flex items-center w-fit col-span-2 gap-6 mx-auto inset-x-0 ">
+          <button
+            type={"button"}
+            disabled={stageRegister === 0}
+            onClick={() => setStageRegister(old => old -1)}
+            className=" col-span-2 bg-gray-400  rounded-full px-10 py-2 text-white font-medium mx-auto inset-x-0 hover:bg-tertiary transition"
+          >
+            Atras
+          </button>
           <button
             type={"submit"}
-            className=" col-span-2 bg-primary rounded-full px-10 py-2 text-white font-medium w-max mx-auto inset-x-0 hover:bg-tertiary transition"
+            className=" col-span-2 bg-primary rounded-full px-10 py-2 text-white font-medium mx-auto inset-x-0 hover:bg-tertiary transition"
           >
             Registrar
           </button>
+
+</div>
         </Form>
       </FormikStepper>
       <style jsx>
@@ -301,12 +314,12 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
         </div>
 
         <div className="w-full relative ">
-          <InputField
-            name="city"
-            type="text"
-            autoComplete="off"
-            label={"Ciudad"}
+          <InputCity 
+          name={"city"}
+          label={"Ciudad"}
+          type="text"
           />
+          
         </div>
 
         <div className="w-full relative ">

@@ -15,11 +15,13 @@ import { Icons } from "./Navigation";
 import { Sidebar } from "./";
 import { AuthContextProvider, ChatContextProvider } from "../../context";
 import Link from "next/link";
+import { useToast } from '../../hooks/useToast';
 
 export const NavigationMobile = () => {
   const [showSidebar, setShowSidebar] = useState(false);
   const { user } = AuthContextProvider();
   const {setShow, show} = ChatContextProvider()
+  const toast = useToast()
   interface button {
     icon: any;
     route: string;
@@ -32,15 +34,11 @@ export const NavigationMobile = () => {
     },
     {
       icon: <PlusCircle className="w-10 h-10 text-gray-800" />,
-      route: "/empresa/crear-empresa",
+      route: user?.role && user?.role?.length > 0 && user?.role[0] === "empresa" ? "/empresa/crear-empresa" : "/categoria/lugares-para-bodas",
     },
   ];
   return (
     <>
-      <Sidebar
-        set={(act: boolean) => setShowSidebar(act)}
-        state={showSidebar}
-      />
       <div className="bg-white fixed bottom-0 z-50 w-full px-6 py-4 sm:hidden flex items-center justify-between gap-1 text-gray-400">
         {buttons.map((item, idx) => (
           <Link key={idx} href={item.route} passHref>
@@ -48,7 +46,13 @@ export const NavigationMobile = () => {
           </Link>
         ))}
 
-        <button onClick={() => setShow(!show)}>
+        <button onClick={() => {
+          if(user){
+            setShow(!show)
+          } else {
+            toast("warning", "Debes iniciar sesión para ver tus chats")
+          }
+        }}>
           <MessageIcon className="w-8 h-8" />
         </button>
 
@@ -59,7 +63,7 @@ export const NavigationMobile = () => {
         </button>
             </Link>
         ) : (
-          <Link href={"/perfil"} passHref>
+          <Link href={"/configuracion"} passHref>
             <button>
               <img
                 alt={user?.displayName ?? "nombre"}

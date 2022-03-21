@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import { DocsIcon, IconError } from "../../components/Icons";
+import { DocsIcon } from "../../components/Icons";
 import { GraphQL } from '../../utils/Fetching';
 import { SectionForm } from '../empresa/crear-empresa';
 const index = ({params} : {params: any}) => {

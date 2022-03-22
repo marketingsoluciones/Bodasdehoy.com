@@ -1,4 +1,4 @@
-import { FC, MouseEventHandler, useState } from 'react';
+import { Dispatch, FC, MouseEventHandler, SetStateAction, useState } from 'react';
 import { LogoFullColor } from '../../../Icons/';
 import FormRegister from './FormRegister';
 
@@ -8,8 +8,9 @@ import FormRegister from './FormRegister';
 */
 interface propsFirstStep {
   value: FunctionStringCallback;
+  setStageRegister: Dispatch<SetStateAction<number>>
 }
-export const FirstStep: FC<propsFirstStep> = ({ value }) => {
+export const FirstStep: FC<propsFirstStep> = ({ value, setStageRegister }) => {
   const [select, setSelect] = useState<string>("");
 
   // Tipo de dato para definir opciones
@@ -46,7 +47,10 @@ export const FirstStep: FC<propsFirstStep> = ({ value }) => {
             ? "bg-gray-200"
             : "bg-primary hover:bg-tertiary transition"
         }`}
-        onClick={() => value(select)}
+        onClick={() => {
+          value(select)
+          setStageRegister(old => old + 1)
+        }}
         disabled={select === ""}
       >
         Siguiente
@@ -118,6 +122,8 @@ const Option: FC<propsOption> = ({ icon, title, onClick, color = false }) => {
 */
 interface propsSecondStep {
   whoYouAre: string;
+  stageRegister : number;
+  setStageRegister : Dispatch<SetStateAction<number>>
 }
 export const SecondStep: FC<propsSecondStep> = (props) => {
   return (

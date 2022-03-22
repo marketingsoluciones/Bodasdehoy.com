@@ -39,7 +39,7 @@ const CategoryPage: FC<category> = (props) => {
     infinite: true,
     speed: 200,
     slidesToShow: 3,
-    arrows: true,
+    arrows: false,
     centerMode: true,
     responsive: [
       {
@@ -165,15 +165,15 @@ export const GridCards: FC<{ query: object }> = ({ query }) => {
   }, [filters]);
 
   return (
-    <div className="md:col-span-5 2xl:col-span-4">
-      <div className="flex items-center justify-start gap-4 px-5 py-5">
+    <div className="md:col-span-5 2xl:col-span-4 w-full">
+      <div className="flex items-center justify-start gap-4 px-5 py-5 w-full">
         <p className="text-sm text-gray-500 ">
           Resultados encontrados: {data?.total ?? 0}
         </p>
         {/* {JSON.stringify(filters)} */}
       </div>
       {!loading && !error && data?.results?.length > 0 && (
-        <div className=" w-full grid md:grid-cols-3 2xl:grid-cols-4 md:gap-10 gap-y-24  ">
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-6 px-5 overflow-hidden   ">
           
           {data?.results.map((business: business) => (
             <CardBusiness key={business._id} {...business} />
@@ -223,9 +223,9 @@ export const Filters: FC<propsFilter> = ({ optionsCheckbox }) => {
   };
   return (
     <>
-      <button onClick={onClick} className="md:hidden flex ml-3 gap-6">
+      <button onClick={onClick} className="md:hidden flex px-5 gap-3 text-sm items-center text-gray-700">
         <BurgerIcon />
-        Filtros para tus categorias
+        Filtrar
       </button>
 
       <aside className="md:col-span-2 2xl:col-span-1 bg-white h-max w-full rounded-lg shadow ">

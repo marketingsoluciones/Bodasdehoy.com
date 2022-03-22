@@ -54,7 +54,7 @@ const FormLogin: FC = () => {
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-      <Form className=" text-gray-200 flex flex-col gap-4 py-4 w-3/4">
+      <Form className=" text-gray-200 flex flex-col gap-4 py-4 w-full md:w-3/4">
         <span className="w-full relative ">
           <InputField label={"Correo electronico"} name="identifier" placeholder="jhondoe@gmail.com" type="email" icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto text-gray-500" />} />
           

@@ -70,7 +70,7 @@ export const AdsApp = () => {
 interface propsFeautre {
   item: string;
 }
-const Feature: FC<propsFeautre> = memo(({ item }) => {
+export const Feature: FC<propsFeautre> = memo(({ item }) => {
   const [hoverRef, isHovered] = useHover();
   return (
     <div

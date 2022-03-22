@@ -19,7 +19,7 @@ export const LastestArticles: FC<{ data: Partial<Post>[] }> = ({
     <div className="col-span-2 w-full pb-6 ">
       <h3 className="text-lg text-primary font-semibold">Ultimos articulos</h3>
       <div className="wrapper transition">
-      <div className="grid grid-cols-2 w-full gap-y-16 grid-rows-1 ">
+      <div className="grid md:grid-cols-2 w-full gap-y-16 grid-rows-1 ">
          {posts?.map((item, idx) => (
            <PostComponent key={idx} {...item} />
          ))}

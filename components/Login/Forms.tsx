@@ -10,7 +10,7 @@ interface propsLogin {
 export const Login: FC<propsLogin> = ({ setStage }) => {
   return (
     <>
-      <div className="flex flex-col gap-2 items-center justify-center">
+      <div className="flex flex-col gap-2 items-center justify-center w-full">
         <LogoFullColor className="w-auto h-10" />
       </div>
       <Providers setStage={setStage} />
@@ -23,13 +23,23 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
 
 export const Register: FC<propsLogin> = ({ setStage }) => {
   const [whoYouAre, setWhoYouAre] = useState<string>("");
+  const [stageRegister, setStageRegister] = useState(0)
   return (
-    <> 
-      {whoYouAre == "" ? (
-        <FirstStep value={setWhoYouAre} />
-      ) : (
-        <SecondStep whoYouAre={whoYouAre} />
-      )}
+    <>
+    {(() => {
+      switch (stageRegister) {
+        case 0:
+          return <FirstStep setStageRegister={setStageRegister}  value={setWhoYouAre} />
+          break;
+        case 1:
+          return <SecondStep setStageRegister={setStageRegister} stageRegister={stageRegister}  whoYouAre={whoYouAre} />
+          break;
+      
+        default:
+          break;
+      }
+    })()}
+ 
       <h2
         className={`font-light text-tertiary flex gap-2 items-center text-sm `}
       >

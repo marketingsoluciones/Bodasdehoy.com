@@ -29,7 +29,9 @@ const Article : FC <Partial<OnePost>> = (props) => {
   return (
     <section className="w-full flex flex-col items-center mt-3 ">
       <div className="max-w-screen-lg mx-auto inset-x-0 px-5 md:px-0">
+        <span className="hidden md:block">
         <BreadCumbs />
+        </span>
         <Banner {...props} />
         <div className="grid md:grid-cols-3 w-full gap-6 py-8">
           <div className="md:col-span-2 bg-white  rounded-xl p-8 grid grid-cols-6">

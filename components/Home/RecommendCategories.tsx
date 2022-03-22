@@ -67,7 +67,7 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
         secondary={"para tu boda"}
         size={"xl"}
       />
-      <div className="w-full py-10 mx-auto pl-10 md:pl-0 overflow-hidden text-white">
+      <div className="w-full py-10 mx-auto  md:pl-0 overflow-hidden text-white">
         <Slider {...settings}>
           {categories &&
             categories.length > 0 &&
@@ -102,7 +102,7 @@ const Category: FC<Partial<category>> = memo(({ icon, title, slug }) => {
     <>
     <div
       ref={hoverRef}
-      className={`md:w-28 md:h-28 w-20 h-20 rounded-full bg-primary hover:bg-color-base transition duration-300 flex items-center justify-center p-3 relative`}
+      className={`md:w-28 md:h-28 w-20 h-20 rounded-full bg-primary hover:bg-color-base transition duration-300 flex items-center justify-center p-3 relative mx-auto`}
     >
       
       <svg className={` ${isHovered ? "hidden" : ""} transition duration-200 w-1/2 h-1/2`}>       

@@ -15,6 +15,10 @@ const sizes = {
     dimensions:  "h-80 w-60",
     fontSize: "text-md"
   },
+  sm : {
+    dimensions: "w-48 h-fit",
+    fontSize: "text-sm"
+  }
 }
 
 
@@ -35,10 +39,10 @@ export const CardBusiness: FC<propsCardBusiness> = ({
   const router = useRouter()
   
   return (
-    <div ref={hoverRef} onClick={() => router.push(`/empresa/${slug}`)} className={`rounded-xl h-full w-96 md:h-80 md:w-60  transition cursor-pointer mx-auto inset-x-0 mb-40 md:mb-0 `}>
+    <div ref={hoverRef} onClick={() => router.push(`/empresa/${slug}`)} className={`rounded-xl h-fit w-full transition-all duration-500 cursor-pointer mx-auto inset-x-0  md:mb-0 `}>
       
       <img
-        className={`md:h-2/3 h-full rounded-xl w-full relative object-cover object-center transition ${isHovered ? "opacity-90" : "opacity-100"}`}
+        className={`md:h-60 rounded-xl w-full relative object-cover object-center transition-all ${isHovered ? "opacity-90" : "opacity-100"}`}
         src={
           imgMiniatura?.i640
             ? createURL(imgMiniatura.i640)
@@ -48,9 +52,9 @@ export const CardBusiness: FC<propsCardBusiness> = ({
       />
       
       <div
-        className={`bg-white overflow-hidden shadow rounded-xl md:-mt-16 -mt-10 p-6 flex h-max flex-col  z-20 relative  ${
+        className={`bg-white transition-[height] overflow-hidden shadow rounded-xl md:-mt-16 -mt-10 p-6 flex h-max flex-col  z-20 relative  ${
           isHovered ? " -mt-16" : " "
-        } transition-all duration-500`}
+        } `}
       >
         {promocion && (
           <div className="text-white bg-primary px-4 text-xs absolute top-0 left-5 rounded-full transform -translate-y-1/2 py-1">

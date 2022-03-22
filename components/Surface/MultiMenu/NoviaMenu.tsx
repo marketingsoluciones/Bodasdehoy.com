@@ -1,32 +1,41 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import { Promo } from ".";
+import { subCategory } from "../../../interfaces";
+import { fetchingData } from "./MultiMenu";
+import { capitalize } from '../../../utils/Capitalize';
 
 export const NoviaMenu: FC = () => {
-  const List = [
-    { title: "Vestidos de novia", route: "/" },
-    { title: "Belleza para novias", route: "/" },
-    { title: "Joyeria", route: "/" },
-    { title: "Complementos", route: "/" },
-    { title: "Trajes de fiesta", route: "/" },
-  ];
+  const [subCategories, setSubcategories] = useState<subCategory[]>([]);
+  
+  useEffect(() => {
+    const dataLocalStorage = localStorage.getItem('dataMenu')
+    if(!dataLocalStorage || !JSON.parse(dataLocalStorage).novias){
+        fetchingData("novias")
+        .then(data => data && setSubcategories(data))
+        .catch(error => console.log(error))
+    } else {
+        const {novias} = JSON.parse(dataLocalStorage)
+        novias && setSubcategories(novias)
+    }
+  }, []);
+
+  
   return (
-    <div className="max-w-screen-lg px-24 mx-auto inset-x-0 p-6">
-      <h2 className="text-primary text-semibold py-2">Novias</h2>
-      <div className="grid grid-cols-6">
-        <ul className="col-span-4 grid grid-cols-3 text-sm">
-          {List.map((item, idx) => (
-            <Link key={idx} href={item.route} passHref>
-              <li className="text-gray-300 hover:text-tertiary cursor-pointer">
-                {item.title}
-              </li>
-            </Link>
-          ))}
-        </ul>
-        <div className="col-span-2">
+    <>
+      
+      <div className="grid grid-cols-3">
+      <ul className="col-span-2 grid grid-cols-3 gap-2 w-full text-gray-500">
+        {subCategories.map((item) => (
+          <Link key={item?._id} href={`/categoria/novias/${item.slug}`} passHref>
+          <li className={"hover:text-tertiary hover:font-semibold cursor-pointer w-max"} >{item?.title && capitalize(item.title)}</li>
+          </Link>
+        ))}
+      </ul>
+        <div>
           <Promo />
         </div>
       </div>
-    </div>
+    </>
   );
 };

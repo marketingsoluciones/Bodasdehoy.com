@@ -29,14 +29,14 @@ export const BreadCumbs: FC<propsBreadCumbs> = ({ className }) => {
       return { crumb: path, href: "/" + arr.slice(0, i + 1).join("/") };
     });
     setLevels(pathArray);
-  }, []);
+  }, [router]);
 
   return (
     <>
       <div
-        className={`lg:max-w-screen-lg mx-auto inset-x-0 flex items-center w-full text-sm text-gray-500 capitalize font-light py-4 w-full hidden sm:flex`}
+        className={`lg:max-w-screen-lg mx-auto inset-x-0 flex items-center w-full text-sm text-gray-500 capitalize font-light py-4 w-full sm:flex`}
       >
-        <nav className="flex" aria-label="Breadcrumb">
+        <nav className="flex w-full" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
             <li className="inline-flex items-center">
               <Link href="/">

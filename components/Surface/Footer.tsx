@@ -35,7 +35,7 @@ export const Footer: FC = () => {
   ]
 
   return (
-    <div className="hidden md:block bg-color-base w-full pb-8 pt-10 container mx-auto inset-x-0 max-w-screen-lg 2xl:max-w-screen-xl">
+    <div className="hidden md:block bg-color-base w-full pb-8 pt-10 container mx-auto inset-x-0 max-w-screen-lg 2xl:max-w-screen-xl w-full">
       <div className="max-w-screen-lg 2xl:max-w-screen-2xl mx-auto inset-x-0">
         <div className="border-b border-primary pt-10 pb-8">
           <img src="/logo.webp" alt={"Logo bodasdehoy.com"} className="h-7 object-contain object-center" />
@@ -44,17 +44,9 @@ export const Footer: FC = () => {
           
           <div className="flex gap-4">
             {socialIcons.map((item,idx)=>(
-               
-                  <a href={item.link} target="_blank" ><Icon icon={item.icon}/></a>
-                
+                  <a key={idx} href={item.link} target="_blank" rel={"noreferrer"} ><Icon icon={item.icon}/></a>
             ))}
           </div>
-          {/* <div className="flex gap-4">
-            <Icon icon={<FacebookIcon />} />
-            <Icon icon={<InstagramIcon />} />
-            <Icon icon={<PinterestIcon />} />
-            <Icon icon={<YoutubeIcon />} />
-          </div> */}
           <div className="w-full">
             <Title title={"Información"} />
             <ul className="flex flex-col gap-1 pt-4 w-full">

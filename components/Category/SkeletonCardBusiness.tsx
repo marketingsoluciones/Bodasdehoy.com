@@ -1,8 +1,8 @@
 const SkeletonCardBusiness = () => {
   return (
-    <div className="rounded-xl h-full w-96 md:h-80 md:w-60 transition mx-auto inset-x-0 mb-40 md:mb-0 ">
+    <div className="rounded-xl h-fit w-full transition-all duration-500 cursor-pointer mx-auto inset-x-0  md:mb-0 ">
       <div
-        className={`md:h-2/3 h-full rounded-xl w-full relative object-cover object-center transition bg-slate-300 animate-pulse`}
+        className={`h-60 h-full rounded-xl w-full relative object-cover object-center transition bg-slate-300 animate-pulse`}
       />
 
       <div

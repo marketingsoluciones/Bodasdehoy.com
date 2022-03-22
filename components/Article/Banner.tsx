@@ -8,9 +8,9 @@ import { createSrcSet } from '../../utils/CreateSrcSet';
 
 export const Banner : FC <Partial<OnePost>> = ({authorUsername, subTitle,imgMiniatura, title}) => {
   return (
-    <div className="w-full relative">
+    <div className="w-full relative -mt-16 md:mt-0">
       <div className="relative w-full flex items-center justify-end h-full overflow-hidden pb-28 md:pb-0 ">
-        <div className="w-5/6 md:w-1/2 p-8 bg-white absolute md:top-0 my-auto md:inset-y-0 bottom-0  h-max left-0 rounded-xl">
+        <div className="w-5/6 mx-auto md:mx-0 inset-x-0 md:w-1/2 p-8 bg-white absolute md:top-0 my-auto md:inset-y-0 bottom-0  h-max left-0 rounded-xl">
           <h1 className={`text-tertiary text-xl font-semibold border-b pb-4 border-primary`}>
             {title}
           </h1>
@@ -21,7 +21,7 @@ export const Banner : FC <Partial<OnePost>> = ({authorUsername, subTitle,imgMini
         </div>
         <img
           alt={"mascara"}
-          className="w-5/6 md:w-3/5 bg-gray-300 h-80 md:h-96 rounded-xl object-cover object-center"
+          className="w-full md:w-3/5 bg-gray-300 h-80 md:h-96 rounded-xl object-cover object-center"
           src={createURL(imgMiniatura?.i640)}
           srcSet={createSrcSet(imgMiniatura)}
         />

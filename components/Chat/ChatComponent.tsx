@@ -144,16 +144,7 @@ const ListChats: FC<propsListChats> = ({ show, setShow }) => {
           id={"listConversation"}
           className="flex flex-col overflow-auto h-[19rem] no-scrollbar"
         >
-          {chats?.results?.length > 0 ? (
-            [
-              ...chats.results,
-              ...chats.results,
-              ...chats.results,
-              ...chats.results,
-              ...chats.results,
-              ...chats.results,
-              ...chats.results,
-            ].map((item: Chat, idx: number) => (
+          {chats?.results?.length > 0 ? chats?.results?.map((item: Chat, idx: number) => (
               <ConversationItem
                 key={idx}
                 {...item}
@@ -165,7 +156,7 @@ const ListChats: FC<propsListChats> = ({ show, setShow }) => {
                 }
               />
             ))
-          ) : (
+           : (
             <div className="text-primary h-full w-full flex items-center justify-center top-0 left-0 bg-white">
               <EmptyComponent text={"No hay chats"} />
             </div>

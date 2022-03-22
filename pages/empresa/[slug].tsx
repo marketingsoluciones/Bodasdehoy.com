@@ -108,7 +108,7 @@ const Listing: FC<business> = (props) => {
 
       <div
         id={"listing"}
-        className="mx-auto inset-x-0 flex flex-col gap-6 "
+        className="mx-auto inset-x-0 flex flex-col gap-6 px-5 "
       >
         <BreadCumbs />
         {/* <div className="hidden sm:block mx-auto inset-x-0 max-w-screen-lg w-full">
@@ -122,7 +122,7 @@ const Listing: FC<business> = (props) => {
           totalReviews={totalReviews}
           averageTotal={averageTotal}
         />
-        <div className="md:bg-white w-full px-5">
+        <div className="md:bg-white w-full">
           <div className="lg:max-w-screen-lg inset-x-0 mx-auto w-full grid md:grid-cols-3 gap-10 ">
             <section className="w-full md:col-span-2">
               <img
@@ -291,7 +291,7 @@ const HeaderListing: FC<propsHeaderListing> = ({
   totalReviews
 }) => {
   return (
-    <div className="lg:max-w-screen-lg mx-auto w-full inset-x-0 flex items-center justify-between px-5 sm:px-0 pt-10 md:pt-0">
+    <div className="lg:max-w-screen-lg mx-auto w-full inset-x-0 flex items-center justify-between  pt-10 md:pt-0">
       <div className="flex items-center gap-2">
         <img
           alt={businessName}

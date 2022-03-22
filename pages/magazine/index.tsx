@@ -34,7 +34,7 @@ const Magazine : NextPage <propsMagazine> = (props) => {
    
   
   return (
-    <section className="w-full pt-4 md:pt-8 grid gap-6">
+    <section className="w-full -mt-6 md:mt-0 md:pt-8 grid gap-6">
       <div className="max-w-screen-lg mx-auto inset-x-0 grid gap-6 w-full ">
         <h1 className="text-5xl md:text-6xl  font-title text-primary w-full text-center">
           Magazine
@@ -49,7 +49,7 @@ const Magazine : NextPage <propsMagazine> = (props) => {
             secondary={"para tu boda"}
             size={"xl"}
           />
-          <GridPost data={[]}  />
+          <GridPost data={fivePost}  />
 
         </div>
       </div>

@@ -23,9 +23,11 @@ export const Magazine: FC<propsMagazine> = ({ posts: data = [], categories }) =>
   return (
     <div className="w-full bg-color-base py-10 md:py-20 relative px-5">
       <div className="max-w-screen-lg mx-auto inset-x-0">
+      <Link href={"/magazine"} passHref>
         <h2 className="md:hidden font-title text-6xl md:text-7xl w-full text-center md:text-left text-primary">
           Magazine
         </h2>
+        </Link>
         {posts?.length > 0 && <Principal {...posts[0]} />}
         <BlogCategories categories={categories} />
         <GridPost data={posts?.slice(1)} />
@@ -190,7 +192,7 @@ export const PostComponent: FC<Partial<Post>> = memo(
   (props) => {
     const { title, content, updatedAt, imgMiniatura, slug } = props
     return (
-      <div className="w-60 h-full mx-auto my-6 inset-x-0 bg-white rounded-3xl overflow-hidden hover:shadow-xl hover:opacity-95 transition-all cursor-pointer duration-400 border ">
+      <div className="w-[90%] h-full mx-auto my-6 inset-x-0 bg-white rounded-3xl overflow-hidden hover:shadow-xl hover:opacity-95 transition-all cursor-pointer duration-400 border ">
         
         <img
           alt={title}

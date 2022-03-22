@@ -22,7 +22,7 @@ const CategoryBlogPage: NextPage<category> = (props) => {
     <>
       <div className="w-full h-full bg-white pb-10">
         <div className={`banner w-full h-60 -mt-28`} />
-        <div className="max-w-screen-lg mx-auto inset-x-0">
+        <div className="max-w-screen-lg mx-auto inset-x-0 p-5 md:p-0">
           <BreadCumbs />
           <h1 className="font-bold text-xl text-tertiary">
             {title && capitalize(title)}
@@ -153,6 +153,14 @@ export const CategoriesBlog = () => {
     slidesToShow: 6,
     arrows: true,
     autoplay: true,
+    responsive: [
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+    ],
   }
   const [categories, setCategories, loading, error, fetch] = useFetch(initialQuery)
   return (
@@ -178,7 +186,7 @@ const CategoryItem : FC <category> = ({icon, slug, title}) => {
           <img className={`p-3 transition w-16 h-16 flex justify-center items-center cursor-pointer`} src={createURL(icon?.i320)} alt={title}></img>
         </button>
         </Link>
-        <small className="text-tertiary text-xs">{title && capitalize(title)}</small>
+        <small className="text-tertiary text-xs text-center">{title && capitalize(title)}</small>
         </div>
   )
 }

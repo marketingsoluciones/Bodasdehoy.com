@@ -28,7 +28,7 @@ const {imgBanner, title, characteristics, _id} = props
       </div>
 
 
-        <span className='-mt-6 px-2'>
+        <span className='-mt-6 px-2 hidden md:block'>
         <BreadCumbs />
         </span>
       {/* Aside Filters */}

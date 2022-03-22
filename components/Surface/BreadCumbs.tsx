@@ -34,9 +34,9 @@ export const BreadCumbs: FC<propsBreadCumbs> = ({ className }) => {
   return (
     <>
       <div
-        className={`lg:max-w-screen-lg mx-auto inset-x-0 flex items-center w-full text-sm text-gray-500 capitalize font-light py-4 w-full hidden sm:flex`}
+        className={`lg:max-w-screen-lg mx-auto inset-x-0 flex items-center w-full text-sm text-gray-500 capitalize font-light py-4 w-full sm:flex`}
       >
-        <nav className="flex" aria-label="Breadcrumb">
+        <nav className="flex w-full" aria-label="Breadcrumb">
           <ol className="inline-flex items-center space-x-1 md:space-x-3">
             <li className="inline-flex items-center">
               <Link href="/">
@@ -48,7 +48,7 @@ export const BreadCumbs: FC<propsBreadCumbs> = ({ className }) => {
             </li>
             {levels.filter(item => !["categoria", "empresa"].includes(item.crumb)).map((item: crumb, idx: number) => (
               <li key={idx}>
-                <div className="flex items-center">
+                <div className="flex items-center w-full">
                   <svg
                     className="w-6 h-6 text-gray-500"
                     fill="currentColor"
@@ -63,7 +63,7 @@ export const BreadCumbs: FC<propsBreadCumbs> = ({ className }) => {
                     ></path>
                   </svg>
                   <Link href={item.href} passHref>
-                    <span className="ml-1 text-sm font-medium text-gray-500 hover:text-gray-900 md:ml-2 cursor-pointer ">
+                    <span className="ml-1  text-sm font-medium text-gray-500 hover:text-gray-900 md:ml-2 cursor-pointer ">
                       {item.crumb && item.crumb.replaceAll("-", " ")}
                     </span>
                   </Link>

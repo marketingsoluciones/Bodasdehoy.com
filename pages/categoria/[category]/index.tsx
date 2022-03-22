@@ -223,9 +223,9 @@ export const Filters: FC<propsFilter> = ({ optionsCheckbox }) => {
   };
   return (
     <>
-      <button onClick={onClick} className="md:hidden flex ml-3 gap-6">
+      <button onClick={onClick} className="md:hidden flex px-5 gap-3 text-sm items-center text-gray-700">
         <BurgerIcon />
-        Filtros para tus categorias
+        Filtrar
       </button>
 
       <aside className="md:col-span-2 2xl:col-span-1 bg-white h-max w-full rounded-lg shadow ">

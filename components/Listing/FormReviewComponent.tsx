@@ -1,5 +1,5 @@
 import { Form, Formik, FormikContext, useField } from "formik";
-import { FC, forwardRef, useEffect, useState } from "react";
+import { FC, forwardRef, MouseEventHandler, useEffect, useState } from "react";
 import { ButtonComponent } from "../Inputs";
 import { RatingStars } from "../Home/FeaturedCompanies";
 import { ArrowIcon, CrossIcon, UploadImageIcon } from "../Icons";
@@ -12,6 +12,7 @@ import { image } from "../../interfaces/index";
 import { createURL } from "../../utils/UrlImage";
 import { DeleteIcon } from "../Icons/index";
 import { useHover } from "../../hooks/useHover";
+import { useToast } from "../../hooks/useToast";
 
 const FormReviewComponent: FC<any> = forwardRef(
   ({ businessID, onClose, setReviews, fetchy, initialValues }, ref: any) => {
@@ -56,6 +57,8 @@ const FormReviewComponent: FC<any> = forwardRef(
       comment: yup.string().required(message),
     });
 
+    const toast = useToast()
+
     return (
       <Formik
         initialValues={{
@@ -76,9 +79,11 @@ const FormReviewComponent: FC<any> = forwardRef(
               if (data.errors) {
                 throw new Error();
               }
+              toast("success", "Reseña enviada con exito")
               fetchy();
               onClose();
             } catch (error) {
+              toast("error", "Error al enviar la reseña")
               console.log(error);
             }
           } else {
@@ -93,9 +98,11 @@ const FormReviewComponent: FC<any> = forwardRef(
               if (data.errors) {
                 throw new Error();
               }
+              toast("success", "Reseña enviada con exito")
               fetchy();
               onClose();
             } catch (error) {
+              toast("error", "Error al enviar la reseña")
               console.log(error);
             }
           }
@@ -169,6 +176,7 @@ const MessageField: FC<propsMessageField> = ({
   const [fieldUpload, metaUpload, helpersUpload] = useField<image[] | null>({
     name: "imgCarrusel",
   });
+  
   const [image, setImage] = useState<imageUpload[]>((): any => {
     if (fieldUpload.value) {
       return fieldUpload.value.map((item, idx) => ({
@@ -189,7 +197,7 @@ const MessageField: FC<propsMessageField> = ({
         reader.onloadend = async () => {
           if (reader.result) {
             const nuevaImagen = {
-              _id: IDGenerator(),
+              id: IDGenerator(),
               file: item,
               image: reader.result,
             };
@@ -210,12 +218,15 @@ const MessageField: FC<propsMessageField> = ({
   useEffect(() => {
     const files = image?.reduce((acc: any, item: any) => {
       item.file && acc.push(item.file);
-      item.i640 && acc.push(item._id);
+      item.image && !item.image.includes("data:image") && acc.push(item.id);
       return acc;
     }, []);
-    helpersUpload.setValue(files);
+   helpersUpload.setValue(files);
   }, [image]);
 
+  const handleDelete = (id : string) => {
+    setImage(old => old.filter(itemOld => itemOld.id !== id))
+  }
   return (
     <div>
       <span className="flex items-center gap-2">
@@ -246,24 +257,27 @@ const MessageField: FC<propsMessageField> = ({
       </div>
       <div className="flex flex-wrap gap-2">
         {image?.map((item, idx) => (
-          <ImageItem key={idx} {...item} />
+          <ImageItem key={idx} handleDelete={handleDelete} {...item} />
         ))}
       </div>
     </div>
   );
 };
 
-const ImageItem: FC<imageUpload> = ({ image, id }) => {
+interface propsImageItem extends imageUpload {
+  handleDelete : CallableFunction
+}
+const ImageItem: FC<propsImageItem> = ({ image, id, handleDelete }) => {
   const [hoverRef, isHovered] = useHover();
   return (
     <span className={"relative"} ref={hoverRef}>
       <img
-        src={image.includes("data") ? image : createURL(image)}
+        src={image?.includes("data") ? image : createURL(image)}
         className={"w-24 h-24 object-cover object-center border rounded"}
         alt={""}
       />
       <button
-        onClick={() => alert(id)}
+        onClick={() => handleDelete(id)}
         type="button"
         className={`p-1 rounded bg-red-500 w-full absolute bottom-0 left-0 text-xs hover:bg-red-600 text-white ${
           isHovered ? "opacity-100" : "opacity-0"

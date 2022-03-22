@@ -140,7 +140,7 @@ const ReviewComponent: FC<propsReviewComponent> = ({
   }, [data, loading, error, user]);
 
   const handleRemove = async () => {
-    const res = await fetchApi({
+    await fetchApi({
       query: queries.deleteReview,
       variables: { id: myReview?._id },
     });
@@ -165,8 +165,10 @@ const ReviewComponent: FC<propsReviewComponent> = ({
       }, []);
   
       setImages(imagesReviews);
+    } else {
+      setImages([])
     }
-  }, [reviews]);
+  }, [reviews, data]);
 
   return (
     <>
@@ -323,7 +325,7 @@ export const UsersGalleryComponent: FC <{images: imagesReviews[], set : Callable
         <div className="overflow-hidden w-full h-full rounded-lg relative mx-auto inset-x-0">
           <img
             alt={review?.user?.displayName ?? ""}
-            src={image.i320 ? createURL(image.i320) : "placeholder/image.png"}
+            src={image?.i320 ? createURL(image.i320) : "placeholder/image.png"}
             className="absolute w-full h-full object-cover object-center"
           />
         </div>
@@ -443,17 +445,17 @@ export const PreviewComponent: FC<propsPreviewComponent> = ({
                     <div className="flex flex-wrap gap-2 ">
                       {state?.data.imgCarrusel.map((item) => (
                         <button
-                          key={item._id}
+                          key={item?._id}
                           onClick={() => setImagePrincipal(item)}
                         >
                           <img
                             className="w-20 h-20 bg-red-500 rounded object-cover object-center border"
                             src={
-                              item.i320
+                              item?.i320
                                 ? createURL(item.i320)
                                 : "/placeholder/image.png"
                             }
-                            alt={item._id}
+                            alt={item?._id}
                           />
                         </button>
                       ))}
@@ -496,7 +498,7 @@ export const ViewGridComponent: FC<{
           <img
             className="w-40 h-40 mx-auto bg-red-500 rounded object-cover object-center border"
             src={
-              item.image.i320
+              item?.image?.i320
                 ? createURL(item.image.i320)
                 : "/placeholder/image.png"
             }
@@ -598,11 +600,11 @@ const CommentComponent: FC<propsCommentComponent> = ({
       <div className="flex flex-wrap w-full gap-2 -mt-4 pb-2">
         {imgCarrusel.map((item) => (
           <button
-            key={item._id}
+            key={item?._id}
             onClick={() => setPreview({ data: props, source: item })}
           >
             <img
-              src={createURL(item.i320)}
+              src={createURL(item?.i320)}
               className={
                 "w-20 h-20 object-center object-cover border rounded-md"
               }

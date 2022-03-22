@@ -29,7 +29,7 @@ export const BreadCumbs: FC<propsBreadCumbs> = ({ className }) => {
       return { crumb: path, href: "/" + arr.slice(0, i + 1).join("/") };
     });
     setLevels(pathArray);
-  }, []);
+  }, [router]);
 
   return (
     <>

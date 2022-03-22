@@ -1104,7 +1104,7 @@ export const IconInterrogacion = () =>{
   )
 }
 
-export const IconEstrella =() =>{
+export const IconEstrella : FC <PropsIcon> =(props) =>{
   return (
     <svg 
     width={70} 
@@ -1112,6 +1112,7 @@ export const IconEstrella =() =>{
     viewBox="0 0 70 68" 
     fill="none" 
     xmlns="http://www.w3.org/2000/svg"
+    {...props}
     >
     <path 
     d="M69.7062 25.2162C69.3716 24.1779 68.7561 23.2524 67.928 

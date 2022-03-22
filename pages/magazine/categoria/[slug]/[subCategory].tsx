@@ -79,8 +79,10 @@ const SubCategory: FC<subCategory> = ({
     <>
       <div className="bg-white w-full h-full pb-10">
         <div className={`banner w-full h-60 -mt-28`} />
-        <div className="max-w-screen-lg mx-auto inset-x-0">
+        <div className="max-w-screen-lg mx-auto inset-x-0 p-5 md:p-0">
+          <span className="hidden md:block">
           <BreadCumbs />
+          </span>
           <h1 className="font-bold text-xl text-tertiary pt-2">
             {title && capitalize(title)}
           </h1>

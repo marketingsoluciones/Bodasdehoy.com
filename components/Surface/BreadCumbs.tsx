@@ -48,7 +48,7 @@ export const BreadCumbs: FC<propsBreadCumbs> = ({ className }) => {
             </li>
             {levels.filter(item => !["categoria", "empresa"].includes(item.crumb)).map((item: crumb, idx: number) => (
               <li key={idx}>
-                <div className="flex items-center w-full">
+                <div className="flex items-center">
                   <svg
                     className="w-6 h-6 text-gray-500"
                     fill="currentColor"
@@ -63,7 +63,7 @@ export const BreadCumbs: FC<propsBreadCumbs> = ({ className }) => {
                     ></path>
                   </svg>
                   <Link href={item.href} passHref>
-                    <span className="ml-1  text-sm font-medium text-gray-500 hover:text-gray-900 md:ml-2 cursor-pointer ">
+                    <span className="ml-1 text-sm font-medium text-gray-500 hover:text-gray-900 md:ml-2 cursor-pointer ">
                       {item.crumb && item.crumb.replaceAll("-", " ")}
                     </span>
                   </Link>

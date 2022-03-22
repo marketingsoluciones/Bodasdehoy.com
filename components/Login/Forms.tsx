@@ -15,8 +15,8 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
       </div>
       <Providers setStage={setStage} />
       <FormLogin />
-        <RegisterQuestion onClick={() => setStage("register")} />
-      {/* <BusinessAccess /> */}
+      <RegisterQuestion onClick={() => setStage("register")} />
+      {/* <BusinessAccess /> */} {/* componente que no esta terminado */}
     </>
   );
 };
@@ -24,7 +24,7 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
 export const Register: FC<propsLogin> = ({ setStage }) => {
   const [whoYouAre, setWhoYouAre] = useState<string>("");
   return (
-    <>
+    <> 
       {whoYouAre == "" ? (
         <FirstStep value={setWhoYouAre} />
       ) : (

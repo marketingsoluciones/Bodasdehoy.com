@@ -13,6 +13,9 @@ import { auth } from '../firebase';
 import { Sidebar } from '../components/Surface';
 import {useState} from 'react';
 import { SidebarContextProvider } from '../context';
+import { connectWithQuery, Hit } from '../components/Surface/Navigation';
+import { Hits, InstantSearch } from 'react-instantsearch-dom';
+import algoliasearch from 'algoliasearch/lite';
 
 interface propsHome {
   business: business[];
@@ -54,6 +57,10 @@ const Home: FC<propsHome> = (props) => {
 export default Home;
 
 export const Welcome: FC = (props) => {
+  const searchClient = algoliasearch(
+    "4YG7QHCVEA",
+    "920a6487923dbae05fb89b1be0955e74"
+  );
   return (
     <>
       <div className="before:absolute before:w-full before:h-1/6 md:before:h-1/2 before:bg-gradient-to-t before:from-color-base before:to-transparent before:via-color-base before:z-10 before:bottom-0 md:before:bottom-20 before:left-0 relative grid md:grid-cols-2 px-5 sm:px-0 pb-20 relative">
@@ -68,10 +75,18 @@ export const Welcome: FC = (props) => {
           <p className="hidden md:block w-1/2 sm:w-full text-tertiary text-sm">
             Miles de proveedores de bodas en un sólo lugar.
           </p>
-          <Searcher
-            autoFocus={true}
+          <div className='w-full relative z-40'>
+          <InstantSearch indexName="bodasdehoy" searchClient={searchClient}>
+          <ConnectedSearchBox
+            
             placeholder="catering, hoteles, fincas, vestidos"
           />
+        <div className="absolute -bottom-0 left-0 w-[90%] mx-auto inset-x-0 bg-white shadow translate-y-full max-h-60 overflow-auto no-scrollbar rounded-b-3xl">
+          <Hits hitComponent={Hit} />
+        </div>
+      </InstantSearch>
+
+          </div>
           <div className='md:static'>
             <Features />
           </div>
@@ -101,17 +116,22 @@ export const Welcome: FC = (props) => {
   );
 };
 
-interface propsSearcher {
-  autoFocus?: boolean;
-  placeholder: string;
-}
 
-export const Searcher: FC<propsSearcher> = (props) => {
+export const Searcher : FC <any> = ({
+  currentRefinement,
+  refine,
+  setSearch,
+  isSearch,
+}) => {
   return (
     <div className="relative w-full">
       <input
-        className="px-6 h-14 py-1 md:py-3 w-full rounded-full text-gray-200 text-sm md:text-base focus:outline-none transition shadow-lg"
-        {...props}
+      autoFocus
+      placeholder="catering, hoteles, fincas, vestidos"
+      type="input"
+      value={currentRefinement}
+      onChange={(e) => refine(e.currentTarget.value)}
+      className="px-6 h-14 py-1 md:py-3 w-full rounded-full text-gray-200 text-sm md:text-base focus:outline-none transition shadow-lg"
       />
       <button className="bg-primary w-14  h-full rounded-full absolute top-0 right-0 flex items-center justify-center transform hover:scale-110 transition hover:-rotate-12">
         <SearchIcon className="text-white w-6 h-6" />
@@ -119,6 +139,8 @@ export const Searcher: FC<propsSearcher> = (props) => {
     </div>
   );
 };
+
+const ConnectedSearchBox = connectWithQuery(Searcher);
 
 export const Features: FC = () => {
   type ItemList = {

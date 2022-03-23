@@ -34,6 +34,17 @@ import NovioMenu from "./MultiMenu/NovioMenu";
 import OrganizadorBoda from "./MultiMenu/OrganizadorBoda";
 import Proveedores from "./MultiMenu/Proveedores";
 import LugaresParaBodas from "./MultiMenu/LugaresParaBodas";
+import algoliasearch from "algoliasearch/lite";
+import {
+  InstantSearch,
+  SearchBox,
+  Hits,
+  Highlight,
+  createConnector,
+} from "react-instantsearch-dom";
+import { createURL } from "../../utils/UrlImage";
+import { capitalize } from "../../utils/Capitalize";
+import { Markup } from "interweave";
 
 const initialSelected = {
   ["Lugares para bodas"]: false,
@@ -50,6 +61,7 @@ export const Navigation: FC = () => {
   const router = useRouter();
 
   useEffect(() => {
+    setSearch(false)
     const start = () => {
       setLoading(true);
     };
@@ -64,6 +76,7 @@ export const Navigation: FC = () => {
       router.events.off("routeChangeComplete", end);
       router.events.off("routeChangeError", end);
     };
+
   }, [router]);
 
   type DicCategories = {
@@ -75,19 +88,7 @@ export const Navigation: FC = () => {
       <header className="container max-w-screen-lg 2xl:max-w-screen-xl w-full px-3 sm:px-0 mx-auto inset-x-0 mt-3 absolute hidden sm:block ">
         <div className="bg-white rounded-full h-16 py-3 md:px-10 z-30 px-5 md:px-0 mx-auto inset-x-0  flex items-center relative justify-between container relative">
           {isSearch && (
-            <span className="flex items-center w-full justify-between">
-              <input
-                autoFocus
-                className="w-full h-full focus:outline-none"
-                placeholder="Buscar en bodasdehoy.com"
-              />
-              <button
-                className="p-1 bg-color-base rounded-full"
-                onClick={() => setSearch(!isSearch)}
-              >
-                <CloseIcon className="w-5 h-5 text-gray-500" />
-              </button>
-            </span>
+            <SearchNavigation setSearch={setSearch} isSearch={isSearch} />
           )}
 
           {!isSearch && (
@@ -353,5 +354,170 @@ const ListItemProfile: FC<Option> = ({
         }
       })()}
     </>
+  );
+};
+
+export const connectWithQuery = createConnector({
+  displayName: "WidgetWithQuery",
+  getProvidedProps(props, searchState) {
+    // Since the `attributeForMyQuery` searchState entry isn't
+    // necessarily defined, we need to default its value.
+    const currentRefinement = searchState.attributeForMyQuery || "";
+
+    // Connect the underlying component with the `currentRefinement`
+    return { currentRefinement };
+  },
+  refine(props, searchState, nextRefinement) {
+    // When the underlying component calls its `refine` prop,
+    // we update the searchState with the provided refinement.
+    return {
+      // `searchState` represents the search state of *all* widgets. We need to extend it
+      // instead of replacing it, otherwise other widgets will lose their respective state.
+      ...searchState,
+      attributeForMyQuery: nextRefinement,
+    };
+  },
+  getSearchParameters(searchParameters, props, searchState) {
+    // When the `attributeForMyQuery` state entry changes, we update the query
+    return searchParameters.setQuery(searchState.attributeForMyQuery || "");
+  },
+  cleanUp(props, searchState) {
+    // When the widget is unmounted, we omit the entry `attributeForMyQuery`
+    // from the `searchState`, then on the next request the query will
+    // be empty
+    const { attributeForMyQuery, ...nextSearchState } = searchState;
+
+    return nextSearchState;
+  },
+});
+
+const MySearchBox: FC<any> = ({
+  currentRefinement,
+  refine,
+  setSearch,
+  isSearch,
+}) => {
+  return (
+    <>
+      <input
+        autoFocus
+        className="w-full h-full focus:outline-none z-30"
+        placeholder="Buscar en bodasdehoy.com"
+        type="input"
+        value={currentRefinement}
+        onChange={(e) => refine(e.currentTarget.value)}
+      />
+      <button
+        className="p-1 bg-color-base rounded-full z-30"
+        onClick={() => setSearch(!isSearch)}
+      >
+        <CloseIcon className="w-5 h-5 text-gray-500" />
+      </button>
+    </>
+  );
+};
+
+const ConnectedSearchBox = connectWithQuery(MySearchBox);
+
+type typeInside = {
+  color: string;
+  title: string;
+  slug: string
+};
+type types = {
+  business: typeInside;
+  categorypost: typeInside;
+  categorybusiness: typeInside;
+  subcategorybusiness: typeInside;
+  subcategorypost: typeInside;
+  post: typeInside
+};
+
+const colors: types = {
+  business: {
+    color: "bg-primary",
+    title: "Empresa",
+    slug: "/empresa/"
+  },
+  categorybusiness : {
+    color: "bg-tertiary",
+    title: "Categoria de empresas",
+    slug: "/categoria/"
+  },
+  subcategorybusiness : {
+    color: "bg-green-500",
+    title: "Subcategoria de empresas",
+    slug: "/categoria/"
+  },
+  categorypost : {
+    color: "bg-blue-500",
+    title: "Categoria de articulos",
+    slug : "/magazine/categoria/"
+  },
+  subcategorypost : {
+    color: "bg-orange-500",
+    title: "Subcategoria de articulos",
+    slug : "/magazine/categoria/"
+  },
+  post: {
+    color: "bg-yellow-500",
+    title: "Articulo",
+    slug : "/magazine/"
+  },
+};
+
+interface hit {
+  title: string;
+  image: string;
+  slug: string;
+  content: string;
+  type: keyof typeof colors;
+}
+export const Hit = ({ hit }: { hit: hit }) => {
+  return (
+     <Link passHref href={`${colors[hit.type].slug}${hit.slug}`}>
+    <div className="gap-3 flex py-3 px-5 hover:bg-color-base transition-all cursor-pointer items-center">
+      <img
+        alt={hit?.title}
+        src={
+          hit.image ? createURL(hit?.image ?? "") : "/placeholder/image.png"
+        }
+        className={"w-14 h-14 rounded-lg object-cover object-center"}
+      />
+      <div className="col-span-3">
+        <h3 className="text-sm font-semibold text-gray-500">
+          {hit?.title && capitalize(hit?.title)}
+        </h3>
+        <span
+          className={`${
+            colors[hit?.type]?.color
+          } text-xs text-white px-2 rounded`}
+        >
+          {colors[hit?.type]?.title}
+        </span>
+      </div>
+      <div className="col-span-4">
+        {/* <Markup className="text-xs" content={hit?.content?.slice(0,150)} noHtml/> */}
+      </div>
+    </div>
+     </Link>
+  );
+};
+export const SearchNavigation: FC<any> = ({ setSearch, isSearch }) => {
+  const searchClient = algoliasearch(
+    "4YG7QHCVEA",
+    "920a6487923dbae05fb89b1be0955e74"
+  );
+
+
+  return (
+    <div className="flex items-center w-full justify-between ">
+      <InstantSearch indexName="bodasdehoy" searchClient={searchClient}>
+        <ConnectedSearchBox setSearch={setSearch} isSearch={isSearch} />
+        <div className="absolute -bottom-0 left-0 w-[95%] mx-auto inset-x-0 bg-white shadow translate-y-full max-h-60 overflow-auto no-scrollbar rounded-b-3xl">
+          <Hits hitComponent={Hit} />
+        </div>
+      </InstantSearch>
+    </div>
   );
 };

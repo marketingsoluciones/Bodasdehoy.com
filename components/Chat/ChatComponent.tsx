@@ -246,12 +246,13 @@ interface propsModuleChat {
   data: Chat | null;
 }
 const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
-  const [limitMsg, setLimitMsg] = useState(10);
+  const [limitMsg, setLimitMsg] = useState(2);
   const [skipMsg, setSkipMsg] = useState(0);
-  const [messages, setMessages, loading, error, fetch] = useFetch({
+  const initialQuery = {
     query: queries.getOneChat,
-    variables: { IDChat: data?._id },
-  });
+    variables: { IDChat: data?._id, skip: skipMsg, limit: limitMsg },
+  }
+  const [messages, setMessages, loading, error, fetch] = useFetch(initialQuery);
   const { user } = AuthContextProvider();
   const { socket } = SocketContextProvider();
   const [value, setValue] = useState("");

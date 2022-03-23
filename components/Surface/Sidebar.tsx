@@ -31,7 +31,7 @@ export const Sidebar: FC <propsSidebar> = ({set, state}) => {
     ]
     return (
         <ClickAwayListener onClickAway={() => state && set(false)}>
-        <div className={`fixed bg-white shadow-lg z-40 h-screen w-80 transform transition top-0 left-0  ${state ? "translate-x-0 ease-in" : "-translate-x-full ease-out"} `}>
+        <div className={`fixed bg-white shadow-lg z-40 h-screen w-80 transform transition top-0 left-0  ${state ? "translate-x-0" : "-translate-x-full"} `}>
             <div className="relative w-full h-full">
                 <div className="p-10">
                     <p className="text-primary text-md font-light pb-4">Accede <span className="text-tertiary">o</span> Regístrate</p>

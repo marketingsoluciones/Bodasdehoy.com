@@ -5,9 +5,6 @@ import {AuthContextProvider} from '../context'
 const perfil = () => {
     const { user } = AuthContextProvider()
 
-    const handleClick = () => {
-      console.log("hola mundo")
-    }
   return (
     <>
       <section className="w-full bg-base -mt-20 md:-mt-0">

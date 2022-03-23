@@ -22,7 +22,6 @@ export const LocationFilter: FC = () => {
   
   useEffect(() => {
       const success = (data : any) => {
-          console.log(data)
           const geolocation = {
               lat: data?.coords?.latitude,
               lng: data?.coords?.longitude

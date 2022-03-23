@@ -12,11 +12,6 @@ const ModalReview : FC <propsModal>  = ({title, onClose, isOpen, children}) => {
   useEffect(() => {
     setChildren(Children.toArray(children))
   }, [children])
-
-
-  useEffect(() => {
-    console.log(refForm)
-  }, [refForm])
   
   
   return (

@@ -93,7 +93,6 @@ const reducerFilters: any = (
 
   if (type === "REMOVE_CHARACTERISTIC") {
     let instance = state?.filters?.characteristics;
-    console.log("INSTANCIA", instance)
     if (instance && instance?.length > 1) {
       return {
         ...state,
@@ -105,8 +104,6 @@ const reducerFilters: any = (
           },
         };
       } else {
-        console.log("ENTRE A BORRAR TODO")
-
       const newState = {...state}
       delete newState.filters.characteristics
       return newState

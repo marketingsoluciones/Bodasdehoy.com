@@ -270,7 +270,6 @@ export const getStaticProps: GetStaticProps = async ({
   params,
   ...rest
 }: any) => {
-  console.log(params, rest);
   try {
     console.time("Category Page queries");
         const {

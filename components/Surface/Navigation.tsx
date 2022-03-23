@@ -17,10 +17,8 @@ import {
   SearchIcon,
   UserIcon,
 } from "../Icons";
-import { Sidebar } from "./";
 import { MultiMenu } from "./MultiMenu";
 import { NoviaMenu } from "./MultiMenu/NoviaMenu";
-import { useHover } from "../../hooks/useHover";
 import { autenticacion } from "../../utils/Authentication";
 import { LoadingContextProvider, AuthContextProvider } from "../../context";
 import { cloneElement } from "react";
@@ -45,15 +43,7 @@ import {
 } from "react-instantsearch-dom";
 import { createURL } from "../../utils/UrlImage";
 import { capitalize } from "../../utils/Capitalize";
-import { Markup } from "interweave";
 
-const initialSelected = {
-  ["Lugares para bodas"]: false,
-  ["Mi boda"]: false,
-  ["Novio"]: false,
-  ["Novia"]: false,
-  ["Proveedores"]: false,
-};
 
 export const Navigation: FC = () => {
   const [state, setState] = useState<any>("");
@@ -193,7 +183,7 @@ interface propsIcons {
 
 export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
   const { user } = AuthContextProvider();
-  const [hoverRef, isHovered] = useHover();
+  const [isHovered, setHovered] = useState<boolean>(false);
   const router = useRouter();
   const HandleClickUser = () => {
     !getCookie("token-bodas") ? router.push("/login") : router.push("/perfil");
@@ -224,7 +214,8 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
         ) : (
           <div
             className=" border-gray-100 border-l text-gray-500 pl-3 flex items-center gap-1 z-40"
-            ref={hoverRef}
+            onMouseOver={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
           >
             <img
               alt={user?.displayName ?? "nombre"}
@@ -420,7 +411,7 @@ const MySearchBox: FC<any> = ({
   );
 };
 
-const ConnectedSearchBox = connectSearchBox(MySearchBox);
+export const ConnectedSearchBox = connectSearchBox(MySearchBox);
 
 type typeInside = {
   color: string;
@@ -488,7 +479,7 @@ export const Hit = ({ hit }: { hit: hit }) => {
           className={"w-14 h-14 rounded-lg object-cover object-center"}
         />
         <div className="col-span-3">
-          <h3 className="text-sm font-semibold text-gray-500">
+          <h3 className="text-xs md:text-sm font-semibold text-gray-500">
             {hit?.title && capitalize(hit?.title)}
           </h3>
           <span

@@ -378,7 +378,6 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
-  console.log(context);
   try {
     const data = await fetchApi({ query: queries.getSlugBusiness });
     const paths = data.reduce(

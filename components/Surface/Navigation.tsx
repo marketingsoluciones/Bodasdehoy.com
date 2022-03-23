@@ -41,6 +41,7 @@ import {
   Hits,
   Highlight,
   createConnector,
+  connectSearchBox,
 } from "react-instantsearch-dom";
 import { createURL } from "../../utils/UrlImage";
 import { capitalize } from "../../utils/Capitalize";
@@ -61,7 +62,7 @@ export const Navigation: FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    setSearch(false)
+    setSearch(false);
     const start = () => {
       setLoading(true);
     };
@@ -76,7 +77,6 @@ export const Navigation: FC = () => {
       router.events.off("routeChangeComplete", end);
       router.events.off("routeChangeError", end);
     };
-
   }, [router]);
 
   type DicCategories = {
@@ -409,7 +409,10 @@ const MySearchBox: FC<any> = ({
       />
       <button
         className="p-1 bg-color-base rounded-full z-30"
-        onClick={() => setSearch(!isSearch)}
+        onClick={() => {
+          refine("");
+          setSearch(!isSearch);
+        }}
       >
         <CloseIcon className="w-5 h-5 text-gray-500" />
       </button>
@@ -417,12 +420,12 @@ const MySearchBox: FC<any> = ({
   );
 };
 
-const ConnectedSearchBox = connectWithQuery(MySearchBox);
+const ConnectedSearchBox = connectSearchBox(MySearchBox);
 
 type typeInside = {
   color: string;
   title: string;
-  slug: string
+  slug: string;
 };
 type types = {
   business: typeInside;
@@ -430,39 +433,39 @@ type types = {
   categorybusiness: typeInside;
   subcategorybusiness: typeInside;
   subcategorypost: typeInside;
-  post: typeInside
+  post: typeInside;
 };
 
 const colors: types = {
   business: {
     color: "bg-primary",
     title: "Empresa",
-    slug: "/empresa/"
+    slug: "/empresa/",
   },
-  categorybusiness : {
+  categorybusiness: {
     color: "bg-tertiary",
     title: "Categoria de empresas",
-    slug: "/categoria/"
+    slug: "/categoria/",
   },
-  subcategorybusiness : {
+  subcategorybusiness: {
     color: "bg-green-500",
     title: "Subcategoria de empresas",
-    slug: "/categoria/"
+    slug: "/categoria/",
   },
-  categorypost : {
+  categorypost: {
     color: "bg-blue-500",
     title: "Categoria de articulos",
-    slug : "/magazine/categoria/"
+    slug: "/magazine/categoria/",
   },
-  subcategorypost : {
+  subcategorypost: {
     color: "bg-orange-500",
     title: "Subcategoria de articulos",
-    slug : "/magazine/categoria/"
+    slug: "/magazine/categoria/",
   },
   post: {
     color: "bg-yellow-500",
     title: "Articulo",
-    slug : "/magazine/"
+    slug: "/magazine/",
   },
 };
 
@@ -475,45 +478,76 @@ interface hit {
 }
 export const Hit = ({ hit }: { hit: hit }) => {
   return (
-     <Link passHref href={`${colors[hit.type].slug}${hit.slug}`}>
-    <div className="gap-3 flex py-3 px-5 hover:bg-color-base transition-all cursor-pointer items-center">
-      <img
-        alt={hit?.title}
-        src={
-          hit.image ? createURL(hit?.image ?? "") : "/placeholder/image.png"
-        }
-        className={"w-14 h-14 rounded-lg object-cover object-center"}
-      />
-      <div className="col-span-3">
-        <h3 className="text-sm font-semibold text-gray-500">
-          {hit?.title && capitalize(hit?.title)}
-        </h3>
-        <span
-          className={`${
-            colors[hit?.type]?.color
-          } text-xs text-white px-2 rounded`}
-        >
-          {colors[hit?.type]?.title}
-        </span>
+    <Link passHref href={`${colors[hit.type].slug}${hit.slug}`}>
+      <div className="gap-3 flex py-3 px-5 hover:bg-color-base transition-all cursor-pointer items-center">
+        <img
+          alt={hit?.title}
+          src={
+            hit.image ? createURL(hit?.image ?? "") : "/placeholder/image.png"
+          }
+          className={"w-14 h-14 rounded-lg object-cover object-center"}
+        />
+        <div className="col-span-3">
+          <h3 className="text-sm font-semibold text-gray-500">
+            {hit?.title && capitalize(hit?.title)}
+          </h3>
+          <span
+            className={`${
+              colors[hit?.type]?.color
+            } text-xs text-white px-2 rounded`}
+          >
+            {colors[hit?.type]?.title}
+          </span>
+        </div>
+        <div className="col-span-4">
+          {/* <Markup className="text-xs" content={hit?.content?.slice(0,150)} noHtml/> */}
+        </div>
       </div>
-      <div className="col-span-4">
-        {/* <Markup className="text-xs" content={hit?.content?.slice(0,150)} noHtml/> */}
-      </div>
-    </div>
-     </Link>
+    </Link>
   );
 };
-export const SearchNavigation: FC<any> = ({ setSearch, isSearch }) => {
-  const searchClient = algoliasearch(
-    "4YG7QHCVEA",
-    "920a6487923dbae05fb89b1be0955e74"
-  );
 
+
+
+export const SearchNavigation: FC<any> = ({ setSearch, isSearch }) => {
+  
+
+  const conditionalQuery = {
+    search(requests : any) {
+      if (
+        requests.every(({params}: any) => !params.query) ||
+        requests.every(({params}: any) => !params.query.trim()) 
+      ) {
+        // Here we have to do something else
+        return Promise.resolve({
+          results: requests.map(() => ({
+            hits: [],
+            nbHits: 0,
+            nbPages: 0,
+            processingTimeMS: 0,
+          })),
+        });
+      }
+      const searchClient = algoliasearch(
+        "4YG7QHCVEA",
+        "920a6487923dbae05fb89b1be0955e74"
+      );
+      return searchClient.search(requests);
+    },
+  };
 
   return (
     <div className="flex items-center w-full justify-between ">
-      <InstantSearch indexName="bodasdehoy" searchClient={searchClient}>
-        <ConnectedSearchBox setSearch={setSearch} isSearch={isSearch} />
+      <InstantSearch 
+        indexName="bodasdehoy"
+        searchClient={conditionalQuery}
+      >
+        <ConnectedSearchBox
+          searchAsYouType={false}
+          setSearch={setSearch}
+          isSearch={isSearch}
+        />
+        {/* <SearchBox searchAsYouType={false} /> */}
         <div className="absolute -bottom-0 left-0 w-[95%] mx-auto inset-x-0 bg-white shadow translate-y-full max-h-60 overflow-auto no-scrollbar rounded-b-3xl">
           <Hits hitComponent={Hit} />
         </div>

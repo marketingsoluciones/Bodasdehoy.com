@@ -28,7 +28,6 @@ const useInfiniteScroll = (callback : CallableFunction) => {
   );
 
   function handleScroll() {
-    console.log("scroll")
     if (
       window.innerHeight + document.documentElement.scrollTop <=
         Math.floor(document.documentElement.offsetHeight * 0.75) ||

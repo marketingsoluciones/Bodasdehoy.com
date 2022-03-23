@@ -6,25 +6,25 @@ import { auth } from "../../../firebase";
 import { BlockConfiguration } from "../../../pages/configuracion";
 import { ButtonComponent, InputField } from "../../Inputs";
 import { useToast } from '../../../hooks/useToast';
+import Link from "next/link";
 
 export const MiPerfil = () => {
   const { user } = AuthContextProvider();
   const initialValues = {
     Usuario: "" + -+6,
   };
-  const handleSubmit = () => {
-    console.log({ handleSubmit });
-  };
-
+  
   return (
     <div className="flex flex-col w-full gap-6 container ">
       <div className="ml-auto hidden md:block">
+        <Link href={"https://app.bodasdehoy.com"} passHref>
         <button
           className="bg-white text-primary border border-primary px-4 py-2 text-sm rounded-xl w-fit"
           type="button"
         >
           Gestor de eventos
         </button>
+        </Link>
       </div>
       <Formik initialValues={{ email: user?.email }} onSubmit={() => {}}>
         <DatosAcceso />

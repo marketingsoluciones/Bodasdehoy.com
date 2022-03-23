@@ -45,7 +45,6 @@ const {imgBanner, title, characteristics, _id} = props
 export default subCategoryBusinessPage
 
 export async function getStaticProps({ params }: GetStaticPropsContext) {
-    console.log(params)
     const result = await fetchApi({
       query: queries.getOneSubcategoryBusiness,
       variables: { slug: params?.subCategory },

@@ -82,7 +82,6 @@ interface stateConversation {
    }, [user?.uid]);
 
    const handleCreateChat = useCallback((data : Chat) => {
-    console.log(data)
     setConversation({state: true, data})
     setChats((old : any) => {
         if(old?.results?.findIndex((item : any) => item._id === data._id) === -1){

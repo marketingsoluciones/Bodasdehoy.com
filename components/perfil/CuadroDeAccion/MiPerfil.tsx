@@ -37,10 +37,11 @@ export const MiPerfil = () => {
 const DatosAcceso = () => {
   const { user, setUser } = AuthContextProvider();
   const { setFieldValue, values } =
-    useFormikContext<{ email: string; password: string, displayName : string }>();
+    useFormikContext<{ email: string; password: string, displayName : string , photoURL: string}>();
   const [canEditEmail, setCanEditEmail] = useState(false);
   const [canEditPassword, setCanEditPassword] = useState(false);
   const [canDisplayName, setCanDisplayName] = useState(false);
+  const [canEditPhotoURL, setEditPhotoURL] = useState(false);
   const toast = useToast()
 
   useEffect(() => {
@@ -64,6 +65,23 @@ const DatosAcceso = () => {
       setCanEditEmail(!canEditEmail);
     }
   };
+
+  const handleEditPhoto =async () => {
+    if(canEditPhotoURL && auth.currentUser ){
+      try{
+        await updateProfile(auth.currentUser,{
+          photoURL:values.photoURL
+        });
+        setEditPhotoURL(!canEditPhotoURL);
+        toast("success","Foto actualizada con exito")
+      }catch(error){
+        toast("error","Error al actualizar la foto")
+        console.log(error)
+      }
+    }else if (!canEditPhotoURL) {
+      setEditPhotoURL(!canEditPhotoURL);
+    }
+  }
 
   const handleEditPassword = async () => {
     if (canEditPassword && auth.currentUser) {
@@ -102,7 +120,7 @@ const DatosAcceso = () => {
   return (
     <BlockConfiguration title={"Datos de acceso"}>
       <Form className="w-full flex flex-col gap-4">
-      <div className="w-full grid  flex items-center gap-2 relative">
+        <div className="w-full grid  flex items-center gap-2 relative">
           <InputField
             disabled={!canDisplayName}
             label={"Nombre visible"}
@@ -143,6 +161,20 @@ const DatosAcceso = () => {
             className="absolute bg-primary px-2 py-1 text-white text-xs rounded-lg w-fit right-2 top-1/2"
           >
             {canEditPassword ? "Guardar" : "Editar"}
+          </button>
+        </div>
+        <div className="w-full grid  flex items-center gap-2 relative">
+          <InputField
+            disabled={!canEditPhotoURL}
+            label={"Foto"}
+            name={"photoURL"}
+            type={"file"}
+          />
+          <button
+            onClick={handleEditPhoto}
+            className="absolute bg-primary px-2 py-1 text-white text-xs rounded-lg w-fit right-2 top-1/2"
+          >
+            {canEditPhotoURL ? "Guardar" : "Editar"}
           </button>
         </div>
         

@@ -9,7 +9,8 @@ import {
   useContext,
 } from "react";
 import { auth } from "../firebase";
-import { GraphQL, fetchApi, queries } from "../utils/Fetching";
+import { fetchApi, queries } from "../utils/Fetching";
+import Cookies from 'js-cookie'
 import { signInWithCustomToken } from "firebase/auth";
 
 export interface UserMax extends User {
@@ -38,7 +39,7 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user: any) => {
-      const sessionCookie = localStorage.getItem("___sessionBodas");
+      const sessionCookie = Cookies.get("sessionBodas");
       console.info("Verificando cookie", sessionCookie);
       if (sessionCookie) {
         console.info("Tengo cookie de sesion");
@@ -66,6 +67,14 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
     });
   }, []);
 
+  useEffect(() => {
+    auth.onIdTokenChanged(async user => {
+      if(user){
+        Cookies.set("idToken", await user.getIdToken())
+      }
+    })
+  }, [])
+  
   return (
     <AuthContext.Provider value={{ user, setUser }}>
       {children}

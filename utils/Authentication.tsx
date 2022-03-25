@@ -1,21 +1,12 @@
-import { signOut, User } from "@firebase/auth";
-import { auth, firebaseClient } from "../firebase";
-import { UserMax } from "../context/AuthContext";
-
-export const authentication = {
-  SignOut: async (): Promise<Partial<UserMax | null>> => {
-    await signOut(auth);
-    return null;
-  },
-  Login: async () => {},
-};
+import { useCallback } from "react";
+import { signInWithPopup, UserCredential, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { useRouter } from "next/router";
+import Cookies from 'js-cookie';
 
 import { LoadingContextProvider, AuthContextProvider } from "../context";
-import { signInWithPopup, UserCredential, signInWithEmailAndPassword } from 'firebase/auth';
-import { useCallback } from "react";
+import { auth } from "../firebase";
 import { fetchApi, queries } from "./Fetching";
 import { useToast } from "../hooks/useToast";
-import { useRouter } from "next/router";
 
 export const useAuthentication = () => {
   const { setLoading } = LoadingContextProvider();
@@ -32,7 +23,7 @@ export const useAuthentication = () => {
       if (authResult?.sessionCookie) {
         const { sessionCookie } = authResult;
         // Setear en localStorage token JWT
-        localStorage.setItem("___sessionBodas", sessionCookie);
+        Cookies.set("sessionBodas", sessionCookie);
         return sessionCookie
       } else {
         console.warn("No se pudo cargar la cookie de sesión por que hubo un problema")
@@ -67,10 +58,7 @@ export const useAuthentication = () => {
 
       if (res) {
         const token = (await res?.user?.getIdTokenResult())?.token;
-
-        console.log("HOLA MUNDO", token)
         const sessionCookie = await getSessionCookie(token)
-
         if(sessionCookie) {
           
           // Solicitar datos adicionales del usuario
@@ -98,7 +86,9 @@ export const useAuthentication = () => {
   );
 
   const _signOut = useCallback(async() => {
-        localStorage.removeItem("___sessionBodas");
+        await fetchApi({query: queries.signOut, variables: {sessionCookie: Cookies.get("sessionBodas")}})
+        Cookies.remove("sessionBodas");
+        Cookies.remove("idToken");
         setUser(null);
         await signOut(auth);
         await router.push("/");

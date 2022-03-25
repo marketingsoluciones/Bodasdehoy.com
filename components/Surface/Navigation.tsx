@@ -42,6 +42,7 @@ import {
 } from "react-instantsearch-dom";
 import { createURL } from "../../utils/UrlImage";
 import { capitalize } from "../../utils/Capitalize";
+import Cookies from "js-cookie";
 
 
 export const Navigation: FC = () => {
@@ -110,7 +111,7 @@ const Navbar: FC = () => {
   const List: Item[] = [
     {
       title: "Mi boda",
-      route: "https://app.bodasdehoy.com",
+      route: process.env.NEXT_PUBLIC_EVENTSAPP ?? "/",
       titleInside: "Mi organizador de bodas",
       component: <OrganizadorBoda />,
     },
@@ -185,7 +186,7 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
   const [isHovered, setHovered] = useState<boolean>(false);
   const router = useRouter();
   const HandleClickUser = () => {
-    !localStorage.getItem("___sessionBodas") ? router.push("/login") : router.push("/perfil");
+    !Cookies.get("sessionBodas") ? router.push("/login") : router.push("/perfil");
   };
   return (
     <>

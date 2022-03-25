@@ -37,14 +37,14 @@ const perfil = () => {
         </div>
             
       </section>
-      <style jsx>
+      {/* <style jsx>
         {`
           section {
             min-height: calc(100vh - 9rem);
-          }
+          };
 
         `}
-      </style>
+      </style> */}
     </>
   );
 };

@@ -31,7 +31,7 @@ const SocketProvider: FC = ({ children }): JSX.Element => {
   
   useEffect(() => {
     
-    const token = getCookie("token-bodas")
+    const token = localStorage.getItem("___sessionBodas")
     token && !socket && setSocket(api.socketIO({token}));
     !token && socket && socket.disconnect();
   }, [user])

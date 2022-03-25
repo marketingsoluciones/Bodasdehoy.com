@@ -61,7 +61,7 @@ const Configuration = () => {
       setLoading(true);
       await autenticacion.SignOut()
       setUser(null);
-      deleteCookie("token-bodas")
+      localStorage.removeItem("___sessionBodas")
       //localStorage.removeItem("auth");
       await router.push("/");
       toast("success", "Gracias por visitarnos, te esperamos luego 😀")

@@ -19,14 +19,13 @@ import {
 } from "../Icons";
 import { MultiMenu } from "./MultiMenu";
 import { NoviaMenu } from "./MultiMenu/NoviaMenu";
-import { autenticacion } from "../../utils/Authentication";
+import { useAuthentication } from '../../utils/Authentication';
 import { LoadingContextProvider, AuthContextProvider } from "../../context";
 import { cloneElement } from "react";
 import { HeartIconFill, StarRating } from "../Icons/index";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
 import { useRouter } from "next/router";
 import { ButtonClose } from "../Inputs";
-import { deleteCookie, getCookie } from "../../utils/Cookies";
 import { useToast } from "../../hooks/useToast";
 import NovioMenu from "./MultiMenu/NovioMenu";
 import OrganizadorBoda from "./MultiMenu/OrganizadorBoda";
@@ -43,6 +42,9 @@ import {
 } from "react-instantsearch-dom";
 import { createURL } from "../../utils/UrlImage";
 import { capitalize } from "../../utils/Capitalize";
+import Cookies from 'js-cookie'
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebase";
 
 
 export const Navigation: FC = () => {
@@ -186,7 +188,7 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
   const [isHovered, setHovered] = useState<boolean>(false);
   const router = useRouter();
   const HandleClickUser = () => {
-    !getCookie("token-bodas") ? router.push("/login") : router.push("/perfil");
+    !localStorage.getItem("___sessionBodas") ? router.push("/login") : router.push("/perfil");
   };
   return (
     <>
@@ -242,8 +244,7 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
 const ProfileMenu = () => {
   const { setUser, user } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
-  const router = useRouter();
-  const toast = useToast();
+  const { _signOut } = useAuthentication()
 
   const options: Option[] = [
     {
@@ -266,12 +267,7 @@ const ProfileMenu = () => {
       icon: <UserIcon />,
       onClick: async () => {
         setLoading(true);
-        await autenticacion.SignOut();
-        setUser(null);
-        deleteCookie("token-bodas");
-        //localStorage.removeItem("auth");
-        await router.push("/");
-        toast("success", "Gracias por visitarnos, te esperamos luego 😀");
+        _signOut()
         setLoading(false);
       },
     },

@@ -8,6 +8,8 @@ type Fetching = {
     youtube : CallableFunction
     restCountries : CallableFunction
     socketIO: CallableFunction
+    loginAuth: CallableFunction
+
 }
 
 
@@ -49,6 +51,19 @@ export const api : Fetching = {
         })
 
         return socket
+    },
+    loginAuth : (idToken : string) : Promise<AxiosResponse<{sessionCookie: string}>> => {
+        return axios.post(`http://96.126.110.203:4500/auth`, {idToken}, {
+            headers: {
+                ["X-Powered-By"] : "Express",
+                ["Content-Type"] : "application/json; charset=utf-8",
+                ["Content-Length"] : 35,
+                ETag : `W/"23-YJh7THQakehyNK8uguaK5LP/0QA"`,
+                Connection : "keep-alive",
+                ["Keep-Alive"] : "timeout=5"
+
+            }
+        })
     }
 }
 

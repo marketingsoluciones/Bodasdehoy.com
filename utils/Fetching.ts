@@ -127,9 +127,21 @@ type queries = {
   getSubcategoriesPost: string;
   getOneSubcategoryPost: string;
   getOneSubcategoryBusiness: string;
+  auth: string
+  authStatus: string
 };
 
 export const queries: queries = {
+  auth: `mutation ($idToken : String){
+    auth(idToken: $idToken){
+      sessionCookie
+    }
+  }`,
+  authStatus: `mutation ($sessionCookie : String){
+    status(sessionCookie: $sessionCookie){
+      customToken
+    }
+  }`,
   getOneSubcategoryBusiness: `query ($slug: String){
     getOneSubCategoryBusiness(slug: $slug){
       _id

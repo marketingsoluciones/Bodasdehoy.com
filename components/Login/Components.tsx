@@ -9,7 +9,6 @@ import { useToast } from "../../hooks/useToast";
 import { AuthContextProvider, LoadingContextProvider } from "../../context";
 import { setCookie } from "../../utils/Cookies";
 import { api } from "../../api";
-import Cookies from "js-cookie";
 import { useAuthentication } from "../../utils/Authentication";
 
 interface propsRegisterQuestion {

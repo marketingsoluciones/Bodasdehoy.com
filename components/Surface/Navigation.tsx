@@ -42,9 +42,6 @@ import {
 } from "react-instantsearch-dom";
 import { createURL } from "../../utils/UrlImage";
 import { capitalize } from "../../utils/Capitalize";
-import Cookies from 'js-cookie'
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebase";
 
 
 export const Navigation: FC = () => {

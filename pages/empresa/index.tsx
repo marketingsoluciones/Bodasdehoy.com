@@ -32,6 +32,18 @@ const query = `query ($uid : ID){
       zip,
       fase
       address,
+      imgMiniatura{
+        i1024
+        i800
+        i640
+        i320
+      }
+      imgLogo{
+        i1024
+        i800
+        i640
+        i320
+      }
       description,
     subCategories{
       _id

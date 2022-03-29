@@ -37,21 +37,17 @@ export const MiPerfil = () => {
 const DatosAcceso = () => {
   const { user, setUser } = AuthContextProvider();
   const { setFieldValue, values } =
-    useFormikContext<{ email: string; password: string, displayName : string , photoURL: string}>();
+    useFormikContext<{ email: string; password: string, displayName : string}>();
   const [canEditEmail, setCanEditEmail] = useState(false);
   const [canEditPassword, setCanEditPassword] = useState(false);
   const [canDisplayName, setCanDisplayName] = useState(false);
   const toast = useToast();
   const auth = getAuth();
 
-  //const currentUser= useAuth();
-  
-
 
   useEffect(() => {
     setFieldValue("email", user?.email);
     setFieldValue("displayName", user?.displayName);
-    
   }, [user]);
 
   

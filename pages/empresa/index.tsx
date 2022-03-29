@@ -113,6 +113,7 @@ const BusinessItem: FC<propsBusinessItem> = ({
 }) => {
 
   const router = useRouter();
+  console.log(router)
 
   const fases: any = {
     fase1: {
@@ -137,7 +138,8 @@ const BusinessItem: FC<propsBusinessItem> = ({
         </div>
         <img
           className="w-80 object-center object-cover rounded-sm h-14"
-          src={imgLogo?.i320 ? createURL(imgLogo?.i320) : "/mask_1.png"}
+          alt={businessName}
+          src={imgLogo?.i640 ? createURL(imgLogo?.i640) : "/mask_1.png"}
           srcSet={createSrcSet(imgLogo)}
         />
         <div className="flex flex-col md:flex-row md:space-x-20">

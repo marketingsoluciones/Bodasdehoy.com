@@ -21,7 +21,7 @@ export const fetchApi: CallableFunction = async ({
     if (type === "json") {
       const {
         data: { data },
-      } = await api.graphql({ query, variables }, null, token);
+      } = await api.graphql({ query, variables }, token);
       return Object.values(data)[0];
     } else if (type === "formData") {
       const formData = new FormData();
@@ -75,15 +75,7 @@ export const fetchApi: CallableFunction = async ({
         }
       });
 
-      const { data } = await api.graphql(
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-        token
-      );
+      const { data } = await api.graphql(formData, token);
 
       if (data.errors) {
         throw new Error(JSON.stringify(data.errors));
@@ -127,10 +119,26 @@ type queries = {
   getSubcategoriesPost: string;
   getOneSubcategoryPost: string;
   getOneSubcategoryBusiness: string;
+  auth: string
+  authStatus: string
+  signOut: string
   singleUpload: string;
 };
 
 export const queries: queries = {
+  signOut: `mutation ($sessionCookie :String){
+    signOut(sessionCookie:$sessionCookie)
+  }`,
+  auth: `mutation ($idToken : String){
+    auth(idToken: $idToken){
+      sessionCookie
+    }
+  }`,
+  authStatus: `mutation ($sessionCookie : String){
+    status(sessionCookie: $sessionCookie){
+      customToken
+    }
+  }`,
   getOneSubcategoryBusiness: `query ($slug: String){
     getOneSubCategoryBusiness(slug: $slug){
       _id

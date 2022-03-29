@@ -4,10 +4,12 @@ import { Icon } from "../Surface/Footer";
 import { AppleIcon, FacebookIcon, GoogleIcon } from "../Icons";
 import { signInWithPopup, UserCredential } from "firebase/auth";
 import router from "next/router";
-import { GraphQL, fetchApi, queries } from '../../utils/Fetching';
+import { GraphQL, fetchApi, queries } from "../../utils/Fetching";
 import { useToast } from "../../hooks/useToast";
 import { AuthContextProvider, LoadingContextProvider } from "../../context";
 import { setCookie } from "../../utils/Cookies";
+import { api } from "../../api";
+import { useAuthentication } from "../../utils/Authentication";
 
 interface propsRegisterQuestion {
   onClick: MouseEventHandler;
@@ -26,36 +28,20 @@ export const RegisterQuestion: FC<propsRegisterQuestion> = ({ onClick }) => {
   );
 };
 
-export const Providers: FC <any> = ({setStage}) => {
-  const { setUser} = AuthContextProvider();
-  const toast = useToast()
-  const {setLoading} = LoadingContextProvider()
+export const Providers: FC<any> = ({ setStage }) => {
+
+
+  const { signIn } = useAuthentication();
+  const toast = useToast();
+  const { setLoading } = LoadingContextProvider();
 
   const handleClick = async (provider: any) => {
     try {
-      setLoading(true)
-      // Autenticar con firebase
-      const res: UserCredential = await signInWithPopup(auth, provider)
-
-      // Actualizar estado con los dos datos
-      setUser(res.user);
-
-      // Setear en localStorage token JWT
-      setCookie({nombre: "token-bodas", valor: (await res?.user?.getIdTokenResult())?.token, dias: 1})
-
-      // Solicitar datos adicionales del usuario
-      const moreInfo = await fetchApi({query : queries.getUser, variables: {uid: res?.user?.uid}})
-      if(moreInfo.errors){
-        setStage("register")
-      } else {
-        toast("success", "Inicio de sesión con exito")
-        await router.push("/");
-      }
+      signIn("provider", provider);
     } catch (error) {
-      toast("error","error con el sdk" /* JSON.stringify(error) */)
+      setLoading(false);
+      toast("error", JSON.stringify(error));
       console.log(error);
-    } finally{
-      setLoading(false)
     }
   };
 
@@ -68,7 +54,10 @@ export const Providers: FC <any> = ({setStage}) => {
       icon: <GoogleIcon className="w-5 h-5" />,
       function: () => handleClick(GoogleProvider()),
     },
-    { icon: <AppleIcon className="w-5 h-5" />, function: () => alert("Aun por configurar") },
+    {
+      icon: <AppleIcon className="w-5 h-5" />,
+      function: () => alert("Aun por configurar"),
+    },
   ];
 
   return (
@@ -86,7 +75,7 @@ export const Providers: FC <any> = ({setStage}) => {
 export const BusinessAccess: FC = () => {
   return (
     <div className="w-full text-center h-max text-gray-500">
-      <p >¿Eres profesional?</p>
+      <p>¿Eres profesional?</p>
       <h3 className="text-primary font-medium cursor-pointer hover:text-tertiary transition">
         Acceso para empresas
       </h3>

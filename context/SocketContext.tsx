@@ -11,6 +11,7 @@ import { AuthContextProvider } from ".";
 import { api } from '../api';
 import { Dispatch } from 'react';
 import { getCookie } from '../utils/Cookies';
+import Cookies from "js-cookie";
 
 
 type Context = {
@@ -31,7 +32,7 @@ const SocketProvider: FC = ({ children }): JSX.Element => {
   
   useEffect(() => {
     
-    const token = getCookie("token-bodas")
+    const token = Cookies.get("sessionBodas")
     token && !socket && setSocket(api.socketIO({token}));
     !token && socket && socket.disconnect();
   }, [user])

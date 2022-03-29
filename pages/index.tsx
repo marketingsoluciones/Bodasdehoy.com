@@ -32,6 +32,7 @@ import { connectWithQuery, Hit } from "../components/Surface/Navigation";
 import { connectSearchBox, Hits, InstantSearch } from "react-instantsearch-dom";
 import algoliasearch from "algoliasearch/lite";
 import { CloseIcon } from '../components/Icons/index';
+import Cookies from "js-cookie";
 
 interface propsHome {
   business: business[];
@@ -43,7 +44,7 @@ interface propsHome {
 const NavbarMobile = () => {
   const { showSidebar, setShowSidebar } = SidebarContextProvider();
   const [showSearcher, setShowSearcher] = useState<boolean>(false);
-
+  
   const MySearch : FC <any> = ({
     currentRefinement,
     refine,
@@ -52,6 +53,7 @@ const NavbarMobile = () => {
   }) => {
     return (
       <div className="w-full mx-auto inset-x-0 bg-white h-14 -mt-2 rounded-full flex items-center relative">
+        
         <input
           autoFocus
           type="input"

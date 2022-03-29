@@ -2,7 +2,7 @@ import { Formik, Form } from "formik";
 import { FC, useContext, Children, memo, Dispatch, SetStateAction } from "react";
 import { DatePicker, InputField, SelectField } from "../../../Inputs";
 import {EmailIcon,EmailIcon as PasswordIcon,EmailIcon as UserForm,} from "../../../Icons";
-import {createUserWithEmailAndPassword,updateProfile,UserCredential,} from "@firebase/auth";
+import {createUserWithEmailAndPassword,updateProfile,UserCredential,NextOrObserver, User} from "@firebase/auth";
 import * as yup from "yup";
 import { UserMax } from "../../../../context/AuthContext";
 import {AuthContextProvider,LoadingContextProvider,} from "../../../../context";
@@ -13,6 +13,8 @@ import SelectFieldCoutries from "../../../Inputs/SelectFieldCoutries";
 import { auth } from "../../../../firebase";
 import { setCookie } from '../../../../utils/Cookies';
 import InputCity from "../../../Inputs/InputCity";
+import { useAuthentication } from '../../../../utils/Authentication';
+import { useToast } from '../../../../hooks/useToast';
 
 // Interfaces para el InitialValues del formulario de registro
 interface userInitialValuesPartial {
@@ -67,6 +69,8 @@ interface propsFormRegister {
 const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stageRegister }) => {
   const { setUser, user } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
+  const { getSessionCookie } = useAuthentication();
+  const toast = useToast()
 
   //Initial values de cada form
   const userInitialValuesPartial: userInitialValuesPartial = {
@@ -116,7 +120,6 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     try {
       setLoading(true);
       let UserFirebase: Partial<UserMax> = user ?? {};
-     
 
       // Si es registro completo
       if (!user?.uid) {
@@ -135,9 +138,12 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       }
 
       // Actualizar displayName
-      auth?.onAuthStateChanged((usuario: any): void => {
+      auth?.onAuthStateChanged(async (usuario: any) => {
         if (usuario) {
           updateProfile(usuario, { displayName: values.fullName });
+          console.log("ENTRE REGISTROSSS")
+          // Almacenar token en localStorage
+          getSessionCookie((await usuario?.getIdTokenResult())?.token)
         }
       });
 
@@ -150,14 +156,13 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       // Almacenar en contexto USER con toda la info
       setUser({ ...UserFirebase, ...moreInfo });
 
-      // Almacenar token en localStorage
-      setCookie({nombre: "token-bodas", valor: UserFirebase.accessToken, dias: 1})
-
       //Redirigir al home
       await router.push("/");
       setLoading(false);
+      toast("success", "Registro realizado con exito")
     } catch (error) {
       console.log(error);
+      toast("error", "Ups... hubo un error al realizar el registro")
       setLoading(false);
     }
   };

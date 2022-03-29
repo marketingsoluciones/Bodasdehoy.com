@@ -38,7 +38,7 @@ const Configuration = () => {
     { title: "Mi perfil", 
       icon: <UserIcon />, 
       component: <MiPerfil /> },
-    {
+ /*    {
       title: "Notificaciones",
       icon: <HeartIconOutline />,
       component: <Notificaciones />,
@@ -47,7 +47,7 @@ const Configuration = () => {
       title: "Favoritos",
       icon: <StartIconOutline />,
       component: <Favoritos />,
-    },
+    }, */
     {
       title: "Configuración",
       icon: <SettingsIconOutline />,

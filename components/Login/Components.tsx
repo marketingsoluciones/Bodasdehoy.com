@@ -36,6 +36,7 @@ export const Providers: FC <any> = ({setStage}) => {
       setLoading(true)
       // Autenticar con firebase
       const res: UserCredential = await signInWithPopup(auth, provider)
+
       // Actualizar estado con los dos datos
       setUser(res.user);
 
@@ -43,20 +44,15 @@ export const Providers: FC <any> = ({setStage}) => {
       setCookie({nombre: "token-bodas", valor: (await res?.user?.getIdTokenResult())?.token, dias: 1})
 
       // Solicitar datos adicionales del usuario
-      const moreInfo = await fetchApi({query : queries.getUser, variables: {uid: res.user.uid}})
+      const moreInfo = await fetchApi({query : queries.getUser, variables: {uid: res?.user?.uid}})
       if(moreInfo.errors){
         setStage("register")
       } else {
         toast("success", "Inicio de sesión con exito")
         await router.push("/");
       }
-
-      
-
-      
-      
     } catch (error) {
-      toast("error", JSON.stringify(error))
+      toast("error","error con el sdk" /* JSON.stringify(error) */)
       console.log(error);
     } finally{
       setLoading(false)

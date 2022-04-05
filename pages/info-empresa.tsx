@@ -13,7 +13,6 @@ interface sliderItem {
 }
 
 const InfoEmpresas = () => {
-  //alert("registrate como empresa para poder publicar tu empresa")
   const features = [
     "Recibe solicitudes de presupuesto de novios interesados",
     "Consigue nuevos clientes y posiciona tu negocio",
@@ -54,7 +53,7 @@ const InfoEmpresas = () => {
         </div>
         <div className="mx-auto w-max pt-8">
           <Link href={"/login"} passHref >
-          <ButtonComponent onClick={alert}>
+          <ButtonComponent>
             REGISTRATE <strong>GRATIS</strong>
           </ButtonComponent>
           </Link>

@@ -16,10 +16,11 @@ import {
 import PagesWithAuth from "../HOC/PagesWithAuth";
 import { ExitIcon } from '../components/Icons/index';
 import {AuthContextProvider, LoadingContextProvider} from '../context'
-import { autenticacion } from "../utils/Authentication";
 import { deleteCookie } from "../utils/Cookies";
 import { useRouter } from "next/router";
 import { useToast } from '../hooks/useToast';
+import Cookies from "js-cookie";
+import { useAuthentication } from '../utils/Authentication';
 
 export type optionComponent = {
   title: string;
@@ -31,6 +32,7 @@ const Configuration = () => {
   const [isActive, setActive] = useState(0);
   const {setLoading} = LoadingContextProvider()
   const {setUser} = AuthContextProvider()
+  const {_signOut} = useAuthentication()
   const router = useRouter()
   const toast = useToast()
 
@@ -60,14 +62,15 @@ const Configuration = () => {
   };
 
   const handleSignOut = async () => {
-      setLoading(true);
-      await autenticacion.SignOut()
-      setUser(null);
-      deleteCookie("token-bodas")
-      //localStorage.removeItem("auth");
-      await router.push("/");
-      toast("success", "Gracias por visitarnos, te esperamos luego 😀")
-      setLoading(false);
+      try {
+        setLoading(true);
+      _signOut()
+      } catch (error) {
+        toast("error", "Ups.. Hubo un error")
+        console.log(error)
+      } finally {
+        setLoading(false);
+      }
   }
 
   return (

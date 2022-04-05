@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios'
+import Cookies from 'js-cookie';
 import { io } from "socket.io-client";
 import { getCookie } from './utils/Cookies';
 
@@ -16,11 +17,8 @@ const instance : AxiosInstance = axios.create({baseURL: process.env.NEXT_PUBLIC_
 
 
 export const api : Fetching = {
-    graphql : async (data: object, config: object, token: string) : Promise<AxiosResponse> => {
-        let tokenFinal : string | null = token ?? "No hay token"
-        if (typeof window !== "undefined") {
-            tokenFinal = getCookie("token-bodas")
-        }
+    graphql : async (data: object, token: string) : Promise<AxiosResponse> => {
+        let tokenFinal : string | null = token ||  Cookies.get("idToken") || ""
             return await instance.post("/graphql", data, {
                 headers: {
                     Authorization : `Bearer ${tokenFinal}`

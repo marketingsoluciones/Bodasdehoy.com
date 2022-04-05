@@ -7,9 +7,10 @@ import * as yup from "yup";
 import router from "next/router";
 import { GraphQL, fetchApi, queries } from '../../../utils/Fetching';
 import { useToast } from '../../../hooks/useToast';
-import { AuthContextProvider } from "../../../context";
+import { AuthContextProvider, LoadingContextProvider } from "../../../context";
 import { auth } from "../../../firebase";
 import { setCookie } from "../../../utils/Cookies";
+import { useAuthentication } from '../../../utils/Authentication';
 
 type MyFormValues = {
   identifier: string;
@@ -18,7 +19,8 @@ type MyFormValues = {
 };
 
 const FormLogin: FC = () => {
-  const { setUser } = AuthContextProvider();
+  const { signIn } = useAuthentication();
+  const { setLoading } = LoadingContextProvider()
   const toast = useToast()
   const initialValues: MyFormValues = {
     identifier: "",
@@ -34,19 +36,9 @@ const FormLogin: FC = () => {
 
   const handleSubmit = async (values: MyFormValues, actions: any) => {
     try {
-      const res = await signInWithEmailAndPassword(
-        auth,
-        values.identifier,
-        values.password
-      );
-      if(res.user){
-        const moreInfo = await fetchApi({query: queries.getUser, variables: {uid : res.user.uid}})
-        setUser({...res.user, ...moreInfo});
-      }
-      setCookie({nombre: "token-bodas", valor: (await res?.user?.getIdTokenResult())?.token, dias: 1})
-      await router.push("/");
-      /* toast("success", "Inicio de sesión con exito") */ //desabilitado porque salta invisible al iniciar sesion
+      signIn("credentials", values)
     } catch (error: any) {
+      setLoading(false)
       console.error(JSON.stringify(error));
       toast("error", JSON.stringify(errorsCode[error.code]))
     }

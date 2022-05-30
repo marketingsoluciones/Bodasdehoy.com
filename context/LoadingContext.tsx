@@ -16,8 +16,11 @@ const initialContext: Context = {
 
 const LoadingContext = createContext<Context>(initialContext);
 
-const LoadingProvider: FC <any> = ({ loading, setLoading, children }): JSX.Element => {
-  
+const LoadingProvider: FC = ({ children }): JSX.Element => {
+  const [loading, setLoading] = useState<boolean>(initialContext.loading);
+
+ 
+
   return (
     <LoadingContext.Provider value={{ loading, setLoading }}>
         {loading && <DynamicLoading />}

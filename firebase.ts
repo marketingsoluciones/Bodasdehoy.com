@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { GoogleAuthProvider, FacebookAuthProvider, getAuth, onAuthStateChanged, updateProfile, sendPasswordResetEmail } from "firebase/auth";
+import { GoogleAuthProvider, FacebookAuthProvider, getAuth, onAuthStateChanged, updateProfile } from "firebase/auth";
 import { useEffect, useState } from "react";
 import {getStorage,ref, uploadBytes} from "firebase/storage"
 import { string } from "yup";
@@ -28,9 +28,6 @@ const GoogleProvider = () => {
 };
 
 const FacebookProvider = new FacebookAuthProvider();
-
-
-
 
 export { firebaseClient, GoogleProvider, FacebookProvider, auth };
 

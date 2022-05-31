@@ -11,6 +11,7 @@ import { AuthContextProvider, LoadingContextProvider } from "../../../context";
 import { auth } from "../../../firebase";
 import { setCookie } from "../../../utils/Cookies";
 import { useAuthentication } from '../../../utils/Authentication';
+import Desarrillo from '../../../pages/Desarrollo/index'
 
 type MyFormValues = {
   identifier: string;
@@ -64,9 +65,15 @@ const FormLogin: FC = () => {
         <span className="text-sm text-red">
           <ErrorMessage name="wrong" />
         </span>
-        <span className="text-sm text-primary w-full text-left hover:text-gray-300 transition cursor-pointer">
+       {/*  <span 
+          className="text-sm text-primary w-full text-left hover:text-gray-300 transition cursor-pointer"
+          
+          >
           Olvidé mi contraseña
-        </span>
+        </span> */}
+        <button  onClick={() => router.push('/Desarrollo')} className="text-sm text-primary w-full text-left hover:text-gray-300 transition cursor-pointer">
+              Olvidé mi contraseña
+        </button>
 
         <ButtonComponent
           onClick={() => {}}

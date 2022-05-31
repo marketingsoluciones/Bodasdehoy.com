@@ -14,6 +14,9 @@ import { useAuthentication } from "../../utils/Authentication";
 interface propsRegisterQuestion {
   onClick: MouseEventHandler;
 }
+
+
+
 export const RegisterQuestion: FC<propsRegisterQuestion> = ({ onClick }) => {
   return (
     <h2 className={`font-light text-tertiary flex gap-2 items-center text-sm `}>

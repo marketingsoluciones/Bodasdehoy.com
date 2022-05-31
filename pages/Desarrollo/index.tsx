@@ -53,8 +53,9 @@ const Desarrollo = () =>{
 
         <div className=" h-full col-span-3 relative flex  m-10 items-center justify-center w-full ">
             <Formik initialValues={initialValues} onSubmit={handleSubmit} >
-              <Form className=" flex flex-col gap-4 bg-white p-10 rounded-md items-center justify-center w-2/5">
-                <h3>Recupera tu contraseña</h3>
+                <Form className=" flex flex-col gap-4 bg-white p-10 rounded-md items-center justify-center w-2/5">
+                    <h3>Recupera tu contraseña</h3>
+
                     <div className=" w-2/4 " >
                         <InputField
                             name="email"
@@ -62,10 +63,22 @@ const Desarrollo = () =>{
                             placeholder="email"
                             />
                     </div>
+
+                    <div className="space-x-7">
+                        {/* <button 
+                            className="bg-color-base hover:opacity-90 transition focus:outline-none font-medium rounded-full  px-5 py-2.5 text-center text-white "
+                            onClick={()=>router.push('/login')}
+                        > 
+                            volver 
+                        </button> */}
+                        <ButtonComponent type="button"  onClick={()=>router.push('/login')} >
+                            Volver
+                        </ButtonComponent>
                         <ButtonComponent type="button" onClick={handleSubmit} >
                             Enviar
                         </ButtonComponent>
-              </Form>
+                    </div>                        
+                </Form>
             </Formik>
         </div>
     )

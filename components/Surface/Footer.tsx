@@ -6,6 +6,10 @@ import {
   PinterestIcon,
   YoutubeIcon,
 } from "../Icons";
+import ButtonCrearEmpresaFooter from "../../components/ButtonCrearEmpresaFooter"
+import { useHover } from '../../hooks/useHover';
+import { useRouter } from 'next/router';
+import { AuthContextProvider } from '../../context';
 
 type Item = {
   title: string;
@@ -23,7 +27,8 @@ export const Footer: FC = () => {
   ];
 
   const ListEmpresa: Item[] = [
-    { title: "Añadir mi empresa", route: "/" },
+    
+    /* { title: "Añadir mi empresa", route: "/" }, */
     { title: "Herramienta para promocionar tus servicios", route: "/" },
   ];
 
@@ -33,6 +38,18 @@ export const Footer: FC = () => {
     {icon: <PinterestIcon/>,link : "https://www.pinterest.es/bodasdehoycom/" },
     {icon: <YoutubeIcon/>,link : "https://www.youtube.com/bodasdehoy" },
   ]
+
+  const [hoverRef, isHovered] = useHover()
+    const router = useRouter()
+    const {user} = AuthContextProvider()
+    const handleClick = async () => {
+        const lowerCase = user?.role?.map((item : string) => item.toLowerCase())
+        if(lowerCase?.includes("empresa")){
+            router.push("/empresa")
+        } else {
+            router.push("/info-empresa")
+        }
+    }
 
   return (
     <div className="hidden md:block bg-color-base w-full pb-8 pt-10 container mx-auto inset-x-0 max-w-screen-lg 2xl:max-w-screen-xl w-full">
@@ -64,6 +81,14 @@ export const Footer: FC = () => {
           <div className="w-full">
             <Title title={"Añade tu empresa"} />
             <ul className="flex flex-col gap-1 pt-4 w-full">
+              <li>
+                <button 
+                  onClick={handleClick} 
+                  className="text-xs text-gray-700 cursor-pointer hover:text-primary transition"
+                  >
+                    Añadir mi empresa         
+                  </button>
+              </li>
               {ListEmpresa.map((item, idx) => (
                 <Link key={idx} href={item.route} passHref>
                   <li

@@ -40,8 +40,8 @@ const FormResetPassword: FC<any> = ({ setStage }) => {
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       <Form className=" text-gray-200 flex flex-col gap-4 py-4 w-full md:w-3/4">
-        <h1 className="text-primary">Introduce tu email para resetear tu contraseña</h1>
-        <span className="w-full relative ">
+        <h1 className="text-primary mt-20">Introduce tu email para resetear tu contraseña</h1>
+        <span className="w-full relative mt-8 mb-12">
           <InputField label={"Correo electronico"} name="identifier" placeholder="jhondoe@gmail.com" type="email" icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto text-gray-500" />} />
 
         </span>
@@ -52,7 +52,7 @@ const FormResetPassword: FC<any> = ({ setStage }) => {
         <ButtonComponent
           type="submit"
         >
-          Iniciar sesión
+          Enviar
         </ButtonComponent>
       </Form>
     </Formik>

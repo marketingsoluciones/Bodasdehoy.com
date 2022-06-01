@@ -6,7 +6,6 @@ import {
   PinterestIcon,
   YoutubeIcon,
 } from "../Icons";
-import ButtonCrearEmpresaFooter from "../../components/ButtonCrearEmpresaFooter"
 import { useHover } from '../../hooks/useHover';
 import { useRouter } from 'next/router';
 import { AuthContextProvider } from '../../context';

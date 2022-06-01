@@ -1,31 +1,23 @@
 import { Formik, Form, ErrorMessage } from "formik";
-import { FC, useContext, useState } from "react";
+import { FC } from "react";
 import { EmailIcon, EmailIcon as PasswordIcon } from "../../Icons";
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { InputField, ButtonComponent } from "../../Inputs";
-import * as yup from "yup";
 import router from "next/router";
-import { GraphQL, fetchApi, queries } from '../../../utils/Fetching';
 import { useToast } from '../../../hooks/useToast';
-import { AuthContextProvider, LoadingContextProvider } from "../../../context";
-import { auth } from "../../../firebase";
-import { setCookie } from "../../../utils/Cookies";
+import { LoadingContextProvider } from "../../../context";
 import { useAuthentication } from '../../../utils/Authentication';
-import Desarrillo from '../../../pages/Desarrollo/index'
 
 type MyFormValues = {
   identifier: string;
-  password: any;
   wrong: any;
 };
 
-const FormLogin: FC<any> = ({ setStage }) => {
-  const { signIn } = useAuthentication();
+const FormResetPassword: FC<any> = ({ setStage }) => {
+  const { resetPassword } = useAuthentication();
   const { setLoading } = LoadingContextProvider()
   const toast = useToast()
   const initialValues: MyFormValues = {
     identifier: "",
-    password: "",
     wrong: "",
   };
 
@@ -37,7 +29,7 @@ const FormLogin: FC<any> = ({ setStage }) => {
 
   const handleSubmit = async (values: MyFormValues, actions: any) => {
     try {
-      signIn("credentials", values)
+      resetPassword(values, setStage)
     } catch (error: any) {
       setLoading(false)
       console.error(JSON.stringify(error));
@@ -48,35 +40,16 @@ const FormLogin: FC<any> = ({ setStage }) => {
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       <Form className=" text-gray-200 flex flex-col gap-4 py-4 w-full md:w-3/4">
+        <h1 className="text-primary">Introduce tu email para resetear tu contraseña</h1>
         <span className="w-full relative ">
           <InputField label={"Correo electronico"} name="identifier" placeholder="jhondoe@gmail.com" type="email" icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto text-gray-500" />} />
 
         </span>
-
-        <span className="w-full relative ">
-          <InputField
-            name="password"
-            placeholder="******"
-            type="password"
-            icon={<PasswordIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4 text-gray-500" />}
-            label={"Contraseña"}
-          />
-        </span>
         <span className="text-sm text-red">
           <ErrorMessage name="wrong" />
         </span>
-        {/*  <span 
-          className="text-sm text-primary w-full text-left hover:text-gray-300 transition cursor-pointer"
-          
-          >
-          Olvidé mi contraseña
-        </span> */}
-        <button onClick={() => setStage("resetPassword")} className="text-sm text-primary w-full text-left hover:text-gray-300 transition cursor-pointer">
-          Olvidé mi contraseña
-        </button>
 
         <ButtonComponent
-          onClick={() => { }}
           type="submit"
         >
           Iniciar sesión
@@ -86,4 +59,4 @@ const FormLogin: FC<any> = ({ setStage }) => {
   );
 };
 
-export default FormLogin;
+export default FormResetPassword;

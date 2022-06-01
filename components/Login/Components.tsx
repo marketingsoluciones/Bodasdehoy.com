@@ -15,6 +15,9 @@ interface propsRegisterQuestion {
   onClick: MouseEventHandler;
 }
 
+interface propsResetPassword {
+  onClick: MouseEventHandler;
+}
 
 
 export const RegisterQuestion: FC<propsRegisterQuestion> = ({ onClick }) => {
@@ -30,6 +33,20 @@ export const RegisterQuestion: FC<propsRegisterQuestion> = ({ onClick }) => {
     </h2>
   );
 };
+
+export const ResetPassword: FC<propsResetPassword> = ({ onClick }) => {
+  return (
+
+    <span
+      className="text-sm text-primary w-full text-left font-semibold cursor-pointer hover:text-tertiary transition"
+      onClick={onClick}
+    >
+      Olvidé mi contraseña
+    </span>
+
+  );
+};
+
 
 export const Providers: FC<any> = ({ setStage }) => {
 

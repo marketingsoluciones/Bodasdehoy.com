@@ -1,14 +1,13 @@
 import { FC, ReactNode, useEffect, useState } from "react";
 import { ButtonClose } from "../components/Inputs";
 import router from "next/router";
-import { Login, Register, ResetPass } from '../components/Login/Forms';
+import { Login, Register } from '../components/Login/Forms';
 import { AuthContextProvider } from "../context";
 
 // Tipos de datos personalizados
 type Forms = {
   login?: ReactNode;
   register?: ReactNode;
-  resetPassword?: ReactNode;
   ForgetPassword?: ReactNode;
 };
 
@@ -21,7 +20,6 @@ const PageLogin: FC = () => {
   const Stages: Forms = {
     login: <Login setStage={setStage} />,
     register: <Register setStage={setStage} />,
-    resetPassword: <ResetPass setStage={setStage} />
   };
 
   const keyDown: any = (event: KeyboardEvent) => {

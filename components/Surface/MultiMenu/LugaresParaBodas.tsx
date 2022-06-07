@@ -85,7 +85,7 @@ const LugaresParaBodas =  () => {
       
         {List.map((item, idx) => (
             <Link
-              //key={idx}
+              key={idx}
               href = {`/categoria/lugares-para-bodas`}
               //className="flex flex-col items-center justify-center text-gray-600 p-3 hover:bg-gray-200 transition rounded-xl"
               

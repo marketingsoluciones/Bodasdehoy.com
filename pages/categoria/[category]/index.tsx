@@ -212,6 +212,7 @@ interface propsFilter {
 export const Filters: FC<propsFilter> = ({ optionsCheckbox }) => {
   const { characteristics } = optionsCheckbox;
   const { filters, setFilters } = FiltersContextProvider();
+  console.log("console.log de characteristics",characteristics)
 
   const handleResetFilters = () => {
     setFilters({ type: "RESET_FILTER", payload: {} });

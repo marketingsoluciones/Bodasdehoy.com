@@ -24,7 +24,7 @@ import { LoadingContextProvider, AuthContextProvider } from "../../context";
 import { cloneElement } from "react";
 import { HeartIconFill, StarRating } from "../Icons/index";
 import { TransitionGroup, CSSTransition } from "react-transition-group";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import { ButtonClose } from "../Inputs";
 import { useToast } from "../../hooks/useToast";
 import NovioMenu from "./MultiMenu/NovioMenu";
@@ -111,7 +111,7 @@ const Navbar: FC = () => {
   const List: Item[] = [
     {
       title: "Mi boda",
-      route: process.env.NEXT_PUBLIC_EVENTSAPP ?? "/",
+      route: /* process.env.NEXT_PUBLIC_EVENTSAPP ?? */ "https://app-continuacion-bodas-de-hoy.vercel.app/",
       titleInside: "Mi organizador de bodas",
       component: <OrganizadorBoda />,
     },
@@ -134,14 +134,16 @@ const Navbar: FC = () => {
     return (
       <>
         <Link href={route} passHref>
-          <li className="uppercase h-16 flex items-center justify-center cursor-pointer relative tracking-widest hover:text-tertiary transition text-gray-500">
-            {title}
-            <svg
-              className={`h-0.5 w-full bg-primary transform transition absolute ${
-                isHovered ? "scale-100" : "scale-0"
-              } `}
-            />
-          </li>
+          <a>
+            <li className="uppercase h-16 flex items-center justify-center cursor-pointer relative tracking-widest hover:text-tertiary transition text-gray-500">
+              {title}
+              <svg
+                className={`h-0.5 w-full bg-primary transform transition absolute ${
+                  isHovered ? "scale-100" : "scale-0"
+                } `}
+              />
+            </li>
+          </a>
         </Link>
       </>
     );
@@ -243,7 +245,9 @@ const ProfileMenu = () => {
   const { setUser, user } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
   const { _signOut } = useAuthentication()
-
+  /* const [hoverRef, isHovered] = useHover() */
+    const router = useRouter()
+    
   const options: Option[] = [
     {
       title: "Mi perfil",
@@ -251,13 +255,13 @@ const ProfileMenu = () => {
       icon: <UserIcon />,
     },
     {
-      title: "Notificaciones",
+      title: "Mis empresas",
       route: "/empresa",
-      icon: <HeartIconFill />,
+      icon: <CompanyIcon/>,
     },
     {
-      title: "Favoritos",
-      route: "/",
+      title: "Notificaciones",
+      route: "/configuracion",
       icon: <StarRating />,
     },
     {

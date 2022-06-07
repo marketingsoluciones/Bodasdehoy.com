@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import {useHover} from "../../hooks";
 import { CheckIcon } from "../Icons";
 import Image from 'next/image'
+import Link from "next/link";
 
 export const AdsApp = () => {
   const List: string[] = [
@@ -56,9 +57,15 @@ export const AdsApp = () => {
             </Slider>
           </div>
           <div className="w-full flex items-center justify-center py-10">
-            <button className="bg-primary rounded-full px-5 py-2 text-white hover:bg-white hover:text-primary transition border border-primary">
-              Empecemos
-            </button>
+            <Link
+              href={"https://app-continuacion-bodas-de-hoy.vercel.app/"}              
+              >
+                <a
+                  className="bg-primary rounded-full px-5 py-2 text-white hover:bg-white hover:text-primary transition border border-primary"
+                >
+                  Empecemos
+                </a>
+            </Link>
           </div>
         </div>
       </div>

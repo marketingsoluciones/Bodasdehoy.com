@@ -20,7 +20,6 @@ import { LoadingItem } from "../../../components/Loading";
 import EmptyComponent from "../../../components/Surface/EmptyComponent";
 import {
   FiltersContextProvider,
-  FiltersProvider,
 } from "../../../context/FiltersContext";
 import {
   LocationFilter,
@@ -31,6 +30,7 @@ import useInfiniteScroll from "../../../hooks/useInfiniteScroll";
 import SkeletonCardBusiness from "../../../components/Category/SkeletonCardBusiness";
 
 const CategoryPage: FC<category> = (props) => {
+  const { filters, setFilters } = FiltersContextProvider();
   const { _id, imgBanner, subCategories, heading, title, description, slug } =
     props;
 
@@ -76,6 +76,8 @@ const CategoryPage: FC<category> = (props) => {
     setCharacteristics(characteristicsReduce);
   }, [subCategories, _id]);
 
+
+
   return (
     <section className="flex flex-col gap-10 ">
       <div>
@@ -104,10 +106,8 @@ const CategoryPage: FC<category> = (props) => {
 
       {/* Aside Filters */}
       <div className="xl:max-w-screen-lg 2xl:max-w-screen-xl gap-4 md:gap-10 mx-auto inset-x-0 grid md:grid-cols-7 2xl:grid-cols-5 w-full">
-        <FiltersProvider>
-          <Filters optionsCheckbox={{ characteristics }} />
-          <GridCards query={{categories : _id}} />
-        </FiltersProvider>
+        <Filters optionsCheckbox={{ characteristics }} />
+        <GridCards query={{ categories: _id }} />
       </div>
     </section>
   );
@@ -127,6 +127,16 @@ export const GridCards: FC<{ query: object }> = ({ query }) => {
 
   const [isFetching, setIsFetching, stop] = useInfiniteScroll(getMoreFeed);
 
+  /*useEffect(() => {
+    return () => {
+      // Desmontado del componente.
+      setFilters({
+        type: "RESET_VALIR", payload: "false"
+      })
+      //console.log("desmontado", "valir:", filters.valir)
+    }
+  }, [])*/
+
   async function getMoreFeed() {
     try {
       if (skip >= data.total) {
@@ -143,18 +153,25 @@ export const GridCards: FC<{ query: object }> = ({ query }) => {
         },
       });
 
+
       setData((old: { total: number; results: business[] }) => ({
         total: additionalData.total,
         results: [...old?.results, ...additionalData?.results],
       }));
     } catch (error) {
       console.log(error);
-    } finally{
+    } finally {
       setIsFetching(false)
     }
   }
   useEffect(() => {
-    setFilters({ type: "RESET_FILTER", payload: {} });
+    //console.log("aqui la query")
+    //aqui leer un estado de filter y condicionar
+    if (!filters.valir) {
+      //setFilters({ type: "RESET_FILTER", payload: {} });
+    } else {
+      //setFilters({ type: "RESET_VALIR", payload: "false" });
+    }
     fetchy(initialQuery);
   }, [query]);
 
@@ -174,18 +191,18 @@ export const GridCards: FC<{ query: object }> = ({ query }) => {
       </div>
       {!loading && !error && data?.results?.length > 0 && (
         <div className="w-full grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-6 px-5 overflow-hidden   ">
-          
+
           {data?.results.map((business: business) => (
             <CardBusiness key={business._id} {...business} />
           ))}
-          {isFetching && skip <= data.total  && (
+          {isFetching && skip <= data.total && (
             <>
-            <SkeletonCardBusiness />
-            <SkeletonCardBusiness />
-            <SkeletonCardBusiness />
-            <SkeletonCardBusiness />
-            <SkeletonCardBusiness />
-            <SkeletonCardBusiness />
+              <SkeletonCardBusiness />
+              <SkeletonCardBusiness />
+              <SkeletonCardBusiness />
+              <SkeletonCardBusiness />
+              <SkeletonCardBusiness />
+              <SkeletonCardBusiness />
             </>
           )}
         </div>
@@ -212,7 +229,6 @@ interface propsFilter {
 export const Filters: FC<propsFilter> = ({ optionsCheckbox }) => {
   const { characteristics } = optionsCheckbox;
   const { filters, setFilters } = FiltersContextProvider();
-  console.log("console.log de characteristics",characteristics)
 
   const handleResetFilters = () => {
     setFilters({ type: "RESET_FILTER", payload: {} });
@@ -273,20 +289,20 @@ export const getStaticProps: GetStaticProps = async ({
 }: any) => {
   try {
     console.time("Category Page queries");
-        const {
-          results: [category],
-        } = await fetchApi({
-          query: queries.getAllCategoryBusiness,
-          variables: {
-            criteria: { slug: params.category },
-          },
-        });
-        console.timeEnd("Category Page queries");
-        return {
-          props: category ?? {},
-        };
-    
-    } catch (error) {
+    const {
+      results: [category],
+    } = await fetchApi({
+      query: queries.getAllCategoryBusiness,
+      variables: {
+        criteria: { slug: params.category },
+      },
+    });
+    console.timeEnd("Category Page queries");
+    return {
+      props: category ?? {},
+    };
+
+  } catch (error) {
     console.timeEnd("Category Page queries");
     //console.log(error);
     return {
@@ -300,7 +316,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const { results } = await fetchApi({ query: queries.getCategories });
     const paths = results.reduce(
       (acc: { params: { category: string } }[], category: category) => {
-          category.slug && acc.push({ params: { category: category.slug } })
+        category.slug && acc.push({ params: { category: category.slug } })
         return acc;
       },
       []

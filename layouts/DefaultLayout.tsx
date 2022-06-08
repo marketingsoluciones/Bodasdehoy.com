@@ -1,5 +1,5 @@
 import dynamic from "next/dynamic";
-import { LoadingProvider } from "../context";
+import { LoadingProvider, FiltersProvider } from "../context";
 import ButtonCrearEmpresa from "../components/ButtonCrearEmpresa";
 import { NavigationMobile } from "../components/Surface";
 import { FC } from "react";
@@ -34,21 +34,23 @@ const DefaultLayout: FC = ({ children }) => {
       <DynamicSocketProvider>
         <DynamicChatsProvider>
           <LoadingProvider>
-            <DynamicToastProvider>
+            <FiltersProvider>
+              <DynamicToastProvider>
                 <div className="bg-color-base relative min-h-screen w-full h-full">
-              <DynamicSidebarProvider>
-                  <ButtonCrearEmpresa />
-                  <DynamicNavigation />
-                  <NavigationMobile />
-                  <main className="w-full pt-20">
-                    {/* @ts-ignore */}
-                    {children}
-                  </main>
-                  <DynamicFooter />
-                  <DynamicFooterMobile />
-              </DynamicSidebarProvider>
+                  <DynamicSidebarProvider>
+                    <ButtonCrearEmpresa />
+                    <DynamicNavigation />
+                    <NavigationMobile />
+                    <main className="w-full pt-20">
+                      {/* @ts-ignore */}
+                      {children}
+                    </main>
+                    <DynamicFooter />
+                    <DynamicFooterMobile />
+                  </DynamicSidebarProvider>
                 </div>
-            </DynamicToastProvider>
+              </DynamicToastProvider>
+            </FiltersProvider>
           </LoadingProvider>
         </DynamicChatsProvider>
       </DynamicSocketProvider>

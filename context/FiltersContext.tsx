@@ -10,6 +10,7 @@ import {
 interface filtersActived {
   total: number;
   filters: filter;
+  valir: string | null;
 }
 
 interface filter {
@@ -23,6 +24,8 @@ enum actions {
   RESET_FILTER,
   ADD_CHARACTERISTIC,
   REMOVE_CHARACTERISTIC,
+  ADD_VALIR,
+  RESET_VALIR,
 }
 
 type action = {
@@ -39,6 +42,7 @@ const initialContext: Context = {
   filters: {
     total: 0,
     filters: {},
+    valir: null,
   },
   setFilters: () => null,
 };
@@ -50,10 +54,32 @@ const reducerFilters: any = (
   { type, payload }: action
 ) => {
   if (type === "ADD_FILTER") {
-    return {
-      total: 1,
+    //console.log("ADD_FILTER", payload)
+    const salida = {
+      total: 0,
       filters: { ...state?.filters, ...payload },
-    };
+    }
+    return salida;
+  }
+
+  if (type === "ADD_VALIR") {
+    //console.log("ADD_VALIR", payload)
+    const salida = {
+      total: 0,
+      filters: {},
+      valir: payload,
+    }
+    return salida;
+  }
+
+  if (type === "RESET_VALIR") {
+    //console.log("RESET_VALIR", payload)
+    const salida = {
+      total: 0,
+      filters: {},
+      valir: null,
+    }
+    return salida;
   }
 
   if (type === "RESET_FILTER") {
@@ -62,52 +88,73 @@ const reducerFilters: any = (
       for (const key in payload) {
         newState[key] && delete newState[key];
       }
-      return {
+      const salida = {
         total: Object.values(newState).length,
         filters: newState,
-      };
+      }
+      //console.log("RESET_FILTER", salida)
+      return salida;
     } else {
-      return initialContext.filters;
+      const salida = initialContext.filters
+      //console.log("RESET_FILTER1", salida)
+      return salida;
     }
   }
 
   if (type === "ADD_CHARACTERISTIC") {
     if (state?.filters?.characteristics) {
-      return {
+      const salida = {
         ...state,
+        total: state.total + 1,
         filters: {
-          characteristics:[...state?.filters?.characteristics, payload],
+          characteristics: [...state?.filters?.characteristics, payload],
         },
-      };
+      }
+      //console.log("ADD_CHARACTERISTIC1", payload, salida)
+      return salida;
     } else {
-      console.log(payload);
-      return {
+      //console.log(payload);
+      const salida = {
         ...state,
+        total: state.total + 1,
         filters: {
           characteristics: [payload],
-        
         },
-      };
+      }
+      //console.log("ADD_CHARACTERISTIC2", payload, salida)
+      return salida;
     }
   }
 
   if (type === "REMOVE_CHARACTERISTIC") {
     let instance = state?.filters?.characteristics;
-    if (instance && instance?.length > 1) {
-      return {
-        ...state,
-        filters: {
-          ...state?.filters,
-          characteristics:  state?.filters.characteristics?.filter(
-              (item) => item !== payload
-              ),
-          },
-        };
-      } else {
-      const newState = {...state}
-      delete newState.filters.characteristics
+    if (payload === "city") {
+      const newState = { ...state }
+      delete newState.filters.city
+      //console.log("REMOVE_CHARACTERISTIC1", payload, newState)
       return newState
+    } else {
+      if (instance && instance?.length > 0) {
+        const salida = {
+          ...state,
+          total: state.total - 1,
+          filters: {
+            ...state?.filters,
+            characteristics: state?.filters.characteristics?.filter(
+              (item) => item !== payload
+            ),
+          },
+        }
+        //console.log("REMOVE_CHARACTERISTIC2", payload, salida)
+        return salida;
+      } else {
+        const newState = { ...state }
+        delete newState.filters.characteristics
+        //console.log("REMOVE_CHARACTERISTIC3", payload, newState)
+        return newState
+      }
     }
+
   }
 };
 

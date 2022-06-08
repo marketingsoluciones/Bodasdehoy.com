@@ -30,7 +30,7 @@ const ListItem: FC<{ title: string; icon: any }> = ({ title, icon }) => {
     <li className="flex items-center gap-2 text-sm text-gray-600 hover:text-tertiary hover:font-semibold cursor-pointer hover:bg-gray-100 transition p-2 rounded-xl w-max">
       <div className="w-8 h-8 rounded-full bg-white p-1.5 grid place-items-center">
         {cloneElement(icon, { className: "w-full h-full" })}
-      </div>    
+      </div>
       <p className="">{title}</p>
     </li>
   );

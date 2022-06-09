@@ -20,25 +20,25 @@ type Context = {
 };
 
 const initialContext: Context = {
-  socket : null ,
+  socket: null,
   //setSocket : () => {}
 };
 
 const SocketContext = createContext<Context>(initialContext);
 
 const SocketProvider: FC = ({ children }): JSX.Element => {
-  const {user} = AuthContextProvider()
+  const { user } = AuthContextProvider()
   const [socket, setSocket] = useState<Socket | null>(initialContext.socket);
-  
+
   useEffect(() => {
-    
-    const token = Cookies.get("sessionBodas")
-    token && !socket && setSocket(api.socketIO({token}));
+
+    const token = Cookies.get("idToken")
+    token && !socket && setSocket(api.socketIO({ token }));
     !token && socket && socket.disconnect();
   }, [user])
 
   return (
-    <SocketContext.Provider value={{socket}}>
+    <SocketContext.Provider value={{ socket }}>
       {children}
     </SocketContext.Provider>
   );

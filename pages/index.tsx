@@ -350,12 +350,10 @@ export const Features: FC = () => {
           {List.map((item, idx) => (
             <Link
               href={item.route}
+              key={idx}
             >
-              <a className="">
-                <div className="">
-                <Feature key={idx} item={item} />
-                </div>
-                
+              <a >
+                <Feature  item={item} />
               </a>
             </Link>
             

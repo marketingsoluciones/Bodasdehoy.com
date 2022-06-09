@@ -14,11 +14,11 @@ interface propsSidebar {
     set: Dispatch<SetStateAction<boolean>>
     state : boolean
 }
-
+// menu hamburguesa en el mobile 
 export const Sidebar: FC <propsSidebar> = ({set, state}) => {
     
     const FirstList: ItemNav[] = [
-        { title: "Mi boda", route: "https://app.bodasdehoy.com" },
+        { title: "Mi boda", route: "https://app-continuacion-bodas-de-hoy.vercel.app/" },
         { title: "Novia", route: "/categoria/novias" },
         { title: "Novio", route: "/categoria/novios" },
         { title: "Proveedores", route: "/categoria/proveedores" },
@@ -27,7 +27,7 @@ export const Sidebar: FC <propsSidebar> = ({set, state}) => {
 
     const SecondaryList: ItemNav[] = [
         { title: "Magazine", route: "/magazine" },
-        { title: "Gestor de invitados", route: "https://app.bodasdehoy.com" },
+        { title: "Gestor de invitados", route: "https://app-continuacion-bodas-de-hoy.vercel.app/" },
     ]
     return (
         <ClickAwayListener onClickAway={() => state && set(false)}>

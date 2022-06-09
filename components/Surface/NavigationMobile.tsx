@@ -30,7 +30,7 @@ export const NavigationMobile = () => {
     { icon: <HomeIcon className="w-9 h-9" />, route: "/" },
     {
       icon: <LightBulb className="w-10 h-10" />,
-      route: "https://app.bodasdehoy.com",
+      route: "https://continuacion-bodas-de-hoy.vercel.app/",
     },
     {
       icon: <PlusCircle className="w-10 h-10 text-gray-800" />,
@@ -58,9 +58,9 @@ export const NavigationMobile = () => {
 
         {!user ? (
             <Link href={"/login"} passHref>
-            <button>
-            <UserIcon className="w-8 h-8" />
-        </button>
+              <button>
+                <UserIcon className="w-8 h-8" />
+              </button>
             </Link>
         ) : (
           <Link href={"/configuracion"} passHref>

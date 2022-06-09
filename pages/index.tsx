@@ -33,6 +33,7 @@ import { connectSearchBox, Hits, InstantSearch } from "react-instantsearch-dom";
 import algoliasearch from "algoliasearch/lite";
 import { CloseIcon } from '../components/Icons/index';
 import Cookies from "js-cookie";
+import Link from "next/link";
 
 interface propsHome {
   business: business[];
@@ -252,22 +253,32 @@ export const Features: FC = () => {
   type ItemList = {
     title: string;
     icon: ReactNode;
+    route: string;
   };
 
-  const List: ItemList[] = [
+  const Proximamente: ItemList[] = [
     {
       title: "Comunidad para novias",
       icon: <CommunityIcon className="w-8 h-8" />,
+      route: "/"
     },
+  ]
+
+  const List: ItemList[] = [
     {
       title: "Recursos descargables",
       icon: <DownloadFileIcon className="w-8 h-8" />,
+      route: "https://bodasdehoy.com/gestor-de-presupuesto-de-tu-boda/"
     },
     {
       title: "Gestor de invitados",
       icon: <GuestAppIcon className="w-8 h-8" />,
+      route: "https://app-continuacion-bodas-de-hoy.vercel.app/"
     },
-    { title: "Inspiración", icon: <InspirationIcon className="w-8 h-8" /> },
+    { title: "Inspiración", 
+      icon: <InspirationIcon className="w-8 h-8" /> ,
+      route: "/magazine"
+    },
   ];
 
   interface propsFeature {
@@ -275,11 +286,11 @@ export const Features: FC = () => {
   }
   const Feature: FC<propsFeature> = memo(({ item }) => {
     return (
-      <div className="flex items-center gap-3 py-3 pl-2 w-full ">
-        <button className="p-4 bg-white shadow rounded-full bg-white grid place-items-center transform transition duration-800 hover:scale-110 hover:-rotate-12 focus:outline-none">
+      <div className="flex items-center gap-3 py-3 pl-2 w-full static ">
+        <span className="p-4 bg-white shadow rounded-full bg-white grid place-items-center transform transition duration-800 hover:scale-110 hover:-rotate-12 focus:outline-none z-20">
           {item.icon}
-        </button>
-        <h2 className="text-tertiary w-32 text-sm md:text-lg leading-6 font-semibold cursor-pointer hover:text-primary transition duration-800">
+        </span>
+        <h2 className="text-tertiary w-32 text-sm md:text-lg leading-6 font-semibold  hover:text-primary transition duration-800">
           {item.title}
         </h2>
       </div>
@@ -304,13 +315,53 @@ export const Features: FC = () => {
       },
     ],
   };
+  const style={
+    tamañoTexto: {
+      fontSize: '0.5rem',
+      color: '#fff',
+      padding: '5px',
+      borderRadius: '10px',
+      
+      
+    },
+
+  
+     
+  }
 
   return (
     <div className=" grid grid-cols-1 overflow-visible z-0">
       <Slider {...settings}>
-        {List.map((item, idx) => (
-          <Feature key={idx} item={item} />
-        ))}
+        <div className="">
+          
+          
+            <span style={style.tamañoTexto}       className="absolute z-30 bg-tertiary top-14 left-7 opacity-90">
+              proximamente
+            </span>
+          
+            
+          <span className="">
+            {Proximamente.map((item, idx)=>(
+              <Feature key={idx} item={item} />
+            ))}  
+          </span>
+        </div>
+      
+          {List.map((item, idx) => (
+            <Link
+              href={item.route}
+            >
+              <a className="">
+                <div className="">
+                <Feature key={idx} item={item} />
+                </div>
+                
+              </a>
+            </Link>
+            
+          ))}
+        
+        
       </Slider>
     </div>
   );

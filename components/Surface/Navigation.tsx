@@ -111,7 +111,7 @@ const Navbar: FC = () => {
   const List: Item[] = [
     {
       title: "Mi boda",
-      route: /* process.env.NEXT_PUBLIC_EVENTSAPP ?? */ "https://app-continuacion-bodas-de-hoy.vercel.app/",
+      route:  process.env.NEXT_PUBLIC_EVENTSAPP ??  "https://app-continuacion-bodas-de-hoy.vercel.app/",
       titleInside: "Mi organizador de bodas",
       component: <OrganizadorBoda />,
     },

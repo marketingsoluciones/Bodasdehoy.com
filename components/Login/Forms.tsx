@@ -4,11 +4,14 @@ import { BusinessAccess, Providers, RegisterQuestion, ResetPassword } from "./Co
 import FormLogin from "./Forms/FormLogin";
 import FormResetPassword from "./Forms/FormResetPassword";
 import { FirstStep, SecondStep } from "./Forms/Register/Steps";
+import PageLogin from "../../pages/login"
 
 interface propsLogin {
   setStage: CallableFunction;
 }
+
 export const Login: FC<propsLogin> = ({ setStage }) => {
+  
   return (
     <>
       <div className="flex flex-col gap-2 items-center justify-center w-full">
@@ -35,8 +38,8 @@ export const Register: FC<propsLogin> = ({ setStage }) => {
           case 1:
             return <SecondStep setStageRegister={setStageRegister} stageRegister={stageRegister} whoYouAre={whoYouAre} />
             break;
-
           default:
+            return <PageLogin/>
             break;
         }
       })()}

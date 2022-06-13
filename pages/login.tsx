@@ -16,8 +16,6 @@ const PageLogin: FC = () => {
   const { user } = AuthContextProvider();
   const [stage, setStage] = useState<keyof typeof Stages>("login");
 
-
-
   const Stages: Forms = {
     login: <Login setStage={setStage} />,
     register: <Register setStage={setStage} />,
@@ -36,7 +34,6 @@ const PageLogin: FC = () => {
   useEffect(() => {
     document?.addEventListener("keydown", keyDown);
   }, []);
-
 
   return (
     <>

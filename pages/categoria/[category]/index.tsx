@@ -2,32 +2,23 @@ import Slider from "react-slick";
 import { FC, ReactNode, useState, useEffect, useRef } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { fetchApi, queries } from "../../../utils/Fetching";
-import {
-  business,
-  category,
-  characteristicSubCategory,
-  subCategory,
-} from "../../../interfaces";
+import {business,category,characteristicSubCategory,subCategory,} from "../../../interfaces";
 import { useHover } from "../../../hooks";
 import { createURL } from "../../../utils/UrlImage";
-import {
-  CardBusiness,
-  HeaderCategory,
-  ItemSubCategory,
-} from "../../../components/Category";
+import {CardBusiness,HeaderCategory,ItemSubCategory,} from "../../../components/Category";
 import useFetch from "../../../hooks/useFetch";
 import { LoadingItem } from "../../../components/Loading";
 import EmptyComponent from "../../../components/Surface/EmptyComponent";
-import {
-  FiltersContextProvider,
-} from "../../../context/FiltersContext";
-import {
-  LocationFilter,
-  CheckBoxFilter,
-} from "../../../components/Inputs/Filters";
-import { BurgerIcon } from "../../../components/Icons";
+import {FiltersContextProvider,} from "../../../context/FiltersContext";
+import {LocationFilter,CheckBoxFilter,} from "../../../components/Inputs/Filters";
+import { BurgerIcon,LogoFullColor,SearchIcon } from "../../../components/Icons";
 import useInfiniteScroll from "../../../hooks/useInfiniteScroll";
 import SkeletonCardBusiness from "../../../components/Category/SkeletonCardBusiness";
+import algoliasearch from "algoliasearch/lite";
+import { connectSearchBox, Hits, InstantSearch } from "react-instantsearch-dom";
+import { SidebarContextProvider } from "../../../context";
+import { CloseIcon } from '../../../components/Icons/index';
+import { connectWithQuery, Hit } from "../../../components/Surface/Navigation";
 
 const CategoryPage: FC<category> = (props) => {
   const { filters, setFilters } = FiltersContextProvider();
@@ -76,10 +67,95 @@ const CategoryPage: FC<category> = (props) => {
     setCharacteristics(characteristicsReduce);
   }, [subCategories, _id]);
 
-
+  const NavbarMobile = () => {
+    const { showSidebar, setShowSidebar } = SidebarContextProvider();
+    const [showSearcher, setShowSearcher] = useState<boolean>(false);
+    
+    const MySearch : FC <any> = ({
+      currentRefinement,
+      refine,
+      setSearch,
+      isSearch,
+    }) => {
+      return (
+        <div className="w-full mx-auto inset-x-0 bg-white h-14 -mt-2 rounded-full flex items-center relative">
+          
+          <input
+            autoFocus
+            type="input"
+            value={currentRefinement}
+            onChange={(e) => refine(e.currentTarget.value)}
+            className="w-full border-none bg-none w-full h-full rounded-full pl-8 focus:outline-none text-sm text-gray-700"
+            placeholder="Buscar en bodasdehoy.com"
+          />
+          <button onClick={() => setShowSearcher(!showSearcher)} className="w-5 h-5  absolute right-5 ">
+          <CloseIcon className="w-full h-full" />
+          </button>
+        </div>
+      );
+    };
+  
+    const ConnectMySearchBox = connectSearchBox(MySearch);
+    const conditionalQuery = {
+      search(requests: any) {
+        if (
+          requests.every(({ params }: any) => !params.query) ||
+          requests.every(({ params }: any) => !params.query.trim())
+        ) {
+          // Here we have to do something else
+          return Promise.resolve({
+            results: requests.map(() => ({
+              hits: [],
+              nbHits: 0,
+              nbPages: 0,
+              processingTimeMS: 0,
+            })),
+          });
+        }
+        const searchClient = algoliasearch(
+          "4YG7QHCVEA",
+          "920a6487923dbae05fb89b1be0955e74"
+        );
+        return searchClient.search(requests);
+      },
+    };
+    return (
+      <div className="mx-auto inset-x-0 w-full px-5 sm:hidden relative -mt-10 mb-10 flex items-center justify-between relative  ">
+        {!showSearcher ? (
+          <>
+            <button className="p-2" onClick={() => setShowSidebar(true)}>
+              <BurgerIcon />
+            </button>
+  
+            <LogoFullColor className="h-auto w-48" />
+  
+            <button
+              className="p-2"
+              onClick={() => setShowSearcher(!showSearcher)}
+            >
+              <SearchIcon />
+            </button>
+            
+          </>
+        ) : (
+          <InstantSearch indexName="bodasdehoy" searchClient={conditionalQuery}>
+            <ConnectMySearchBox setSearch={setShowSearcher} isSearch={showSearcher} />
+            {/* <SearchBox searchAsYouType={false} /> */}
+            <div className="absolute -bottom-0 left-0 w-[80%] mx-auto inset-x-0 bg-white shadow translate-y-full max-h-60 overflow-auto no-scrollbar  rounded-b-3xl z-40">
+              <Hits hitComponent={Hit} />
+            </div>
+          </InstantSearch>
+        )}
+      </div>
+    );
+  };
 
   return (
     <section className="flex flex-col gap-10 ">
+      <div>
+      <NavbarMobile/>
+      </div>
+      
       <div>
         {/* Imagen Banner */}
         <img
@@ -89,13 +165,13 @@ const CategoryPage: FC<category> = (props) => {
               : "/placeholder/image.png"
           }
           alt={title}
-          className="w-full h-60 transform -mt-20 z-10 object-center object-cover"
+          className="hidden md:block md:w-full md:h-60 md:transform md:-mt-20 md:z-10 md:object-center md:object-cover "
         />
         <HeaderCategory {...props} />
       </div>
 
       {/* Grid Cards */}
-      <div className="max-w-screen-lg 2xl:max-w-screen-xl w-full mx-auto inset-x-0 grid grid-cols-1 items-center justify-between top-0 px-10  ">
+      <div className="max-w-screen-lg 2xl:max-w-screen-xl w-full mx-auto inset-x-0 grid grid-cols-1 items-center justify-between top-0 px-5  ">
         <Slider {...settings} className="space-y-10">
           {subCategories?.length > 0 &&
             subCategories.map((item: subCategory) => (

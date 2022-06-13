@@ -10,6 +10,7 @@ interface propsFirstStep {
   value: FunctionStringCallback;
   setStageRegister: Dispatch<SetStateAction<number>>
 }
+
 export const FirstStep: FC<propsFirstStep> = ({ value, setStageRegister }) => {
   const [select, setSelect] = useState<string>("");
 

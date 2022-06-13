@@ -101,13 +101,16 @@ const NavbarMobile = () => {
           <button className="p-2" onClick={() => setShowSidebar(true)}>
             <BurgerIcon />
           </button>
+
           <LogoFullColor className="h-auto w-48" />
+
           <button
             className="p-2"
             onClick={() => setShowSearcher(!showSearcher)}
           >
             <SearchIcon />
           </button>
+          
         </>
       ) : (
         <InstantSearch indexName="bodasdehoy" searchClient={conditionalQuery}>
@@ -233,7 +236,7 @@ export const Searcher: FC<any> = ({
   return (
     <div className="relative w-full">
       <input
-        autoFocus
+        /* autoFocus */
         placeholder="catering, hoteles, fincas, vestidos"
         type="input"
         value={currentRefinement}
@@ -320,26 +323,17 @@ export const Features: FC = () => {
       fontSize: '0.5rem',
       color: '#fff',
       padding: '5px',
-      borderRadius: '10px',
-      
-      
-    },
-
-  
-     
+      borderRadius: '10px',            
+    },     
   }
 
   return (
     <div className=" grid grid-cols-1 overflow-visible z-0">
       <Slider {...settings}>
-        <div className="">
-          
-          
+        <div className="">                    
             <span style={style.tamañoTexto}       className="absolute z-30 bg-tertiary top-14 left-7 opacity-90">
               proximamente
-            </span>
-          
-            
+            </span>                      
           <span className="">
             {Proximamente.map((item, idx)=>(
               <Feature key={idx} item={item} />
@@ -355,11 +349,8 @@ export const Features: FC = () => {
               <a >
                 <Feature  item={item} />
               </a>
-            </Link>
-            
+            </Link>            
           ))}
-        
-        
       </Slider>
     </div>
   );

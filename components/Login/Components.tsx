@@ -61,7 +61,7 @@ export const Providers: FC<any> = ({ setStage }) => {
     } catch (error) {
       setLoading(false);
       toast("error", JSON.stringify(error));
-      console.log(error);
+      console.log("este es un error en el onClick de los listProviders",error);
     }
   };
 

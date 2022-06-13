@@ -19,6 +19,7 @@ import { connectSearchBox, Hits, InstantSearch } from "react-instantsearch-dom";
 import { SidebarContextProvider } from "../../../context";
 import { CloseIcon } from '../../../components/Icons/index';
 import { connectWithQuery, Hit } from "../../../components/Surface/Navigation";
+import option from  "/option.png"
 
 const CategoryPage: FC<category> = (props) => {
   const { filters, setFilters } = FiltersContextProvider();
@@ -259,7 +260,7 @@ export const GridCards: FC<{ query: object }> = ({ query }) => {
 
   return (
     <div className="md:col-span-5 2xl:col-span-4 w-full">
-      <div className="flex items-center justify-start gap-4 px-5 py-5 w-full">
+      <div className="flex items-center justify-start gap-4 px-5 pb-5 w-full">
         <p className="text-sm text-gray-500 ">
           Resultados encontrados: {data?.total ?? 0}
         </p>
@@ -316,8 +317,8 @@ export const Filters: FC<propsFilter> = ({ optionsCheckbox }) => {
   };
   return (
     <>
-      <button onClick={onClick} className="md:hidden flex items-center px-5 gap-3 text-sm  text-gray-700">
-        <BurgerIcon />
+      <button onClick={onClick} className="md:hidden flex flex-row-reverse items-center px-5 gap-3 text-sm text-gray-700">
+        <img src="/option.png" alt="" className="h-5 w-5"/>
         Filtrar
       </button>
 

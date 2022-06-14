@@ -52,10 +52,11 @@ export const useAuthentication = () => {
         provider: async () => {
           try {
             const asdf = await signInWithPopup(auth, payload)
-            console.log("asdf************", asdf)
             return asdf
-          } catch (error) {
+          } catch (error: any) {
             setLoading(false);
+            const er = error.toString()
+            toast("error", `Error: ${er.split(".")[0].split(": Error")[1]}`);
           }
         },
         credentials: async () => await signInWithEmailAndPassword(auth, payload.identifier, payload.password)

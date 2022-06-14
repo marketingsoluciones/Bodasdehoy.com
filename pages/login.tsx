@@ -13,7 +13,7 @@ type Forms = {
 };
 
 const PageLogin: FC = () => {
-  const { user } = AuthContextProvider();
+  const { user, userTemp, setUserTemp } = AuthContextProvider();
   const [stage, setStage] = useState<keyof typeof Stages>("login");
 
   const Stages: Forms = {
@@ -26,10 +26,27 @@ const PageLogin: FC = () => {
     const keyName: string = event.key;
     keyName?.toLowerCase() === "escape" && router.push("/");
   };
+  //al desmontar componente
+  useEffect(() => {
+    return () => {
+      setUserTemp(null)
+    }
+  }, []);
+  // al entrar a login
+  useEffect(() => {
+    if (stage == "login") {
+      setUserTemp(null)
+    }
+  }, [stage]);
 
   useEffect(() => {
     user?.uid && !user.city && setStage("register");
   }, [user]);
+
+  //monta el formulario para crear cuenta logeando con proveedor
+  useEffect(() => {
+    userTemp?.uid && setStage("register");
+  }, [userTemp]);
 
   useEffect(() => {
     document?.addEventListener("keydown", keyDown);

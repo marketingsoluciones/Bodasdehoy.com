@@ -25,17 +25,22 @@ export interface UserMax extends User {
 type Context = {
   user: Partial<UserMax | null>;
   setUser: Dispatch<SetStateAction<Partial<UserMax | null>>>;
+  userTemp: Partial<UserMax | null>;
+  setUserTemp: Dispatch<SetStateAction<Partial<UserMax | null>>>;
 };
 
 const initialContext: Context = {
   user: null,
-  setUser: (user) => {},
+  setUser: (user) => { },
+  userTemp: null,
+  setUserTemp: (user) => { },
 };
 
 const AuthContext = createContext<Context>(initialContext);
 
 const AuthProvider: FC = ({ children }): JSX.Element => {
   const [user, setUser] = useState<Partial<UserMax | null>>(null);
+  const [userTemp, setUserTemp] = useState<Partial<UserMax | null>>(null);
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user: any) => {
@@ -69,14 +74,14 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
 
   useEffect(() => {
     auth.onIdTokenChanged(async user => {
-      if(user){
+      if (user) {
         Cookies.set("idToken", await user.getIdToken())
       }
     })
   }, [])
-  
+
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ user, setUser, userTemp, setUserTemp }}>
       {children}
     </AuthContext.Provider>
   );

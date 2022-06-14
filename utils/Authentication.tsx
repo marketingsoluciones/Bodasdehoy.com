@@ -49,12 +49,20 @@ export const useAuthentication = () => {
       setLoading(true);
 
       const types = {
-        provider: async () => await signInWithPopup(auth, payload),
+        provider: async () => {
+          try {
+            const asdf = await signInWithPopup(auth, payload)
+            console.log("asdf************", asdf)
+            return asdf
+          } catch (error) {
+            setLoading(false);
+          }
+        },
         credentials: async () => await signInWithEmailAndPassword(auth, payload.identifier, payload.password)
       };
 
       // Autenticar con firebase
-      const res: UserCredential = await types[type]();
+      const res: UserCredential | void = await types[type]();
 
       if (res) {
         const token = (await res?.user?.getIdTokenResult())?.token;

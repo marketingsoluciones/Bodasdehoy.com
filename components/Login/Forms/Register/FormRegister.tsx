@@ -166,8 +166,10 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       //Redirigir al home
       await router.push("/");
       setLoading(false);
-      setUser(userTemp)
-      setUserTemp(null)
+      if (userTemp) {
+        setUser(userTemp)
+        setUserTemp(null)
+      }
       toast("success", "Registro realizado con exito")
     } catch (error) {
       console.log(error);

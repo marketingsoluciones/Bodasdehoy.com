@@ -1,15 +1,5 @@
 import { Form, Formik, FormikConfig, FormikValues, useFormikContext } from "formik";
-import {
-  Children,
-  FC,
-  useState,
-  cloneElement,
-  useReducer,
-  Reducer,
-  useEffect,
-  useRef,
-  LegacyRef
-} from "react";
+import {Children,FC,useState,cloneElement,useReducer,Reducer,useEffect,useRef,LegacyRef} from "react";
 import IndiceSteps from "../../components/Business/IndiceSteps";
 import { FormYourBusiness, FormQuestion } from "../../components/Forms";
 import { ButtonComponent } from "../../components/Inputs";

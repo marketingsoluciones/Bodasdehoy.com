@@ -10,7 +10,7 @@ import { useToast } from "../hooks/useToast";
 
 export const useAuthentication = () => {
   const { setLoading } = LoadingContextProvider();
-  const { setUser } = AuthContextProvider();
+  const { setUser, setUserTemp } = AuthContextProvider();
   const toast = useToast();
   const router = useRouter();
 
@@ -23,7 +23,8 @@ export const useAuthentication = () => {
       if (authResult?.sessionCookie) {
         const { sessionCookie } = authResult;
         // Setear en localStorage token JWT
-        Cookies.set("sessionBodas", sessionCookie);
+        Cookies.set("sessionBodas", sessionCookie, { domain: '.vercel.app' });
+        console.log("sessionCookie", sessionCookie)
         return sessionCookie
       } else {
         console.warn("No se pudo cargar la cookie de sesión por que hubo un problema")
@@ -49,37 +50,52 @@ export const useAuthentication = () => {
       setLoading(true);
 
       const types = {
-        provider: async () => await signInWithPopup(auth, payload),
+        provider: async () => {
+          try {
+            const asdf = await signInWithPopup(auth, payload)
+            return asdf
+          } catch (error: any) {
+            setLoading(false);
+            const er = error.toString().split(".")[0].split(": Error ")[1]
+            if (er == "(auth/account-exists-with-different-credential)") {
+              toast("error", "El correo asociado a su provedor ya se encuentra registrado en bodasdehoy.com");
+            }
+          }
+        },
         credentials: async () => await signInWithEmailAndPassword(auth, payload.identifier, payload.password)
       };
 
       // Autenticar con firebase
-      const res: UserCredential = await types[type]();
-
+      const res: UserCredential | void = await types[type]();
       if (res) {
-        const token = (await res?.user?.getIdTokenResult())?.token;
-        const sessionCookie = await getSessionCookie(token)
-        if (sessionCookie) {
-
-          // Solicitar datos adicionales del usuario
-          const moreInfo = await fetchApi({
-            query: queries.getUser,
-            variables: { uid: res.user.uid },
-          });
-          if (moreInfo.errors) {
-            throw new Error("no hay datos bd");
-            //setStage("register")
-          }
+        // Solicitar datos adicionales del usuario
+        const moreInfo = await fetchApi({
+          query: queries.getUser,
+          variables: { uid: res.user.uid },
+        });
+        if (moreInfo && res?.user?.email) {
+          const token = (await res?.user?.getIdTokenResult())?.token;
+          const sessionCookie = await getSessionCookie(token)
+          if (sessionCookie) { }
           // Actualizar estado con los dos datos
           setUser({ ...res.user, ...moreInfo });
 
           toast("success", "Inicio de sesión con exito");
           await router.push("/");
+        } else {
+          toast("error", "aun no está registrado");
+          //verificar que firebase me devuelva un correo del usuario
+          if (res?.user?.email) {
+            //seteo usuario temporal pasar nombre y apellido de firebase a formulario de registro
+            setUserTemp({ ...res.user });
+            toast("success", "Seleccione quien eres y luego completa el formulario");
+          } else {
+            toast("error", "usted debe tener asociado un correo a su cuenta de proveedor");
+          }
         }
-
-      } else {
-        console.log("No hay session cookie");
       }
+
+
       setLoading(false);
     },
     []
@@ -99,12 +115,9 @@ export const useAuthentication = () => {
 
 
   const resetPassword = async (values: any, setStage: any) => {// funcion para conectar con con firebase para enviar el correo 
-    console.log(values)
     if (values?.identifier !== "") {
       try {
         await sendPasswordResetEmail(auth, values?.identifier);
-        console.log(auth)
-        console.log("email enviado a", values)
         setStage("login")
         toast("success", "Email enviado correctamente")
       } catch (error) {

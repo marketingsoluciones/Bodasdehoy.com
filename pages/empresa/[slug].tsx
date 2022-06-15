@@ -4,7 +4,7 @@ import { FC, ReactNode, useEffect, useState } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { FormListing } from "../../components/Forms";
 import { RatingStars } from "../../components/Home/FeaturedCompanies";
-import {CrossIcon,DocsIcon,FacebookIcon,Isologo,LessIcon,Location2Icon,OpinionesIcon,PreguntasIcon,WebSiteIcon,PhoneIcon,YoutubeIcon,ArrowIcon,} from "../../components/Icons";
+import {CrossIcon,DocsIcon,FacebookIcon,Isologo,LessIcon,Location2Icon,OpinionesIcon,PreguntasIcon,WebSiteIcon,PhoneIcon,YoutubeIcon,ArrowIcon, MessageIcon,} from "../../components/Icons";
 import EmpresaDestacada from "../../components/Listing/EmpresaDestacada";
 import FAQ from "../../components/Listing/FAQ";
 import FeaturesListing from "../../components/Listing/FeaturesListing";
@@ -66,6 +66,10 @@ const Listing: FC<business> = (props) => {
   const [averageTotal, setAverageTotal] = useState<number>(review);
   const [totalReviews, setTotalReviews] = useState(0);
   const [reviewsProps, setReviewsProps] = useState<reviewsT>(reviewsT);
+
+  const scroll = () => {
+    window.scrollTo(0,document.body.scrollHeight);
+  }
 
   return (
     <>
@@ -132,7 +136,7 @@ const Listing: FC<business> = (props) => {
                   <EmpresaDestacada />
                 </div> */}
               </div>
-              <div className="flex flex-col flex-wrap gap-12 py-6 ">
+              <div className="flex flex-col flex-wrap gap-12 py-5 pb-0">
                 {description && (
                   <>
                   <ContentListing text={description} />
@@ -190,7 +194,7 @@ const Listing: FC<business> = (props) => {
                 />
               </div>
             </section>
-            <div className=" md:block w-full ... relative ">
+            <div className="  md:block w-full ... relative ">
               <div className="bg-white shadow md:-mt-12 rounded-xl  p-4 relative">
                 <div className="flex gap-4 items-center text-primary w-full justify-center flex-col">
                   {/* Si soy el dueño de la empresa no aparece */}
@@ -224,13 +228,16 @@ const Listing: FC<business> = (props) => {
                       route={instagram}
                     />
                   )}
-                  {youtube && (
-                    <ItemContact
-                      icon={<YoutubeIcon className="w-5 h-5" />}
-                      title={youtube}
-                      route={youtube}
-                    />
-                  )}
+                  <div className="hidden md:block">
+                    {youtube && (
+                      <ItemContact
+                        icon={<YoutubeIcon className="w-5 h-5" />}
+                        title={youtube}
+                        route={youtube}
+                      />
+                    )}
+                  </div>
+                  
                 </div>
               </div>
             </div>
@@ -239,6 +246,9 @@ const Listing: FC<business> = (props) => {
             </p>
           </div>
         </div>
+        <button onClick={scroll}  className="absolute bg-primary p-4 rounded-full md:hidden top-96 right-5">
+              <MessageIcon/>
+        </button>
       </div>
     </>
   );
@@ -256,8 +266,8 @@ const ItemContact: FC<{ icon: ReactNode; title: string; route: string }> = ({
       <div className="w-5 h-5">
       {icon}
       </div>
-      <a className="w-full flex items-center justify-end" href={route} rel="noreferrer" target={"_blank"}>
-        <p className="text-tertiary truncate">{title}</p>
+      <a className="w-full flex items-center justify-end " href={route} rel="noreferrer" target={"_blank"}>
+        <p className="text-tertiary truncate" >{title}</p>
       </a>
     </div>
   );

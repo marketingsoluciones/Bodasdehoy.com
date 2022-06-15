@@ -11,12 +11,7 @@ import { LoadingItem } from "../../components/Loading";
 import { GraphQL, fetchApi, queries } from "../../utils/Fetching";
 import { useToast } from "../../hooks/useToast";
 import { useRouter } from "next/router";
-import {
-  DeleteIcon,
-  EditIcon,
-  EmptyIcon,
-  ViewIcon,
-} from "../../components/Icons";
+import {DeleteIcon,EditIcon,EmptyIcon,ViewIcon,} from "../../components/Icons";
 import IconButton from "../../components/Inputs/IconButton";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import EmptyComponent from "../../components/Surface/EmptyComponent";
@@ -53,14 +48,15 @@ const query = `query ($uid : ID){
 }`;
 
 const Empresas = () => {
+
   const { user } = AuthContextProvider();
 
   const initialQuery = {
     query,
     variables: { uid: user?.uid },
   }
-  const [dato, setDato, loading, error, fetchy] = useFetch(initialQuery);
 
+  const [dato, setDato, loading, error, fetchy] = useFetch(initialQuery);
 
   const toast = useToast();
 

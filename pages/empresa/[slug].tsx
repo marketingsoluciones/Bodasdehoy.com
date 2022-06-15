@@ -2,23 +2,9 @@ import { Markup } from "interweave";
 import Link from "next/link";
 import { FC, ReactNode, useEffect, useState } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
-
 import { FormListing } from "../../components/Forms";
 import { RatingStars } from "../../components/Home/FeaturedCompanies";
-import {
-  CrossIcon,
-  DocsIcon,
-  FacebookIcon,
-  Isologo,
-  LessIcon,
-  Location2Icon,
-  OpinionesIcon,
-  PreguntasIcon,
-  WebSiteIcon,
-  PhoneIcon,
-  YoutubeIcon,
-  ArrowIcon,
-} from "../../components/Icons";
+import {CrossIcon,DocsIcon,FacebookIcon,Isologo,LessIcon,Location2Icon,OpinionesIcon,PreguntasIcon,WebSiteIcon,PhoneIcon,YoutubeIcon,ArrowIcon,} from "../../components/Icons";
 import EmpresaDestacada from "../../components/Listing/EmpresaDestacada";
 import FAQ from "../../components/Listing/FAQ";
 import FeaturesListing from "../../components/Listing/FeaturesListing";
@@ -87,10 +73,7 @@ const Listing: FC<business> = (props) => {
       <div className="md:hidden relative -mt-20">
         {sendMessage ? (
           <div className="fixed w-screen h-screen top-0 left-0 md:block bg-white p-12 flex flex-col items-center justify-center z-40 ">
-            <p
-              className="absolute top-5 text-gray-200 text-lg right-5"
-              onClick={() => setMessage(false)}
-            >
+            <p className="absolute top-5 text-gray-200 text-lg right-5" onClick={() => setMessage(false)}>
               X
             </p>
             <FormListing />
@@ -207,7 +190,7 @@ const Listing: FC<business> = (props) => {
                 />
               </div>
             </section>
-            <div className="hidden md:block w-full ... relative ">
+            <div className=" md:block w-full ... relative ">
               <div className="bg-white shadow md:-mt-12 rounded-xl  p-4 relative">
                 <div className="flex gap-4 items-center text-primary w-full justify-center flex-col">
                   {/* Si soy el dueño de la empresa no aparece */}
@@ -251,7 +234,7 @@ const Listing: FC<business> = (props) => {
                 </div>
               </div>
             </div>
-            <p className="text-xs w-full text-gray-300 -mt-10">
+            <p className="text-xs w-full text-gray-300 md:-mt-10">
               <strong>Business ID: </strong> {_id}
             </p>
           </div>

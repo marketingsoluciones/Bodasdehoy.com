@@ -39,11 +39,11 @@ const InfoEmpresas = () => {
   return (
     <div className="w-full bg-white">
       <div className="banner -mt-20 w-full h-40" />
-      <div className="max-w-screen-lg mx-auto inset-x-0 py-10">
+      <div className="max-w-screen-lg mx-auto inset-x-0 py-10 px-5">
         <h1 className="text-3xl text-tertiary font-medium pb-2">
           ¡Llega a más novios cada mes!
         </h1>
-        <div className="grid grid-cols-2 pt-4 w-full gap-2 w-full">
+        <div className="grid md:grid-cols-2 pt-4 w-full gap-2 w-full">
           {features.map((item, idx) => (
             <div key={idx} className="w-full flex  text-sm gap-2 items-center">
               <CheckIcon className="w-4 h-4 border border-primary rounded-full text-primary" />
@@ -66,12 +66,12 @@ const InfoEmpresas = () => {
           ))}
         </Slider>
       </div>
-      <div className="max-w-screen-lg mx-auto inset-x-0 py-16 grid grid-cols-2 place-items-center -mt-10 ">
+      <div className="max-w-screen-lg mx-auto inset-x-0 py-16 grid md:grid-cols-2 place-items-center -mt-10  px-5 md:px-0">
         <div>
         <h2 className="text-primary text-xl">
           ¿Qué te ofrece <strong>Bodas de Hoy?</strong>
         </h2>
-        <div className="flex flex-col gap-4 pt-6">
+        <div className="flex flex-col gap-4 pt-6 pl-5">
             <div className="flex items-center gap-4 ">
               <Icon3 />
               <p className="text-sm text-gray-700">Un completo escaparate donde te verán miles de novios interesados en tus servicios.</p>
@@ -87,7 +87,7 @@ const InfoEmpresas = () => {
         </div>
 
         </div>
-        <div className="w-full relative">
+        <div className="hidden md:block w-full relative">
           <img src="/DesktopImageBusiness.png" className="object-center object-contain w-full h-full" alt="desktopImageBusiness" />
           <img src="/MobileImageBusiness.png" className="object-center object-contain absolute w-24 -bottom-7 left-1/4" alt="desktopImageBusiness" />
 

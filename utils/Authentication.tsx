@@ -23,7 +23,7 @@ export const useAuthentication = () => {
       if (authResult?.sessionCookie) {
         const { sessionCookie } = authResult;
         // Setear en localStorage token JWT
-        Cookies.set("sessionBodas", sessionCookie, { domain: '.vercel.app' });
+        Cookies.set("sessionBodas", sessionCookie, { domain: '.bodasdehoy.com' });
         console.log("sessionCookie", sessionCookie)
         return sessionCookie
       } else {

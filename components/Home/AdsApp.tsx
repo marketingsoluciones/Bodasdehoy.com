@@ -1,6 +1,6 @@
 import { FC, memo } from "react";
 import Slider from "react-slick";
-import {useHover} from "../../hooks";
+import { useHover } from "../../hooks";
 import { CheckIcon } from "../Icons";
 import Image from 'next/image'
 import Link from "next/link";
@@ -58,13 +58,13 @@ export const AdsApp = () => {
           </div>
           <div className="w-full flex items-center justify-center py-10">
             <Link
-              href={"https://app-continuacion-bodas-de-hoy.vercel.app/"}              
+              href={process.env.NEXT_PUBLIC_EVENTSAPP ?? ""}
+            >
+              <a
+                className="bg-primary rounded-full px-5 py-2 text-white hover:bg-white hover:text-primary transition border border-primary"
               >
-                <a
-                  className="bg-primary rounded-full px-5 py-2 text-white hover:bg-white hover:text-primary transition border border-primary"
-                >
-                  Empecemos
-                </a>
+                Empecemos
+              </a>
             </Link>
           </div>
         </div>
@@ -85,9 +85,8 @@ export const Feature: FC<propsFeautre> = memo(({ item }) => {
       className="flex items-center gap-2 mx-auto inset-x-0 w-max"
     >
       <span
-        className={`${
-          isHovered ? "bg-primary text-white" : "bg-white text-primary"
-        } border border-primary rounded-full`}
+        className={`${isHovered ? "bg-primary text-white" : "bg-white text-primary"
+          } border border-primary rounded-full`}
       >
         <CheckIcon className="w-4 h-4" />
       </span>

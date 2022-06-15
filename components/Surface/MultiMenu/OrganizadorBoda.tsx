@@ -15,7 +15,7 @@ const OrganizadorBoda = () => {
   return (
     <ul className="w-full flex items-center justify-between">
       {List.map((item, idx) => (
-        <Link key={idx} href={"https://app.bodasdehoy.com"} passHref>
+        <Link key={idx} href={process.env.NEXT_PUBLIC_EVENTSAPP ?? ""} passHref>
           <ListItem {...item} />
         </Link>
       ))}

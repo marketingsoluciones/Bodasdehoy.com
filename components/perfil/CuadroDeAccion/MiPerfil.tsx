@@ -2,7 +2,7 @@ import { updateEmail, updatePassword, updateProfile, getAuth } from "firebase/au
 import { Form, Formik, useFormikContext, FormikValues } from "formik";
 import { useEffect, useState } from "react";
 import { AuthContextProvider } from "../../../context";
-import { auth,  } from "../../../firebase";
+import { auth, } from "../../../firebase";
 import { BlockConfiguration } from "../../../pages/configuracion";
 import { ButtonComponent, InputField } from "../../Inputs";
 import { useToast } from '../../../hooks/useToast';
@@ -13,20 +13,20 @@ export const MiPerfil = () => {
   const initialValues = {
     Usuario: "" + -+6,
   };
-  
+
   return (
     <div className="flex flex-col w-full gap-6 container ">
       <div className="ml-auto hidden md:block">
-        <Link href={"https://app.bodasdehoy.com"} passHref>
-        <button
-          className="bg-white text-primary border border-primary px-4 py-2 text-sm rounded-xl w-fit"
-          type="button"
-        >
-          Gestor de eventos
-        </button>
+        <Link href={process.env.NEXT_PUBLIC_EVENTSAPP ?? ""} passHref>
+          <button
+            className="bg-white text-primary border border-primary px-4 py-2 text-sm rounded-xl w-fit"
+            type="button"
+          >
+            Gestor de eventos
+          </button>
         </Link>
       </div>
-      <Formik initialValues={{ email: user?.email }} onSubmit={() => {}}>
+      <Formik initialValues={{ email: user?.email }} onSubmit={() => { }}>
         <DatosAcceso />
       </Formik>
 
@@ -37,7 +37,7 @@ export const MiPerfil = () => {
 const DatosAcceso = () => {
   const { user, setUser } = AuthContextProvider();
   const { setFieldValue, values } =
-    useFormikContext<{ email: string; password: string, displayName : string}>();
+    useFormikContext<{ email: string; password: string, displayName: string }>();
   const [canEditEmail, setCanEditEmail] = useState(false);
   const [canEditPassword, setCanEditPassword] = useState(false);
   const [canDisplayName, setCanDisplayName] = useState(false);
@@ -50,11 +50,11 @@ const DatosAcceso = () => {
     setFieldValue("displayName", user?.displayName);
   }, [user]);
 
-  
+
 
   const handleEditEmail = async () => {
     if (canEditEmail && auth.currentUser) {
-      if(values.email !== ""){
+      if (values.email !== "") {
         try {
           await updateEmail(auth?.currentUser, values?.email);
           setCanEditEmail(!canEditEmail);
@@ -92,7 +92,7 @@ const DatosAcceso = () => {
           displayName: values.displayName
         });
         setCanDisplayName(!canDisplayName);
-        setUser(old => ({...old, displayName: values.displayName}))
+        setUser(old => ({ ...old, displayName: values.displayName }))
         toast("success", "Nombre actualizado con exito")
       } catch (error) {
         toast("success", "Error al actualizar el nombre")

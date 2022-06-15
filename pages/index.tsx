@@ -45,8 +45,8 @@ interface propsHome {
 const NavbarMobile = () => {
   const { showSidebar, setShowSidebar } = SidebarContextProvider();
   const [showSearcher, setShowSearcher] = useState<boolean>(false);
-  
-  const MySearch : FC <any> = ({
+
+  const MySearch: FC<any> = ({
     currentRefinement,
     refine,
     setSearch,
@@ -54,7 +54,7 @@ const NavbarMobile = () => {
   }) => {
     return (
       <div className="w-full mx-auto inset-x-0 bg-white h-14 -mt-2 rounded-full flex items-center relative">
-        
+
         <input
           autoFocus
           type="input"
@@ -64,7 +64,7 @@ const NavbarMobile = () => {
           placeholder="Buscar en bodasdehoy.com"
         />
         <button onClick={() => setShowSearcher(!showSearcher)} className="w-5 h-5  absolute right-5 ">
-        <CloseIcon className="w-full h-full" />
+          <CloseIcon className="w-full h-full" />
         </button>
       </div>
     );
@@ -110,7 +110,7 @@ const NavbarMobile = () => {
           >
             <SearchIcon />
           </button>
-          
+
         </>
       ) : (
         <InstantSearch indexName="bodasdehoy" searchClient={conditionalQuery}>
@@ -276,10 +276,11 @@ export const Features: FC = () => {
     {
       title: "Gestor de invitados",
       icon: <GuestAppIcon className="w-8 h-8" />,
-      route: "https://app-continuacion-bodas-de-hoy.vercel.app/"
+      route: process.env.NEXT_PUBLIC_EVENTSAPP ?? ""
     },
-    { title: "Inspiración", 
-      icon: <InspirationIcon className="w-8 h-8" /> ,
+    {
+      title: "Inspiración",
+      icon: <InspirationIcon className="w-8 h-8" />,
       route: "/magazine"
     },
   ];
@@ -318,39 +319,39 @@ export const Features: FC = () => {
       },
     ],
   };
-  const style={
+  const style = {
     tamañoTexto: {
       fontSize: '0.5rem',
       color: '#fff',
       padding: '5px',
-      borderRadius: '10px',            
-    },     
+      borderRadius: '10px',
+    },
   }
 
   return (
     <div className=" grid grid-cols-1 overflow-visible z-0">
       <Slider {...settings}>
-        <div className="">                    
-            <span style={style.tamañoTexto}       className="absolute z-30 bg-tertiary top-14 left-7 opacity-90">
-              proximamente
-            </span>                      
+        <div className="">
+          <span style={style.tamañoTexto} className="absolute z-30 bg-tertiary top-14 left-7 opacity-90">
+            proximamente
+          </span>
           <span className="">
-            {Proximamente.map((item, idx)=>(
+            {Proximamente.map((item, idx) => (
               <Feature key={idx} item={item} />
-            ))}  
+            ))}
           </span>
         </div>
-      
-          {List.map((item, idx) => (
-            <Link
-              href={item.route}
-              key={idx}
-            >
-              <a >
-                <Feature  item={item} />
-              </a>
-            </Link>            
-          ))}
+
+        {List.map((item, idx) => (
+          <Link
+            href={item.route}
+            key={idx}
+          >
+            <a >
+              <Feature item={item} />
+            </a>
+          </Link>
+        ))}
       </Slider>
     </div>
   );

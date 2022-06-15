@@ -111,7 +111,7 @@ const Navbar: FC = () => {
   const List: Item[] = [
     {
       title: "Mi boda",
-      route:  process.env.NEXT_PUBLIC_EVENTSAPP ??  "https://app-continuacion-bodas-de-hoy.vercel.app/",
+      route: process.env.NEXT_PUBLIC_EVENTSAPP ?? "",
       titleInside: "Mi organizador de bodas",
       component: <OrganizadorBoda />,
     },
@@ -138,9 +138,8 @@ const Navbar: FC = () => {
             <li className="uppercase h-16 flex items-center justify-center cursor-pointer relative tracking-widest hover:text-tertiary transition text-gray-500">
               {title}
               <svg
-                className={`h-0.5 w-full bg-primary transform transition absolute ${
-                  isHovered ? "scale-100" : "scale-0"
-                } `}
+                className={`h-0.5 w-full bg-primary transform transition absolute ${isHovered ? "scale-100" : "scale-0"
+                  } `}
               />
             </li>
           </a>
@@ -246,8 +245,8 @@ const ProfileMenu = () => {
   const { setLoading } = LoadingContextProvider();
   const { _signOut } = useAuthentication()
   /* const [hoverRef, isHovered] = useHover() */
-    const router = useRouter()
-    
+  const router = useRouter()
+
   const options: Option[] = [
     {
       title: "Mi perfil",
@@ -257,7 +256,7 @@ const ProfileMenu = () => {
     {
       title: "Mis empresas",
       route: "/empresa",
-      icon: <CompanyIcon/>,
+      icon: <CompanyIcon />,
     },
     {
       title: "Notificaciones",
@@ -481,9 +480,8 @@ export const Hit = ({ hit }: { hit: hit }) => {
             {hit?.title && capitalize(hit?.title)}
           </h3>
           <span
-            className={`${
-              colors[hit?.type]?.color
-            } text-xs text-white px-2 rounded`}
+            className={`${colors[hit?.type]?.color
+              } text-xs text-white px-2 rounded`}
           >
             {colors[hit?.type]?.title}
           </span>
@@ -499,13 +497,13 @@ export const Hit = ({ hit }: { hit: hit }) => {
 
 
 export const SearchNavigation: FC<any> = ({ setSearch, isSearch }) => {
-  
+
 
   const conditionalQuery = {
-    search(requests : any) {
+    search(requests: any) {
       if (
-        requests.every(({params}: any) => !params.query) ||
-        requests.every(({params}: any) => !params.query.trim()) 
+        requests.every(({ params }: any) => !params.query) ||
+        requests.every(({ params }: any) => !params.query.trim())
       ) {
         // Here we have to do something else
         return Promise.resolve({
@@ -527,7 +525,7 @@ export const SearchNavigation: FC<any> = ({ setSearch, isSearch }) => {
 
   return (
     <div className="flex items-center w-full justify-between ">
-      <InstantSearch 
+      <InstantSearch
         indexName="bodasdehoy"
         searchClient={conditionalQuery}
       >

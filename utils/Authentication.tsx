@@ -103,8 +103,8 @@ export const useAuthentication = () => {
 
   const _signOut = useCallback(async () => {
     await fetchApi({ query: queries.signOut, variables: { sessionCookie: Cookies.get("sessionBodas") } })
-    Cookies.remove("sessionBodas");
-    Cookies.remove("idToken");
+    Cookies.remove("sessionBodas", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
+    Cookies.remove("idToken", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
     setUser(null);
     await signOut(auth);
     await router.push("/");

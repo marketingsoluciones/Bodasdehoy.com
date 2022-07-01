@@ -40,6 +40,7 @@ const Listing: FC<business> = (props) => {
     businessName,
     description,
     accessoriesList,
+    content,
     questionsAndAnswers,
     coordinates,
     webPage,
@@ -137,9 +138,9 @@ const Listing: FC<business> = (props) => {
                 </div> */}
               </div>
               <div className="flex flex-col flex-wrap gap-12 py-5 pb-0">
-                {description && (
+                {content && (
                   <>
-                  <ContentListing text={description} />
+                  <ContentListing text={content} />
                 <hr />
                 </>
                 )}
@@ -315,17 +316,17 @@ interface propsContentListing {
 }
 
 const ContentListing: FC<propsContentListing> = ({ text }) => {
-  const [seeMore, setSeeMore] = useState<boolean>(text ? text.repeat(3)?.length > 250 : false);
+  const [seeMore, setSeeMore] = useState<boolean>(text ? text.repeat(2)?.length > 100 : false);
   const [showContent, setShowContent] = useState<boolean>(false)
   return (
-    <div id="description" className="max-h-full w-full">
+    <div id="content" className="max-h-full w-full">
       <div
         className={`w-full text-tertiary overflow-hidden h-auto ${
           seeMore ? "max-h-full" : "max-h-48 md:max-h-full"
         }`}
       >
         {text ? (
-          <Markup className="text-sm text-justify transition-all" content={showContent ? text.repeat(3) : text.repeat(2)?.slice(0,250)} />
+          <Markup className="text-sm text-justify transition-all" content={showContent ? text.repeat(1) : text.repeat(1)?.slice(0,250)} />
         ) : (
           <div className="min-h-40 h-40 flex items-center justify-center text-xs text-gray-400">
             No content
@@ -334,7 +335,7 @@ const ContentListing: FC<propsContentListing> = ({ text }) => {
       </div>
       {seeMore && (
         <button
-        className="text-primary text-sm w-full justify-end flex gap-2 py-4 w-max float-right items-center "
+        className="text-primary text-sm w-full justify-end flex gap-2 py-4 w-max float-right items-center md:hidden"
         type={"button"}
         onClick={() => setShowContent(!showContent)}
       >

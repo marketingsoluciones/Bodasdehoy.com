@@ -334,7 +334,7 @@ const ContentListing: FC<propsContentListing> = ({ text }) => {
       </div>
       {seeMore && (
         <button
-        className="text-primary text-sm w-full justify-end flex gap-2 py-4 w-max float-right items-center md:hidden"
+        className="text-primary text-sm w-full justify-end flex gap-2 py-4 w-max float-right items-center "
         type={"button"}
         onClick={() => setShowContent(!showContent)}
       >

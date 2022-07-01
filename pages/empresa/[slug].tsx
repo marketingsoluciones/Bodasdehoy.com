@@ -52,7 +52,8 @@ const Listing: FC<business> = (props) => {
     _id,
     userUid,
     review,
-    reviewsT
+    reviewsT,
+    
   } = props;
 
   const [sendMessage, setMessage] = useState(false);
@@ -86,6 +87,7 @@ const Listing: FC<business> = (props) => {
         ) : (
           <FloatingButton onClick={() => setMessage(true)} />
         )}
+        {/* imagen cabezera */}
         <img
           alt={businessName}
           className="w-full object-cover h-80"
@@ -335,7 +337,7 @@ const ContentListing: FC<propsContentListing> = ({ text }) => {
       </div>
       {seeMore && (
         <button
-        className="text-primary text-sm w-full justify-end flex gap-2 py-4 w-max float-right items-center md:hidden"
+        className="text-primary text-sm w-full justify-end flex gap-2 py-4 w-max float-right items-center "
         type={"button"}
         onClick={() => setShowContent(!showContent)}
       >

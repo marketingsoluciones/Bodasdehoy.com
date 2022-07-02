@@ -28,6 +28,7 @@ import { BreadCumbs } from "../../components/Surface";
 import { useRouter } from "next/router";
 import { reviewsT } from '../../interfaces/index';
 import Slider from "react-slick"
+import "slick-carousel/slick/slick-theme.css";
 
 type Boton = {
   title: string;
@@ -87,7 +88,7 @@ const Listing: FC<business> = (props) => {
       {
         breakpoint: 600,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 2,
         },
       },
     ],
@@ -133,22 +134,20 @@ const Listing: FC<business> = (props) => {
           averageTotal={averageTotal}
         />
         <div className="md:bg-white w-full">
-          <div className="lg:max-w-screen-lg inset-x-0 mx-auto w-full grid md:grid-cols-3 gap-10 ">
+          <div className="lg:max-w-screen-lg inset-x-0 mx-auto w-full grid md:grid-cols-3 gap-10  ">
             <section className="w-full md:col-span-2">
-             <Slider {...settings} >
-              {imgCarrusel?.map((item, idx)=>(
-              
-                      <img  
-                      key={idx}          
-                  alt={businessName}
-                  className="w-full object-cover h-96 hidden md:block"
-                  src={createURL(item.i640)}
-                  srcSet={createSrcSet(imgMiniatura)}/>
-                                           
-              ))}
-
-             </Slider>
-             
+             <div className=" hidden md:block ">
+              <Slider {...settings} >
+                {imgCarrusel?.map((item, idx)=>(              
+                  <img  
+                    key={idx}          
+                    alt={businessName}
+                    className="w-full object-cover h-96 "
+                    src={createURL(item.i640)}
+                    srcSet={createSrcSet(imgMiniatura)}/>                                          
+                ))}              
+              </Slider>
+             </div>
              {/*  <img
                 alt={businessName}
                 className="w-full object-cover h-96 hidden md:block"

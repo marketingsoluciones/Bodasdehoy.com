@@ -12,6 +12,20 @@
   color: #f7628c !important;
 }
 
+.slick-prev:before,
+.slick-next:before
+{
+    font-family: 'slick';
+    font-size: 20px;
+    line-height: 1;
+
+    opacity: .75;
+    color: black !important;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 /* .slick-list, .slick-track, .slick-slide > div {
   height: 100%
 } */

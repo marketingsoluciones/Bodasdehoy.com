@@ -566,6 +566,13 @@ export const queries: queries = {
         status
         dateConection
       }
+      imgCarrusel{
+      	_id
+      	i1024
+        i800
+        i640
+        i320
+    	}
       webPage
       landline
       mobilePhone

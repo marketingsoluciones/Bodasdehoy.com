@@ -27,6 +27,7 @@ import { AuthContextProvider } from "../../context";
 import { BreadCumbs } from "../../components/Surface";
 import { useRouter } from "next/router";
 import { reviewsT } from '../../interfaces/index';
+import Slider from "react-slick"
 
 type Boton = {
   title: string;
@@ -53,6 +54,7 @@ const Listing: FC<business> = (props) => {
     userUid,
     review,
     reviewsT,
+    imgCarrusel
     
   } = props;
 
@@ -73,6 +75,24 @@ const Listing: FC<business> = (props) => {
     window.scrollTo(0,document.body.scrollHeight);
   }
 
+  const settings = {
+    arrows: true,
+    infinite: false,
+    speed: 200,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    className: "hidden md:block text-center",
+    centerMode: false,
+    responsive: [
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
   return (
     <>
       {/* Imagenes solo para moviles */}
@@ -87,7 +107,7 @@ const Listing: FC<business> = (props) => {
         ) : (
           <FloatingButton onClick={() => setMessage(true)} />
         )}
-        {/* imagen cabezera */}
+        
         <img
           alt={businessName}
           className="w-full object-cover h-80"
@@ -115,12 +135,26 @@ const Listing: FC<business> = (props) => {
         <div className="md:bg-white w-full">
           <div className="lg:max-w-screen-lg inset-x-0 mx-auto w-full grid md:grid-cols-3 gap-10 ">
             <section className="w-full md:col-span-2">
-              <img
+             <Slider {...settings} >
+              {imgCarrusel?.map((item, idx)=>(
+              
+                      <img  
+                      key={idx}          
+                  alt={businessName}
+                  className="w-full object-cover h-96 hidden md:block"
+                  src={createURL(item.i640)}
+                  srcSet={createSrcSet(imgMiniatura)}/>
+                                           
+              ))}
+
+             </Slider>
+             
+             {/*  <img
                 alt={businessName}
                 className="w-full object-cover h-96 hidden md:block"
                 src={createURL(imgMiniatura?.i640)}
                 srcSet={createSrcSet(imgMiniatura)}
-              />
+              /> */}
               <div className="hidden md:block bg-gray-200 w-full h-max -mt-4 rounded-lg relative z-10 bg-opacity-30">
                 <div className="bg-white rounded-lg py-3 w-full border border-primary flex items-center justify-between px-16">
                   {List.map((item, idx) => (

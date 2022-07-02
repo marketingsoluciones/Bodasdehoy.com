@@ -69,6 +69,7 @@ export interface business {
   business_hours: dias
   photos: image[]
   imgMiniatura: image
+  imgCarrusel: image[]
   imgLogo: image
   fase: string
   status: string

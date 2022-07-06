@@ -239,7 +239,7 @@ const Listing: FC<business> = (props) => {
                   {webPage && (
                     <ItemContact
                       icon={<WebSiteIcon className="w-5 h-5" />}
-                      title={webPage}
+                      title={webPage.length > 33 ? webPage.substring(0,30)+"...": webPage}
                       route={webPage}
                     />
                   )}
@@ -264,11 +264,11 @@ const Listing: FC<business> = (props) => {
                       route={instagram}
                     />
                   )}
-                  <div className="hidden md:block">
+                  <div className="">
                     {youtube && (
                       <ItemContact
                         icon={<YoutubeIcon className="w-5 h-5" />}
-                        title={youtube}
+                        title={youtube.length > 33 ? youtube.substring(0,30)+"...":youtube}
                         route={youtube}
                       />
                     )}

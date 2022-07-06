@@ -14,7 +14,7 @@ const PageComponent: FC<Page> = (props) => {
         <div className="max-w-screen-lg mx-auto inset-x-0 ">
             <BreadCumbs />
             <h1 className="text-xl text-tertiary font-semibold pt-1">{capitalize(title)}</h1>
-            <small className="text-gray-500 text-sm">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum, tenetur.</small>
+            
             <div className="bg-white w-full rounded-xl shadow p-10 mt-5">
                <Markup content={content} />
 

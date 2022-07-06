@@ -193,26 +193,30 @@ export const PostComponent: FC<Partial<Post>> = memo(
     const { title, content, updatedAt, imgMiniatura, slug } = props
     return (
       <div className="w-[90%] h-full mx-auto my-6 inset-x-0 bg-white rounded-3xl overflow-hidden hover:shadow-xl hover:opacity-95 transition-all cursor-pointer duration-400 border ">
-        <img
-          alt={title}
-          className="h-40 w-full object-cover object-center"
-          src={createURL(imgMiniatura?.i640)}
-          srcSet={createSrcSet(imgMiniatura)}
-        />
-        <div className="py-5 text-center h-full">
-          <Link href={`/magazine/${slug}`} passHref>
-          <h2 className=" text-gray-700 text-md font-semibold border-b border-primary pb-3 px-5 leading-5 cursor-pointer hover:text-gray-800">
-           <Markup content={title} className={"md:line-clamp-2 line-clamp-1"}/> 
-          </h2>
-          </Link>
-          <div className="flex justify-between items-center py-2 px-5">
-            <p className="text-xs tracking-widest text-primary">CEREMONIA</p>
-            {updatedAt && <p className="text-xs text-gray-500">{format(new Date(updatedAt), "es")}</p>}
+        <Link href={`/magazine/${slug}`} passHref>
+          <div>
+            <img
+              alt={title}
+              className="h-40 w-full object-cover object-center"
+              src={createURL(imgMiniatura?.i640)}
+              srcSet={createSrcSet(imgMiniatura)}
+            />
+            <div className="py-5 text-center h-full">
+              {/* <Link href={`/magazine/${slug}`} passHref> */}
+              <h2 className=" text-gray-700 text-md font-semibold border-b border-primary pb-3 px-5 leading-5 cursor-pointer hover:text-gray-800">
+              <Markup content={title} className={"md:line-clamp-2 line-clamp-1"}/> 
+              </h2>
+              {/* </Link> */}
+              <div className="flex justify-between items-center py-2 px-5">
+                <p className="text-xs tracking-widest text-primary">CEREMONIA</p>
+                {updatedAt && <p className="text-xs text-gray-500">{format(new Date(updatedAt), "es")}</p>}
+              </div>
+              <p className="text-xs px-4 py-2 text-gray-500 ">
+              <Markup className="line-clamp-6" content={content}/* {`${content?.slice(0, 250)}...`} */ noHtml />
+              </p>
+            </div>
           </div>
-          <p className="text-xs px-4 py-2 text-gray-500 ">
-          <Markup className="line-clamp-6" content={content}/* {`${content?.slice(0, 250)}...`} */ noHtml />
-          </p>
-        </div>
+        </Link>
       </div>
     );
   }

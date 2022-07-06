@@ -31,6 +31,8 @@ export const BreadCumbs: FC<propsBreadCumbs> = ({ className }) => {
     setLevels(pathArray);
   }, [router]);
 
+  
+
   return (
     <>
       <div
@@ -64,7 +66,8 @@ export const BreadCumbs: FC<propsBreadCumbs> = ({ className }) => {
                   </svg>
                   <Link href={item.href} passHref>
                     <span className="ml-1 text-sm font-medium text-gray-500 hover:text-gray-900 md:ml-2 cursor-pointer ">
-                      {item.crumb && item.crumb.replaceAll("-", " ")}
+                      {item.crumb && decodeURI(item.crumb) /* item.crumb.replaceAll("-", " ") */}
+                     
                     </span>
                   </Link>
                 </div>

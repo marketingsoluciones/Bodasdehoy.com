@@ -71,11 +71,13 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   try {
       const dataProps = await fetchApi({ query: queries.getOnePost, variables: { slug: params?.slug } })
       return {
-          props: dataProps, 
+        props: dataProps, 
+        revalidate: 10
       }
   } catch (error) {
       return {
-          props: {}
+        props: {},
+        revalidate: 10
       }
   }
 }

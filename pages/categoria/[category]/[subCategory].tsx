@@ -142,6 +142,7 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
   });
   return {
     props: result,
+    revalidate: 10
   };
 }
 

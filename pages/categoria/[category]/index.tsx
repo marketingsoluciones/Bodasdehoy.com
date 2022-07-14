@@ -377,6 +377,7 @@ export const getStaticProps: GetStaticProps = async ({
     console.timeEnd("Category Page queries");
     return {
       props: category ?? {},
+      revalidate: 10
     };
 
   } catch (error) {
@@ -384,6 +385,7 @@ export const getStaticProps: GetStaticProps = async ({
     //console.log(error);
     return {
       props: {},
+      revalidate: 10
     };
   }
 };

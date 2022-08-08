@@ -13,17 +13,16 @@
 }
 
 .slick-prev:before,
-.slick-next:before
-{
-    font-family: 'slick';
-    font-size: 20px;
-    line-height: 1;
+.slick-next:before {
+  font-family: 'slick';
+  font-size: 20px;
+  line-height: 1;
 
-    opacity: .75;
-    color: black !important;
+  opacity: .75;
+  color: black !important;
 
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* .slick-list, .slick-track, .slick-slide > div {
@@ -32,6 +31,7 @@
 .h-max {
   height: fit-content;
 }
+
 .w-95 {
   width: 95%;
 }
@@ -44,23 +44,74 @@
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .no-scrollbar {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .fade-enter {
   opacity: 0;
   transition: opacity 300ms;
 }
+
 .fade-enter-active {
   opacity: 1;
   transition: opacity 300ms;
 }
+
 .fade-exit {
   opacity: 1;
 }
+
 .fade-exit-active {
   opacity: 0;
   transition: opacity 300ms;
 }
 
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+
+  /* Center slide text vertically */
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-button-next {
+  right: 3px !important;
+  padding: 3px !important;
+  color: rgb(249, 161, 205) !important;
+  fill: rgb(249, 161, 205) !important;
+  stroke: rgb(249, 161, 205) !important;
+}
+
+.swiper-button-prev {
+  left: 3px !important;
+  padding: 3px !important;
+  color: rgb(249, 161, 205) !important;
+  fill: rgb(249, 161, 205) !important;
+  stroke: rgb(249, 161, 205) !important;
+}

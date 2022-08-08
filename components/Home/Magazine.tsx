@@ -4,10 +4,13 @@ import Slider from "react-slick";
 import { PlusButton } from "../Inputs";
 import { format } from "../../utils/FormatTime";
 import { Markup } from "interweave";
-import { fetchCategory, Post, category,OnePost } from "../../interfaces";
+import { fetchCategory, Post, category, OnePost } from "../../interfaces";
 import { createURL } from "../../utils/UrlImage";
 import { createSrcSet } from '../../utils/CreateSrcSet';
 import { capitalize } from '../../utils/Capitalize';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper";
+
 
 interface propsMagazine {
   posts: Post[];
@@ -23,10 +26,10 @@ export const Magazine: FC<propsMagazine> = ({ posts: data = [], categories }) =>
   return (
     <div className="w-full bg-color-base py-10 md:py-20 relative px-5">
       <div className="max-w-screen-lg mx-auto inset-x-0">
-      <Link href={"/magazine"} passHref>
-        <h2 className="md:hidden font-title text-6xl md:text-7xl w-full text-center md:text-left text-primary">
-          Magazine
-        </h2>
+        <Link href={"/magazine"} passHref>
+          <h2 className="md:hidden font-title text-6xl md:text-7xl w-full text-center md:text-left text-primary">
+            Magazine
+          </h2>
         </Link>
         {posts?.length > 0 && <Principal {...posts[0]} />}
         <BlogCategories categories={categories} />
@@ -52,11 +55,11 @@ export const Principal: FC<OnePost> = ({
   return (
     <div className="w-full relative  grid-cols-2 hidden md:grid ">
       <Link href={"/magazine"} passHref>
-      <h2 className="font-title text-6xl md:text-7xl text-primary cursor-pointer hover:text-rose-400 transition">Magazine</h2>
+        <h2 className="font-title text-6xl md:text-7xl text-primary cursor-pointer hover:text-rose-400 transition">Magazine</h2>
       </Link>
       <div className="bg-white w-3/5 rounded-2xl shadow-lg h-max absolute top-1/3 py-6 px-12">
-      <Link href={`/magazine/${slug}`} passHref>
-        <h2 className="font-bold text-xl cursor-pointer hover:text-gray-700 transition text-gray-800">{title}</h2>
+        <Link href={`/magazine/${slug}`} passHref>
+          <h2 className="font-bold text-xl cursor-pointer hover:text-gray-700 transition text-gray-800">{title}</h2>
         </Link>
         <div className="grid grid-cols-8 pt-3">
           <div className="col-span-2 flex flex-col justify-center items-start border-r pr-3 border-primary py-1">
@@ -68,17 +71,17 @@ export const Principal: FC<OnePost> = ({
             </p>
           </div>
           <div className="col-span-6 px-4 flex items-center text-xs text-gray-700">
-            <Markup content={content.slice(0,300)} noHtml />
+            <Markup content={content.slice(0, 300)} noHtml />
           </div>
         </div>
       </div>
-      
+
       <img
-          alt={title}
-          className="h-80 w-full rounded-2xl object-cover float-right"
-          src={createURL(imgMiniatura?.i640)}
-          srcSet={createSrcSet(imgMiniatura)}
-        />
+        alt={title}
+        className="h-80 w-full rounded-2xl object-cover float-right"
+        src={createURL(imgMiniatura?.i640)}
+        srcSet={createSrcSet(imgMiniatura)}
+      />
     </div>
   );
 };
@@ -107,41 +110,35 @@ const BlogCategories: FC<{ categories: Partial<category>[] }> = ({
     );
   };
 
-  const settings = {
-    speed: 200,
-    infinite: false,
-    slidesToShow: 4,
-    arrows: false,
-    autoplay: true,
-    responsive: [
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          rows: 1,
-        },
-      },
 
-      {
-        breakpoint: 1200,
-        settings: {
-          slidesToShow: 3,
-          rows: 1,
-        },
-      },
-    ],
-  };
   return (
     <div className="w-full py-10">
-      <Slider {...settings}>
+      <Swiper
+        slidesPerView={2}
+        spaceBetween={0}
+        loop={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        breakpoints={{
+          640: {
+            slidesPerView: 4,
+            spaceBetween: 0,
+          },
+        }}
+        preloadImages={false}
+        lazy={true}
+        modules={[Autoplay]}
+      >
         {categories?.map((item, idx) => (
-          <Category
-            key={idx}
-            title={item?.title}
-            route={item?.slug}
-          />
+          <>
+            <SwiperSlide  >
+              <Category key={idx} title={item?.title} route={item?.slug} />
+            </SwiperSlide>
+          </>
         ))}
-      </Slider>
+      </Swiper>
     </div>
   );
 };
@@ -152,38 +149,34 @@ export const GridPost: FC<{ data: Partial<Post>[] }> = ({ data }) => {
   useEffect(() => {
     setPosts(data);
   }, [data]);
-
-  const settings = {
-    speed: 200,
-    infinite: false,
-    slidesToShow: 4,
-    arrows: false,
-    autoplay: true,
-    responsive: [
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          rows: 1,
-        },
-      },
-
-      {
-        breakpoint: 1200,
-        settings: {
-          slidesToShow: 3,
-          rows: 1,
-        },
-      },
-    ],
-  };
   return (
     <div className="w-full grid grid-cols-1 h-full overflow-hidden">
-      <Slider {...settings}>
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={0}
+        loop={true}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
+        breakpoints={{
+          640: {
+            slidesPerView: 4,
+            spaceBetween: 0,
+          },
+        }}
+        preloadImages={false}
+        lazy={true}
+        modules={[Autoplay]}
+      >
         {posts?.map((item: Partial<Post>) => (
-          <PostComponent key={item?._id} {...item} />
+          <>
+            <SwiperSlide  >
+              <PostComponent key={item?._id} {...item} />
+            </SwiperSlide>
+          </>
         ))}
-      </Slider>
+      </Swiper>
     </div>
   );
 };
@@ -204,7 +197,7 @@ export const PostComponent: FC<Partial<Post>> = memo(
             <div className="py-5 text-center h-full">
               {/* <Link href={`/magazine/${slug}`} passHref> */}
               <h2 className=" text-gray-700 text-md font-semibold border-b border-primary pb-3 px-5 leading-5 cursor-pointer hover:text-gray-800">
-              <Markup content={title} className={"md:line-clamp-2 line-clamp-1"}/> 
+                <Markup content={title} className={"md:line-clamp-2 line-clamp-1"} />
               </h2>
               {/* </Link> */}
               <div className="flex justify-between items-center py-2 px-5">
@@ -212,7 +205,7 @@ export const PostComponent: FC<Partial<Post>> = memo(
                 {updatedAt && <p className="text-xs text-gray-500">{format(new Date(updatedAt), "es")}</p>}
               </div>
               <p className="text-xs px-4 py-2 text-gray-500 ">
-              <Markup className="line-clamp-6" content={content}/* {`${content?.slice(0, 250)}...`} */ noHtml />
+                <Markup className="line-clamp-6" content={content}/* {`${content?.slice(0, 250)}...`} */ noHtml />
               </p>
             </div>
           </div>

@@ -1,7 +1,8 @@
-import Slider from "react-slick";
 import TitleSection from "./TitleSection";
 import { useState, useEffect, FC } from "react";
 import { api } from "../../api";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper";
 
 export const PodcastList = () => {
   const [podcasts, setPodcast] = useState([]);
@@ -49,11 +50,38 @@ export const PodcastList = () => {
         size={"xl"}
       />
       <div className="grid grid-cols-1 w-full">
-        <Slider {...settings} className="pt-6 overflow-hidden">
+        <Swiper
+          slidesPerView={1}
+          spaceBetween={0}
+          loop={true}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+          breakpoints={{
+            640: {
+              slidesPerView: 2,
+              spaceBetween: 20,
+            },
+            768: {
+              slidesPerView: 3,
+              spaceBetween: 0,
+            },
+          }}
+          preloadImages={false}
+          lazy={true}
+          modules={[Autoplay]}
+        >
           {podcasts?.map((item: any, idx: number) => (
-            <Podcast key={idx} data={item} />
+            <>
+              <SwiperSlide  >
+                <div className="pt-6 overflow-hidden">
+                  <Podcast key={idx} data={item} />
+                </div>
+              </SwiperSlide>
+            </>
           ))}
-        </Slider>
+        </Swiper>
       </div>
     </div>
   );

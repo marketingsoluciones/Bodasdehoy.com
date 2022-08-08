@@ -9,10 +9,13 @@ import "slick-carousel/slick/slick-theme.css";
 import '../styles/Editor.css'
 import ChatComponent from "../components/Chat/ChatComponent";
 import { AuthContextProvider } from "../context";
+// Import Swiper styles
+import 'swiper/css';
+import "swiper/css/bundle";
 
 
 function MyApp({ Component, pageProps }: AppProps) {
-  
+
   return (
     <>
       <DefaultLayout>
@@ -20,7 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Component {...pageProps} />
       </DefaultLayout>
       <style jsx global>
-       {`
+        {`
         html {
           scroll-behavior: smooth;
         }

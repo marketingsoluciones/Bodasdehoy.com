@@ -7,6 +7,9 @@ import { category, fetchCategory, subCategory } from "../../interfaces";
 import { createURL } from "../../utils/UrlImage";
 import { createSrcSet } from "../../utils/CreateSrcSet";
 import { useRouter } from "next/router";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, Navigation } from "swiper";
+
 
 interface propsPlaceDiscovery {
   data: Partial<category>[];
@@ -48,19 +51,37 @@ export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({ data }) => {
   return (
     <>
       <div className="grid-cards relative w-full -mt-6 md:-mt-52 lg:-mt-80">
-        <div className="w-full xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto inset-x-0 pt-20 flex flex-col gap-5 md:gap-6 md:pt-32 pb-20 z-20 px-5">
+        <div className="w-full xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto inset-x-0 pt-20 flex flex-col gap-5 md:gap-6 md:pt-32 pb-10 z-20 px-5">
           <TitleSection
             className="text-normal md:text-xl "
             principal={"Descubre"}
             secondary={"lugares para bodas"}
           />
-          <div className=" z-20 relative w-full pb-8 pt-4 overflow-hidden ">
+          <div className="z-20 relative w-full pb-8 pt-4 overflow-hidden ">
             {state && state?.subCategories && state.subCategories.length > 0 && (
-              <Slider {...settings}>
+              <Swiper
+                slidesPerView={1}
+                spaceBetween={0}
+                loop={true}
+                navigation={true}
+                breakpoints={{
+                  640: {
+                    slidesPerView: 4,
+                    spaceBetween: 0,
+                  },
+                }}
+                preloadImages={false}
+                lazy={true}
+                modules={[Autoplay, Navigation]}
+              >
                 {state?.subCategories?.map((item: any, idx: any) => (
-                  <PlaceCard key={idx} {...item} />
+                  <>
+                    <SwiperSlide className="pr-4 pl-4">
+                      <PlaceCard key={idx} {...item} />
+                    </SwiperSlide>
+                  </>
                 ))}
-              </Slider>
+              </Swiper>
             )}
           </div>
         </div>
@@ -108,22 +129,22 @@ export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({ data }) => {
 };
 
 const PlaceCard: FC<subCategory> = memo(({ title, imgMiniatura, slug }) => {
-  
-const router = useRouter()
+
+  const router = useRouter()
   return (
     <Link href={`/categoria/lugares-para-bodas/${slug}` ?? "/"} passHref>
-    <div className="px-4 cursor-pointer">
-      <img
-        alt={title}
-        className="w-full h-32 md:h-52 bg-gray-100 rounded-2xl object-center object-cover"
-        src={createURL(imgMiniatura?.i640)}
-        srcSet={createSrcSet(imgMiniatura)}
-      />
+      <div className="px-4 cursor-pointer">
+        <img
+          alt={title}
+          className="w-full h-32 md:h-52 bg-gray-100 rounded-2xl object-center object-cover"
+          src={createURL(imgMiniatura?.i640)}
+          srcSet={createSrcSet(imgMiniatura)}
+        />
 
-        <h2 className="px-2 py-1 font-light md:text-base text-sm text-gray-600 tracking-widest capitalize cursor-pointer hover:text-gray-900">
+        <h2 className="px-2 py-1 font-light md:text-base text-sm text-gray-600 tracking-widest capitalize cursor-pointer hover:text-gray-900 text-left">
           {title}
         </h2>
-    </div>
-      </Link>
+      </div>
+    </Link>
   );
 });

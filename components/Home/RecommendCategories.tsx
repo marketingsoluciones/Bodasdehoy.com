@@ -54,20 +54,15 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
       <div className="w-full py-10 mx-auto  md:pl-0 overflow-hidden text-white">
         <Swiper
           slidesPerView={3}
-          spaceBetween={-100}
+          spaceBetween={0}
           loop={true}
-          autoplay={{
-            delay: 2500,
-            disableOnInteraction: false,
-          }}
+          navigation={true}
+          // autoplay={{
+          //   delay: 2500,
+          //   disableOnInteraction: false,
+          // }}
           breakpoints={{
             640: {
-              navigation: true,
-              slidesPerView: 4,
-              spaceBetween: 20,
-            },
-            768: {
-              navigation: true,
               slidesPerView: 5,
               spaceBetween: 0,
             },
@@ -75,12 +70,13 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
           preloadImages={false}
           lazy={true}
           modules={[Autoplay, Navigation]}
+          className="bg-red-500 "
         >
           {categories &&
             categories.length > 0 &&
             categories?.map((item: Partial<category>, idx: number) => (
               <>
-                <SwiperSlide key={idx} >
+                <SwiperSlide className="bg-red-100">
                   <Category key={idx} {...item} />
                 </SwiperSlide>
               </>

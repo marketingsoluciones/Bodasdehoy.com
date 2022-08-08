@@ -6,14 +6,16 @@ import {
   StarRating,
 } from "../Icons";
 import { PlusButton } from "../Inputs";
-const Slider = dynamic(() : any => import('react-slick'), {ssr : false})
-import {Markup} from "interweave"
+const Slider = dynamic((): any => import('react-slick'), { ssr: false })
+import { Markup } from "interweave"
 import dynamic from 'next/dynamic';
 import Link from 'next/link'
 import { createURL } from '../../utils/UrlImage';
 import { business } from '../../interfaces';
 import { createSrcSet } from '../../utils/CreateSrcSet';
 import { CardBusiness } from '../Category';
+import { Autoplay, Navigation } from "swiper";
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 interface propsFeaturedCompanies {
   business: business[];
@@ -41,14 +43,14 @@ const settings = {
   ],
 };
 
-export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({business}) => {
+export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({ business }) => {
   const [data, setData] = useState<business[]>([])
 
   useEffect(() => {
     setData(business)
   }, [business])
 
-  
+
   return (
     <div className="w-full xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto inset-x-0 flex flex-col px-5 md:px-0">
       <div className="w-max flex flex-col items-center h-full pb-10 mx-auto inset-x-0">
@@ -60,18 +62,37 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({business}) => {
         </p>
       </div>
 
-      <div className="md:grid md:grid-cols-1  w-full ">
-        <Slider {...settings}>
-          {data?.map((item : business) => (
+      <div className="md:grid md:grid-cols-1 w-full">
+        <Swiper
+          slidesPerView={1}
+          spaceBetween={0}
+          loop={true}
+          navigation={true}
+          // autoplay={{
+          //   delay: 2500,
+          //   disableOnInteraction: false,
+          // }}
+          breakpoints={{
+            640: {
+              slidesPerView: 3,
+              spaceBetween: 0,
+            },
+          }}
+          preloadImages={false}
+          lazy={true}
+          modules={[Autoplay, Navigation]}
+          className='h-80'
+        >
+          {data?.map((item: business) => (
             <>
-            {/* <CompanyCard key={item._id} data={item} /> */}
-            <div className='md:px-4'>
-            <CardBusiness key={item._id} {...item} size={'lg'}/>
-
-            </div>
+              <SwiperSlide className="pr-10 pl-10">
+                <div className='flex h-80'>
+                  <CardBusiness key={item._id} {...item} size={'lg'} />
+                </div>
+              </SwiperSlide>
             </>
           ))}
-        </Slider>
+        </Swiper>
       </div>
     </div>
   );
@@ -100,30 +121,30 @@ export const CompanyCard: FC<propsCompanyCard> = memo(({ data, pricing = true })
           src={createURL(business?.imgMiniatura?.i640)}
           srcSet={createSrcSet(business?.imgMiniatura)}
         />
-        
+
       </div>
       <div className="bg-color-base rounded-3xl h-max transform -translate-y-10 w-full text-center p-4 flex flex-col gap-1 shadow-md">
         <h2 className="font-ligth text-gray-500 tracking-widest text-regular pt-1 uppercase">
           {business?.subCategories && business.subCategories.length >= 0 && business?.subCategories[0]}
         </h2>
         <Link href={`/empresa/${business?.slug}`} passHref>
-        
-        <h2 className="text-gray-700 text-lg font-medium transition cursor-pointer hover:text-primary capitalize">
-          {business?.businessName}
-        </h2>
+
+          <h2 className="text-gray-700 text-lg font-medium transition cursor-pointer hover:text-primary capitalize">
+            {business?.businessName}
+          </h2>
         </Link>
         <RatingStars rating={4} />
         <h3 className="text-gray-500 text-sm">{business?.address}</h3>
         {pricing && (
           <div className="border-t border-b border-primary py-2 my-2 flex items-center justify-center gap-2">
-          <EuroIcon2 />
-          <p className="font-bold text-primary">
-            desde <span className="font-normal">300€</span>
-          </p>
-        </div>
+            <EuroIcon2 />
+            <p className="font-bold text-primary">
+              desde <span className="font-normal">300€</span>
+            </p>
+          </div>
         )}
         <p className="text-gray-500 text-sm h-max py-4 leading-5">
-          <Markup content={business?.description} noHtml/>
+          <Markup content={business?.description} noHtml />
         </p>
         <PlusButton />
       </div>
@@ -152,7 +173,7 @@ export const RatingStars: FC<propsRatings> = ({
   rating,
   size = "base",
   visibleText,
-  outValue = () => {},
+  outValue = () => { },
 }) => {
   const matriz: number[] = [1, 2, 3, 4, 5];
   const sizes: any = {
@@ -166,11 +187,10 @@ export const RatingStars: FC<propsRatings> = ({
         {matriz.map((item, idx) => (
           <StarRating
             key={idx}
-            className={`transition ${
-              rating >= item
-                ? "text-yellow-400 hover:opacity-80"
-                : "text-gray-400 hover:text-yellow-400"
-            }  ${sizes[size]} `}
+            className={`transition ${rating >= item
+              ? "text-yellow-400 hover:opacity-80"
+              : "text-gray-400 hover:text-yellow-400"
+              }  ${sizes[size]} `}
             onClick={() => outValue(item)}
           />
         ))}

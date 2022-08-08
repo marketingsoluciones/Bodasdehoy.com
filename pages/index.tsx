@@ -133,7 +133,7 @@ const Home: FC<propsHome> = (props) => {
         <Welcome />
       </div>
       <PlaceDiscovery data={props?.categoriesBusiness} />
-      <div className=" bg-white flex flex-col gap-24 w-full pb-20">
+      <div className="bg-white flex flex-col  w-full pb-20">
         <FeaturedCompanies business={props?.business} />
         <ButtonProviders />
         <RecommendCategories data={props?.categoriesBusiness} />

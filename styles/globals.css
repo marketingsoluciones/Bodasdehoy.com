@@ -101,16 +101,16 @@
 }
 
 .swiper-button-next {
-  right: 3px !important;
-  padding: 3px !important;
+  right: 0px !important;
+  padding: -10px !important;
   color: rgb(249, 161, 205) !important;
   fill: rgb(249, 161, 205) !important;
   stroke: rgb(249, 161, 205) !important;
 }
 
 .swiper-button-prev {
-  left: 3px !important;
-  padding: 3px !important;
+  left: 0px !important;
+  padding: -10px !important;
   color: rgb(249, 161, 205) !important;
   fill: rgb(249, 161, 205) !important;
   stroke: rgb(249, 161, 205) !important;

@@ -9,7 +9,7 @@ import { createURL } from "../../utils/UrlImage";
 import { createSrcSet } from '../../utils/CreateSrcSet';
 import { capitalize } from '../../utils/Capitalize';
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper";
+import { Autoplay, Navigation } from "swiper";
 
 
 interface propsMagazine {
@@ -114,13 +114,14 @@ const BlogCategories: FC<{ categories: Partial<category>[] }> = ({
   return (
     <div className="w-full py-10">
       <Swiper
-        slidesPerView={2}
+        slidesPerView={1}
         spaceBetween={0}
         loop={true}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
+        navigation={true}
+        // autoplay={{
+        //   delay: 2500,
+        //   disableOnInteraction: false,
+        // }}
         breakpoints={{
           640: {
             slidesPerView: 4,
@@ -129,7 +130,7 @@ const BlogCategories: FC<{ categories: Partial<category>[] }> = ({
         }}
         preloadImages={false}
         lazy={true}
-        modules={[Autoplay]}
+        modules={[Autoplay, Navigation]}
       >
         {categories?.map((item, idx) => (
           <>

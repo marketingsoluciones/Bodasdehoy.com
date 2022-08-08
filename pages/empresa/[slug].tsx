@@ -245,7 +245,7 @@ const Listing: FC<business> = (props) => {
                   )}
                   {landline && (
                     <ItemContact
-                      icon={<PhoneIcon className="w-5 h-5" />}
+                      icon={<PhoneIcon className={"w-5 h-5 md:cursor-default"} />}
                       title={landline}
                       route={`tel:${landline}`}
                     />

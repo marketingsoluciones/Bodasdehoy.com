@@ -1,25 +1,25 @@
-import Slider from "react-slick";
-import { FC, ReactNode, useState, useEffect, useRef } from "react";
+import { FC, ReactNode, useState, useEffect } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { fetchApi, queries } from "../../../utils/Fetching";
-import {business,category,characteristicSubCategory,subCategory,} from "../../../interfaces";
-import { useHover } from "../../../hooks";
+import { business, category, characteristicSubCategory, } from "../../../interfaces";
 import { createURL } from "../../../utils/UrlImage";
-import {CardBusiness,HeaderCategory,ItemSubCategory,} from "../../../components/Category";
+import { CardBusiness, HeaderCategory, } from "../../../components/Category";
 import useFetch from "../../../hooks/useFetch";
 import { LoadingItem } from "../../../components/Loading";
 import EmptyComponent from "../../../components/Surface/EmptyComponent";
-import {FiltersContextProvider,} from "../../../context/FiltersContext";
-import {LocationFilter,CheckBoxFilter,} from "../../../components/Inputs/Filters";
-import { BurgerIcon,LogoFullColor,SearchIcon } from "../../../components/Icons";
+import { FiltersContextProvider, } from "../../../context/FiltersContext";
+import { LocationFilter, CheckBoxFilter, } from "../../../components/Inputs/Filters";
+import { BurgerIcon, LogoFullColor, SearchIcon } from "../../../components/Icons";
 import useInfiniteScroll from "../../../hooks/useInfiniteScroll";
 import SkeletonCardBusiness from "../../../components/Category/SkeletonCardBusiness";
 import algoliasearch from "algoliasearch/lite";
 import { connectSearchBox, Hits, InstantSearch } from "react-instantsearch-dom";
 import { SidebarContextProvider } from "../../../context";
 import { CloseIcon } from '../../../components/Icons/index';
-import { connectWithQuery, Hit } from "../../../components/Surface/Navigation";
-import option from  "/option.png"
+import { Hit } from "../../../components/Surface/Navigation";
+import { Carrusel } from "../../../components/Carrusel";
+
+
 
 const CategoryPage: FC<category> = (props) => {
   const { filters, setFilters } = FiltersContextProvider();
@@ -71,8 +71,8 @@ const CategoryPage: FC<category> = (props) => {
   const NavbarMobile = () => {
     const { showSidebar, setShowSidebar } = SidebarContextProvider();
     const [showSearcher, setShowSearcher] = useState<boolean>(false);
-    
-    const MySearch : FC <any> = ({
+
+    const MySearch: FC<any> = ({
       currentRefinement,
       refine,
       setSearch,
@@ -80,7 +80,7 @@ const CategoryPage: FC<category> = (props) => {
     }) => {
       return (
         <div className="w-full mx-auto inset-x-0 bg-white h-14 -mt-2 rounded-full flex items-center relative">
-          
+
           <input
             autoFocus
             type="input"
@@ -90,12 +90,12 @@ const CategoryPage: FC<category> = (props) => {
             placeholder="Buscar en bodasdehoy.com"
           />
           <button onClick={() => setShowSearcher(!showSearcher)} className="w-5 h-5  absolute right-5 ">
-          <CloseIcon className="w-full h-full" />
+            <CloseIcon className="w-full h-full" />
           </button>
         </div>
       );
     };
-  
+
     const ConnectMySearchBox = connectSearchBox(MySearch);
     const conditionalQuery = {
       search(requests: any) {
@@ -127,16 +127,16 @@ const CategoryPage: FC<category> = (props) => {
             <button className="p-2" onClick={() => setShowSidebar(true)}>
               <BurgerIcon />
             </button>
-  
+
             <LogoFullColor className="h-auto w-48" />
-  
+
             <button
               className="p-2"
               onClick={() => setShowSearcher(!showSearcher)}
             >
               <SearchIcon />
             </button>
-            
+
           </>
         ) : (
           <InstantSearch indexName="bodasdehoy" searchClient={conditionalQuery}>
@@ -154,9 +154,9 @@ const CategoryPage: FC<category> = (props) => {
   return (
     <section className="flex flex-col gap-10 ">
       <div>
-      <NavbarMobile/>
+        <NavbarMobile />
       </div>
-      
+
       <div>
         {/* Imagen Banner */}
         <img
@@ -173,12 +173,7 @@ const CategoryPage: FC<category> = (props) => {
 
       {/* Grid Cards */}
       <div className="max-w-screen-lg 2xl:max-w-screen-xl w-full mx-auto inset-x-0 grid grid-cols-1 items-center justify-between top-0 px-5  ">
-        <Slider {...settings} className="space-y-10">
-          {subCategories?.length > 0 &&
-            subCategories.map((item: subCategory) => (
-              <ItemSubCategory key={item._id} {...item} slugCategory={slug} />
-            ))}
-        </Slider>
+        <Carrusel slides={subCategories} />
       </div>
 
       {/* Aside Filters */}
@@ -318,7 +313,7 @@ export const Filters: FC<propsFilter> = ({ optionsCheckbox }) => {
   return (
     <>
       <button onClick={onClick} className="md:hidden flex flex-row-reverse items-center px-5 gap-3 text-sm text-gray-700">
-        <img src="/option.png" alt="" className="h-5 w-5"/>
+        <img src="/option.png" alt="" className="h-5 w-5" />
         Filtrar
       </button>
 

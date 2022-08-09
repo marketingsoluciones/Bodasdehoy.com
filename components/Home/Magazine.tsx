@@ -35,7 +35,7 @@ export const Magazine: FC<propsMagazine> = ({ posts: data = [], categories }) =>
         {posts?.length > 0 && <Principal {...posts[0]} />}
         <BlogCategories categories={categories} />
         <GridPost data={posts?.slice(1)} />
-        <span className="absolute bottom-0 mx-auto inset-x-0 transform translate-y-2 hover:scale-105 transition">
+        <span className="absolute bottom-0 mx-auto inset-x-0 transform translate-y-2 scale-90 hover:scale-100 transition">
           <PlusButton size={"medium"} onClick={() => {
             router.push("/magazine")
           }} />

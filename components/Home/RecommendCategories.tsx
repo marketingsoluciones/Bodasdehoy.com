@@ -70,13 +70,12 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
           preloadImages={false}
           lazy={true}
           modules={[Autoplay, Navigation]}
-          className="bg-red-500 "
         >
           {categories &&
             categories.length > 0 &&
             categories?.map((item: Partial<category>, idx: number) => (
               <>
-                <SwiperSlide className="bg-red-100">
+                <SwiperSlide>
                   <Category key={idx} {...item} />
                 </SwiperSlide>
               </>

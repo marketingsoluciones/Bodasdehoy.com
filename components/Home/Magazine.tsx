@@ -10,6 +10,7 @@ import { createSrcSet } from '../../utils/CreateSrcSet';
 import { capitalize } from '../../utils/Capitalize';
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper";
+import { useRouter } from "next/router";
 
 
 interface propsMagazine {
@@ -18,7 +19,7 @@ interface propsMagazine {
 }
 export const Magazine: FC<propsMagazine> = ({ posts: data = [], categories }) => {
   const [posts, setPosts] = useState<Post[]>([]);
-
+  const router = useRouter()
   useEffect(() => {
     setPosts(data);
   }, [data]);
@@ -35,7 +36,9 @@ export const Magazine: FC<propsMagazine> = ({ posts: data = [], categories }) =>
         <BlogCategories categories={categories} />
         <GridPost data={posts?.slice(1)} />
         <span className="absolute bottom-0 mx-auto inset-x-0 transform translate-y-2 hover:scale-105 transition">
-          <PlusButton size={"medium"} />
+          <PlusButton size={"medium"} onClick={() => {
+            router.push("/magazine")
+          }} />
         </span>
       </div>
     </div>

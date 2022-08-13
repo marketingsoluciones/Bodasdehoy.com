@@ -22,7 +22,7 @@ import { Carrusel } from "../../../components/Carrusel";
 
 
 const CategoryPage: FC<category> = (props) => {
-  const { filters, setFilters } = FiltersContextProvider();
+  const { filters, setFilters, localities, setLocalities } = FiltersContextProvider();
   const { _id, imgBanner, subCategories, heading, title, description, slug } =
     props;
 
@@ -66,7 +66,16 @@ const CategoryPage: FC<category> = (props) => {
       []
     );
     setCharacteristics(characteristicsReduce);
-  }, [subCategories, _id]);
+    (async () => {
+      const { results } = await fetchApi({
+        query: queries.getAllLocalities,
+        variables: {
+          categoriesId: [_id],
+        },
+      });
+      setLocalities(results)
+    })()
+  }, [subCategories, _id, setLocalities]);
 
   const NavbarMobile = () => {
     const { showSidebar, setShowSidebar } = SidebarContextProvider();
@@ -300,7 +309,7 @@ interface propsFilter {
 
 export const Filters: FC<propsFilter> = ({ optionsCheckbox }) => {
   const { characteristics } = optionsCheckbox;
-  const { filters, setFilters } = FiltersContextProvider();
+  const { filters, setFilters, localities } = FiltersContextProvider();
 
   const handleResetFilters = () => {
     setFilters({ type: "RESET_FILTER", payload: {} });
@@ -333,7 +342,7 @@ export const Filters: FC<propsFilter> = ({ optionsCheckbox }) => {
               Limpiar
             </button>
           </div>
-          <LocationFilter />
+          {/* <LocationFilter /> */}
           {characteristics?.map((item, idx) => (
             <CheckBoxFilter
               key={idx}
@@ -344,6 +353,15 @@ export const Filters: FC<propsFilter> = ({ optionsCheckbox }) => {
               }))}
             />
           ))}
+          {localities?.length > 0 && <CheckBoxFilter
+            key={100}
+            label={"Localidad"}
+            options={localities.map((item: any) => ({
+              label: `${item.location} . ${item.total}`,
+              _id: item.location,
+              type: "city"
+            }))}
+          />}
         </div>
       </aside>
     </>

@@ -42,7 +42,6 @@ export const LocationFilter: FC = () => {
   return (
     <BlockFilter label="Localidad">
       {isLoaded && <Search center={geolocation} slice={true}>
-        {/* @ts-ignore */}
         <InstanceControl />
       </Search>}
     </BlockFilter>
@@ -51,7 +50,7 @@ export const LocationFilter: FC = () => {
 
 
 
-export const InstanceControl: FC<{ selected: string }> = ({ selected }) => {
+const InstanceControl: FC<{ selected?: string }> = ({ selected }) => {
   const { setFilters } = FiltersContextProvider()
 
   useEffect(() => {
@@ -65,7 +64,7 @@ export const InstanceControl: FC<{ selected: string }> = ({ selected }) => {
 
     }
 
-  }, [selected])
+  }, [selected, setFilters])
 
   return (
     <>

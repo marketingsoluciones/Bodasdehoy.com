@@ -123,6 +123,7 @@ type queries = {
   authStatus: string
   signOut: string
   singleUpload: string;
+  getAllLocalities: string;
 };
 
 export const queries: queries = {
@@ -243,7 +244,7 @@ export const queries: queries = {
       }
     }
   }`,
-  singleUpload:`mutation($file:Upload!,$use:String)
+  singleUpload: `mutation($file:Upload!,$use:String)
   {
     singleUpload(file:$file,use:$use){
       _id
@@ -1054,6 +1055,17 @@ export const queries: queries = {
             i320
           }
         }
+      }
+    }
+  }`,
+  getAllLocalities: `query ($categoriesId: [String]){
+    getAllLocalities(
+      categoriesId: $categoriesId
+    ){
+      total
+      results{
+        total
+        location
       }
     }
   }`,

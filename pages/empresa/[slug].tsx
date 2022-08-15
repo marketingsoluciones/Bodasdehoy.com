@@ -61,9 +61,9 @@ const Listing: FC<business> = (props) => {
 
   const [sendMessage, setMessage] = useState(false);
   const List: Boton[] = [
-    { title: "Descripción", route: "#description", icon: <DocsIcon /> },
+    //{ title: "Descripción", route: "#description", icon: <DocsIcon /> },
     { title: "Opiniones", route: "#reviews", icon: <OpinionesIcon /> },
-    { title: "Comó llegar", route: "#maps", icon: <Location2Icon /> },
+    { title: "Cómo llegar", route: "#maps", icon: <Location2Icon /> },
     { title: "Preguntas", route: "#questions", icon: <PreguntasIcon /> },
   ];
   const { user } = AuthContextProvider();
@@ -204,20 +204,6 @@ const Listing: FC<business> = (props) => {
                       <FAQ data={questionsAndAnswers} />
                     </>
                   )}
-                {coordinates?.coordinates?.length > 0 && (
-                  <>
-                    <div
-                      id={"maps"}
-                      className="rounded-xl overflow-hidden w-full h-64"
-                    >
-                      <GoogleMapsView
-                        lng={coordinates?.coordinates[0]}
-                        lat={coordinates?.coordinates[1]}
-                      />
-                    </div>
-                    <hr />
-                  </>
-                )}
 
                 <ReviewComponent
                   {...props}
@@ -228,6 +214,27 @@ const Listing: FC<business> = (props) => {
                   setAverageTotal={setAverageTotal}
                   setReviewsProps={setReviewsProps}
                 />
+
+                {coordinates?.coordinates?.length > 0 && (
+                  <>
+                    <div id={"maps"} className="flex items-center gap-3">
+                      <Location2Icon className="w-10 h-10" />
+                      <h2 className="text-lg text-gray-500">
+                        Cómo llegar
+                      </h2>
+                    </div>
+                    <div className="w-full grid justify-items-center">
+                      <div className="rounded-xl overflow-hidden w-11/12">
+                        <GoogleMapsView
+                          lat={coordinates?.coordinates[0]}
+                          lng={coordinates?.coordinates[1]}
+                          businessName={props.businessName}
+                        />
+                      </div>
+                    </div>
+                    <hr />
+                  </>
+                )}
               </div>
             </section>
             <div className="  md:block w-full ... relative ">

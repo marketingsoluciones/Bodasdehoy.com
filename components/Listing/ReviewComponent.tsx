@@ -152,7 +152,7 @@ const ReviewComponent: FC<propsReviewComponent> = ({
   const [images, setImages] = useState<imagesReviews[]>([]);
 
   useEffect(() => {
-    if(reviews && reviews.length > 0){
+    if (reviews && reviews.length > 0) {
       const imagesReviews = reviews.reduce((acc: any, review) => {
         review.imgCarrusel.forEach((image) => {
           const obj = {
@@ -163,7 +163,7 @@ const ReviewComponent: FC<propsReviewComponent> = ({
         });
         return acc;
       }, []);
-  
+
       setImages(imagesReviews);
     } else {
       setImages([])
@@ -182,7 +182,7 @@ const ReviewComponent: FC<propsReviewComponent> = ({
 
       <div
         id={"reviews"}
-        className="w-full col-span-4 flex flex-col gap-10 transition-all h-auto"
+        className="w-full col-span-4 flex flex-col gap-2 transition-all h-auto"
       >
         {isOpen && (
           <ModalReview
@@ -201,8 +201,8 @@ const ReviewComponent: FC<propsReviewComponent> = ({
             />
           </ModalReview>
         )}
-        <div className="w-full bg-color-base p-3 md:p-6 rounded-xl">
-          <div className="flex items-center gap-3 bg-color-base">
+        <div className="w-full p-3 md:p-6 rounded-xl">
+          <div className="flex items-center gap-3">
             <ReviewIconPrincipal className="w-10 h-10" />
             <h2 className="text-lg text-gray-500">
               Opiniones sobre {businessName}
@@ -252,11 +252,11 @@ const ReviewComponent: FC<propsReviewComponent> = ({
           </ButtonComponent>
         )}
 
-        {images && images.length > 0 && <UsersGalleryComponent images={images} set={setShowPreview}/>}
+        {images && images.length > 0 && <UsersGalleryComponent images={images} set={setShowPreview} />}
 
         <div className="flex flex-col justify-center">
           {/* GRID COMMENTS */}
-          <div className="grid place-items-center gap-10">
+          <div className="grid place-items-center ">
             {!loading ? (
               <>
                 {reviews?.filter(review => review.user._id !== myReview?.user._id).map((review) => (
@@ -318,10 +318,10 @@ const SelectReviewComponent: FC<propsSelectReviewComponent> = ({
   );
 };
 
-export const UsersGalleryComponent: FC <{images: imagesReviews[], set : CallableFunction}> = ({images, set}) => {
-  const Image: FC <imagesReviews> = ({image, review}) => {
+export const UsersGalleryComponent: FC<{ images: imagesReviews[], set: CallableFunction }> = ({ images, set }) => {
+  const Image: FC<imagesReviews> = ({ image, review }) => {
     return (
-      <button onClick={() => set({source: image, data: review})}>
+      <button onClick={() => set({ source: image, data: review })}>
         <div className="overflow-hidden w-full h-full rounded-lg relative mx-auto inset-x-0">
           <img
             alt={review?.user?.displayName ?? ""}
@@ -338,8 +338,8 @@ export const UsersGalleryComponent: FC <{images: imagesReviews[], set : Callable
       <div className="border-b border-gray-100">
         <p className="text-sm text-tertiary">Imagenes de clientes</p>
         <div className="grid grid-cols-4 w-full gap-2 h-48 pb-6 py-3">
-          {images.slice(0,4).map((item, idx) => (
-            <Image key={idx} {...item}/>
+          {images.slice(0, 4).map((item, idx) => (
+            <Image key={idx} {...item} />
           ))}
         </div>
       </div>
@@ -449,7 +449,7 @@ export const PreviewComponent: FC<propsPreviewComponent> = ({
                           onClick={() => setImagePrincipal(item)}
                         >
                           <img
-                            className="w-20 h-20 bg-red-500 rounded object-cover object-center border"
+                            className="w-20 h-20 rounded object-cover object-center border"
                             src={
                               item?.i320
                                 ? createURL(item.i320)
@@ -496,7 +496,7 @@ export const ViewGridComponent: FC<{
           onClick={() => set({ data: item.review, source: item.image })}
         >
           <img
-            className="w-40 h-40 mx-auto bg-red-500 rounded object-cover object-center border"
+            className="w-40 h-40 mx-auto rounded object-cover object-center border"
             src={
               item?.image?.i320
                 ? createURL(item.image.i320)
@@ -546,9 +546,7 @@ const CommentComponent: FC<propsCommentComponent> = ({
 
   return (
     <>
-      <div
-        className={`flex items-center w-full h-full overflow-hidden relative  `}
-      >
+      <div className={`flex items-center w-full h-full overflow-hidden relative `}>
         <img
           src={user?.photoURL ?? "/placeholder/user.png"}
           className="relative w-full h-full object-cover object-center w-[4rem] h-[4rem] rounded-full"
@@ -582,11 +580,10 @@ const CommentComponent: FC<propsCommentComponent> = ({
               {answer && (
                 <button
                   onClick={() => setViewAnswer(!viewAnswer)}
-                  className={`text-xs ${
-                    viewAnswer
-                      ? "bg-primary text-white"
-                      : "bg-white text-primary"
-                  }  w-max px-3 py-1 rounded-md hover:bg-gray-500 hover:text-white transition`}
+                  className={`text-xs ${viewAnswer
+                    ? "bg-primary text-white"
+                    : "bg-white text-primary"
+                    }  w-max px-3 py-1 rounded-md hover:bg-gray-500 hover:text-white transition`}
                 >
                   Ver respuesta de Jaihom
                 </button>

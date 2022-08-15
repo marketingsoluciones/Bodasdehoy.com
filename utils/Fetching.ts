@@ -574,6 +574,10 @@ export const queries: queries = {
         i640
         i320
     	}
+      coordinates{
+        type
+        coordinates
+      }
       webPage
       landline
       mobilePhone

@@ -10,7 +10,8 @@ import { useToast } from "../hooks/useToast";
 
 export const useAuthentication = () => {
   const { setLoading } = LoadingContextProvider();
-  const { setUser, setUserTemp } = AuthContextProvider();
+  const { setUser, setUserTemp, redirect } = AuthContextProvider();
+
   const toast = useToast();
   const router = useRouter();
 
@@ -24,7 +25,6 @@ export const useAuthentication = () => {
         const { sessionCookie } = authResult;
         // Setear en localStorage token JWT
         Cookies.set("sessionBodas", sessionCookie, { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
-        console.log("sessionCookie", sessionCookie)
         return sessionCookie
       } else {
         console.warn("No se pudo cargar la cookie de sesión por que hubo un problema")
@@ -80,8 +80,8 @@ export const useAuthentication = () => {
           // Actualizar estado con los dos datos
           setUser({ ...res.user, ...moreInfo });
 
-          toast("success", "Inicio de sesión con exito");
-          await router.push("/");
+          toast("success", `Inicio de sesión con exito`);
+          await router.push(!redirect ? "/" : redirect);
         } else {
           toast("error", "aun no está registrado");
           //verificar que firebase me devuelva un correo del usuario
@@ -98,7 +98,7 @@ export const useAuthentication = () => {
 
       setLoading(false);
     },
-    []
+    [redirect, getSessionCookie, router, setLoading, setUser, setUserTemp, toast]
   );
 
   const _signOut = useCallback(async () => {
@@ -109,7 +109,7 @@ export const useAuthentication = () => {
     await signOut(auth);
     await router.push("/");
     toast("success", "Gracias por visitarnos, te esperamos luego 😀");
-  }, [])
+  }, [router, setUser, toast])
 
 
 

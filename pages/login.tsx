@@ -1,6 +1,6 @@
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, useCallback, useEffect, useState } from "react";
 import { ButtonClose } from "../components/Inputs";
-import router from "next/router";
+import router, { useRouter } from "next/router";
 import { Login, Register, ResetPass } from '../components/Login/Forms';
 import { AuthContextProvider } from "../context";
 
@@ -13,6 +13,14 @@ type Forms = {
 };
 
 const PageLogin: FC = () => {
+  const r = useRouter()
+  const { redirect, setRedirect } = AuthContextProvider();
+  useEffect(() => {
+    if (r?.query?.d === "app") {
+      setRedirect(process.env.NEXT_PUBLIC_EVENTSAPP ?? "")
+    }
+  }, [r, setRedirect]);
+
   const { user, userTemp, setUserTemp } = AuthContextProvider();
   const [stage, setStage] = useState<keyof typeof Stages>("login");
 
@@ -22,22 +30,28 @@ const PageLogin: FC = () => {
     resetPassword: <ResetPass setStage={setStage} />
   };
 
-  const keyDown: any = (event: KeyboardEvent) => {
+  const keyDown: any = useCallback((event: KeyboardEvent) => {
     const keyName: string = event.key;
-    keyName?.toLowerCase() === "escape" && router.push("/");
-  };
+    if (keyName?.toLowerCase() === "escape") {
+      setTimeout(() => {
+        router.push(!redirect ? "/" : redirect)
+      }, 100);
+    }
+  }, [redirect])
+
   //al desmontar componente
   useEffect(() => {
     return () => {
       setUserTemp(null)
     }
-  }, []);
+  }, [setUserTemp]);
+
   // al entrar a login
   useEffect(() => {
     if (stage == "login") {
       setUserTemp(null)
     }
-  }, [stage]);
+  }, [stage, setUserTemp]);
 
   useEffect(() => {
     user?.uid && !user.city && setStage("register");
@@ -49,14 +63,20 @@ const PageLogin: FC = () => {
   }, [userTemp]);
 
   useEffect(() => {
-    document?.addEventListener("keydown", keyDown);
-  }, []);
+    if (r.query) {
+      document?.addEventListener("keydown", keyDown);
+    }
+  }, [r.query, keyDown]);
 
   return (
     <>
       <div className="w-screen fixed h-full top-0 left-0 md:grid z-30 grid-cols-5">
         <div className="bg-white w-full h-full col-span-3 relative flex items-center justify-center">
-          <ButtonClose onClick={() => router.back()} />
+          <ButtonClose onClick={() => {
+            setTimeout(() => {
+              router.push(!redirect ? "/" : redirect)
+            }, 100);
+          }} />
           <div className="flex flex-col items-center gap-4 w-full px-10 md:px-0 sm:w-3/4 md:w-2/3">
             {Stages[stage]}
           </div>

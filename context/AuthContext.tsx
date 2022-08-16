@@ -27,6 +27,8 @@ type Context = {
   setUser: Dispatch<SetStateAction<Partial<UserMax | null>>>;
   userTemp: Partial<UserMax | null>;
   setUserTemp: Dispatch<SetStateAction<Partial<UserMax | null>>>;
+  redirect: string | null;
+  setRedirect: Dispatch<SetStateAction<Partial<string | null>>>;
 };
 
 const initialContext: Context = {
@@ -34,6 +36,8 @@ const initialContext: Context = {
   setUser: (user) => { },
   userTemp: null,
   setUserTemp: (user) => { },
+  redirect: null,
+  setRedirect: (user) => { },
 };
 
 const AuthContext = createContext<Context>(initialContext);
@@ -41,6 +45,7 @@ const AuthContext = createContext<Context>(initialContext);
 const AuthProvider: FC = ({ children }): JSX.Element => {
   const [user, setUser] = useState<Partial<UserMax | null>>(null);
   const [userTemp, setUserTemp] = useState<Partial<UserMax | null>>(null);
+  const [redirect, setRedirect] = useState<Partial<string | null>>(null);
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user: any) => {
@@ -81,7 +86,7 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, setUser, userTemp, setUserTemp }}>
+    <AuthContext.Provider value={{ user, setUser, userTemp, setUserTemp, redirect, setRedirect }}>
       {children}
     </AuthContext.Provider>
   );

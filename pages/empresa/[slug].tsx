@@ -1,6 +1,6 @@
 import { Markup } from "interweave";
 import Link from "next/link";
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, MouseEventHandler, ReactNode, useEffect, useState } from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { FormListing } from "../../components/Forms";
 import { RatingStars } from "../../components/Home/FeaturedCompanies";
@@ -255,6 +255,7 @@ const Listing: FC<business> = (props) => {
                       icon={<PhoneIcon className={"w-5 h-5 md:cursor-default"} />}
                       title={landline}
                       route={`tel:${landline}`}
+                      type="phone"
                     />
                   )}
                   {facebook && (
@@ -299,19 +300,42 @@ const Listing: FC<business> = (props) => {
 
 export default Listing;
 
-const ItemContact: FC<{ icon: ReactNode; title: string; route: string }> = ({
+const ItemContact: FC<{ icon: ReactNode; title: string; route: string, type?: string }> = ({
   icon,
   title,
   route,
+  type
 }) => {
+  const [widthScreen, setWidthScreen] = useState(0)
+  useEffect(() => {
+    if (window?.innerWidth) {
+      setWidthScreen(window.innerWidth)
+    }
+  }, [])
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      if (window?.innerWidth) {
+        setWidthScreen(window.innerWidth)
+      }
+    });
+    return () => {
+      window.removeEventListener("resize", () => { })
+    }
+  }, [])
+
+  const onClick: MouseEventHandler<HTMLDivElement> | undefined = () => {
+    widthScreen < 768 ? window.open(route, '_blank') :
+      !type && window.open(route, '_blank')
+  }
+
   return (
     <div className="flex items-center gap-10 text-xs justify-between w-full border-b border-gray-100 py-2 overflow-hidden relative">
       <div className="w-5 h-5">
         {icon}
       </div>
-      <a className="w-full flex items-center justify-end " href={route} rel="noreferrer" target={"_blank"}>
-        <p className="text-tertiary truncate" >{title}</p>
-      </a>
+      <div className="w-full flex items-center justify-end cursor-pointer" onClick={onClick}>
+        <p id={type} className="text-tertiary truncate" >{title}</p>
+      </div>
     </div>
   );
 };

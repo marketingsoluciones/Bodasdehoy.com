@@ -19,10 +19,8 @@ export const Footer: FC = () => {
   const ListInformacion: Item[] = [
     { title: "Tarifas y condiciones generales", route: "/tarifas-y-condiciones-generales" },
     { title: "Condiciones proveedores", route: "/condiciones-proveedores" },
-    { title: "Condiciones generales", route: "/condiciones-generales" },
     { title: "Privacidad", route: "/privacidad" },
-    { title: "FAQ", route: "/fac" },
-    { title: "Contacto", route: "/contacto" },
+    { title: "Cookies", route: "/cookies" },
   ];
 
   const ListEmpresa: Item[] = [

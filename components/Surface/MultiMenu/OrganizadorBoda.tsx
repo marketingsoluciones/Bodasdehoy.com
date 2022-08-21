@@ -5,18 +5,23 @@ import Link from "next/link";
 
 const OrganizadorBoda = () => {
   const List = [
-    { icon: <GlobosIcon />, title: "Mis eventos" },
-    { icon: <UserIcon />, title: "Invitados" },
-    { icon: <TableIcon />, title: "Mesas" },
-    { icon: <RegaloIcon />, title: "Lista de regalos" },
-    { icon: <PresupuestoIcon />, title: "Presupuesto" },
-    { icon: <InvitacionesIcon />, title: "Invitaciones" },
+    { icon: <GlobosIcon />, title: "Mis eventos", route: `${process.env.NEXT_PUBLIC_EVENTSAPP}/` },
+    { icon: <UserIcon />, title: "Invitados", route: `${process.env.NEXT_PUBLIC_EVENTSAPP}/invitados` },
+    { icon: <TableIcon />, title: "Mesas", route: `${process.env.NEXT_PUBLIC_EVENTSAPP}/mesas` },
+    { icon: <RegaloIcon />, title: "Lista de regalos", route: `${process.env.NEXT_PUBLIC_EVENTSAPP}/lista-regalos` },
+    { icon: <PresupuestoIcon />, title: "Presupuesto", route: `${process.env.NEXT_PUBLIC_EVENTSAPP}/presupuesto` },
+    { icon: <InvitacionesIcon />, title: "Invitaciones", route: `${process.env.NEXT_PUBLIC_EVENTSAPP}/invitaciones` },
   ];
   return (
     <ul className="w-full flex items-center justify-between">
       {List.map((item, idx) => (
-        <Link key={idx} href={process.env.NEXT_PUBLIC_EVENTSAPP ?? ""} passHref>
-          <ListItem {...item} />
+        <Link key={idx} href={item.route ?? ""} passHref>
+          <li className="flex items-center gap-2 text-sm text-gray-600 hover:text-tertiary hover:font-semibold cursor-pointer hover:bg-gray-100 transition p-2 rounded-xl w-max">
+            <div className="w-8 h-8 rounded-full bg-white p-1.5 grid place-items-center">
+              {cloneElement(item.icon, { className: "w-full h-full" })}
+            </div>
+            <p className="">{item.title}</p>
+          </li>
         </Link>
       ))}
     </ul>
@@ -24,17 +29,6 @@ const OrganizadorBoda = () => {
 };
 
 export default OrganizadorBoda;
-
-const ListItem: FC<{ title: string; icon: any }> = ({ title, icon }) => {
-  return (
-    <li className="flex items-center gap-2 text-sm text-gray-600 hover:text-tertiary hover:font-semibold cursor-pointer hover:bg-gray-100 transition p-2 rounded-xl w-max">
-      <div className="w-8 h-8 rounded-full bg-white p-1.5 grid place-items-center">
-        {cloneElement(icon, { className: "w-full h-full" })}
-      </div>
-      <p className="">{title}</p>
-    </li>
-  );
-};
 
 //ICONOS
 

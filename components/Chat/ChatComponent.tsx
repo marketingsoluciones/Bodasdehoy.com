@@ -27,11 +27,10 @@ import { getRelativeTime } from "../../utils/FormatTime";
 import { createURL } from "../../utils/UrlImage";
 import { SetStateAction } from "react";
 
-const useOutsideAlerter = (ref: any, setShow: any) => {
+const useOutsideSetShow = (ref: any, setShow: any) => {
   const handleClickOutside = (event: any) => {
     if (ref.current && !ref.current.contains(event.target)) {
       setShow(false)
-      //alert('¡Hiciste clic fuera de mí!');
     }
   };
 
@@ -73,7 +72,7 @@ const ChatComponent = () => {
   const { conversation, setConversation, show, setShow } = ChatContextProvider();
 
   const wrapperRef = useRef(null);
-  useOutsideAlerter(wrapperRef, setShow);
+  useOutsideSetShow(wrapperRef, setShow);
   return (
     user && (
       <>

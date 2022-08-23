@@ -29,7 +29,7 @@ const ChatComponentView: FC<business> = ({
   const { socket } = SocketContextProvider();
   const { setChats, setConversation, setShow, show } = ChatContextProvider();
   const [IDChat, setIDChat] = useState<string | null>(null)
-  const {user} = AuthContextProvider()
+  const { user } = AuthContextProvider()
 
   const fetchIHaveChat = async () => {
     const result = await fetchApi({
@@ -45,16 +45,16 @@ const ChatComponentView: FC<business> = ({
   useEffect(() => {
     fetchIHaveChat()
   }, [])
-  
+
   const handleSocket = (data: { status: boolean; dateConection: number }) => {
     setOnline(data.status);
     setLatestConnection(data.dateConection);
   }
   useEffect(() => {
-    socket?.on(`${userUid}`, handleSocket );
-      return () => {
-        socket?.off(`${userUid}`, handleSocket)
-      }
+    socket?.on(`${userUid}`, handleSocket);
+    return () => {
+      socket?.off(`${userUid}`, handleSocket)
+    }
   }, [socket]);
 
   const handleCreateConversation = () => {
@@ -68,31 +68,32 @@ const ChatComponentView: FC<business> = ({
         type: "text",
       },
     });
-
+    fetchIHaveChat()
+    setShow(!show)
   };
 
-  const handleCreateChat = (data : Chat) => {
+  const handleCreateChat = (data: Chat) => {
     console.log(data)
     //setIDChat(data._id)
-    }
+  }
 
   useEffect(() => {
-    socket?.on("chatBusiness:create", handleCreateChat );
+    socket?.on("chatBusiness:create", handleCreateChat);
     return () => {
       socket?.off('chatBusiness:create', handleCreateChat)
     }
   }, [socket]);
-  
+
   const handleChange = (e: any) => {
     setValue(e.target.value);
   };
 
   const handleAnotherMessage = async () => {
-    const result : Chat = await fetchApi({
-      query : queries.getOneChat,
-      variables: {IDChat}
+    const result: Chat = await fetchApi({
+      query: queries.getOneChat,
+      variables: { IDChat }
     })
-    setConversation({state:true, data: result})
+    setConversation({ state: true, data: result })
     setShow(!show)
   }
 
@@ -109,9 +110,8 @@ const ChatComponentView: FC<business> = ({
             srcSet={createSrcSet(imgLogo)}
           />
           <span
-            className={`absolute w-3 h-3 ${
-              isOnline ? "bg-green-600" : "bg-gray-400"
-            }  rounded-full -right-0 border border-white top-0`}
+            className={`absolute w-3 h-3 ${isOnline ? "bg-green-600" : "bg-gray-400"
+              }  rounded-full -right-0 border border-white top-0`}
           />
         </span>
         <div className="flex ml-2 items-start flex-col justify-end">
@@ -121,9 +121,8 @@ const ChatComponentView: FC<business> = ({
           <span className="text-xs text-gray-400">
             {isOnline
               ? "en linea"
-              : `Última vez ${
-                  latestConnection && getRelativeTime(latestConnection)
-                }`}
+              : `Última vez ${latestConnection && getRelativeTime(latestConnection)
+              }`}
           </span>
         </div>
       </div>

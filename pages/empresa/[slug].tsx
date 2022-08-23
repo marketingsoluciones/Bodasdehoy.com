@@ -143,7 +143,7 @@ const Listing: FC<business> = (props) => {
                       key={idx}
                       alt={businessName}
                       className="w-full object-cover h-96 "
-                      src={createURL(item.i640)}
+                      src={createURL(item?.i640)}
                       srcSet={createSrcSet(imgMiniatura)} />
                   ))}
                 </Slider>

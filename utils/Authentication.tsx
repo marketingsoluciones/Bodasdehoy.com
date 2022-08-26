@@ -66,36 +66,38 @@ export const useAuthentication = () => {
       };
 
       // Autenticar con firebase
-      const res: UserCredential | void = await types[type]();
-      if (res) {
-        // Solicitar datos adicionales del usuario
-        const moreInfo = await fetchApi({
-          query: queries.getUser,
-          variables: { uid: res.user.uid },
-        });
-        if (moreInfo && res?.user?.email) {
-          const token = (await res?.user?.getIdTokenResult())?.token;
-          const sessionCookie = await getSessionCookie(token)
-          if (sessionCookie) { }
-          // Actualizar estado con los dos datos
-          setUser({ ...res.user, ...moreInfo });
+      try {
+        const res: UserCredential | void = await types[type]();
+        if (res) {
+          // Solicitar datos adicionales del usuario
+          const moreInfo = await fetchApi({
+            query: queries.getUser,
+            variables: { uid: res.user.uid },
+          });
+          if (moreInfo && res?.user?.email) {
+            const token = (await res?.user?.getIdTokenResult())?.token;
+            const sessionCookie = await getSessionCookie(token)
+            if (sessionCookie) { }
+            // Actualizar estado con los dos datos
+            setUser({ ...res.user, ...moreInfo });
 
-          toast("success", `Inicio de sesión con exito`);
-          await router.push(!redirect ? "/" : redirect);
-        } else {
-          toast("error", "aun no está registrado");
-          //verificar que firebase me devuelva un correo del usuario
-          if (res?.user?.email) {
-            //seteo usuario temporal pasar nombre y apellido de firebase a formulario de registro
-            setUserTemp({ ...res.user });
-            toast("success", "Seleccione quien eres y luego completa el formulario");
+            toast("success", `Inicio de sesión con exito`);
+            await router.push(!redirect ? "/" : redirect);
           } else {
-            toast("error", "usted debe tener asociado un correo a su cuenta de proveedor");
+            toast("error", "aun no está registrado");
+            //verificar que firebase me devuelva un correo del usuario
+            if (res?.user?.email) {
+              //seteo usuario temporal pasar nombre y apellido de firebase a formulario de registro
+              setUserTemp({ ...res.user });
+              toast("success", "Seleccione quien eres y luego completa el formulario");
+            } else {
+              toast("error", "usted debe tener asociado un correo a su cuenta de proveedor");
+            }
           }
         }
+      } catch (error) {
+        toast("error", "correo o contraseña inválida");
       }
-
-
       setLoading(false);
     },
     [redirect, getSessionCookie, router, setLoading, setUser, setUserTemp, toast]

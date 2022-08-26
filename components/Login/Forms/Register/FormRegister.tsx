@@ -1,7 +1,7 @@
 import { Formik, Form } from "formik";
-import { FC, useContext, Children, memo, Dispatch, SetStateAction } from "react";
+import { FC, useContext, Children, memo, Dispatch, SetStateAction, useState } from "react";
 import { DatePicker, InputField, SelectField } from "../../../Inputs";
-import { EmailIcon, EmailIcon as PasswordIcon, EmailIcon as UserForm, } from "../../../Icons";
+import { EmailIcon, EmailIcon as PasswordIcon, UserForm, Eye, EyeSlash, LockClosed, PhoneMobile, } from "../../../Icons";
 import { createUserWithEmailAndPassword, updateProfile, UserCredential, NextOrObserver, User } from "@firebase/auth";
 import * as yup from "yup";
 import { UserMax } from "../../../../context/AuthContext";
@@ -22,7 +22,7 @@ interface userInitialValuesPartial {
   email: string;
   city: string;
   country: string;
-  weddingDate: Date;
+  weddingDate: Date | undefined;
   phoneNumber: string;
   role: string;
   uid: string;
@@ -33,7 +33,7 @@ interface userInitialValuesTotal {
   password: string;
   city: string;
   country: string;
-  weddingDate: Date;
+  weddingDate: Date | undefined;
   phoneNumber: string;
   role: string;
   uid: string;
@@ -96,7 +96,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     //Envio a la api
     city: "",
     country: "",
-    weddingDate: new Date(),
+    weddingDate: undefined,
     phoneNumber: "",
     role: whoYouAre || "",
     uid: "",
@@ -293,17 +293,16 @@ interface propsForm {
 
 
 const UserWithEmailAndPassword: FC<propsForm> = () => {
+  const [passwordView, setPasswordView] = useState(false)
   return (
     <>
       <div className="w-full col-span-2">
         <InputField
           name="fullName"
-          placeholder="Jhon Doe"
+          //placeholder="Jhon Doe"
           type="text"
           autoComplete="off"
-          icon={
-            <UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto" />
-          }
+          icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
           label={"Nombre y apellidos"}
         />
       </div>
@@ -311,12 +310,10 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
       <div className="w-full relative ">
         <InputField
           name="email"
-          placeholder="jhondoe@gmail.com"
+          //placeholder="jhondoe@gmail.com"
           type="email"
           autoComplete="off"
-          icon={
-            <EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />
-          }
+          icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
           label={"Correo electronico"}
         />
       </div>
@@ -324,13 +321,15 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
       <div className="w-full relative ">
         <InputField
           name="password"
-          type="password"
+          type={!passwordView ? "password" : "text"}
           autoComplete="off"
-          icon={
-            <PasswordIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4 text-gray-500" />
-          }
+          icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
           label={"Contraseña"}
         />
+        <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
+          {!passwordView ? <Eye /> : <EyeSlash />}
+        </div>
+
       </div>
 
       <div className="w-full relative ">
@@ -355,6 +354,7 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
           name="phoneNumber"
           type="number"
           autoComplete="off"
+          icon={<PhoneMobile className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
           label={"Número de telefono"}
         />
       </div>
@@ -371,9 +371,7 @@ const UserDataAPI: FC<propsForm> = () => {
           placeholder="Jhon Doe"
           type="text"
           autoComplete="off"
-          icon={
-            <UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto" />
-          }
+          icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto" />}
           label={"Nombre y apellidos"}
           disabled
         />
@@ -385,9 +383,7 @@ const UserDataAPI: FC<propsForm> = () => {
           placeholder="jhondoe@gmail.com"
           type="email"
           autoComplete="off"
-          icon={
-            <EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />
-          }
+          icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
           label={"Correo electronico"}
           disabled
         />

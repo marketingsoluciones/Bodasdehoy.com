@@ -123,6 +123,7 @@ export const Search: FC<propsSearchPlaces> = ({ panTo, center, initialValue, sli
   const { filters } = FiltersContextProvider()
   const [Child, setChild] = useState<any>(Children.toArray(children))
   const [selected, setSelected] = useState<google.maps.GeocoderRequest | string>()
+
   const { ready, value, suggestions: { status, data }, setValue, clearSuggestions } = usePlacesAutoComplete({
     cacheKey: "autocomplete-google",
     cache: false,
@@ -154,6 +155,9 @@ export const Search: FC<propsSearchPlaces> = ({ panTo, center, initialValue, sli
     }
   }
   useEffect(() => {
+    if (selected == undefined) {
+      setSelected("")
+    }
     process()
   }, [selected])
 
@@ -166,7 +170,8 @@ export const Search: FC<propsSearchPlaces> = ({ panTo, center, initialValue, sli
       <span className="relative">
         <Location2Icon className="text-primary absolute w-4 h-4 inset-y-0 my-auto left-5" />
         <input
-          className="w-full bg-color-base rounded-full h-10 focus:outline-none px-12 text-sm text-gray-500" placeholder="Buscar"
+          className="w-full bg-color-base rounded-full h-10 focus:outline-none px-12 text-sm text-gray-500"
+          //placeholder="Buscar"
           value={value}
           onChange={(e) => setValue(e.target.value)}
           disabled={selected !== ""}

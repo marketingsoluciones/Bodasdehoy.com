@@ -15,13 +15,15 @@ const OrganizadorBoda = () => {
   return (
     <ul className="w-full flex items-center justify-between">
       {List.map((item, idx) => (
-        <Link key={idx} href={item.route ?? ""} passHref>
-          <li className="flex items-center gap-2 text-sm text-gray-600 hover:text-tertiary hover:font-semibold cursor-pointer hover:bg-gray-100 transition p-2 rounded-xl w-max">
-            <div className="w-8 h-8 rounded-full bg-white p-1.5 grid place-items-center">
-              {cloneElement(item.icon, { className: "w-full h-full" })}
-            </div>
-            <p className="">{item.title}</p>
-          </li>
+        <Link key={idx} href={item.route ?? ""} passHref >
+          <a target="_blank" rel="noopener noreferrer">
+            <li className="flex items-center gap-2 text-sm text-gray-600 hover:text-tertiary hover:font-semibold cursor-pointer hover:bg-gray-100 transition p-2 rounded-xl w-max">
+              <div className="w-8 h-8 rounded-full bg-white p-1.5 grid place-items-center">
+                {cloneElement(item.icon, { className: "w-full h-full" })}
+              </div>
+              <p className="">{item.title}</p>
+            </li>
+          </a>
         </Link>
       ))}
     </ul>

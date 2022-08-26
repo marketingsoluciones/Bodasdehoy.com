@@ -1,6 +1,6 @@
 import { Formik, Form, ErrorMessage } from "formik";
 import { FC, useContext, useState } from "react";
-import { EmailIcon, EmailIcon as PasswordIcon } from "../../Icons";
+import { EmailIcon, EmailIcon as PasswordIcon, Eye, LockClosed } from "../../Icons";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { InputField, ButtonComponent } from "../../Inputs";
 import * as yup from "yup";
@@ -20,6 +20,7 @@ type MyFormValues = {
 };
 
 const FormLogin: FC<any> = ({ setStage }) => {
+  const [passwordView, setPasswordView] = useState(false)
   const { signIn } = useAuthentication();
   const { setLoading } = LoadingContextProvider()
   const toast = useToast()
@@ -49,38 +50,46 @@ const FormLogin: FC<any> = ({ setStage }) => {
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       <Form className=" text-gray-200 flex flex-col gap-4 py-4 w-full md:w-3/4">
         <span className="w-full relative ">
-          <InputField label={"Correo electronico"} name="identifier" placeholder="jhondoe@gmail.com" type="email" icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto text-gray-500" />} />
+          <InputField
+            label={"Correo electronico"}
+            name="identifier"
+            // placeholder="ingrese correo electrónico"
+            icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto text-gray-500" />}
+            type="email"
+          />
 
         </span>
 
         <span className="w-full relative ">
           <InputField
-            name="password"
-            placeholder="******"
-            type="password"
-            icon={<PasswordIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4 text-gray-500" />}
             label={"Contraseña"}
+            name="password"
+            // placeholder="******"
+            icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto text-gray-500" />}
+            type={!passwordView ? "password" : "text"}
           />
+          <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
+            <Eye />
+          </div>
         </span>
         <span className="text-sm text-red">
           <ErrorMessage name="wrong" />
         </span>
         {/*  <span 
           className="text-sm text-primary w-full text-left hover:text-gray-300 transition cursor-pointer"
-          
           >
           Olvidé mi contraseña
         </span> */}
-        <button onClick={() => setStage("resetPassword")} className="text-sm text-primary w-full text-left hover:text-gray-300 transition cursor-pointer">
-          Olvidé mi contraseña
-        </button>
-
         <ButtonComponent
           onClick={() => { }}
           type="submit"
+          tabIndex={0}
         >
           Iniciar sesión
         </ButtonComponent>
+        <button onClick={() => setStage("resetPassword")} className="text-sm text-primary w-full text-left hover:text-gray-300 transition cursor-pointer">
+          Olvidé mi contraseña
+        </button>
       </Form>
     </Formik>
   );

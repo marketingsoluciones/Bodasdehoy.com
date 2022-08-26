@@ -11,7 +11,8 @@ const SelectFieldCoutries: FC<propsSelectFieldCountries> = (props) => {
   const fetchCountries = async () => {
     try {
       const { data } = await api.restCountries();
-      const map = data?.map((item: any) => item.name.common).sort((a: any,b : any) => a.localeCompare(b));
+      //item => ({ name: item?.translations?.spa?.common.toLowerCase() })
+      const map = data?.map((item: any) => item?.translations?.spa?.common).sort((a: any, b: any) => a.localeCompare(b));
       setCountries(map);
     } catch (error) {
       console.log(error);

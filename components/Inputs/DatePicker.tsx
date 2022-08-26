@@ -4,7 +4,8 @@ import ClickAwayListener from "react-click-away-listener";
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
 import { format } from "../../utils/FormatTime";
-import { EmailIcon as DateIcon } from "../Icons";
+import { DateIcon } from "../Icons";
+
 
 interface propsDatePicker {
   name: string;
@@ -13,9 +14,8 @@ interface propsDatePicker {
 export const DatePicker: FC<propsDatePicker> = (props) => {
   const [show, setShow] = useState(false);
   const [field, meta, helpers] = useField(props);
-  const className: string = `bg-color-base ${
-    show ? "border border-primary" : "border border-transparent"
-  } focus:ring-transparent pr-3 pl-3 py-2 rounded-lg w-full focus:outline-none transition flex items-center gap-2 `;
+  const className: string = `bg-color-base ${show ? "border border-primary" : "border border-transparent"
+    } focus:ring-transparent pr-3 pl-3 py-2 rounded-lg w-full focus:outline-none transition flex items-center gap-2 `;
   return (
     <ClickAwayListener onClickAway={() => show && setShow(false)}>
       <div className="relative w-full">

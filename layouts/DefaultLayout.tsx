@@ -3,6 +3,7 @@ import { LoadingProvider, FiltersProvider } from "../context";
 import ButtonCrearEmpresa from "../components/ButtonCrearEmpresa";
 import { NavigationMobile } from "../components/Surface";
 import { FC } from "react";
+import Head from "next/head";
 const DynamicAuthProvider = dynamic((): any =>
   import("../context").then((mod) => mod.AuthProvider)
 );
@@ -30,31 +31,37 @@ const DynamicFooterMobile = dynamic((): any =>
 
 const DefaultLayout: FC = ({ children }) => {
   return (
-    <DynamicAuthProvider>
-      <DynamicSocketProvider>
-        <DynamicChatsProvider>
-          <LoadingProvider>
-            <FiltersProvider>
-              <DynamicToastProvider>
-                <div className="bg-color-base relative min-h-screen w-full h-full">
-                  <DynamicSidebarProvider>
-                    <ButtonCrearEmpresa />
-                    <DynamicNavigation />
-                    <NavigationMobile />
-                    <main className="w-full pt-20">
-                      {/* @ts-ignore */}
-                      {children}
-                    </main>
-                    <DynamicFooter />
-                    <DynamicFooterMobile />
-                  </DynamicSidebarProvider>
-                </div>
-              </DynamicToastProvider>
-            </FiltersProvider>
-          </LoadingProvider>
-        </DynamicChatsProvider>
-      </DynamicSocketProvider>
-    </DynamicAuthProvider>
+    <>
+      <Head>
+        <title>Bodas de hoy - Directorio de Bodas en España</title>
+        <meta name="description" content="¡Bodas de Hoy! Miles de proveedores para bodas, en un sólo click. Conoce a los más destacados de la región y haz realidad tu boda de ensueño" />
+      </Head>
+      <DynamicAuthProvider>
+        <DynamicSocketProvider>
+          <DynamicChatsProvider>
+            <LoadingProvider>
+              <FiltersProvider>
+                <DynamicToastProvider>
+                  <div className="bg-color-base relative min-h-screen w-full h-full">
+                    <DynamicSidebarProvider>
+                      <ButtonCrearEmpresa />
+                      <DynamicNavigation />
+                      <NavigationMobile />
+                      <main className="w-full pt-20">
+                        {/* @ts-ignore */}
+                        {children}
+                      </main>
+                      <DynamicFooter />
+                      <DynamicFooterMobile />
+                    </DynamicSidebarProvider>
+                  </div>
+                </DynamicToastProvider>
+              </FiltersProvider>
+            </LoadingProvider>
+          </DynamicChatsProvider>
+        </DynamicSocketProvider>
+      </DynamicAuthProvider>
+    </>
   );
 };
 

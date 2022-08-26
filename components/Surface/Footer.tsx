@@ -26,7 +26,7 @@ export const Footer: FC = () => {
   const ListEmpresa: Item[] = [
     
     /* { title: "Añadir mi empresa", route: "/" }, */
-    { title: "Herramienta para promocionar tus servicios", route: "/" },
+    { title: "Herramienta para promocionar tus servicios", route: "/magazine/categoria/actualidad/marketing-para-empresas-de-bodas" },
   ];
 
   const socialIcons = [

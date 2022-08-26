@@ -329,7 +329,6 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
         <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
           {!passwordView ? <Eye /> : <EyeSlash />}
         </div>
-
       </div>
 
       <div className="w-full relative ">

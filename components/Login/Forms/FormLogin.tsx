@@ -1,6 +1,6 @@
 import { Formik, Form, ErrorMessage } from "formik";
 import { FC, useContext, useState } from "react";
-import { EmailIcon, EmailIcon as PasswordIcon, Eye, LockClosed } from "../../Icons";
+import { EmailIcon, EmailIcon as PasswordIcon, Eye, EyeSlash, LockClosed } from "../../Icons";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { InputField, ButtonComponent } from "../../Inputs";
 import * as yup from "yup";
@@ -62,14 +62,14 @@ const FormLogin: FC<any> = ({ setStage }) => {
 
         <span className="w-full relative ">
           <InputField
-            label={"Contraseña"}
             name="password"
-            // placeholder="******"
-            icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto text-gray-500" />}
             type={!passwordView ? "password" : "text"}
+            autoComplete="off"
+            icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+            label={"Contraseña"}
           />
           <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
-            <Eye />
+            {!passwordView ? <Eye /> : <EyeSlash />}
           </div>
         </span>
         <span className="text-sm text-red">
@@ -80,6 +80,9 @@ const FormLogin: FC<any> = ({ setStage }) => {
           >
           Olvidé mi contraseña
         </span> */}
+        <div onClick={() => setStage("resetPassword")} className="text-sm text-primary w-full text-left hover:text-gray-300 transition cursor-pointer">
+          Olvidé mi contraseña
+        </div>
         <ButtonComponent
           onClick={() => { }}
           type="submit"
@@ -87,9 +90,6 @@ const FormLogin: FC<any> = ({ setStage }) => {
         >
           Iniciar sesión
         </ButtonComponent>
-        <button onClick={() => setStage("resetPassword")} className="text-sm text-primary w-full text-left hover:text-gray-300 transition cursor-pointer">
-          Olvidé mi contraseña
-        </button>
       </Form>
     </Formik>
   );

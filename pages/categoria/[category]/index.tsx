@@ -378,7 +378,7 @@ export const getStaticProps: GetStaticProps = async ({
   ...rest
 }: any) => {
   try {
-    console.time("Category Page queries");
+    //console.time("Category Page queries");
     const {
       results: [category],
     } = await fetchApi({
@@ -387,14 +387,14 @@ export const getStaticProps: GetStaticProps = async ({
         criteria: { slug: params.category },
       },
     });
-    console.timeEnd("Category Page queries");
+    //console.timeEnd("Category Page queries");
     return {
       props: category ?? {},
       revalidate: 10
     };
 
   } catch (error) {
-    console.timeEnd("Category Page queries");
+    //console.timeEnd("Category Page queries");
     //console.log(error);
     return {
       props: {},

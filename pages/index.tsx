@@ -367,9 +367,9 @@ const ButtonProviders = () => {
 
 export async function getServerSideProps() {
   try {
-    console.time("getHome");
+    //console.time("getHome");
     const data = await fetchApi({ query: queries.getHome });
-    console.timeEnd("getHome");
+    //console.timeEnd("getHome");
     return { props: data ?? {} };
   } catch (error) {
     console.log(error);

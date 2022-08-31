@@ -38,24 +38,30 @@ interface propsCheckbox extends checkbox {
 }
 const Checkbox: FC<propsCheckbox> = ({ label, _id, type }) => {
   const { setFilters, filters } = FiltersContextProvider()
+  
+  const scrolltop = () => {
+    window.scrollBy({top:-1000})
+  }
 
   const handleChange = () => {
     if (type === "city") {
       if (!filters.filters.cities?.includes(_id)) {
-        setFilters({ type: "ADD_CITY", payload: _id })
+        setFilters({ type: "ADD_CITY", payload: _id,  }),
+        scrolltop()
       } else {
         setFilters({ type: "REMOVE_CITY", payload: _id })
       }
     } else {
       if (!filters.filters.characteristics?.includes(_id)) {
-        setFilters({ type: "ADD_CHARACTERISTIC", payload: _id })
+        setFilters({ type: "ADD_CHARACTERISTIC", payload: _id }),
+        scrolltop()
       } else {
         setFilters({ type: "REMOVE_CHARACTERISTIC", payload: _id })
       }
     }
   }
 
-
+  
 
 
   return (
@@ -65,7 +71,7 @@ const Checkbox: FC<propsCheckbox> = ({ label, _id, type }) => {
         className="rounded-full border-primary w-4 h-4 text-primary checked:text-primary checked:bg-primary transition focus:ring-primary focus:ring-1"
         checked={type == "city" ? filters.filters.cities?.includes(_id) : filters.filters.characteristics?.includes(_id)}
         onChange={handleChange}
-
+        
       />
       {capitalize(label)}
     </label>

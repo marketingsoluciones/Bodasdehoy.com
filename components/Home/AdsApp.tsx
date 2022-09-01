@@ -49,7 +49,7 @@ export const AdsApp = () => {
             </span>
           </h2>
 
-          <div className="grid grid-cols-1 overflow-hidden px-5 md:px-0  ">
+          <div className="grid grid-cols-1 overflow-hidden px-9 md:px-0 mb-10 ">
             <Slider {...settings}>
               {List.map((item, idx) => (
                 <Feature key={idx} item={item} />

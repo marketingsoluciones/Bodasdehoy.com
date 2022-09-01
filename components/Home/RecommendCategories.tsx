@@ -53,7 +53,7 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
       />
       <div className="w-full py-10 mx-auto  md:pl-0 overflow-hidden text-white">
         <Swiper
-          slidesPerView={3}
+          slidesPerView={2}
           spaceBetween={0}
           loop={true}
           navigation={true}

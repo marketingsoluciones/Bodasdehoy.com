@@ -4,6 +4,8 @@ import { useHover } from "../../hooks";
 import { CheckIcon } from "../Icons";
 import Image from 'next/image'
 import Link from "next/link";
+import { Autoplay, Navigation } from "swiper";
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 export const AdsApp = () => {
   const List: string[] = [
@@ -49,12 +51,33 @@ export const AdsApp = () => {
             </span>
           </h2>
 
-          <div className="grid grid-cols-1 overflow-hidden px-9 md:px-0 mb-10 ">
-            <Slider {...settings}>
+          <div className="grid grid-cols-1 overflow-hidden px-5 md:px-0 mb-10 ">
+            {/* <Slider {...settings}>
               {List.map((item, idx) => (
                 <Feature key={idx} item={item} />
               ))}
-            </Slider>
+            </Slider> */}
+            <Swiper
+              slidesPerView={1}
+              spaceBetween ={0}
+              loop= {true}
+              navigation= {true}
+              breakpoints={{
+                640:{
+                  slidesPerView:1,
+                  spaceBetween:0
+                }
+              }}
+              preloadImages={false}
+              lazy={true}
+              modules={[Autoplay,Navigation]}
+            >
+              {List.map((item, idx) => (
+                <SwiperSlide className="">                  
+                    <Feature key={idx} item={item} />            
+                </SwiperSlide>                
+              ))}
+            </Swiper>
           </div>
           <div className="w-full flex items-center justify-center py-10">
             <Link
@@ -82,7 +105,7 @@ export const Feature: FC<propsFeautre> = memo(({ item }) => {
   return (
     <div
       ref={hoverRef}
-      className="flex items-center gap-2 mx-auto inset-x-0 w-max"
+      className="flex items-center gap-2 mx-auto inset-x-0 w-max px-5"
     >
       <span
         className={`${isHovered ? "bg-primary text-white" : "bg-white text-primary"

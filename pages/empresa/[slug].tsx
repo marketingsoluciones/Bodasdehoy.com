@@ -29,6 +29,8 @@ import { useRouter } from "next/router";
 import { reviewsT } from '../../interfaces/index';
 import Slider from "react-slick"
 import "slick-carousel/slick/slick-theme.css";
+import { Autoplay, Navigation } from "swiper";
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 type Boton = {
   title: string;
@@ -137,7 +139,35 @@ const Listing: FC<business> = (props) => {
           <div className="lg:max-w-screen-lg inset-x-0 mx-auto w-full grid md:grid-cols-3 gap-10  ">
             <section className="w-full md:col-span-2">
               <div className=" hidden md:block ">
-                <Slider {...settings} >
+                <Swiper
+                  slidesPerView={1}
+                  spaceBetween={0}
+                  loop={true}
+                  navigation={true}
+                  breakpoints={{
+                    640: {
+                      slidesPerView: 1,
+                      spaceBetween: 1,
+                    },
+                  }}
+                  preloadImages={false}
+                  lazy={true}
+                  modules={[Autoplay, Navigation]}
+                >
+                  {imgCarrusel?.map((item, idx) => (
+                    <SwiperSlide>
+                        <img
+                      key={idx}
+                      alt={businessName}
+                      className="w-full object-cover h-96 "
+                      src={createURL(item?.i640)}
+                      srcSet={createSrcSet(imgMiniatura)} />
+                    </SwiperSlide>
+                    
+                  ))}
+
+                </Swiper>
+                {/* <Slider {...settings} >
                   {imgCarrusel?.map((item, idx) => (
                     <img
                       key={idx}
@@ -146,7 +176,7 @@ const Listing: FC<business> = (props) => {
                       src={createURL(item?.i640)}
                       srcSet={createSrcSet(imgMiniatura)} />
                   ))}
-                </Slider>
+                </Slider> */}
               </div>
               {/*  <img
                 alt={businessName}

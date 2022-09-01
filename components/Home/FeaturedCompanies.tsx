@@ -62,7 +62,7 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({ business }) => {
         </p>
       </div>
 
-      <div className="md:grid md:grid-cols-1 w-full mb-16">
+      <div className="md:grid md:grid-cols-1 w-full mb-16 md:mb-0">
         <Swiper
           slidesPerView={1}
           spaceBetween={0}

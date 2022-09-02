@@ -46,14 +46,17 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
   }, [data]);
   return (
     <div className="max-w-screen-lg mx-auto inset-x-0 w-full">
+      <div className="ml-7 pt-2 md:pt-0 md:ml-0">
       <TitleSection
         principal={"Recomendados"}
         secondary={"para tu boda"}
         size={"xl"}
       />
+      </div>
+      
       <div className="w-full py-10 mx-auto  md:pl-0 overflow-hidden text-white">
         <Swiper
-          slidesPerView={3}
+          slidesPerView={2}
           spaceBetween={0}
           loop={true}
           navigation={true}

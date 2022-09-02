@@ -1,7 +1,7 @@
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApp } from "firebase/app";
 import { GoogleAuthProvider, FacebookAuthProvider, getAuth, onAuthStateChanged, updateProfile } from "firebase/auth";
 import { useEffect, useState } from "react";
-import {getStorage,ref, uploadBytes} from "firebase/storage"
+import { getStorage, ref, uploadBytes } from "firebase/storage"
 import { string } from "yup";
 
 
@@ -17,6 +17,7 @@ const firebaseConfig = {
 };
 
 const firebaseClient = initializeApp(firebaseConfig);
+console.log(getApp().name);
 const auth = getAuth()
 //const storage = getStorage();
 

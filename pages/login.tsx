@@ -3,6 +3,8 @@ import { ButtonClose } from "../components/Inputs";
 import router, { useRouter } from "next/router";
 import { Login, Register, ResetPass } from '../components/Login/Forms';
 import { AuthContextProvider } from "../context";
+import { firebaseClient } from "../firebase"
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 // Tipos de datos personalizados
 type Forms = {
@@ -13,6 +15,19 @@ type Forms = {
 };
 
 const PageLogin: FC = () => {
+  try {
+    const appCheck = initializeAppCheck(firebaseClient, {
+      provider: new ReCaptchaV3Provider('6LekwcchAAAAANJHB3yv2ZOx6v8PHu2DkF-ku3J8'),
+
+      // Optional argument. If true, the SDK automatically refreshes App Check
+      // tokens as needed.
+      isTokenAutoRefreshEnabled: true
+    });
+    console.log(234567, appCheck)
+  } catch (error) {
+    console.log(error)
+  }
+
   const r = useRouter()
   const { redirect, setRedirect } = AuthContextProvider();
   useEffect(() => {

@@ -137,7 +137,7 @@ const BlogCategories: FC<{ categories: Partial<category>[] }> = ({
       >
         {categories?.map((item, idx) => (
           <>
-            <SwiperSlide  >
+            <SwiperSlide key={idx} >
               <Category key={idx} title={item?.title} route={item?.slug} />
             </SwiperSlide>
           </>
@@ -173,9 +173,9 @@ export const GridPost: FC<{ data: Partial<Post>[] }> = ({ data }) => {
         lazy={true}
         modules={[Autoplay]}
       >
-        {posts?.map((item: Partial<Post>) => (
+        {posts?.map((item: Partial<Post>, idx) => (
           <>
-            <SwiperSlide  >
+            <SwiperSlide key={idx} >
               <PostComponent key={item?._id} {...item} />
             </SwiperSlide>
           </>

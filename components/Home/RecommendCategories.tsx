@@ -47,13 +47,13 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
   return (
     <div className="max-w-screen-lg mx-auto inset-x-0 w-full">
       <div className="ml-7 pt-2 md:pt-0 md:ml-0">
-      <TitleSection
-        principal={"Recomendados"}
-        secondary={"para tu boda"}
-        size={"xl"}
-      />
+        <TitleSection
+          principal={"Recomendados"}
+          secondary={"para tu boda"}
+          size={"xl"}
+        />
       </div>
-      
+
       <div className="w-full py-10 mx-auto  md:pl-0 overflow-hidden text-white">
         <Swiper
           slidesPerView={2}
@@ -78,7 +78,7 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
             categories.length > 0 &&
             categories?.map((item: Partial<category>, idx: number) => (
               <>
-                <SwiperSlide>
+                <SwiperSlide key={idx}>
                   <Category key={idx} {...item} />
                 </SwiperSlide>
               </>

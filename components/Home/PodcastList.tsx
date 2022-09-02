@@ -74,7 +74,7 @@ export const PodcastList = () => {
         >
           {podcasts?.map((item: any, idx: number) => (
             <>
-              <SwiperSlide  >
+              <SwiperSlide key={idx} >
                 <div className="pt-6 overflow-hidden">
                   <Podcast key={idx} data={item} />
                 </div>

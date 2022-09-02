@@ -155,15 +155,14 @@ const Listing: FC<business> = (props) => {
                   modules={[Autoplay, Navigation]}
                 >
                   {imgCarrusel?.map((item, idx) => (
-                    <SwiperSlide>
-                        <img
-                      key={idx}
-                      alt={businessName}
-                      className="w-full object-cover h-96 "
-                      src={createURL(item?.i640)}
-                      srcSet={createSrcSet(imgMiniatura)} />
+                    <SwiperSlide key={idx}>
+                      <img
+                        alt={businessName}
+                        className="w-full object-cover h-96 "
+                        src={createURL(item?.i640)}
+                        srcSet={createSrcSet(imgMiniatura)} />
                     </SwiperSlide>
-                    
+
                   ))}
 
                 </Swiper>

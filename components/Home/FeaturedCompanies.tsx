@@ -83,9 +83,9 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({ business }) => {
           modules={[Autoplay, Navigation]}
           className='pb-10 md:h-80'
         >
-          {data?.map((item: business) => (
+          {data?.map((item: business, idx) => (
             <>
-              <SwiperSlide className="pr-10 pl-10">
+              <SwiperSlide key={idx} className="pr-10 pl-10">
                 <div className='flex h-80'>
                   <CardBusiness key={item._id} {...item} size={'lg'} />
                 </div>

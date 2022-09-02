@@ -76,7 +76,7 @@ export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({ data }) => {
               >
                 {state?.subCategories?.map((item: any, idx: any) => (
                   <>
-                    <SwiperSlide className="pr-4 pl-4">
+                    <SwiperSlide key={idx} className="pr-4 pl-4">
                       <PlaceCard key={idx} {...item} />
                     </SwiperSlide>
                   </>

@@ -59,23 +59,23 @@ export const AdsApp = () => {
             </Slider> */}
             <Swiper
               slidesPerView={1}
-              spaceBetween ={0}
-              loop= {true}
-              navigation= {true}
+              spaceBetween={0}
+              loop={true}
+              navigation={true}
               breakpoints={{
-                640:{
-                  slidesPerView:1,
-                  spaceBetween:0
+                640: {
+                  slidesPerView: 1,
+                  spaceBetween: 0
                 }
               }}
               preloadImages={false}
               lazy={true}
-              modules={[Autoplay,Navigation]}
+              modules={[Autoplay, Navigation]}
             >
               {List.map((item, idx) => (
-                <SwiperSlide className="">                  
-                    <Feature key={idx} item={item} />            
-                </SwiperSlide>                
+                <SwiperSlide key={idx} className="">
+                  <Feature key={idx} item={item} />
+                </SwiperSlide>
               ))}
             </Swiper>
           </div>

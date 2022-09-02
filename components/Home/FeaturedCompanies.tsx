@@ -62,7 +62,7 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({ business }) => {
         </p>
       </div>
 
-      <div className="md:grid md:grid-cols-1 w-full mb-16 md:mb-0">
+      <div className="md:grid md:grid-cols-1 w-full mb-16 md:mb-0 h-96">
         <Swiper
           slidesPerView={1}
           spaceBetween={0}
@@ -81,17 +81,20 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({ business }) => {
           preloadImages={false}
           lazy={true}
           modules={[Autoplay, Navigation]}
-          className='pb-10 md:h-80'
+          className='pb-10 md:h-1/2'
         >
-          {data?.map((item: business, idx) => (
-            <>
-              <SwiperSlide key={idx} className="pr-10 pl-10">
-                <div className='flex h-80'>
-                  <CardBusiness key={item._id} {...item} size={'lg'} />
-                </div>
-              </SwiperSlide>
-            </>
-          ))}
+          <div className='h-96'>
+            {data?.map((item: business, idx) => (
+              <>
+                <SwiperSlide key={idx} className="pr-10 pl-10">
+                  <div className='flex '>
+                    <CardBusiness key={item._id} {...item} size={'lg'} />
+                  </div>
+                </SwiperSlide>
+              </>
+            ))}
+          </div>
+
         </Swiper>
       </div>
     </div>

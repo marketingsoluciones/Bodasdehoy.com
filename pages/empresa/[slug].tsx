@@ -139,7 +139,7 @@ const Listing: FC<business> = (props) => {
           <div className="lg:max-w-screen-lg inset-x-0 mx-auto w-full grid md:grid-cols-3 gap-10  ">
             <section className="w-full md:col-span-2">
               <div className=" hidden md:block ">
-                <Swiper
+                {/* <Swiper
                   slidesPerView={1}
                   spaceBetween={0}
                   loop={true}
@@ -165,8 +165,8 @@ const Listing: FC<business> = (props) => {
 
                   ))}
 
-                </Swiper>
-                {/* <Slider {...settings} >
+                </Swiper> */}
+                <Slider {...settings} >
                   {imgCarrusel?.map((item, idx) => (
                     <img
                       key={idx}
@@ -175,7 +175,7 @@ const Listing: FC<business> = (props) => {
                       src={createURL(item?.i640)}
                       srcSet={createSrcSet(imgMiniatura)} />
                   ))}
-                </Slider> */}
+                </Slider>
               </div>
               {/*  <img
                 alt={businessName}

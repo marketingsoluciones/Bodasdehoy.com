@@ -42,7 +42,7 @@ export const CardBusiness: FC<propsCardBusiness> = ({
     <div ref={hoverRef} onClick={() => router.push(`/empresa/${slug}`)} className={`rounded-xl h-fit w-full transition-all duration-500 cursor-pointer mx-auto inset-x-0  md:mb-0 `}>
       
       <img
-        className={`md:h-60 h-60 rounded-xl w-full relative object-cover object-center transition-all ${isHovered ? "opacity-90" : "opacity-100"}`}
+        className={`h-60 md:h-60 rounded-xl w-full relative object-cover object-center transition-all ${isHovered ? "opacity-90" : "opacity-100"}`}
         src={
           imgMiniatura?.i640
             ? createURL(imgMiniatura.i640)
@@ -73,7 +73,7 @@ export const CardBusiness: FC<propsCardBusiness> = ({
           <LocationIcon className="text-primary w-4 h-4" />
           <p className={"text-gray-500 text-xs truncate"}>{city}</p>
         </div>
-          <Markup className={`${isHovered ? `h-auto ${content && "pt-4"} opacity-100` : "h-0 opacity-0"} text-xs  text-gray-500 line-clamp-4 transition-all duration-500` } content={content} noHtml />
+          <Markup className={`${isHovered ? `h-auto ${content && "pt-2"} opacity-100` : "h-0 opacity-0"} text-xs  text-gray-500 line-clamp-4 transition-all duration-500` } content={content} noHtml />
         {/* <button className="bg-primary rounded-lg text-white text-sm mt-2 py-1 hover:bg-pink-600 transition-all duration-300 ">
           Visitar
         </button> */}

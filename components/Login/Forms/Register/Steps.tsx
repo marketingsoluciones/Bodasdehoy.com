@@ -43,11 +43,10 @@ export const FirstStep: FC<propsFirstStep> = ({ value, setStageRegister }) => {
         ))}
       </div>
       <button
-        className={` rounded-full px-10 py-2 text-white font-medium w-max mx-auto inset-x-0 ${
-          select === ""
+        className={` rounded-full px-10 py-2 text-white font-medium w-max mx-auto inset-x-0 ${select === ""
             ? "bg-gray-200"
             : "bg-primary hover:bg-tertiary transition"
-        }`}
+          }`}
         onClick={() => {
           value(select)
           setStageRegister(old => old + 1)
@@ -79,9 +78,8 @@ const Option: FC<propsOption> = ({ icon, title, onClick, color = false }) => {
   return (
     <>
       <div
-        className={`flex flex-col items-center justify-center gap-2 capitalize ${
-          color ? "selected" : "option"
-        }`}
+        className={`flex flex-col items-center justify-center gap-2 capitalize ${color ? "selected" : "option"
+          }`}
       >
         <div
           onClick={onClick}
@@ -123,8 +121,8 @@ const Option: FC<propsOption> = ({ icon, title, onClick, color = false }) => {
 */
 interface propsSecondStep {
   whoYouAre: string;
-  stageRegister : number;
-  setStageRegister : Dispatch<SetStateAction<number>>
+  stageRegister: number;
+  setStageRegister: Dispatch<SetStateAction<number>>
 }
 export const SecondStep: FC<propsSecondStep> = (props) => {
   return (

@@ -418,17 +418,18 @@ const UserDataAPI: FC<propsForm> = () => {
 };
 
 const BusinessWithEmailAndPassword: FC<propsForm> = () => {
+  const [passwordView, setPasswordView] = useState(false)
   return (
     <>
-      <div className="w-full relative ">
+      <div className="w-full col-span-2">
         <InputField
           name="fullName"
-          label="Nombre y apellidos"
+          //placeholder="Jhon Doe"
           type="text"
           autoComplete="off"
-          icon={true}
+          icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+          label={"Nombre y apellidos"}
         />
-        <UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto" />
       </div>
 
       <div className="w-full relative ">
@@ -445,20 +446,23 @@ const BusinessWithEmailAndPassword: FC<propsForm> = () => {
       <div className="w-full relative ">
         <InputField
           name="password"
-          label="Contraseña"
-          type="password"
+          type={!passwordView ? "password" : "text"}
           autoComplete="off"
-          icon={<PasswordIcon className="absolute inset-y-0 left-4 m-auto w-4 h-4 text-gray-500" />}
+          icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+          label={"Contraseña"}
         />
-
+        <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
+          {!passwordView ? <Eye /> : <EyeSlash />}
+        </div>
       </div>
 
       <div className="w-full relative ">
         <InputField
           name="phoneNumber"
-          label="Número de telefono"
           type="number"
           autoComplete="off"
+          icon={<PhoneMobile className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+          label={"Número de telefono"}
         />
       </div>
     </>
@@ -468,18 +472,18 @@ const BusinessWithEmailAndPassword: FC<propsForm> = () => {
 const BusinessDataAPI: FC<propsForm> = () => {
   return (
     <>
-      <div className="w-full relative ">
+      <div className="w-full col-span-2">
         <InputField
           name="fullName"
-          label="Nombre y apellidos"
+          //placeholder="Jhon Doe"
           type="text"
           autoComplete="off"
-          disabled
+          icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+          label={"Nombre y apellidos"}
         />
-        <UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto" />
       </div>
 
-      <div className="w-full relative ">
+      <div className="w-full col-span-2 ">
         <InputField
           name="email"
           label="Correo electronico"
@@ -493,9 +497,10 @@ const BusinessDataAPI: FC<propsForm> = () => {
       <div className="w-full relative ">
         <InputField
           name="phoneNumber"
-          label="Número de telefono"
           type="number"
           autoComplete="off"
+          icon={<PhoneMobile className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+          label={"Número de telefono"}
         />
       </div>
     </>

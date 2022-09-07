@@ -6,7 +6,6 @@ import { capitalize } from "../../../utils/Capitalize";
 import { Promo } from "./Promo";
 import { AireLibreIcon, EnLaCiudadIcon, PlayaIcon } from "../../Icons";
 import Link from "next/link";
-import { route } from "next/dist/server/router";
 import { connectAutoComplete } from "react-instantsearch-dom";
 import { string } from "yup";
 import { Filters } from "../../../pages/categoria/[category]";

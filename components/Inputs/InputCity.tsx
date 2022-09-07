@@ -6,14 +6,15 @@ import { geolocation } from "../../interfaces";
 import { useField } from "formik";
 
 interface propsInputCity {
-    name : string
-    type : string
-    label: string
+  name: string
+  type: string
+  label: string
 }
-const InputCity : FC <propsInputCity> = ({type, label, ...props}) => {
+const InputCity: FC<propsInputCity> = ({ type, label, ...props }) => {
   //@ts-ignore
   const [field, meta, { setValue }] = useField<string>({ ...props });
   const [libraries] = useState(["places", "geometry"]);
+  console.log(1, field, 2, meta)
 
 
   const { isLoaded, loadError } = useLoadScript({
@@ -43,7 +44,7 @@ const InputCity : FC <propsInputCity> = ({type, label, ...props}) => {
   }, []);
 
   return (
-  <div>
+    <div>
       <span className="flex items-center gap-2">
         <label className="text-sm text-gray-500">{label}</label>
         {meta.touched && meta.error ? (
@@ -52,8 +53,8 @@ const InputCity : FC <propsInputCity> = ({type, label, ...props}) => {
           </span>
         ) : null}
       </span>
-  {!loadError && isLoaded && <Search center={geolocation} types={["(cities)"]} getAddress={(address: string) => setValue(address) } initialValue={field.value} />}
-  </div>);
+      {!loadError && isLoaded && <Search center={geolocation} types={["(cities)"]} getAddress={(address: string) => setValue(address)} initialValue={field.value} />}
+    </div>);
 };
 
 export default InputCity;

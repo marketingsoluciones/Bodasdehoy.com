@@ -1,9 +1,9 @@
 import { useField } from "formik";
 import { FC, useState } from "react";
 import ClickAwayListener from "react-click-away-listener";
-import DayPicker from "react-day-picker";
-import "react-day-picker/lib/style.css";
-import { format } from "../../utils/FormatTime";
+import { format } from 'date-fns';
+import { DayPicker } from 'react-day-picker';
+import 'react-day-picker/dist/style.css';
 import { DateIcon } from "../Icons";
 
 
@@ -23,7 +23,7 @@ export const DatePicker: FC<propsDatePicker> = (props) => {
         <div className={className} onClick={() => setShow(!show)}>
           <DateIcon className="text-gray-500 w-5 h-5" />
           <p className="text-sm text-gray-700">
-            {field?.value && format(field.value, "es")}
+            {field?.value && format(field.value, 'dd/MM/y')}
           </p>
 
           {meta.touched && meta.error ? (
@@ -56,7 +56,13 @@ const DateComponent: FC<propsDateComponent> = ({ set, setState }) => {
   return (
     <>
       <div className="fixed mx-auto inset-x-0 top-1/4 w-max  bg-white rounded-lg p-2 z-30 text-gray-600  ">
-        <DayPicker onDayClick={handleClickDay} />
+        <DayPicker
+          onDayClick={handleClickDay}
+          disabled={[
+            { from: new Date(1970, 1, 1), to: new Date() }
+          ]}
+          mode="single"
+        />
       </div>
       <style jsx>
         {`

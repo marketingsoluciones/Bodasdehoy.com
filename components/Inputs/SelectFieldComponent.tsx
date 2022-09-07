@@ -1,5 +1,5 @@
 import { useField } from "formik";
-import { FC, memo } from "react";
+import { FC, memo, useState } from "react";
 
 interface propsSelectField {
   name: string;
@@ -11,6 +11,7 @@ interface propsSelectField {
 
 export const SelectField: FC<propsSelectField> = memo(
   ({ icon = false, label, options, ...props }) => {
+    const [countryDefault, setCountryDefault] = useState("España")
     const [{ value }, meta, { setValue }] = useField({ ...props });
     const className: string = `bg-color-base text-sm focus:border focus:border-primary border-transparent focus:ring-transparent pr-3 py-2 rounded-lg w-full focus:outline-none transition text-gray-700 ${icon ? "pl-12" : "pl-3"
       }`;
@@ -25,8 +26,11 @@ export const SelectField: FC<propsSelectField> = memo(
           ) : null}
         </span>
         <select
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
+          value={countryDefault}
+          onChange={(e) => {
+            setValue(e.target.value)
+            setCountryDefault(e.target.value)
+          }}
           className={className}
         >
           <option

@@ -1,3 +1,4 @@
+import { Router } from "next/router"
 import React, { FC, cloneElement } from "react";
 import { Feature } from "../components/Home/AdsApp";
 import { CheckIcon } from "../components/Icons";
@@ -8,12 +9,13 @@ import Link from "next/link";
 import ReclamarEmpresa from "../components/ReclamarEmpresa/ReclamarEmpresa"
 
 interface sliderItem {
-  icon: any;
-  title: string;
-  description: string;
-}
+    icon: any;
+    title: string;
+    description: string;
+  }
 
-const InfoEmpresas = () => {
+  
+const Formulario = () => {
   const features = [
     "Recibe solicitudes de presupuesto de novios interesados",
     "Consigue nuevos clientes y posiciona tu negocio",
@@ -35,11 +37,10 @@ const InfoEmpresas = () => {
       icon: <Icon2 />,
     },
   ];
-
-
-  return (
-    <div className="w-full bg-white">
-      <ReclamarEmpresa />
+    return (
+        <>
+            <ReclamarEmpresa />
+            <div className="w-full bg-white">
       <div className="banner -mt-20 w-full h-40" />
       <div className="max-w-screen-lg mx-auto inset-x-0 py-10 px-5">
         <h1 className="text-3xl text-tertiary font-medium pb-2">
@@ -105,10 +106,13 @@ const InfoEmpresas = () => {
         `}
       </style>
     </div>
-  );
-};
+        </>
+    )
 
-export default InfoEmpresas;
+}
+export default Formulario
+
+
 
 const SliderItem: FC<sliderItem> = ({ icon, title, description }) => {
   return (
@@ -202,5 +206,4 @@ const Icon5: FC<PropsIcon> = (props) => {
     </svg>
 
   );
-};
-
+  }

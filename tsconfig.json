@@ -14,6 +14,6 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "firebase.js", "components/EditorJS/index.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "firebase.js","**/*.jsx", "components/EditorJS/index.tsx", "components/ReclamarEmpresa/ModalReclamarEmprcomponents/ButtonReclamarEmpresa.tsxEmpresa.jsx", "components/ButtonReclamarEmpresa.js"],
   "exclude": ["node_modules"]
 }

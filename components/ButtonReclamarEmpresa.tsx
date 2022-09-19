@@ -5,7 +5,7 @@ import ModalReclarEmpresa from './ReclamarEmpresa/ModalReclamarEmpresa'
 import { useState } from 'react'
 
 const ButtonReclamarEmpresa = () => {
-    const [showForm, setShowForm] = useState(falsegit )
+    const [showForm, setShowForm] = useState(false)
     return (
         <>
             {showForm ? (

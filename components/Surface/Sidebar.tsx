@@ -3,11 +3,12 @@ import { Dispatch, FC, SetStateAction } from "react"
 import ClickAwayListener from "react-click-away-listener"
 import { SidebarContextProvider } from "../../context"
 import { CarIcon as SettingsIcon } from "../Icons"
+import ModalReclarEmpresa from '../ReclamarEmpresa/ModalReclamarEmpresa'
+import { useState } from 'react'
 
 type ItemNav = {
     title: string
     route: string
-
 }
 
 interface propsSidebar {
@@ -16,6 +17,7 @@ interface propsSidebar {
 }
 // menu hamburguesa en el mobile 
 export const Sidebar: FC<propsSidebar> = ({ set, state }) => {
+    const [showForm, setShowForm] = useState(false)
 
     const FirstList: ItemNav[] = [
         { title: "Mi boda", route: process.env.NEXT_PUBLIC_EVENTSAPP ?? "" },
@@ -29,7 +31,12 @@ export const Sidebar: FC<propsSidebar> = ({ set, state }) => {
         { title: "Magazine", route: "/magazine" },
         { title: "Gestor de invitados", route: process.env.NEXT_PUBLIC_EVENTSAPP ?? "" },
     ]
-    return (
+    return (<>
+
+        {showForm ? (
+            <ModalReclarEmpresa set={setShowForm} state={showForm} />
+        ) : null}
+
         <ClickAwayListener onClickAway={() => state && set(false)}>
             <div className={`fixed bg-white shadow-lg z-40 h-screen w-80 transform transition top-0 left-0  ${state ? "translate-x-0" : "-translate-x-full"} `}>
                 <div className="relative w-full h-full">
@@ -42,6 +49,12 @@ export const Sidebar: FC<propsSidebar> = ({ set, state }) => {
                             <Link href={"/info-empresa"} passHref>
                                 <button className="focus:outline-none bg-primary text-white text-sm py-1 w-max px-4 rounded-full"> Acceso a empresas</button>
                             </Link>
+                            <button
+                                className="focus:outline-none bg-primary text-white text-sm py-1 w-max px-4 rounded-full"
+                                onClick={()=>setShowForm(!showForm)}
+                                >
+                                Reclama tu empresa aquí
+                            </button>
                         </div>
                     </div>
                     <div className="border-t border-gray-100 py-4 w-full px-5 flex gap-2 items-center justify-start absolute bottom-0 right-0">
@@ -51,6 +64,7 @@ export const Sidebar: FC<propsSidebar> = ({ set, state }) => {
                 </div>
             </div>
         </ClickAwayListener>
+    </>
     )
 }
 

@@ -39,7 +39,6 @@ const InfoEmpresas = () => {
 
   return (
     <div className="w-full bg-white">
-      <ReclamarEmpresa />
       <div className="banner -mt-20 w-full h-40" />
       <div className="max-w-screen-lg mx-auto inset-x-0 py-10 px-5">
         <h1 className="text-3xl text-tertiary font-medium pb-2">

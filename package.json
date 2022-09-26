@@ -19,7 +19,7 @@
     "caniuse-lite": "^1.0.30001390",
     "date-fns": "^2.29.2",
     "disqus-react": "^1.1.2",
-    "firebase": "^9.9.4",
+    "firebase": "^9.10.0",
     "formik": "^2.2.9",
     "interweave": "^12.8.0",
     "js-cookie": "^3.0.1",

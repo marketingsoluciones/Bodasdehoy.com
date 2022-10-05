@@ -7,7 +7,7 @@ import { string } from "yup";
 
 const otherAppConfig = {
   apiKey: "AIzaSyDVMoVLWWvolofYOcTYA0JZ0QHyng72LAM",
-  authDomain: "bodasdehoy.com",
+  authDomain: "bodasdehoy-1063.firebaseapp.com",
   databaseURL: "https://bodasdehoy-1063-default-rtdb.firebaseio.com",
   projectId: "bodasdehoy-1063",
   storageBucket: "bodasdehoy-1063.appspot.com",

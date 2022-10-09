@@ -3,14 +3,15 @@ import { GoogleAuthProvider, FacebookAuthProvider, getAuth } from "firebase/auth
 import { useEffect, useState } from "react";
 import { getStorage, ref, uploadBytes } from "firebase/storage"
 import { string } from "yup";
+import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 
 const otherAppConfig = {
   apiKey: "AIzaSyDVMoVLWWvolofYOcTYA0JZ0QHyng72LAM",
-  authDomain: "bodasdehoy-1063.firebaseapp.com",
-  databaseURL: "https://bodasdehoy-1063-default-rtdb.firebaseio.com",
+  authDomain: "bodasdehoy.com",
+  //databaseURL: "https://bodasdehoy-1063-default-rtdb.firebaseio.com",
   projectId: "bodasdehoy-1063",
-  storageBucket: "bodasdehoy-1063.appspot.com",
+  //storageBucket: "bodasdehoy-1063.appspot.com",
   messagingSenderId: "593952495916",
   appId: "1:593952495916:web:c63cf15fd16a6796f6f489",
   measurementId: "G-GWQ17NF2YR",
@@ -28,7 +29,25 @@ if (initializeApp.length === 0) {
   initializeApp({})
 }
 
-const firebaseClient = initializeApp(otherAppConfig);
+const iniApp = () => {
+  try {
+    const firebaseClient = initializeApp(otherAppConfig);
+    const appCheck = initializeAppCheck(firebaseClient, {
+      provider: new ReCaptchaV3Provider('6LekwcchAAAAANJHB3yv2ZOx6v8PHu2DkF-ku3J8'),
+
+      // Optional argument. If true, the SDK automatically refreshes App Check
+      // tokens as needed.
+      isTokenAutoRefreshEnabled: true
+    });
+    console.log(234567, appCheck)
+    return firebaseClient
+  } catch (error) {
+    console.log(error)
+  }
+
+
+}
+const firebaseClient = iniApp()
 console.log(getApp().name);
 const auth = getAuth()
 //const storage = getStorage();

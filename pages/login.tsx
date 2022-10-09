@@ -15,19 +15,6 @@ type Forms = {
 };
 
 const PageLogin: FC = () => {
-  try {
-    const appCheck = initializeAppCheck(firebaseClient, {
-      provider: new ReCaptchaV3Provider('6LekwcchAAAAANJHB3yv2ZOx6v8PHu2DkF-ku3J8'),
-
-      // Optional argument. If true, the SDK automatically refreshes App Check
-      // tokens as needed.
-      isTokenAutoRefreshEnabled: true
-    });
-    console.log(234567, appCheck)
-  } catch (error) {
-    console.log(error)
-  }
-
   const r = useRouter()
   const { redirect, setRedirect } = AuthContextProvider();
   useEffect(() => {

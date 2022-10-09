@@ -8,7 +8,7 @@ import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 const otherAppConfig = {
   apiKey: "AIzaSyDVMoVLWWvolofYOcTYA0JZ0QHyng72LAM",
-  authDomain: "bodasdehoy.com",
+  authDomain: "auth.bodasdehoy.com",
   //databaseURL: "https://bodasdehoy-1063-default-rtdb.firebaseio.com",
   projectId: "bodasdehoy-1063",
   //storageBucket: "bodasdehoy-1063.appspot.com",

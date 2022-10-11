@@ -12,6 +12,8 @@ import { AuthContextProvider } from "../context";
 // Import Swiper styles
 import 'swiper/css';
 import "swiper/css/bundle";
+import {DefaultSeo} from 'next-seo'
+import SEO from '../next-seo.config'
 
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -20,6 +22,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <DefaultLayout>
         <ChatComponent />
+        <DefaultSeo {...SEO} />
         <Component {...pageProps} />
       </DefaultLayout>
       <style jsx global>

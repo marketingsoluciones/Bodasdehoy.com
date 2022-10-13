@@ -200,9 +200,9 @@ export const PostComponent: FC<Partial<Post>> = memo(
             />
             <div className="py-5 text-center h-full">
               {/* <Link href={`/magazine/${slug}`} passHref> */}
-              <h2 className=" text-gray-700 text-md font-semibold border-b border-primary pb-3 px-5 leading-5 cursor-pointer hover:text-gray-800">
+              <h3 className=" text-gray-700 text-md font-semibold border-b border-primary pb-3 px-5 leading-5 cursor-pointer hover:text-gray-800">
                 <Markup content={title} className={"md:line-clamp-2 line-clamp-1"} />
-              </h2>
+              </h3>
               {/* </Link> */}
               <div className="flex justify-between items-center py-2 px-5">
                 <p className="text-xs tracking-widest text-primary">CEREMONIA</p>

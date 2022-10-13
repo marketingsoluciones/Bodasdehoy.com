@@ -132,9 +132,9 @@ export const CompanyCard: FC<propsCompanyCard> = memo(({ data, pricing = true })
         </h2>
         <Link href={`/empresa/${business?.slug}`} passHref>
 
-          <h2 className="text-gray-700 text-lg font-medium transition cursor-pointer hover:text-primary capitalize">
+          <h3 className="text-gray-700 text-lg font-medium transition cursor-pointer hover:text-primary capitalize">
             {business?.businessName}
-          </h2>
+          </h3>
         </Link>
         <RatingStars rating={4} />
         <h3 className="text-gray-500 text-sm">{business?.address}</h3>

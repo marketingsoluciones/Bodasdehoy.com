@@ -113,7 +113,7 @@ export const Feature: FC<propsFeautre> = memo(({ item }) => {
       >
         <CheckIcon className="w-4 h-4" />
       </span>
-      <h3 className="text-gray-500">{item}</h3>
+      <h4 className="text-gray-500">{item}</h4>
     </div>
   );
 });

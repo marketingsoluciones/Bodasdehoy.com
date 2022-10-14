@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://www.bodasdehoy.com
+
+# Sitemaps
+Sitemap: https://www.bodasdehoy.com/sitemap.xml

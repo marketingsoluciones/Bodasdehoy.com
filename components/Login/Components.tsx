@@ -83,7 +83,7 @@ export const Providers: FC<any> = ({ setStage }) => {
   return (
     <>
       <div className={`text-center flex flex-col gap-2 w-full items-center `}>
-        <h1 className="text-primary">Accede con</h1>
+        <h1 className="text-primary">INICIA SESIÓN CON</h1>
         {/* <div className="gap-4 flex items-center">
         {ListProviders.map((item, idx) => (
           <Icon key={idx} icon={item.icon} onClick={item.function} />
@@ -94,11 +94,11 @@ export const Providers: FC<any> = ({ setStage }) => {
             <button onClick={() => handleClick(FacebookProvider)} className="facebookBtn" />
           </span>
 
-          <span className=" h-10 w-10  flex items-center justify-center rounded bg-color-base">
+          <span className=" h-10 w-11  flex items-center justify-center rounded ">
             <button onClick={() => handleClick(GoogleProvider())} className="googleBtn" />
           </span>
 
-          <span className="h-10 w-10   flex items-center justify-center raunded  bg-color-base">
+          <span className="h-10 w-10   flex items-center justify-center raunded ">
             <button onClick={() => alert("AUN POR CONFIGURAR")} className="AppleBtn" />
           </span>
         </div>
@@ -106,9 +106,9 @@ export const Providers: FC<any> = ({ setStage }) => {
       <style jsx>
         {`
           .googleBtn {
-            background-image: url("/google-logo-color.svg");
-            width: 17px;
-            height: 18px;
+            background-image: url("/googlenew.svg");
+            width: 60px;
+            height: 45px;
             opacity: 1;
             background-repeat: no-repeat;
             }

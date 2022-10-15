@@ -17,8 +17,9 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
       <div className="flex flex-col gap-2 items-center justify-center w-full">
         <LogoFullColor className="w-auto h-10" />
       </div>
-      <Providers setStage={setStage} />
+      
       <FormLogin setStage={setStage} />
+      <Providers setStage={setStage} />
       <RegisterQuestion onClick={() => setStage("register")} />
       {/* <BusinessAccess /> */} {/* componente que no esta terminado */}
     </>

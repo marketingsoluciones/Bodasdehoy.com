@@ -10,6 +10,8 @@ import { AuthContextProvider, LoadingContextProvider } from "../../context";
 import { setCookie } from "../../utils/Cookies";
 import { api } from "../../api";
 import { useAuthentication } from "../../utils/Authentication";
+import Script from 'next/script'
+
 
 interface propsRegisterQuestion {
   onClick: MouseEventHandler;
@@ -82,33 +84,42 @@ export const Providers: FC<any> = ({ setStage }) => {
 
   return (
     <>
-      <div className={`text-center flex flex-col gap-2 w-full items-center `}>
-        <h1 className="text-primary">INICIA SESIÓN CON</h1>
+      <div className={`text-center flex flex-col  w-full items-center `}>
+        <h1 className="text-primary">O INICIA SESIÓN CON</h1>
         {/* <div className="gap-4 flex items-center">
         {ListProviders.map((item, idx) => (
           <Icon key={idx} icon={item.icon} onClick={item.function} />
         ))}
       </div> */}
-        <div className="gap-4 flex items-center  ">
-          <span className="h-10 w-10 bgColorFc  flex items-center justify-center rounded  ">
+        <div className="gap-4 flex flex-col items-center  ">
+          {/* <span className="h-10 w-10 bgColorFc  flex items-center justify-center rounded  ">
             <button onClick={() => handleClick(FacebookProvider)} className="facebookBtn" />
+          </span> */}
+
+          <div id="fb-root"></div>
+          <Script async defer crossOrigin="anonymous" src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v15.0&appId=425820955983251&autoLogAppEvents=1" nonce="74ygxeMN"></Script>
+
+          <div className="fb-login-button  w-44 " data-width="" data-size="medium" data-button-type="login_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false"></div>
+
+          <span className="  w-48  flex items-center justify-center rounded ">
+            <button onClick={() => handleClick(GoogleProvider())} className="">
+              <img src="googlebtnpn.png" alt="" className="        " />
+            </button>
           </span>
 
-          <span className=" h-10 w-11  flex items-center justify-center rounded ">
-            <button onClick={() => handleClick(GoogleProvider())} className="googleBtn" />
-          </span>
-
-          <span className="h-10 w-10   flex items-center justify-center raunded ">
-            <button onClick={() => alert("AUN POR CONFIGURAR")} className="AppleBtn" />
+          <span className=" w-48  flex items-center justify-center raunded ">
+            <button onClick={() => alert("AUN POR CONFIGURAR")} className="">
+              <img src="applebtnpng.png" alt="" />
+            </button>
           </span>
         </div>
       </div>
-      <style jsx>
+      {/* <style jsx>
         {`
           .googleBtn {
-            background-image: url("/googlenew.svg");
-            width: 60px;
-            height: 45px;
+            //background-image: url("/googlenew.svg");
+            width: 50%;
+            height: 50%;
             opacity: 1;
             background-repeat: no-repeat;
             }
@@ -133,7 +144,7 @@ export const Providers: FC<any> = ({ setStage }) => {
             psition: absolute;
           }
         `}
-      </style>
+      </style> */}
     </>
   );
 };

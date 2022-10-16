@@ -1,16 +1,10 @@
 import { FC, MouseEventHandler, useContext } from "react";
 import { GoogleProvider, FacebookProvider, auth } from "../../firebase";
-import { Icon } from "../Surface/Footer";
 import { AppleIcon, FacebookIcon, GoogleIcon } from "../Icons";
-import { signInWithPopup, UserCredential } from "firebase/auth";
-import router from "next/router";
-import { GraphQL, fetchApi, queries } from "../../utils/Fetching";
 import { useToast } from "../../hooks/useToast";
-import { AuthContextProvider, LoadingContextProvider } from "../../context";
-import { setCookie } from "../../utils/Cookies";
-import { api } from "../../api";
+import { LoadingContextProvider } from "../../context";
 import { useAuthentication } from "../../utils/Authentication";
-import Script from 'next/script'
+import { ButtonProvider } from "./Forms/ButtonProvider";
 
 
 interface propsRegisterQuestion {
@@ -85,55 +79,20 @@ export const Providers: FC<any> = ({ setStage }) => {
   return (
     <>
       <div className={`text-center flex flex-col gap-2 w-full items-center `}>
-        <h1 className="text-primary">Accede con</h1>
         {/* <div className="gap-4 flex items-center">
         {ListProviders.map((item, idx) => (
           <Icon key={idx} icon={item.icon} onClick={item.function} />
         ))}
       </div> */}
-        <div className="gap-4 flex items-center  ">
-          <span className="h-10 w-10 bgColorFc  flex items-center justify-center rounded  ">
-            <button onClick={() => handleClick(FacebookProvider)} className="facebookBtn" />
-          </span>
-
-          <span className=" h-10 w-10  flex items-center justify-center rounded bg-color-base">
-            <button onClick={() => handleClick(GoogleProvider())} className="googleBtn" />
-          </span>
-
-          <span className="h-10 w-10   flex items-center justify-center raunded  bg-color-base">
-            <button onClick={() => alert("AUN POR CONFIGURAR")} className="AppleBtn" />
-          </span>
+        <div className="">
+          <ButtonProvider provider="Google" handle={GoogleProvider()} icon={<GoogleIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
+          <ButtonProvider provider="Facebook" handle={FacebookProvider} icon={<FacebookIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
+          <ButtonProvider provider="Apple" handle={() => { }} icon={<AppleIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
         </div>
       </div>
       <style jsx>
         {`
-          .googleBtn {
-            background-image: url("/google-logo-color.svg");
-            width: 17px;
-            height: 18px;
-            opacity: 1;
-            background-repeat: no-repeat;
-            }
-          .facebookBtn {
-            background-image: url("/facebook-logo-white.svg");
-            width: 17px;
-            height: 18px;
-            opacity: 1;
-            background-repeat: no-repeat;
-            psition: absolute;
-          }
-          .bgColorFc{
-            background-color:#1877F2
-            
-          }
-          .AppleBtn {
-            background-image: url("/apple-logo-black.svg");
-            width: 15px;
-            height: 19px;
-            opacity: 1;
-            background-repeat: no-repeat;
-            psition: absolute;
-          }
+          @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,600;1,400;1,600&display=swap');
         `}
       </style>
     </>

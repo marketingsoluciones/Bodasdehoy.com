@@ -39,16 +39,14 @@ const iniApp = () => {
       // tokens as needed.
       isTokenAutoRefreshEnabled: true
     });
-    console.log(234567, appCheck)
     return firebaseClient
   } catch (error) {
-    console.log(error)
+    console.log("error 1503", "appCheck en firebase.ts")
   }
 
 
 }
 const firebaseClient = iniApp()
-console.log(getApp().name);
 const auth = getAuth()
 //const storage = getStorage();
 

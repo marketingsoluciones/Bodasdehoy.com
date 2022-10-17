@@ -32,13 +32,13 @@ if (initializeApp.length === 0) {
 const iniApp = () => {
   try {
     const firebaseClient = initializeApp(otherAppConfig);
-    const appCheck = initializeAppCheck(firebaseClient, {
-      provider: new ReCaptchaV3Provider('6LekwcchAAAAANJHB3yv2ZOx6v8PHu2DkF-ku3J8'),
+    // const appCheck = initializeAppCheck(firebaseClient, {
+    //   provider: new ReCaptchaV3Provider('6LekwcchAAAAANJHB3yv2ZOx6v8PHu2DkF-ku3J8'),
 
-      // Optional argument. If true, the SDK automatically refreshes App Check
-      // tokens as needed.
-      isTokenAutoRefreshEnabled: true
-    });
+    //   // Optional argument. If true, the SDK automatically refreshes App Check
+    //   // tokens as needed.
+    //   isTokenAutoRefreshEnabled: true
+    // });
     return firebaseClient
   } catch (error) {
     console.log("error 1503", "appCheck en firebase.ts")

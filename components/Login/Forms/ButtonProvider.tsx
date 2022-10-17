@@ -11,7 +11,6 @@ interface propsButtonProvider {
 }
 
 export const ButtonProvider: FC<propsButtonProvider> = ({ provider, handle, icon }) => {
-  console.log(icon)
   const { signIn } = useAuthentication();
   const toast = useToast();
   const { setLoading } = LoadingContextProvider();

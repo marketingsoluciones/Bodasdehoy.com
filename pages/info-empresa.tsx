@@ -59,6 +59,16 @@ const InfoEmpresas = () => {
             </ButtonComponent>
           </Link>
         </div>
+        <h3 className="text-center text-tertiary font-medium py-3 ">
+          O si ya tienes una cuenta empresa
+        </h3>
+        <div className="mx-auto w-max pt-2">
+          <Link href={"/login"} passHref >
+            <ButtonComponent>
+              INICIA SESION
+            </ButtonComponent>
+          </Link>
+        </div>
       </div>
       <div className="w-full bg-color-base grid grid-cols-1 p-10">
         <Slider autoplay={true}>

@@ -27,9 +27,11 @@ export const NavigationMobile = () => {
     route: string;
   }
   const buttons: button[] = [
-    { icon: <HomeIcon className="w-9 h-9" />, route: "/" },
+    { icon: <img src="/hogar.png" alt="home" className="w-8 h-8" />, /* <HomeIcon className="w-9 h-9" /> */
+      route: "/" 
+    },
     {
-      icon: <LightBulb className="w-10 h-10" />,
+      icon: <img src="/idea.png" alt="bombilla" className="w-8 h-8" /> , /* <LightBulb className="w-10 h-10" /> */
       route: "https://continuacion-bodas-de-hoy.vercel.app/",
     },
     {
@@ -39,7 +41,7 @@ export const NavigationMobile = () => {
   ];
   return (
     <>
-      <div className="bg-white fixed bottom-0 z-50 w-full px-6 py-4 sm:hidden flex items-center justify-between gap-1 text-gray-400">
+      <div className="bg-white fixed bottom-0 z-50 w-full px-6 py-4 sm:hidden flex items-center justify-between gap-1 text-gray-400 border-t-2 border-primary">
         {buttons.map((item, idx) => (
           <Link key={idx} href={item.route} passHref>
             <button>{cloneElement(item.icon)}</button>
@@ -53,13 +55,15 @@ export const NavigationMobile = () => {
             toast("warning", "Debes iniciar sesión para ver tus chats")
           }
         }}>
-          <MessageIcon className="w-8 h-8" />
+          {/* <MessageIcon className="w-8 h-8" /> */}
+          <img src="/chat.png" alt="chats" className="w-9 h-9" />
         </button>
 
         {!user ? (
             <Link href={"/login"} passHref>
               <button>
-                <UserIcon className="w-8 h-8" />
+                {/* <UserIcon className="w-8 h-8" /> */}
+                <img src="/perfil-del-usuario.png" alt="usuario" className="w-8 h-8" />
               </button>
             </Link>
         ) : (

@@ -11,7 +11,7 @@ interface propsSelectField {
 
 export const SelectField: FC<propsSelectField> = memo(
   ({ icon = false, label, options, ...props }) => {
-    const [countryDefault, setCountryDefault] = useState("España")
+    const [countryDefault, setCountryDefault] = useState("")
     const [{ value }, meta, { setValue }] = useField({ ...props });
     const className: string = `bg-color-base text-sm focus:border focus:border-primary border-transparent focus:ring-transparent pr-3 py-2 rounded-lg w-full focus:outline-none transition text-gray-700 ${icon ? "pl-12" : "pl-3"
       }`;

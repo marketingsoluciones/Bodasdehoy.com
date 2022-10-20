@@ -1,5 +1,5 @@
 import { FC, MouseEventHandler, useContext } from "react";
-import { GoogleProvider, FacebookProvider, auth } from "../../firebase";
+import { GoogleProvider, FacebookProvider, auth, AppleProvidor } from "../../firebase";
 import { AppleIcon, FacebookIcon, GoogleIcon } from "../Icons";
 import { useToast } from "../../hooks/useToast";
 import { LoadingContextProvider } from "../../context";
@@ -87,7 +87,7 @@ export const Providers: FC<any> = ({ setStage }) => {
         <div className="">
           <ButtonProvider provider="Google" handle={GoogleProvider()} icon={<GoogleIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
           <ButtonProvider provider="Facebook" handle={FacebookProvider} icon={<FacebookIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
-          <ButtonProvider provider="Apple" handle={() => { }} icon={<AppleIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
+          <ButtonProvider provider="Apple" handle={AppleProvidor()} icon={<AppleIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
         </div>
       </div>
       <style jsx>

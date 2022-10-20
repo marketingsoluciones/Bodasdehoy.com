@@ -1,5 +1,5 @@
 import { initializeApp, getApp, getApps } from "firebase/app";
-import { GoogleAuthProvider, FacebookAuthProvider, getAuth } from "firebase/auth";
+import { GoogleAuthProvider, FacebookAuthProvider, getAuth , OAuthProvider } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { getStorage, ref, uploadBytes } from "firebase/storage"
 import { string } from "yup";
@@ -60,7 +60,19 @@ const GoogleProvider = () => {
 
 const FacebookProvider = new FacebookAuthProvider();
 
-export { otherAppConfig, firebaseClient, GoogleProvider, FacebookProvider, auth };
+const AppleProvidor = () => {
+  try {
+    
+    const provider = new OAuthProvider('apple.com');
+    console.log("entro", provider)
+  return provider
+  } catch (error) {
+    console.log("123",error)
+  }
+}
+
+export { otherAppConfig, firebaseClient, GoogleProvider, FacebookProvider, auth, AppleProvidor };
+
 
 
 

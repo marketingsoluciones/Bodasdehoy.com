@@ -40,7 +40,7 @@ const Configuration = () => {
     { title: "Mi perfil", 
       icon: <UserIcon />, 
       component: <MiPerfil /> },
-    {
+    /* {
       title: "Notificaciones",
       icon: <HeartIconOutline />,
       component: <Notificaciones />,
@@ -54,7 +54,7 @@ const Configuration = () => {
       title: "Configuración",
       icon: <SettingsIconOutline />,
       component: <Configuraciones />,
-    },
+    }, */
   ];
 
   const handleClickOption = (idx: number) => {

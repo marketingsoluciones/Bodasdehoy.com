@@ -62,7 +62,6 @@ const FacebookProvider = new FacebookAuthProvider();
 
 const AppleProvidor = () => {
   try {
-    
     const provider = new OAuthProvider('apple.com');
     console.log("entro", provider)
   return provider

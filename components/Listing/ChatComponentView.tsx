@@ -11,7 +11,7 @@ import {
   AuthContextProvider,
   ChatContextProvider,
 } from "../../context";
-
+import Link from "next/link";
 
 const ChatComponentView: FC<business> = ({
   contactName,
@@ -127,7 +127,79 @@ const ChatComponentView: FC<business> = ({
         </div>
       </div>
 
-      {!IDChat ? (
+      {(() => {
+        if (user) {
+          if (!IDChat) {
+            return (
+              <div className="flex flex-col items-center justify-between w-full py-3">
+                <span className="flex items-center text-primary text-sm gap-2 py-2 justify-start w-full">
+                  <Isologo className="w-4 h-4" />
+                  Envia un mensaje al proveedor
+                </span>
+                <input
+                  type="text"
+                  className="text-gray-700 text-sm block w-full py-2 pl-4 mx-3 bg-gray-100 rounded-lg focus:outline-none  border-gray-300"
+                  name="mensaje"
+                  placeholder="Hola, ¿estas disponible?"
+                  required
+                  value={value}
+                  onChange={handleChange}
+                />
+
+                <button
+                  className="flex items-center text-white bg-primary w-full mt-2 text-sm p-2 flex justify-center rounded-lg hover:opacity-90 transition hover:text-gray-100 gap-1"
+                  type="submit"
+                  onClick={handleCreateConversation}
+                >
+                  Enviar mensaje
+                  <svg
+                    className="w-4 h-4 origin-center transform rotate-90"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                  </svg>
+                </button>
+              </div>
+            )
+          } else {
+            return (
+              <button
+                className="flex items-center text-white bg-primary w-full mt-2 text-sm p-2 flex justify-center rounded-lg hover:opacity-90 transition hover:text-gray-100 gap-1"
+                type="submit"
+                onClick={handleAnotherMessage}
+              >
+                Enviar otro mensaje
+                <svg
+                  className="w-4 h-4 origin-center transform rotate-90"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
+                </svg>
+              </button>
+            )
+          }
+        } else {
+          return (
+            < div className="flex flex-col items-center justify-between w-full py-3">
+              <span className="flex items-center text-primary text-sm gap-2 py-2 justify-start w-full">
+                <Isologo className="w-4 h-4" />
+                Para enviar un mensaje
+              </span>
+              <Link href={`/login`} passHref>
+                <button className="flex flex-col items-center text-white bg-primary w-full mt-2 text-sm p-2 flex justify-center rounded-lg hover:opacity-90 transition hover:text-gray-100 gap-1">
+                  <span>Debes iniciar sesión</span>
+                </button>
+              </Link>
+            </div>
+          )
+        }
+      })()}
+
+      {/* {!IDChat ? (
         <div className="flex flex-col items-center justify-between w-full py-3">
           <span className="flex items-center text-primary text-sm gap-2 py-2 justify-start w-full">
             <Isologo className="w-4 h-4" />
@@ -175,7 +247,7 @@ const ChatComponentView: FC<business> = ({
             <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z" />
           </svg>
         </button>
-      )}
+      )} */}
     </div>
   );
 };

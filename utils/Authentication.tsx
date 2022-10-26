@@ -53,21 +53,7 @@ export const useAuthentication = () => {
         provider: async () => {
           try {
             const asdf = await signInWithPopup(auth, payload)
-              /* .then((result) => {
-                // The signed-in user info.
-                const user = result.user;
-                // Apple credential
-                const credential = OAuthProvider.credentialFromResult(result);
-                const accessToken = credential?.accessToken;
-                const idToken = credential?.idToken;
-              })
-              .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                const email = error.customData.email;
-                const credential = OAuthProvider.credentialFromError(error);
-                console.log("error con ventana emergente", error)
-              }); */
+              
             return asdf
           } catch (error: any) {
             setLoading(false);

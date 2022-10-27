@@ -32,7 +32,7 @@ export const NavigationMobile = () => {
     },
     {
       icon: <img src="/idea.png" alt="bombilla" className="w-8 h-8" /> , /* <LightBulb className="w-10 h-10" /> */
-      route: "https://continuacion-bodas-de-hoy.vercel.app/",
+      route: "/magazine",
     },
     {
       icon: <PlusCircle className="w-10 h-10 text-gray-800" />,

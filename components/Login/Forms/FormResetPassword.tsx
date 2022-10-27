@@ -2,7 +2,6 @@ import { Formik, Form, ErrorMessage } from "formik";
 import { FC } from "react";
 import { EmailIcon, EmailIcon as PasswordIcon } from "../../Icons";
 import { InputField, ButtonComponent } from "../../Inputs";
-import router from "next/router";
 import { useToast } from '../../../hooks/useToast';
 import { LoadingContextProvider } from "../../../context";
 import { useAuthentication } from '../../../utils/Authentication';

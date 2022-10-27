@@ -4,7 +4,6 @@ import { EmailIcon, EmailIcon as PasswordIcon, Eye, EyeSlash, LockClosed } from 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { InputField, ButtonComponent } from "../../Inputs";
 import * as yup from "yup";
-import router from "next/router";
 import { GraphQL, fetchApi, queries } from '../../../utils/Fetching';
 import { useToast } from '../../../hooks/useToast';
 import { AuthContextProvider, LoadingContextProvider } from "../../../context";

@@ -1,4 +1,3 @@
-import { Router } from "next/router"
 import React, { FC, cloneElement } from "react";
 import { Feature } from "../components/Home/AdsApp";
 import { CheckIcon } from "../components/Icons";

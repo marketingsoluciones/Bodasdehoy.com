@@ -1,5 +1,3 @@
-import Link from "next/link";
-import router from "next/router";
 import { FC, MouseEventHandler } from "react";
 import { UserIcon } from "../../Icons";
 

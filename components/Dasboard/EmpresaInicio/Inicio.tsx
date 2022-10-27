@@ -1,5 +1,3 @@
-import Link from "next/link";
-import router from "next/router";
 import { FC, MouseEventHandler } from "react";
 import { Menu } from "./Menu";
 import { useState } from "react";

@@ -76,28 +76,6 @@ export const BreadCumbs: FC<propsBreadCumbs> = ({ className }) => {
           </ol>
         </nav>
       </div>
-      {/* <div>
-      <Link href={`/`} passHref>
-        <span className="w-max flex items-center">
-          <p className="px-1">Inicio</p>
-          <ArrowIcon className="w-4 h-4" />
-        </span>
-      </Link>
-      {niveles?.map(({ title, route }, idx) => (
-        <Link key={idx} href={route} passHref>
-          <span className="w-max flex items-center">
-            <p
-              className={`px-1 ${
-                idx === niveles.length - 1 ? "text-primary" : ""
-              }`}
-            >
-              {title}
-            </p>
-            {idx !== niveles.length - 1 && <ArrowIcon className="w-4 h-4" />}
-          </span>
-        </Link>
-      ))}
-    </div> */}
     </>
   );
 };

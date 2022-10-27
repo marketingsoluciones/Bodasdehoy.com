@@ -1,5 +1,3 @@
-import Link from "next/link";
-import router from "next/router";
 import { FC, MouseEventHandler,useState } from 'react';
 import DatosEmpresa from '../EmpresaActualizar/DatosEmpresa'
 import LocalizacionMapa from "./LocalizacionMapa";

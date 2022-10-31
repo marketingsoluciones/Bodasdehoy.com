@@ -34,6 +34,7 @@ import algoliasearch from "algoliasearch/lite";
 import { CloseIcon } from '../components/Icons/index';
 import Cookies from "js-cookie";
 import Link from "next/link";
+import { AuthContextProvider } from '../context'
 
 interface propsHome {
   business: business[];
@@ -149,6 +150,8 @@ const Home: FC<propsHome> = (props) => {
 export default Home;
 
 export const Welcome: FC = (props) => {
+  const { user } = AuthContextProvider()
+
   const conditionalQuery = {
     search(requests: any) {
       if (
@@ -201,9 +204,28 @@ export const Welcome: FC = (props) => {
           <div className="md:static">
             <Features />
           </div>
+
         </div>
 
-        <div className=" w-1/2 z-5 absolute right-0 -bottom-16 md:w-full md:relative md:-bottom-18 md:bottom-0 md:right-0 md:-mt-20   ">
+        {
+          (() => {
+            if (!user) {
+              return (
+                <div className="md:hidden relative w-full z-10 ">
+                  <Link href={"/login"} passHref>
+                    <button className=" bg-primary text-white text-sm py-2  px-4 rounded-full w-full mt-10">
+                      Empezar
+                    </button>
+                  </Link>
+                </div>
+              )
+            } else {
+            }
+          })()
+        }
+
+
+        <div className={`w-1/2 z-5 absolute right-0  ${user ? "-bottom-16" : "-bottom-0"} md:w-full md:relative md:-bottom-18 md:bottom-0 md:right-0 md:-mt-20`}>
           <Image
             src={"/photo-principal.webp"}
             alt="Bodas de hoy"

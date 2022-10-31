@@ -151,7 +151,7 @@ const Navbar: FC = () => {
   return (
     <>
       <nav className="hidden lg:block">
-        <ul className="flex lg:gap-6 xl:gap-6 text-sm font-medi um text-gray-200">
+        <ul className="flex md:gap-4 lg:gap-4 xl:gap-5 text-sm font-medium text-gray-200">
           {List.map((item, idx) => (
             <div
               key={idx}

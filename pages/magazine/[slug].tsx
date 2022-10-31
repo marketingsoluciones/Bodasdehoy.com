@@ -36,7 +36,7 @@ const Article : FC <Partial<OnePost>> = (props) => {
         <div className="grid md:grid-cols-3 w-full gap-6 py-8">
           <div className="md:col-span-2 bg-white  rounded-xl p-8 grid grid-cols-6">
             <TagsComponent {...props} />
-            <ShareComponent />
+            {/* <ShareComponent /> */}
             <div className="w-full col-span-6 text-sm pt-8 ">
               <Markup content={content} />
               <div className="flex items-center flex-wrap gap-2 pt-8 ">

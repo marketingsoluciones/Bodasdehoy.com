@@ -9,11 +9,10 @@ type itemFooter = {
 }
 export const FooterMobile = () => {
     const List: itemFooter[] = [
-        { title: "Tarifas y condiciones generales", route: "/", bar: true },
-        { title: "Privacidad", route: "/" },
-        { title: "Condiciones proveedores", route: "/", bar: true },
-        { title: "FAQ", route: "/", bar: true },
-        { title: "Contacto", route: "/" },
+        { title: "Tarifas y condiciones generales", route: "/tarifas-y-condiciones-generales", bar: true },
+        { title: "Privacidad", route: "/privacidad" },
+        { title: "Condiciones proveedores", route: "/condiciones-proveedores", bar: true },
+        { title: "Cookies", route: "/cookies" },
     ]
     return (
         <div className="md:hidden bg-color-base w-full pb-8">

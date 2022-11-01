@@ -12,7 +12,7 @@ const ButtonReclamarEmpresa = () => {
             ) : null}
 
             <button
-                className={`hidden sm:flex cursor-pointer bg-color-base font-semibold rounded-full w-max px-4 text-xs py-2 text-primary fixed bottom-16 right-6 z-30 items-center gap-2  transition-all duration-500 shadow-lg`}                
+                className={` flex gap-2 bg-primary text-white text-sm py-2  px-4 rounded-full w-full justify-center  items-center`}                
                 onClick={()=>setShowForm(!showForm)}
             >
                 <CrossIcon />

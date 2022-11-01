@@ -46,7 +46,7 @@ const DefaultLayout: FC = ({ children }) => {
                   <div className="bg-color-base relative min-h-screen w-full h-full">
                     <DynamicSidebarProvider>
                       <ButtonCrearEmpresa />
-                      <ButtonReclamarEmpresa/>
+                      {/* <ButtonReclamarEmpresa/> */}
                       <DynamicNavigation />
                       <NavigationMobile />
                       <main className="w-full pt-20">

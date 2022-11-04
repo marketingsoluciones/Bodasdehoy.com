@@ -61,7 +61,7 @@ const Promociones =()=>{
                     <h2 className="text-primary text-ml text-bold">Otras promociones</h2>
 
                     <div className="space-y-5 flex flex-col items-center">
-                        <img src="" alt="imagen para agregar otras promociones" />
+                        <img src="" alt="agregar promociones" />
                         <h1 className="text-primary text-xl">Publica tu primer promoción</h1>
                         <p className="text-center">Consiguirás mas visibilidad en el directiorio <br/> y más posibilidades de conseguir clientes</p>
                         <button className="bg-primary text-white p-4 w-36 rounded-full text-xl">Crear</button>

@@ -32,7 +32,7 @@ export const Notificaciones = () =>{
 export const NotificationItem = () => {
   return (
     <div className="w-full bg-color-base h-20 rounded-xl flex items-center p-2 gap-3">
-        <img alt={""} className="w-14 h-14 rounded-full object-cover object-center border-2 border-white" src="/placeholder/user.png" />
+        <img alt={"Perfilimg"} className="w-14 h-14 rounded-full object-cover object-center border-2 border-white" src="/placeholder/user.png" />
         <Tooltip tooltipText="Francisco Montilla">
         <h2 className="text-xs truncate w-10 md:w-20">Francisco Montilla</h2>
         </Tooltip>

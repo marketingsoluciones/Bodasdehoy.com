@@ -48,7 +48,7 @@ export const CardBusiness: FC<propsCardBusiness> = ({
             ? createURL(imgMiniatura.i640)
             : "/placeholder/image.png"
         }
-        alt=""
+        alt="CardBusiness"
       />
       
       <div

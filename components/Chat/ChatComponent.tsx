@@ -231,7 +231,7 @@ const ConversationItem: FC<propsConversationItem> = ({ onClick, ...props }) => {
       <span className="relative w-max">
         <img
           className="object-cover w-10 h-10 rounded-full border border-gray-200"
-          alt={""}
+          alt={"Perfilimg"}
           src={
             photoURL
               ? photoURL?.includes("http")

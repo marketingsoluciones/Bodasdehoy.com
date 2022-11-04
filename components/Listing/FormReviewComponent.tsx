@@ -274,7 +274,7 @@ const ImageItem: FC<propsImageItem> = ({ image, id, handleDelete }) => {
       <img
         src={image?.includes("data") ? image : createURL(image)}
         className={"w-24 h-24 object-cover object-center border rounded"}
-        alt={""}
+        alt={"review"}
       />
       <button
         onClick={() => handleDelete(id)}

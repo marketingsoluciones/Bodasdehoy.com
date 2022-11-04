@@ -3,7 +3,7 @@ export const BurbujaChat =() =>{
         <div className=" p-10">
                <div className="bg-color-base p-3 rounded-lg flex flex-row items-center space-x-4 mb-5">
                     <div>
-                        <img src="/mask.png" alt="" className="rounded-full w-16 h-16" />
+                        <img src="/mask.png" alt="PerfilChat" className="rounded-full w-16 h-16" />
                     </div>
                     <div>
                        Usuario

@@ -17,6 +17,10 @@ module.exports = {
       },
       transitionProperty: {
         'height': 'height'
+      },
+      spacing:{
+        '182px':'182px',
+        '20px':'23px'
       }
     },
   },

@@ -35,6 +35,7 @@ const DefaultLayout: FC = ({ children }) => {
     <>
       <Head>
         <title>Bodas de hoy - Directorio de Bodas en España</title>
+        
         <meta name="description" content="¡Bodas de Hoy! Miles de proveedores para bodas, en un sólo click. Conoce a los más destacados de la región y haz realidad tu boda de ensueño" />
       </Head>
       <DynamicAuthProvider>

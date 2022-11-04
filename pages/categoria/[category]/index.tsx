@@ -322,7 +322,7 @@ export const Filters: FC<propsFilter> = ({ optionsCheckbox }) => {
   return (
     <>
       <button onClick={onClick} className="md:hidden flex flex-row-reverse items-center px-5 gap-3 text-sm text-gray-700">
-        <img src="/option.png" alt="" className="h-5 w-5" />
+        <img src="/option.png" alt="option" className="h-5 w-5" />
         Filtrar
       </button>
 

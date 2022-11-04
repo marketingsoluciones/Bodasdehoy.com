@@ -324,7 +324,7 @@ export const UsersGalleryComponent: FC<{ images: imagesReviews[], set: CallableF
       <button onClick={() => set({ source: image, data: review })}>
         <div className="overflow-hidden w-full h-full rounded-lg relative mx-auto inset-x-0">
           <img
-            alt={review?.user?.displayName ?? ""}
+            alt={review?.user?.displayName ?? "imgPefil"}
             src={image?.i320 ? createURL(image.i320) : "placeholder/image.png"}
             className="absolute w-full h-full object-cover object-center"
           />
@@ -402,7 +402,7 @@ export const PreviewComponent: FC<propsPreviewComponent> = ({
                   <img
                     className="w-full h-[91%] bg-gray-300 object-contain border object-center rounded-md overflow-hidden "
                     src={imagePrincipal ? createURL(imagePrincipal.i640) : ""}
-                    alt={""}
+                    alt={"principalImg"}
                   />
                 </div>
 
@@ -550,7 +550,7 @@ const CommentComponent: FC<propsCommentComponent> = ({
         <img
           src={user?.photoURL ?? "/placeholder/user.png"}
           className="relative w-full h-full object-cover object-center w-[4rem] h-[4rem] rounded-full"
-          alt={user?.displayName ?? ""}
+          alt={user?.displayName ?? "img"}
         />
         {/* <RatingAndRole /> */}
         <div className="px-6 pt-3 flex flex-col w-full">
@@ -605,7 +605,7 @@ const CommentComponent: FC<propsCommentComponent> = ({
               className={
                 "w-20 h-20 object-center object-cover border rounded-md"
               }
-              alt={""}
+              alt={"Review"}
             />
           </button>
         ))}

@@ -172,7 +172,7 @@ const CategoryPage: FC<category> = (props) => {
           src={
             imgBanner?.i640
               ? createURL(imgBanner?.i640)
-              : "/placeholder/image.png"
+              : "/eventoss.jpg"
           }
           alt={title}
           className="hidden md:block md:w-full md:h-60 md:transform md:-mt-20 md:z-10 md:object-center md:object-cover "

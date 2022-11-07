@@ -183,7 +183,7 @@ export const Welcome: FC = (props) => {
           <h1 className="text-2xl md:text-4xl text-tertiary relative subpixel-antialiased font-bold w-full flex flex-col gap-2">
             <span className="relative w-max h-max  font-light">
               Encuentra tod<b className="hidden">o</b>
-              <Isologo className="mt-1 isologo absolute bottom-2 -right-4 md:-right-6" />
+              <Isologo className="mt-1  absolute bottom-2 -right-4 md:-right-6" />
             </span>
             <span className="relative ">para una boda inolvidable</span>
           </h1>

@@ -135,7 +135,7 @@ const Navbar: FC = () => {
       <>
         <Link href={route} passHref>
           <a>
-            <li className="uppercase h-16 flex items-center justify-center cursor-pointer relative tracking-widest hover:text-tertiary transition text-gray-500">
+            <li className="uppercase h-16 flex items-center justify-center cursor-pointer relative  hover:text-tertiary transition text-gray-500 text-sm ">
               {title}
               <svg
                 className={`h-0.5 w-full bg-primary transform transition absolute ${isHovered ? "scale-100" : "scale-0"

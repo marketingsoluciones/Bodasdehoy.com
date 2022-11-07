@@ -19,8 +19,10 @@ module.exports = {
         'height': 'height'
       },
       spacing:{
-        '182px':'182px',
-        '20px':'23px'
+        '182px':'177.5px',
+        '20px':'23px',
+        '267px':'136px',
+        '17px':'17px'
       }
     },
   },

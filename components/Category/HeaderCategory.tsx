@@ -35,10 +35,10 @@ export const HeaderCategory: FC<category | subCategory> = ({
       {/* <button onClick={() => router.back()} type="button" className="absolute hidden sm:flex left-5 text-primary hover:text-white border border-primary hover:bg-primary focus:ring-4 focus:ring-pink-200 font-medium rounded-lg text-sm px-3 py-2.5 text-center transition items-center gap-1 justify-center"><ArrowIcon className="w-5 h-5 rotate-180" /><h3 className="hidden md:block">Ir atras</h3></button> */}
       <div className="flex flex-col justify-center items-center">
         <h1 className="font-semibold text-primary text-2xl capitalize z-10 relative ">
-          {heading ?? title}
+          {heading ?? title ? title: "Proveedores"}
         </h1>
         <h3 className="font-medium text-gray-600 text-sm tracking-tight z-10 relative text-center">
-          {capitalize(description)}
+          {description?capitalize(description):"Los mejores profesionales para todo lo que necesitas en tu boda" }
         </h3>
       </div>
     </div>

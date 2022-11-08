@@ -5,6 +5,7 @@ import ButtonReclamarEmpresa from "../components/ButtonReclamarEmpresa";
 import { NavigationMobile } from "../components/Surface";
 import { FC } from "react";
 import Head from "next/head";
+import Script from "next/script";
 const DynamicAuthProvider = dynamic((): any =>
   import("../context").then((mod) => mod.AuthProvider)
 );
@@ -35,7 +36,8 @@ const DefaultLayout: FC = ({ children }) => {
     <>
       <Head>
         <title>Bodas de hoy - Directorio de Bodas en España</title>
-        
+        <Script charSet="UTF-8" src="//web.webpushs.com/js/push/759e8f1ac698c18e51de3784cb1ff494_1.js" async></Script>
+
         <meta name="description" content="¡Bodas de Hoy! Miles de proveedores para bodas, en un sólo click. Conoce a los más destacados de la región y haz realidad tu boda de ensueño" />
       </Head>
       <DynamicAuthProvider>

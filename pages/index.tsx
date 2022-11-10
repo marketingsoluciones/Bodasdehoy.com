@@ -183,7 +183,7 @@ export const Welcome: FC = (props) => {
           <h1 className="text-2xl md:text-4xl text-tertiary relative subpixel-antialiased font-bold w-full flex flex-col gap-2">
             <span className="relative w-max h-max  font-light">
               Encuentra tod<b className="hidden">o</b>
-              <Isologo className="mt-1  absolute bottom-2 -right-4 md:-right-6" />
+              <Isologo className="mt-1  absolute md:bottom-2 bottom-1.5 -right-6 md:-right-6" />
             </span>
             <span className="relative ">para una boda inolvidable</span>
           </h1>
@@ -207,25 +207,7 @@ export const Welcome: FC = (props) => {
 
         </div>
 
-        {
-          (() => {
-            if (!user) {
-              return (
-                <div className="md:hidden relative w-full z-10 ">
-                  <Link href={"/login"} passHref>
-                    <button className=" bg-primary text-white text-sm py-2  px-4 rounded-full w-full mt-10">
-                      Empezar
-                    </button>
-                  </Link>
-                </div>
-              )
-            } else {
-            }
-          })()
-        }
-
-
-        <div className={`w-1/2 z-5 absolute right-0  ${user ? "-bottom-16" : "-bottom-0"} md:w-full md:relative md:-bottom-18 md:bottom-0 md:right-0 md:-mt-20`}>
+        <div className={`w-1/2 z-5 absolute right-0  ${user ? "-bottom-16" : "-bottom-16"} md:w-full md:relative md:-bottom-18 md:bottom-0 md:right-0 md:-mt-20`}>
           <Image
             src={"/photo-principal.webp"}
             alt="Bodas de hoy"

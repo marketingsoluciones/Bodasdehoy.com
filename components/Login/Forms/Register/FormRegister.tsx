@@ -345,7 +345,7 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
       </div>
 
       <div className="w-full relative ">
-        <DatePicker name={"weddingDate"} label={"Fecha de la boda"} />
+        <DatePicker name={"weddingDate"} label={"Fecha del evento"} />
       </div>
 
       <div className="w-full relative ">
@@ -402,7 +402,7 @@ const UserDataAPI: FC<propsForm> = () => {
       </div>
 
       <div className="w-full relative ">
-        <DatePicker name={"weddingDate"} label={"Fecha de la boda"} />
+        <DatePicker name={"weddingDate"} label={"Fecha del evento"} />
       </div>
 
       <div className="w-full relative ">

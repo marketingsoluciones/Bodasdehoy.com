@@ -272,7 +272,7 @@ const Listing: FC<business> = (props) => {
                 <div className="flex gap-4 items-center text-primary w-full justify-center flex-col">
                   {/* Si soy el dueño de la empresa no aparece y si la empresa no tiene userUid tampoco aparece*/}
                   {userUid !== user?.uid && userUid !== '' && <ChatComponentView {...props} />}
-                  {userUid !== user?.uid && userUid === '' && <ButtonReclamarEmpresa/>}
+                  
                   
 
                   {webPage && (
@@ -313,7 +313,7 @@ const Listing: FC<business> = (props) => {
                       />
                     )}
                   </div>
-
+                  {userUid !== user?.uid && userUid === '' && <ButtonReclamarEmpresa/>}
                 </div>
                 
               </div>

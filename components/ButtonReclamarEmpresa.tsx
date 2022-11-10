@@ -12,11 +12,11 @@ const ButtonReclamarEmpresa = () => {
             ) : null}
 
             <button
-                className={` flex gap-2 bg-primary text-white text-sm py-2  px-4 rounded-full w-full justify-center  items-center`}                
+                className={` flex gap-2 bg-primary text-white text-sm py-2  px-3 rounded-full w-max justify-center  items-center`}                
                 onClick={()=>setShowForm(!showForm)}
             >
                 <CrossIcon />
-                Reclama tu empresa aquí
+                Reclamar empresa
             </button>
         </>
     )

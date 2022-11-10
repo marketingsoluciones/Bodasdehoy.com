@@ -2,6 +2,7 @@ import dynamic from "next/dynamic";
 import { LoadingProvider, FiltersProvider } from "../context";
 import ButtonCrearEmpresa from "../components/ButtonCrearEmpresa";
 import ButtonReclamarEmpresa from "../components/ButtonReclamarEmpresa";
+import ButtonEmpezar from "../components/ButtonEmpezar";
 import { NavigationMobile } from "../components/Surface";
 import { FC } from "react";
 import Head from "next/head";
@@ -49,7 +50,7 @@ const DefaultLayout: FC = ({ children }) => {
                   <div className="bg-color-base relative min-h-screen w-full h-full">
                     <DynamicSidebarProvider>
                       <ButtonCrearEmpresa />
-                      {/* <ButtonReclamarEmpresa/> */}
+                      <ButtonEmpezar/>
                       <DynamicNavigation />
                       <NavigationMobile />
                       <main className="w-full pt-20">

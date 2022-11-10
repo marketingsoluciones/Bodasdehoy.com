@@ -135,7 +135,7 @@ const Navbar: FC = () => {
       <>
         <Link href={route} passHref>
           <a>
-            <li className="uppercase h-16 flex items-center justify-center cursor-pointer relative  hover:text-tertiary transition text-gray-500 text-sm ">
+            <li className="uppercase h-10 flex items-center justify-center cursor-pointer relative  hover:text-tertiary transition text-gray-500  ">
               {title}
               <svg
                 className={`h-0.5 w-full bg-primary transform transition absolute ${isHovered ? "scale-100" : "scale-0"
@@ -151,7 +151,7 @@ const Navbar: FC = () => {
   return (
     <>
       <nav className="hidden lg:block">
-        <ul className="flex md:gap-4 lg:gap-4 xl:gap-5 text-sm font-medium text-gray-200">
+        <ul className="flex md:gap-3 lg:gap-4 xl:gap-4 text-sm font-medium text-gray-200">
           {List.map((item, idx) => (
             <div
               key={idx}

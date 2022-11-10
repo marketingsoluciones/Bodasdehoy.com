@@ -27,7 +27,7 @@ export const InputField: FC<propsField> = ({
         <label className="text-sm text-gray-500">{label}</label>
         {meta.touched && meta.error ? (
           <span className="text-red-500 text-xs font-medium ">
-            *
+            Campo requerido
           </span>
         ) : null}
       </span>

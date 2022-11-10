@@ -21,7 +21,7 @@ export const SelectField: FC<propsSelectField> = memo(
           <label className="text-sm text-gray-500 pb-1">{label}</label>
           {meta.touched && meta.error ? (
             <span className="text-red-500 text-xs font-medium ">
-              *
+              Campo requerido
             </span>
           ) : null}
         </span>

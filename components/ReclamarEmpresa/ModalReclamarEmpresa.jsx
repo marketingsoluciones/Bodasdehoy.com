@@ -34,7 +34,15 @@ const ModalReclarEmpresa = ({ set, state, }) => {
                                 var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);
                             })(window,document,'https://cdn.bitrix24.es/b23442305/crm/site_button/loader_2_izw8u8.js');
                     </Script> */}
-                </div>
+{/* 
+                        <script data-b24-form="inline/2/hi0l1z" data-skip-moving="true">
+                            
+                            (function(w,d,u){var s=d.createElement('script');s.async=true;s.src=u+'?'+(Date.now()/180000|0);var h=d.getElementsByTagName('script')[0];h.parentNode.insertBefore(s,h);})
+                            
+                            (window,document,'https://cdn.bitrix24.es/b23442305/crm/form/loader_2.js');
+                        
+                        </script> */}
+                    </div>
             </ClickAwayListener>
 
         </>

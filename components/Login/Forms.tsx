@@ -14,19 +14,21 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center w-full">
-        <LogoFullColor className="w-auto h-10" />
+      <div className="overflow-y-auto h-full">
+        <div className="flex flex-col items-center justify-center w-full">
+          <LogoFullColor className="w-auto h-10" />
+        </div>
+        <h2 className={`font-light text-tertiary flex items-center text-md `}>
+          Accede a tu cuenta
+        </h2>
+        <Providers setStage={setStage} />
+        <h2 className={`font-light text-tertiary flex gap-2 items-center text-md `}>
+          O accede con tu email
+        </h2>
+        <FormLogin setStage={setStage} />
+        <RegisterQuestion onClick={() => setStage("register")} />
+        {/* <BusinessAccess /> */} {/* componente que no esta terminado */}
       </div>
-      <h2 className={`font-light text-tertiary flex items-center text-md `}>
-        Accede a tu cuenta
-      </h2>
-      <Providers setStage={setStage} />
-      <h2 className={`font-light text-tertiary flex gap-2 items-center text-md `}>
-        O accede con tu email
-      </h2>
-      <FormLogin setStage={setStage} />
-      <RegisterQuestion onClick={() => setStage("register")} />
-      {/* <BusinessAccess /> */} {/* componente que no esta terminado */}
     </>
   );
 };

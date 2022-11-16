@@ -7,6 +7,7 @@ import { FirstStep, SecondStep } from "./Forms/Register/Steps";
 import PageLogin from "../../pages/login"
 
 interface propsLogin {
+  fStageRegister?: any
   setStage: CallableFunction;
 }
 
@@ -31,9 +32,10 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
   );
 };
 
-export const Register: FC<propsLogin> = ({ setStage }) => {
-  const [whoYouAre, setWhoYouAre] = useState<string>("");
-  const [stageRegister, setStageRegister] = useState(0)
+export const Register: FC<propsLogin> = ({ setStage, fStageRegister }) => {
+  console.log("fStageRegister", fStageRegister)
+  const [whoYouAre, setWhoYouAre] = useState<string>(fStageRegister == 1 ? "empresa" : "");
+  const [stageRegister, setStageRegister] = useState(fStageRegister)
   return (
     <>
       {(() => {
@@ -42,7 +44,7 @@ export const Register: FC<propsLogin> = ({ setStage }) => {
             return <FirstStep setStageRegister={setStageRegister} value={setWhoYouAre} />
             break;
           case 1:
-            return <SecondStep setStageRegister={setStageRegister} stageRegister={stageRegister} whoYouAre={whoYouAre} />
+            return <SecondStep setStageRegister={setStageRegister} stageRegister={stageRegister} whoYouAre={whoYouAre} setStage={setStage} />
             break;
           default:
             return <PageLogin />

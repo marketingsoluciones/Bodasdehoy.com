@@ -10,7 +10,7 @@ import { useToast } from "../hooks/useToast";
 
 export const useAuthentication = () => {
   const { setLoading } = LoadingContextProvider();
-  const { setUser, setUserTemp, redirect } = AuthContextProvider();
+  const { setUser, setUserTemp, redirect, setRedirect } = AuthContextProvider();
 
   const toast = useToast();
   const router = useRouter();
@@ -53,7 +53,7 @@ export const useAuthentication = () => {
         provider: async () => {
           try {
             const asdf = await signInWithPopup(auth, payload)
-              
+
             return asdf
           } catch (error: any) {
             setLoading(false);
@@ -82,8 +82,22 @@ export const useAuthentication = () => {
             // Actualizar estado con los dos datos
             setUser({ ...res.user, ...moreInfo });
 
-            toast("success", `Inicio de sesión con exito`);
-            await router.push(!redirect ? "/" : redirect);
+
+            if (redirect?.split("/")[3] == "info-empresa" && moreInfo.role.includes("empresa")) {
+              await router.push(`${process.env.NEXT_PUBLIC_DIRECTORY}/empresa` ?? "")
+              toast("success", `Inicio de sesión de empresa con exito `)
+            }
+            if (redirect?.split("/")[3] == "info-empresa" && !moreInfo.role.includes("empresa")) {
+              await router.push(redirect)
+              toast("warning", `Inicio sesión con una cuenta que no es de empresa`)
+            }
+            if (redirect?.split("/")[3] !== "info-empresa") {
+              await router.push(redirect ?? "")
+              toast("success", `Inicio sesión con exito`)
+            }
+            // else {
+            //   await router.push(!redirect ? process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : redirect);
+            // }
           } else {
             toast("error", "aun no está registrado");
             //verificar que firebase me devuelva un correo del usuario
@@ -99,7 +113,7 @@ export const useAuthentication = () => {
       } catch (error) {
         toast("error", "correo o contraseña inválida");
       }
-      setLoading(false);
+      //setLoading(false);
     },
     [redirect, getSessionCookie, router, setLoading, setUser, setUserTemp, toast]
   );

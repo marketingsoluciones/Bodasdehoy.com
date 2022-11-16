@@ -53,9 +53,9 @@ const InfoEmpresas = () => {
           ))}
         </div>
         <div className="mx-auto w-max pt-8">
-          <Link href={"/login?p=empresa"} passHref >
+          <Link href={"/login?d=info-empresa&f=register"} passHref >
             <ButtonComponent>
-              REGISTRATE <strong>GRATIS</strong>
+              REGISTRATE <strong>GRATIS</strong> COMO EMPRESA
             </ButtonComponent>
           </Link>
         </div>
@@ -63,7 +63,7 @@ const InfoEmpresas = () => {
           O si ya tienes una cuenta empresa
         </h3>
         <div className="mx-auto w-max pt-2">
-          <Link href={"/login"} passHref >
+          <Link href={"/login?d=info-empresa"} passHref >
             <ButtonComponent>
               INICIA SESION
             </ButtonComponent>

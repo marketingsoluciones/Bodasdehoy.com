@@ -70,7 +70,7 @@ interface propsFormRegister {
 }
 
 const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stageRegister }) => {
-  const { setUser, user, setUserTemp, userTemp } = AuthContextProvider();
+  const { setUser, user, setUserTemp, userTemp, redirect } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
   const { getSessionCookie } = useAuthentication();
   const toast = useToast()
@@ -164,13 +164,16 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       setUser({ ...UserFirebase, ...moreInfo });
 
       //Redirigir al home
-      await router.push("/");
-      setLoading(false);
       if (userTemp) {
         setUser(userTemp)
         setUserTemp(null)
       }
-      toast("success", "Registro realizado con exito")
+      if (redirect?.split("/")[3] == "info-empresa" && moreInfo.role.includes("empresa")) {
+        await router.push(`${process.env.NEXT_PUBLIC_DIRECTORY}/empresa` ?? "")
+        toast("success", `Registro de Empresa realizado con exito `)
+        setLoading(false);
+      }
+      //toast("success", "Registro realizado con exito")
     } catch (error) {
       console.log(error);
       toast("error", "Ups... hubo un error al realizar el registro")
@@ -234,14 +237,14 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
             }
           })()}
           <div className="flex items-center w-fit col-span-2 gap-6 mx-auto inset-x-0 ">
-            <button
+            {/* <button
               type={"button"}
               disabled={stageRegister === 0}
               onClick={() => setStageRegister(old => old - 1)}
               className=" col-span-2 bg-gray-400  rounded-full px-10 py-2 text-white font-medium mx-auto inset-x-0 hover:bg-tertiary transition"
             >
               Atras
-            </button>
+            </button> */}
             <button
               type={"submit"}
               className=" col-span-2 bg-primary rounded-full px-10 py-2 text-white font-medium mx-auto inset-x-0 hover:bg-tertiary transition"

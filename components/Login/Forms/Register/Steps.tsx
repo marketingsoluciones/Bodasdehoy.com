@@ -1,5 +1,6 @@
 import { Dispatch, FC, MouseEventHandler, SetStateAction, useState } from 'react';
 import { LogoFullColor } from '../../../Icons/';
+import { Providers } from '../../Components';
 import FormRegister from './FormRegister';
 
 /*
@@ -44,8 +45,8 @@ export const FirstStep: FC<propsFirstStep> = ({ value, setStageRegister }) => {
       </div>
       <button
         className={` rounded-full px-10 py-2 text-white font-medium w-max mx-auto inset-x-0 ${select === ""
-            ? "bg-gray-200"
-            : "bg-primary hover:bg-tertiary transition"
+          ? "bg-gray-200"
+          : "bg-primary hover:bg-tertiary transition"
           }`}
         onClick={() => {
           value(select)
@@ -123,12 +124,21 @@ interface propsSecondStep {
   whoYouAre: string;
   stageRegister: number;
   setStageRegister: Dispatch<SetStateAction<number>>
+  setStage: CallableFunction
 }
 export const SecondStep: FC<propsSecondStep> = (props) => {
+  console.log("props.whoYouAre", props.whoYouAre)
   return (
     <div className="gap-4 flex flex-col justify-center items-center w-full">
       <LogoFullColor />
+      <h2 className={`font-light text-tertiary flex items-center text-md `}>
+        Crea tu cuenta de Empresa en Bodasdehoy.com
+      </h2>
       <FormRegister {...props} />
+      <h2 className={`font-light text-tertiary flex gap-2 items-center text-md mt-2`}>
+        Ó
+      </h2>
+      <Providers setStage={props.setStage} />
     </div>
   );
 };

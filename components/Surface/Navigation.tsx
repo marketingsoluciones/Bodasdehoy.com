@@ -187,7 +187,7 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
   const [isHovered, setHovered] = useState<boolean>(false);
   const router = useRouter();
   const HandleClickUser = () => {
-    !Cookies.get("sessionBodas") ? router.push("/login") : router.push("/perfil");
+    !Cookies.get("sessionBodas") ? router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) : router.push("/perfil");
   };
   return (
     <>
@@ -231,7 +231,8 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
               timeout={300}
               classNames={"fade"}
             >
-              <ProfileMenu />
+              {/* <div className="bg-red-500 w-[50px] h-[50px] absolute"></div> */}
+              <ProfileMenu setHovered={setHovered} />
             </CSSTransition>
           </div>
         )}
@@ -240,7 +241,7 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
   );
 };
 
-const ProfileMenu = () => {
+const ProfileMenu: FC<any> = ({ setHovered }) => {
   const { setUser, user } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
   const { _signOut } = useAuthentication()
@@ -267,6 +268,7 @@ const ProfileMenu = () => {
       title: "Cerrar Sesion",
       icon: <UserIcon />,
       onClick: async () => {
+        setHovered(false)
         setLoading(true);
         _signOut()
         setLoading(false);

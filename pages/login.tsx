@@ -28,19 +28,36 @@ const PageLogin: FC = () => {
     console.log(error)
   }
   const r = useRouter()
+  console.log("r?.query", r?.query)
   const { redirect, setRedirect } = AuthContextProvider();
+  const { user, userTemp, setUserTemp } = AuthContextProvider();
+  const [stage, setStage] = useState<keyof typeof Stages>("login");
+  const [fStageRegister, setFStageRegister] = useState(0)
+
   useEffect(() => {
-    if (r?.query?.d === "app") {
+    setRedirect(null)
+  }, []);
+  useEffect(() => {
+    if (r?.query?.d === "app" || r?.query?.d === "") {
       setRedirect(process.env.NEXT_PUBLIC_EVENTSAPP ?? "")
+    }
+    if (r?.query?.d === "info-empresa") {
+      setRedirect(`${process.env.NEXT_PUBLIC_DIRECTORY}/${r?.query?.d}` ?? "")
+      if (r?.query?.f === "register") {
+        setStage("register")
+        setFStageRegister(1)
+      }
+    }
+    if (r?.query?.d !== "app" && r?.query?.d !== "info-empresa" && r?.query?.d !== "") {
+      setRedirect(`${process.env.NEXT_PUBLIC_DIRECTORY}/${r?.query?.d}` ?? "")
     }
   }, [r, setRedirect]);
 
-  const { user, userTemp, setUserTemp } = AuthContextProvider();
-  const [stage, setStage] = useState<keyof typeof Stages>("login");
+
 
   const Stages: Forms = {
     login: <Login setStage={setStage} />,
-    register: <Register setStage={setStage} />,
+    register: <Register fStageRegister={fStageRegister} setStage={setStage} />,
     resetPassword: <ResetPass setStage={setStage} />
   };
 

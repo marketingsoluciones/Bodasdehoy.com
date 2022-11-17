@@ -87,14 +87,20 @@ export const useAuthentication = () => {
               await router.push(`${process.env.NEXT_PUBLIC_DIRECTORY}/empresa` ?? "")
               toast("success", `Inicio de sesión de empresa con exito `)
             }
+            if (redirect?.split("/")[3] !== "info-empresa" && moreInfo.role.includes("empresa")) {
+              await router.push(redirect ? redirect : `${process.env.NEXT_PUBLIC_DIRECTORY}/empresa` ?? "")
+              toast("success", `Inicio sesión con exito`)
+            }
+
             if (redirect?.split("/")[3] == "info-empresa" && !moreInfo.role.includes("empresa")) {
               await router.push(redirect)
               toast("warning", `Inicio sesión con una cuenta que no es de empresa`)
             }
-            if (redirect?.split("/")[3] !== "info-empresa") {
-              await router.push(redirect ?? "")
+            if (redirect?.split("/")[3] !== "info-empresa" && !moreInfo.role.includes("empresa")) {
+              await router.push(redirect ? redirect : process.env.NEXT_PUBLIC_EVENTSAPP ?? "")
               toast("success", `Inicio sesión con exito`)
             }
+
             // else {
             //   await router.push(!redirect ? process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : redirect);
             // }

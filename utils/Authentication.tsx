@@ -82,7 +82,7 @@ export const useAuthentication = () => {
             // Actualizar estado con los dos datos
             setUser({ ...res.user, ...moreInfo });
 
-
+            /////// REDIRECIONES ///////
             if (redirect?.split("/")[3] == "info-empresa" && moreInfo.role.includes("empresa")) {
               await router.push(`${process.env.NEXT_PUBLIC_DIRECTORY}/empresa` ?? "")
               toast("success", `Inicio de sesión de empresa con exito `)
@@ -100,6 +100,7 @@ export const useAuthentication = () => {
               await router.push(redirect ? redirect : process.env.NEXT_PUBLIC_EVENTSAPP ?? "")
               toast("success", `Inicio sesión con exito`)
             }
+            ///////////////////////////
 
             // else {
             //   await router.push(!redirect ? process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : redirect);

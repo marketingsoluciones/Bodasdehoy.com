@@ -37,7 +37,9 @@ const PageLogin: FC = () => {
   useEffect(() => {
     setRedirect(null)
   }, []);
+
   useEffect(() => {
+    /////// REDIRECIONES ///////
     if (r?.query?.d === "app") {
       setRedirect(process.env.NEXT_PUBLIC_EVENTSAPP ?? "")
     }
@@ -51,6 +53,7 @@ const PageLogin: FC = () => {
     if (r?.query?.d !== "app" && r?.query?.d !== "info-empresa" && r?.query?.d !== "") {
       setRedirect(`${process.env.NEXT_PUBLIC_DIRECTORY}/${r?.query?.d}` ?? "")
     }
+    ///////////////////////////    
   }, [r, setRedirect]);
 
 

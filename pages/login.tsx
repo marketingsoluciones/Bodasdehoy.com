@@ -28,7 +28,6 @@ const PageLogin: FC = () => {
     console.log(error)
   }
   const r = useRouter()
-  console.log("r?.query", r?.query)
   const { redirect, setRedirect } = AuthContextProvider();
   const { user, userTemp, setUserTemp } = AuthContextProvider();
   const [stage, setStage] = useState<keyof typeof Stages>("login");

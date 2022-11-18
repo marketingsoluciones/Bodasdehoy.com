@@ -35,7 +35,6 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
 };
 
 export const Register: FC<propsLogin> = ({ setStage, fStageRegister }) => {
-  console.log("fStageRegister", fStageRegister)
   const [whoYouAre, setWhoYouAre] = useState<string>(fStageRegister == 1 ? "empresa" : "");
   const [stageRegister, setStageRegister] = useState(fStageRegister)
   return (

@@ -247,7 +247,7 @@ const ReviewComponent: FC<propsReviewComponent> = ({
             </span>
           )
         ) : (
-          <ButtonComponent onClick={() => router.replace("/login")}>
+            <ButtonComponent onClick={() => router.replace(`/login?d=${router.asPath.slice(1, router.asPath.length)}`)}>
             Iniciar sesión
           </ButtonComponent>
         )}

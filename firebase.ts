@@ -40,10 +40,9 @@ const FacebookProvider = new FacebookAuthProvider();
 const AppleProvidor = () => {
   try {
     const provider = new OAuthProvider('apple.com');
-    console.log("entro", provider)
     return provider
   } catch (error) {
-    console.log("123", error)
+    console.log("error 1504", "AppleProvidor en firebase.ts", error)
   }
 }
 

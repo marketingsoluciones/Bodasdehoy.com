@@ -16,22 +16,25 @@ import { Sidebar } from "./";
 import { AuthContextProvider, ChatContextProvider } from "../../context";
 import Link from "next/link";
 import { useToast } from '../../hooks/useToast';
+import { useRouter } from "next/router";
 
 export const NavigationMobile = () => {
+  const router = useRouter();
   const [showSidebar, setShowSidebar] = useState(false);
   const { user } = AuthContextProvider();
-  const {setShow, show} = ChatContextProvider()
+  const { setShow, show } = ChatContextProvider()
   const toast = useToast()
   interface button {
     icon: any;
     route: string;
   }
   const buttons: button[] = [
-    { icon: <img src="/hogar.png" alt="home" className="w-8 h-8" />, /* <HomeIcon className="w-9 h-9" /> */
-      route: "/" 
+    {
+      icon: <img src="/hogar.png" alt="home" className="w-8 h-8" />, /* <HomeIcon className="w-9 h-9" /> */
+      route: "/"
     },
     {
-      icon: <img src="/idea.png" alt="bombilla" className="w-8 h-8" /> , /* <LightBulb className="w-10 h-10" /> */
+      icon: <img src="/idea.png" alt="bombilla" className="w-8 h-8" />, /* <LightBulb className="w-10 h-10" /> */
       route: "/magazine",
     },
     {
@@ -49,7 +52,7 @@ export const NavigationMobile = () => {
         ))}
 
         <button onClick={() => {
-          if(user){
+          if (user) {
             setShow(!show)
           } else {
             toast("warning", "Debes iniciar sesión para ver tus chats")
@@ -60,12 +63,12 @@ export const NavigationMobile = () => {
         </button>
 
         {!user ? (
-            <Link href={"/login"} passHref>
-              <button>
-                {/* <UserIcon className="w-8 h-8" /> */}
-                <img src="/perfil-del-usuario.png" alt="usuario" className="w-8 h-8" />
-              </button>
-            </Link>
+          <Link href={`/login?d=${router.asPath.slice(1, router.asPath.length)}`} passHref>
+            <button>
+              {/* <UserIcon className="w-8 h-8" /> */}
+              <img src="/perfil-del-usuario.png" alt="usuario" className="w-8 h-8" />
+            </button>
+          </Link>
         ) : (
           <Link href={"/configuracion"} passHref>
             <button>

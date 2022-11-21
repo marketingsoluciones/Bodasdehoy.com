@@ -12,6 +12,7 @@ import {
   ChatContextProvider,
 } from "../../context";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const ChatComponentView: FC<business> = ({
   contactName,
@@ -30,6 +31,8 @@ const ChatComponentView: FC<business> = ({
   const { setChats, setConversation, setShow, show } = ChatContextProvider();
   const [IDChat, setIDChat] = useState<string | null>(null)
   const { user } = AuthContextProvider()
+
+  const router = useRouter();
 
   const fetchIHaveChat = async () => {
     const result = await fetchApi({
@@ -189,7 +192,7 @@ const ChatComponentView: FC<business> = ({
                 <Isologo className="w-4 h-4" />
                 Para enviar un mensaje
               </span>
-              <Link href={`/login`} passHref>
+              <Link href={`/login?d=${router.asPath.slice(1, router.asPath.length)}`} passHref>
                 <button className="flex flex-col items-center text-white bg-primary w-full mt-2 text-sm p-2 flex justify-center rounded-lg hover:opacity-90 transition hover:text-gray-100 gap-1">
                   <span>Debes iniciar sesión</span>
                 </button>

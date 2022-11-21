@@ -127,7 +127,6 @@ interface propsSecondStep {
   setStage: CallableFunction
 }
 export const SecondStep: FC<propsSecondStep> = (props) => {
-  console.log("props.whoYouAre", props.whoYouAre)
   return (
     <div className="gap-4 flex flex-col justify-center items-center w-full">
       <LogoFullColor />

@@ -28,7 +28,6 @@ const PageLogin: FC = () => {
     console.log(error)
   }
   const r = useRouter()
-  console.log("r?.query", r?.query)
   const { redirect, setRedirect } = AuthContextProvider();
   const { user, userTemp, setUserTemp } = AuthContextProvider();
   const [stage, setStage] = useState<keyof typeof Stages>("login");
@@ -37,7 +36,9 @@ const PageLogin: FC = () => {
   useEffect(() => {
     setRedirect(null)
   }, []);
+
   useEffect(() => {
+    /////// REDIRECIONES ///////
     if (r?.query?.d === "app") {
       setRedirect(process.env.NEXT_PUBLIC_EVENTSAPP ?? "")
     }
@@ -51,6 +52,7 @@ const PageLogin: FC = () => {
     if (r?.query?.d !== "app" && r?.query?.d !== "info-empresa" && r?.query?.d !== "") {
       setRedirect(`${process.env.NEXT_PUBLIC_DIRECTORY}/${r?.query?.d}` ?? "")
     }
+    ///////////////////////////    
   }, [r, setRedirect]);
 
 

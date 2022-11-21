@@ -163,7 +163,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       // Almacenar en contexto USER con toda la info
       setUser({ ...UserFirebase, ...moreInfo });
 
-      //Redirigir al home
+      /////// REDIRECIONES ///////
       if (userTemp) {
         setUser(userTemp)
         setUserTemp(null)
@@ -173,6 +173,21 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
         toast("success", `Registro de Empresa realizado con exito `)
         setLoading(false);
       }
+      if (redirect?.split("/")[3] !== "info-empresa" && moreInfo.role.includes("empresa")) {
+        await router.push(redirect ? redirect : `${process.env.NEXT_PUBLIC_DIRECTORY}/empresa` ?? "")
+        toast("success", `Inicio sesión con exito`)
+      }
+
+      if (redirect?.split("/")[3] == "info-empresa" && !moreInfo.role.includes("empresa")) {
+        await router.push(redirect)
+        toast("warning", `Inicio sesión con una cuenta que no es de empresa`)
+      }
+      if (redirect?.split("/")[3] !== "info-empresa" && !moreInfo.role.includes("empresa")) {
+        await router.push(redirect ? redirect : process.env.NEXT_PUBLIC_EVENTSAPP ?? "")
+        toast("success", `Inicio sesión con exito`)
+      }
+      ///////////////////////////
+
       //toast("success", "Registro realizado con exito")
     } catch (error) {
       console.log(error);

@@ -102,7 +102,7 @@ const PageLogin: FC = () => {
   return (
     <>
       <div className="w-screen fixed h-full top-0 left-0 md:grid z-30 grid-cols-5 ">
-        <div className="bg-white w-full h-full col-span-3 relative flex items-center justify-center overflow-y-auto ">
+        <div className="bg-white w-full h-full col-span-3 relative flex items-center justify-center  ">
           <ButtonClose onClick={() => {
             setTimeout(() => {
               router.push(!redirect ? "/" : redirect)

@@ -41,7 +41,7 @@ export const api: Fetching = {
     },
 
     socketIO: ({ token }: { token: string }) => {
-        const socket = io(`https://api.bodasdehoy.com`, {
+        const socket = io(process.env.NEXT_PUBLIC_BASE_URL ?? "", {
             auth: {
                 token: `Bearer ${token}`
             }

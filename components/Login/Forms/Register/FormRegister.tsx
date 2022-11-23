@@ -11,7 +11,6 @@ import { ValidationSchemaRegister } from "./ValidationRegister";
 import { GraphQL, fetchApi, queries } from "../../../../utils/Fetching";
 import SelectFieldCoutries from "../../../Inputs/SelectFieldCoutries";
 import { auth } from "../../../../firebase";
-import { setCookie } from '../../../../utils/Cookies';
 import InputCity from "../../../Inputs/InputCity";
 import { useAuthentication } from '../../../../utils/Authentication';
 import { useToast } from '../../../../hooks/useToast';

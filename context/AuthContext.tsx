@@ -78,7 +78,7 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
         if (!sessionCookie) {
           setUser(null)
         }
-      }, 200);
+      }, 800);
     });
   }, []);
 

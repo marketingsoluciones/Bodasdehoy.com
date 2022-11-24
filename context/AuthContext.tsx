@@ -49,34 +49,36 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user: any) => {
-      const sessionCookie = Cookies.get("sessionBodas");
-      console.info("Verificando cookie", sessionCookie);
-      if (sessionCookie) {
-        console.info("Tengo cookie de sesion");
-        if (user) {
-          console.info("Tengo user de contexto firebase");
-          const moreInfo = await fetchApi({
-            query: queries.getUser,
-            variables: { uid: user?.uid },
-          });
-          moreInfo && console.info("Tengo datos de la base de datos");
-          setUser({ ...user, ...moreInfo });
-          console.info("Guardo datos en contexto react");
-        } else {
-          console.info("NO tengo user de contexto de firebase");
-          const { customToken } = await fetchApi({
-            query: queries.authStatus,
-            variables: { sessionCookie },
-          });
-          console.info("Llamo con mi sessionCookie para traerme customToken");
-          console.info("Custom token", customToken)
-          customToken && signInWithCustomToken(auth, customToken);
-          console.info("Hago sesion con el custom token");
+      setTimeout(async () => {
+        const sessionCookie = Cookies.get("sessionBodas");
+        console.info("Verificando cookie", sessionCookie);
+        if (sessionCookie) {
+          console.info("Tengo cookie de sesion");
+          if (user) {
+            console.info("Tengo user de contexto firebase");
+            const moreInfo = await fetchApi({
+              query: queries.getUser,
+              variables: { uid: user?.uid },
+            });
+            moreInfo && console.info("Tengo datos de la base de datos");
+            setUser({ ...user, ...moreInfo });
+            console.info("Guardo datos en contexto react");
+          } else {
+            console.info("NO tengo user de contexto de firebase");
+            const { customToken } = await fetchApi({
+              query: queries.authStatus,
+              variables: { sessionCookie },
+            });
+            console.info("Llamo con mi sessionCookie para traerme customToken");
+            console.info("Custom token", customToken)
+            customToken && signInWithCustomToken(auth, customToken);
+            console.info("Hago sesion con el custom token");
+          }
         }
-      }
-      if (!sessionCookie) {
-        setUser(null)
-      }
+        if (!sessionCookie) {
+          setUser(null)
+        }
+      }, 200);
     });
   }, []);
 

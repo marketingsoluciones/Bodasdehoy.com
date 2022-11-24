@@ -74,6 +74,9 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
           console.info("Hago sesion con el custom token");
         }
       }
+      if (!sessionCookie) {
+        setUser(null)
+      }
     });
   }, []);
 

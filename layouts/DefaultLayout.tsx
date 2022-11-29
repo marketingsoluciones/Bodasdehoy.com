@@ -7,6 +7,7 @@ import { NavigationMobile } from "../components/Surface";
 import { FC } from "react";
 import Head from "next/head";
 import Script from "next/script";
+import { ButtonMessages } from "../components/ButtonMessages";
 const DynamicAuthProvider = dynamic((): any =>
   import("../context").then((mod) => mod.AuthProvider)
 );
@@ -50,7 +51,8 @@ const DefaultLayout: FC = ({ children }) => {
                   <div className="bg-color-base relative min-h-screen w-full h-full">
                     <DynamicSidebarProvider>
                       <ButtonCrearEmpresa />
-                      <ButtonEmpezar/>
+                      {/* <ButtonMessages /> */}
+                      <ButtonEmpezar />
                       <DynamicNavigation />
                       <NavigationMobile />
                       <main className="w-full pt-20">

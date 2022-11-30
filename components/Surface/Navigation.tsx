@@ -43,6 +43,7 @@ import {
 import { createURL } from "../../utils/UrlImage";
 import { capitalize } from "../../utils/Capitalize";
 import Cookies from "js-cookie";
+import { Notification } from "./Notification";
 
 
 export const Navigation: FC = () => {
@@ -213,28 +214,31 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
             </span>
           </>
         ) : (
-          <div
-            className=" border-gray-100 border-l text-gray-500 pl-3 flex items-center gap-1 z-40"
-            onMouseOver={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
-          >
-            <img
-              alt={user?.displayName ?? "nombre"}
-              src={user.photoURL ?? "/placeholder/user.png"}
-              className="w-10 h-10 border border-primary rounded-full cursor-pointer"
-            />
-            <ArrowIcon className="w-4 h-4 rotate-90 transform cursor-pointer" />
-            <CSSTransition
-              in={isHovered}
-              unmountOnExit
-              mountOnEnter
-              timeout={300}
-              classNames={"fade"}
+          <>
+            <Notification onClick={() => { alert("aqui") }} valir={true} value={9} />
+            <div
+              className="border-gray-100 border-l text-gray-500 pl-3 flex items-center gap-1 z-40"
+              onMouseOver={() => setHovered(true)}
+              onMouseLeave={() => setHovered(false)}
             >
-              {/* <div className="bg-red-500 w-[50px] h-[50px] absolute"></div> */}
-              <ProfileMenu setHovered={setHovered} />
-            </CSSTransition>
-          </div>
+              <img
+                alt={user?.displayName ?? "nombre"}
+                src={user.photoURL ?? "/placeholder/user.png"}
+                className="w-10 h-10 border border-primary rounded-full cursor-pointer"
+              />
+              <ArrowIcon className="w-4 h-4 rotate-90 transform cursor-pointer" />
+              <CSSTransition
+                in={isHovered}
+                unmountOnExit
+                mountOnEnter
+                timeout={300}
+                classNames={"fade"}
+              >
+                {/* <div className="bg-red-500 w-[50px] h-[50px] absolute"></div> */}
+                <ProfileMenu setHovered={setHovered} />
+              </CSSTransition>
+            </div>
+          </>
         )}
       </div>
     </>

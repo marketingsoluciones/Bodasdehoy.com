@@ -8,7 +8,6 @@ import { GraphQL, fetchApi, queries } from '../../../utils/Fetching';
 import { useToast } from '../../../hooks/useToast';
 import { AuthContextProvider, LoadingContextProvider } from "../../../context";
 import { auth } from "../../../firebase";
-import { setCookie } from "../../../utils/Cookies";
 import { useAuthentication } from '../../../utils/Authentication';
 import Desarrillo from '../../../pages/Desarrollo/index'
 

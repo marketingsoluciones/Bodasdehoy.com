@@ -5,10 +5,12 @@ import { fetchApi, queries } from "../../../utils/Fetching";
 
 export const MultiMenu : FC <{title: string}> = ({title, children}) => {
     return (
-        <div className="w-[90%] mx-auto inset-x-0 bg-color-base shadow-md px-10 py-4 h-auto absolute bottom-0 left-0 transform translate-y-full z-10 rounded-b-xl">
+      <div className=" w-[90%] pt-3 absolute left-0 z-40 ">
+        <div className="w-[90%] mx-auto inset-x-0 bg-color-base shadow-md px-10 py-4 h-auto absolute bottom-0 left-0 transform translate-y-full rounded-b-xl">
             <h2 className="text-primary font-medium tracking-wider uppercase text-lg py-2">{title}</h2>
             {children}
         </div>
+      </div>
     )
 }
 

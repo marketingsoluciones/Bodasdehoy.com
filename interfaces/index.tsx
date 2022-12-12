@@ -274,3 +274,8 @@ interface online {
   status: boolean
   dateConection: number
 }
+
+export interface propsModuleChat {
+  setConversation: any;
+  data: Chat | null;
+}

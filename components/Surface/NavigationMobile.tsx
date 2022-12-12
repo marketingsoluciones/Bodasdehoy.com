@@ -1,18 +1,5 @@
-import React, { ReactNode, useState, cloneElement } from "react";
-import {
-  BurgerIcon,
-  CompanyIcon,
-  CrossIcon,
-  HomeIcon,
-  LightBulb,
-  MessageIcon,
-  PlusCircle,
-  UserIcon,
-} from "../Icons";
-import Image from "next/image";
-import Logo from "../../public/logo.webp";
-import { Icons } from "./Navigation";
-import { Sidebar } from "./";
+import React, {  useState, cloneElement } from "react";
+import {PlusCircle} from "../Icons";
 import { AuthContextProvider, ChatContextProvider } from "../../context";
 import Link from "next/link";
 import { useToast } from '../../hooks/useToast';
@@ -22,7 +9,7 @@ export const NavigationMobile = () => {
   const router = useRouter();
   const [showSidebar, setShowSidebar] = useState(false);
   const { user } = AuthContextProvider();
-  const { setShow, show } = ChatContextProvider()
+  const { setShow, show, chats } = ChatContextProvider()
   const toast = useToast()
   interface button {
     icon: any;
@@ -52,11 +39,15 @@ export const NavigationMobile = () => {
         ))}
 
         <button onClick={() => {
-          if (user) {
-            setShow(!show)
-          } else {
-            toast("warning", "Debes iniciar sesión para ver tus chats")
-          }
+          //if (user) {
+          setShow(!show)
+          console.log(12345, chats.results.find(item => item.title === "Bodasdehoy.com"))
+          // if (chats.total==1) {
+
+          // }
+          //} else {
+          //  toast("warning", "Debes iniciar sesión para ver tus chats")
+          //}
         }}>
           {/* <MessageIcon className="w-8 h-8" /> */}
           <img src="/chat.png" alt="chats" className="w-9 h-9" />

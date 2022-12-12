@@ -12,7 +12,7 @@ import { AuthContextProvider } from "../context";
 // Import Swiper styles
 import 'swiper/css';
 import "swiper/css/bundle";
-import {DefaultSeo} from 'next-seo'
+import { DefaultSeo } from 'next-seo'
 import SEO from '../next-seo.config'
 
 

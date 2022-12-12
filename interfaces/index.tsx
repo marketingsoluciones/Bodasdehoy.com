@@ -3,17 +3,17 @@ import { User } from "./FirebaseInterface"
 
 //  @@Categories Interfaces de Categorias de empresas / posts
 export interface fetchCategory {
-  categorie : category
+  categorie: category
   subCategories: category[]
 }
 
 export type subCategory = {
   _id: string
   title: string
-  imgMiniatura : image
-  imgBanner : image
-  slug : string
-  description : string
+  imgMiniatura: image
+  imgBanner: image
+  slug: string
+  description: string
   characteristics?: characteristicSubCategory[]
   heading: string
 }
@@ -22,13 +22,13 @@ export type category = {
   _id: string
   title: string
   heading: string
-  imgMiniatura : image
-  imgBanner : image
-  icon : image
-  slug : string
-  description : string
-  subCategories : subCategory[]
-  
+  imgMiniatura: image
+  imgBanner: image
+  icon: image
+  slug: string
+  description: string
+  subCategories: subCategory[]
+
 }
 
 // @@Business Interfaces de business / listing / empresas
@@ -63,9 +63,9 @@ export interface business {
   subCategories: subCategory[]
   questionsAndAnswers: questionsAndAnswers[]
   accessories: string[]
-  accessoriesList : character[]
+  accessoriesList: character[]
   services: string[]
-  servicesList : character[]
+  servicesList: character[]
   business_hours: dias
   photos: image[]
   imgMiniatura: image
@@ -76,10 +76,10 @@ export interface business {
   createdAt: number
   updatedAt: number
   characteristics: characteristic[]
-  reviews : review[],
-  review : number,
-  reviewsT : reviewsT
-    
+  reviews: review[],
+  review: number,
+  reviewsT: reviewsT
+
 }
 
 export type reviewsT = {
@@ -95,22 +95,22 @@ export type review = {
   average: number
   comment: string
   answer: string
-  imgCarrusel : image[]
-  user : UserMax
+  imgCarrusel: image[]
+  user: UserMax
   reference: string
-  createdAt : number
+  createdAt: number
 }
 
 enum TypesCoordinates {
-  "Point" 
+  "Point"
 }
 export type coordinates = {
-  type : keyof typeof TypesCoordinates,
+  type: keyof typeof TypesCoordinates,
   coordinates: number[]
 }
 
 export type characteristic = {
-  characteristic : itemCharacteristic
+  characteristic: itemCharacteristic
   items: character[]
 }
 
@@ -120,13 +120,13 @@ export interface characteristicSubCategory {
 }
 
 export interface itemCharacteristic {
-  _id : string
+  _id: string
   title: string
   items: character[]
 }
 
 export type character = {
-  _id : string
+  _id: string
   title: string
   clicked?: boolean
 }
@@ -136,8 +136,8 @@ export interface questionsAndAnswers {
   answers: string
 }
 
-type question =  {
-  _id : string
+type question = {
+  _id: string
   title: string
 }
 
@@ -174,7 +174,7 @@ export interface Post {
   permaLink: string
   slug: string
   seoDescription: string
-  categories: category []
+  categories: category[]
   subCategories: subCategory[]
   tags: string[]
   imgCarrusel: image[]
@@ -206,7 +206,7 @@ export interface OnePost {
   permaLink: string
   slug: string
   seoDescription: string
-  categories: category []
+  categories: category[]
   subCategories: subCategory[]
   tags: string[]
   imgCarrusel: image[]
@@ -222,7 +222,7 @@ export interface OnePost {
 
 // @@Fetching Interfaces
 
- export interface SearchCriteria {
+export interface SearchCriteria {
   slug: string
   categories: string[]
   groupSubCategories: string[]
@@ -231,17 +231,17 @@ export interface OnePost {
   status: string
   createdAt: number
   updatedAt: number
- }
+}
 
- export type geolocation = {
-  lat : number
-  lng : number
+export type geolocation = {
+  lat: number
+  lng: number
 }
 
 
 // @CHATS Interfaces de chats
 export interface Chat {
-  _id : string
+  _id: string
   addedes: addedes[]
   messages: messageChat[]
   createdAt: number
@@ -259,18 +259,18 @@ interface addedes {
 }
 
 export interface messageChat {
-  type: string
-  emitUserUid: string
-  message: string
-  fileUrl: string
-  createdAt: number
-  received: boolean
-  read: boolean
-  deletedEmit: boolean
-  deletedReceiv: boolean
+  type?: string
+  emitUserUid?: string
+  message?: string
+  fileUrl?: string
+  createdAt?: number
+  received?: boolean
+  read?: boolean
+  deletedEmit?: boolean
+  deletedReceiv?: boolean
 }
 
 interface online {
-  status : boolean
+  status: boolean
   dateConection: number
 }

@@ -77,7 +77,7 @@ export const Navigation: FC = () => {
   return (
     <>
       <header className="container max-w-screen-lg 2xl:max-w-screen-xl w-full px-3 sm:px-0 mx-auto inset-x-0 mt-3 absolute hidden sm:block ">
-        <div className="bg-white rounded-full h-16 py-3 md:px-10 z-30 px-5 md:px-0 mx-auto inset-x-0  flex items-center relative justify-between container relative">
+        <div className="bg-white rounded-full h-16 py-3 md:px-10 z-30 px-5 md:px-0 mx-auto inset-x-0  flex items-center  justify-between container relative">
           {isSearch && (
             <SearchNavigation setSearch={setSearch} isSearch={isSearch} />
           )}

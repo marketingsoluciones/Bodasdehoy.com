@@ -15,7 +15,7 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
 
   return (
     <>
-      <div className="overflow-y-auto h-full">
+      <div className=" h-full">
         <div className="flex flex-col items-center justify-center w-full">
           <LogoFullColor className="w-auto h-10" />
         </div>

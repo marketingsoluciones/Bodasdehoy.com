@@ -28,6 +28,20 @@ export const BellIcon: FC<PropsIcon> = (props) => {
   );
 };
 
+export const ArrowLeft: FC<PropsIcon> = (props) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" {...props}>
+      <path
+        color="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+    </svg>
+
+
+  )
+}
+
 export const ChatIcon: FC<PropsIcon> = (props) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={0.5} stroke="currentColor" {...props}>

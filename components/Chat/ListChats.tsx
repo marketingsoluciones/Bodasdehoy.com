@@ -1,5 +1,7 @@
-import { Dispatch, FC, SetStateAction, useEffect } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { api } from "../../api";
 import { AuthContextProvider, ChatContextProvider } from "../../context";
+import { ResultFetchChats } from "../../context/ChatContext";
 import { Chat } from "../../interfaces";
 import { queries } from "../../utils/Fetching";
 import { LoadingItem } from "../Loading";
@@ -12,16 +14,10 @@ interface propsListChats {
   setShow: Dispatch<SetStateAction<boolean>>;
 }
 export const ListChats: FC<propsListChats> = ({ show, setShow }) => {
+  const [activeSearch, setActiveSearch] = useState(false);
+  const [dataSearch, setDataSearch] = useState<ResultFetchChats>();
   const { user } = AuthContextProvider();
-  const {
-    loadingChats,
-    chats,
-    setChats,
-    conversation,
-    setConversation,
-    fetch,
-    fetchy,
-  } = ChatContextProvider();
+  const { loadingChats, chats, setChats, conversation, setConversation, fetch, fetchy } = ChatContextProvider();
 
   useEffect(() => {
     if (conversation?.state) {
@@ -33,37 +29,53 @@ export const ListChats: FC<propsListChats> = ({ show, setShow }) => {
     show && fetch();
   }, [show]);
 
-  const handleChangeSearch = (value: string) => {
-    fetchy({
-      query: queries.getChats,
-      variables: { uid: user?.uid, text: value, skip: 0, limit: 5 },
-    });
+  const handleChangeSearch = async (value: string) => {
+    const query = queries.getChats
+    const variables = { uid: user?.uid, text: value, skip: 0, limit: 5 }
+    const { data: { data } } = await api.graphql({ query, variables })
+    setDataSearch(data?.getChats)
   };
   return (
     <>
-      <SearchChat onChange={(value: string) => handleChangeSearch(value)} />
+      <SearchChat onChange={(value: string) => handleChangeSearch(value)} activeSearch={activeSearch} setActiveSearch={setActiveSearch} />
       {!loadingChats ? (
         <div
           id={"listConversation"}
           className="flex flex-col overflow-auto h-[19rem] no-scrollbar"
         >
-          {chats?.results?.length > 0 ? chats?.results?.map((item: Chat, idx: number) => (
-            <ConversationItem
-              key={idx}
-              {...item}
-              onClick={() =>
-                setConversation({
-                  state: true,
-                  data: item,
-                })
-              }
-            />
-          ))
-            : (
-              <div className="text-primary h-full w-full flex items-center justify-center top-0 left-0 bg-white">
-                <EmptyComponent text={"No hay chats"} />
-              </div>
-            )}
+          {
+            !activeSearch ?
+              chats?.results?.length > 0 ? chats?.results?.map((item: Chat, idx: number) => (
+                <ConversationItem
+                  key={idx}
+                  {...item}
+                  onClick={() =>
+                    setConversation({
+                      state: true,
+                      data: item,
+                    })
+                  }
+                />
+              ))
+                : (
+                  <div className="text-primary h-full w-full flex items-center justify-center top-0 left-0 bg-white">
+                    <EmptyComponent text={"No hay chats"} />
+                  </div>
+                )
+              :
+              dataSearch && dataSearch?.results?.length > 0 && dataSearch?.results?.map((item: Chat, idx: number) => (
+                <ConversationItem
+                  key={idx}
+                  {...item}
+                  onClick={() =>
+                    setConversation({
+                      state: true,
+                      data: item,
+                    })
+                  }
+                />
+              ))
+          }
         </div>
       ) : (
         <div className="text-primary h-full w-full flex items-center justify-center top-0 left-0 bg-white">

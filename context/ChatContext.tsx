@@ -11,7 +11,7 @@ import {
 import useFetch from '../hooks/useFetch';
 
 
-interface ResultFetchChats {
+export interface ResultFetchChats {
   total: number | null;
   results: Chat[];
 }

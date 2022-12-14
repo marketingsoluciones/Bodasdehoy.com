@@ -30,9 +30,7 @@ const ChatComponent = () => {
   return (
     // user && (
     <>
-      <div ref={wrapperRef}
-        className={`sm:w-96 sm:h-96 w-full h-full chat bottom-0 sm:block bg-white shadow-lg fixed sm:right-5 z-40 sm:sm:rounded-t-xl ${show ? "translate-y-0" : "sm:translate-y-[90%] translate-y-[100%]"} transition duration-500`}
-      >
+      <div ref={wrapperRef} className={`sm:w-96 sm:h-96 w-full h-full chat bottom-0 sm:block bg-white shadow-lg fixed sm:right-5 z-40 sm:sm:rounded-t-xl ${show ? "translate-y-0" : "sm:translate-y-[90%] translate-y-[100%]"} transition duration-500`}>
         <div className="w-full h-[87%] md:h-full relative sm:rounded-t-xl">
           <div
             className="bg-primary p-3 w-full h-10 flex justify-between cursor-pointer sm:rounded-t-xl z-40 "

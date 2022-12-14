@@ -29,10 +29,18 @@ export const ListChats: FC<propsListChats> = ({ show, setShow }) => {
     show && fetch();
   }, [show]);
 
+  useEffect(() => {
+    if (!activeSearch) {
+      setDataSearch(undefined)
+    }
+  }, [activeSearch, dataSearch]);
+
+
   const handleChangeSearch = async (value: string) => {
     const query = queries.getChats
     const variables = { uid: user?.uid, text: value, skip: 0, limit: 5 }
     const { data: { data } } = await api.graphql({ query, variables })
+    console.log(23456789, "ejecuta setDataSearch", "value:", value, "activeSearch", activeSearch)
     setDataSearch(data?.getChats)
   };
   return (

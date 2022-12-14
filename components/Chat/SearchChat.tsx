@@ -38,7 +38,8 @@ export const SearchChat: FC<propsSearchChat> = ({ onChange, activeSearch, setAct
             placeholder="Buscar chat"
             value={value}
             onChange={handleChange}
-            onFocus={() => { setActiveSearch(!activeSearch) }}
+            onFocus={() => { setActiveSearch(true) }}
+            autoComplete="off"
             className="w-full h-8 pl-2 text-sm rounded-md focus:outline-none border-b border-color-base"
           />
         </div>

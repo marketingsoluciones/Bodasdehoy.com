@@ -22,7 +22,7 @@ export const MessageItem: FC<Partial<propsMessageItem>> = ({
     >
       <p
         className={`p-2 ${isSender ? "bg-primary" : "bg-gray-400"
-          } rounded-md text-xs text-white cursor-pointer`}
+          } rounded-md text-xs text-white`}
         onClick={handleClick}
       >
         {message}

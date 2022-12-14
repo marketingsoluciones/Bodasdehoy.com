@@ -75,7 +75,7 @@ export const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
 
   return (
     <>
-      <div className=" flex-col p-3 h-full absolute top-10 left-0 w-full z-10 bg-white sm:rounded-t-xl ">
+      <div className="flex-col h-full absolute top-10 left-0 w-full z-10 bg-white sm:rounded-t-xl ">
         <HeaderChat data={data} setConversation={setConversation} />
         {/* BODY */}
         <div

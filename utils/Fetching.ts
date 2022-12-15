@@ -124,6 +124,7 @@ type queries = {
   signOut: string
   singleUpload: string;
   getAllLocalities: string;
+  getScraperMetaData: string;
 };
 
 export const queries: queries = {
@@ -1071,6 +1072,25 @@ export const queries: queries = {
         total
         location
       }
+    }
+  }`,
+  getScraperMetaData: `query ($url: String){
+    getScraperMetaData(
+      url: $url
+    ){
+      title
+      description
+      language
+      type
+      url
+      modified
+      email
+      twitter
+      facebook
+      image
+      icon
+      video
+      audio
     }
   }`,
 };

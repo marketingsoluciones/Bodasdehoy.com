@@ -60,7 +60,7 @@ export const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
         {/* BODY */}
         <div
           ref={refBoxMsg}
-          className="moduleChat w-full flex flex-col gap-5 overflow-auto px-5"
+          className="moduleChat w-full flex flex-col overflow-auto px-5"
         >
           {!loading ? (
             // @ts-ignore

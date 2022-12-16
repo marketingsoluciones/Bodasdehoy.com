@@ -12,14 +12,14 @@ interface propsInputChat {
 }
 
 type message = {
-  language: string,
-  audio: string,
-  video: string,
-  image: string,
-  title: string,
-  description: string,
-  content: string,
-  url: string
+  language?: string,
+  audio?: string,
+  video?: string,
+  image?: string,
+  title?: string,
+  description?: string,
+  message?: string,
+  url?: string
 }
 
 export const InputChat: FC<propsInputChat> = ({ value, setValue, data }) => {
@@ -32,15 +32,16 @@ export const InputChat: FC<propsInputChat> = ({ value, setValue, data }) => {
   const fetch = async (url: string) => {
     console.log("haciendo fetch")
     const resp = await fetchApi({ query: queries.getScraperMetaData, variables: { url: url } })
-    setMessage(resp)
+    setMessage({ ...message, ...resp })
   }
   useEffect(() => {
-    console.log(123, message)
+    console.log(message)
   }, [message])
 
 
   useEffect(() => {
     if (mount) {
+      setMessage({ message: value })
       const valueSplit = value.split(" ")
       const url = valueSplit.filter((element: any) => element.toLowerCase().includes("https:"))[0]
       const regex = new RegExp(/^[a-zA-Z0-9][a-zA-Z0-9-_:/?#=]{0,61}[a-zA-Z0-9]{0,1}\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{1,30}\.[a-zA-Z]{2,3})/);
@@ -54,6 +55,7 @@ export const InputChat: FC<propsInputChat> = ({ value, setValue, data }) => {
   // Controlador de input mensaje
   const handleChangeInput = (e: any) => {
     setValue(e.target.value);
+    setMessage({ message: e.target.value })
   };
 
   // Al enviar el mensaje
@@ -66,7 +68,7 @@ export const InputChat: FC<propsInputChat> = ({ value, setValue, data }) => {
         receiver: data?.addedes,
         data: {
           type: type,
-          message: value,
+          ...message
         },
       });
       setValue("");

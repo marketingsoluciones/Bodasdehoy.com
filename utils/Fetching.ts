@@ -415,6 +415,13 @@ export const queries: queries = {
         type
         emitUserUid
         message
+        language
+        audio
+        video
+        image
+        title
+        description
+        url
         fileUrl
         createdAt
         received
@@ -448,6 +455,13 @@ export const queries: queries = {
           type
           emitUserUid
           message
+          language
+          audio
+          video
+          image
+          title
+          description
+          url
           fileUrl
           createdAt
           received

@@ -263,6 +263,13 @@ export interface messageChat {
   emitUserUid?: string
   message?: string
   fileUrl?: string
+  language?: string
+  audio?: string
+  video?: string
+  image?: string
+  title?: string
+  description?: string
+  url?: string
   createdAt?: number
   received?: boolean
   read?: boolean

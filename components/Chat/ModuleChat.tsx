@@ -17,7 +17,7 @@ export const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
     variables: { IDChat: data?._id, skip: skipMsg, limit: limitMsg },
   }
   const [messages, setMessages, loading, error, fetch] = useFetch(initialQuery);
-  const { user } = AuthContextProvider();
+
   const { socket } = SocketContextProvider();
   const [value, setValue] = useState("");
 
@@ -34,6 +34,11 @@ export const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
       });
     }
   }, [refBoxMsg, messages, loading]);
+
+
+  useEffect(() => {
+    console.log(messages?.messages)
+  }, [messages]);
 
   // Socket para escuchar evento(ID Chat) para recibir mensajes
   const handleSocket = (data: any) => {
@@ -60,15 +65,14 @@ export const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
         {/* BODY */}
         <div
           ref={refBoxMsg}
-          className="moduleChat w-full flex flex-col overflow-auto px-5"
+          className="moduleChat w-full h-full flex flex-col overflow-auto px-5"
         >
           {!loading ? (
             // @ts-ignore
-            messages?.messages?.map(({ emitUserUid, ...message }, idx: number) => (
+            messages?.messages?.map((element, idx: number) => (
               <MessageItem
                 key={idx}
-                isSender={user?.uid === emitUserUid}
-                {...message}
+                message={element}
               />
             )
             )

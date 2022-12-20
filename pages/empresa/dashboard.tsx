@@ -4,7 +4,7 @@ import { useState, useEffect, FC, MouseEventHandler } from "react";
 import { business } from "../../interfaces";
 import PagesWithAuth from "../../HOC/PagesWithAuth";
 import Link from "next/link";
-import { ExitIcon, ShareWhiteIcon, MessageIcon, CameraIcon, Location2IconBlack, PromoIconBlack, VideoIcon, DocumentIcon } from "../../components/Icons";
+import { ExitIcon, ShareWhiteIcon, MessageIcon, CameraIcon, Location2IconBlack, PromoIconBlack, VideoIcon, DocumentIcon, DolarIcon } from "../../components/Icons";
 import { array } from "yup";
 
 
@@ -86,8 +86,8 @@ const Dashboard = () => {
             icon: <ShareWhiteIcon className="h-5" fill="#ffffff" />
         },
         {
-            titulo: "*Planes",
-            icon: ""
+            titulo: "Planes",
+            icon: <DolarIcon />
         },
     ]
 
@@ -120,7 +120,6 @@ const Dashboard = () => {
         },
     ]
 
-
     return (
         <div className="container max-w-screen-lg mx-auto inset-x-0 py-10 w-full px-2 md:px-0 grid grid-cols-8 gap-6">
             <div className="col-span-2 h-full w-full bg-white rounded-md p-3  flex flex-col *space-y-4 divide-y">
@@ -142,9 +141,9 @@ const Dashboard = () => {
                 </div>
                 {
                     ArryOpt.map((item, idx) => (
-                        <div key={idx} className={` ${isActive === idx ? " text-primary " : " text-gray-500 hover:text-tertiary"}   flex items-center space-x-2 py-2 cursor-pointer`} onClick={() => handleClickOption(idx)}>
+                        <div key={idx} className={` ${isActive === idx ? " bg-primary rounded-md text-white" : " text-gray-500 hover:text-tertiary hover:font-semibold"}   flex items-center space-x-2 py-2 cursor-pointer pl-2 text-sm`} onClick={() => handleClickOption(idx)}>
                             {item.icon}
-                            <span className={`${isActive === idx ? " text-primary" : " text-gray-500 hover:text-tertiary "} `}>
+                            <span className={`${isActive === idx ? "text-white " : " text-gray-500 hover:text-tertiary hover:font-semibold "} `}>
                                 {item.titulo}
                             </span>
                         </div>

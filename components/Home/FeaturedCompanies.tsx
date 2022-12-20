@@ -88,7 +88,7 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({ business }) => {
               <>
                 <SwiperSlide key={idx} className="pr-10 pl-10">
                   <div className='flex '>
-                    <CardBusiness key={item._id} {...item} size={'lg'} />
+                    <CardBusiness key={item._id} {...item} size={'lg'} redi={`/empresa/${item.slug}`} />
                   </div>
                 </SwiperSlide>
               </>

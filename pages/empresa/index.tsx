@@ -81,9 +81,9 @@ const Empresas = () => {
       </div>
 
       {!loading && !error && dato.length > 0 && (
-        <div className=" w-full grid grid-cols-4  gap-6 px-5 overflow-hidden  ">
+        <div className=" w-full grid md:grid-cols-4  gap-6 px-5 overflow-hidden  ">
           <Link href={"/empresa/crear-empresa"} passHref>
-            <div className="bg-white h-full w-full rounded-xl shadow-md cursor-pointer flex justify-center items-center ">
+            <div className="bg-white h-72 md:h-full w-full rounded-xl shadow-md cursor-pointer flex justify-center items-center ">
               <img src="/mas.png" alt="agregar" className="h-10 " />
             </div>
           </Link>

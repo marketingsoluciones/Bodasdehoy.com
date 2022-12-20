@@ -274,7 +274,7 @@ export const GridCards: FC<{ query: object }> = ({ query }) => {
         <div className="w-full grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-6 px-5 overflow-hidden   ">
 
           {data?.results.map((business: business) => (
-            <CardBusiness key={business._id} {...business} />
+            <CardBusiness key={business._id} {...business} redi={`/empresa/${business.slug}`}/>
           ))}
           {isFetching && skip <= data.total && (
             <>

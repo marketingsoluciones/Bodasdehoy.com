@@ -11,10 +11,12 @@ import { LoadingItem } from "../../components/Loading";
 import { GraphQL, fetchApi, queries } from "../../utils/Fetching";
 import { useToast } from "../../hooks/useToast";
 import { useRouter } from "next/router";
-import {DeleteIcon,EditIcon,EmptyIcon,ViewIcon,} from "../../components/Icons";
+import { DeleteIcon, EditIcon, EmptyIcon, ViewIcon, } from "../../components/Icons";
 import IconButton from "../../components/Inputs/IconButton";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import EmptyComponent from "../../components/Surface/EmptyComponent";
+import { CardBusiness } from "../../components/Category";
+import dashboard from "./dashboard";
 
 const query = `query ($uid : ID){
   getBusinesses(uid:$uid){
@@ -57,30 +59,44 @@ const Empresas = () => {
   }
 
   const [dato, setDato, loading, error, fetchy] = useFetch(initialQuery);
-
+  console.log("dato dato dato",dato)
   const toast = useToast();
 
-  const handleRemove = async (_id: string) => {
+  /* const handleRemove = async (_id: string) => {
     try {
-      await fetchApi({query : queries.deleteBusiness, variables: { id: _id }});
+      await fetchApi({ query: queries.deleteBusiness, variables: { id: _id } });
       fetchy(initialQuery)
       toast("success", "Eliminado con exito");
     } catch (error) {
       toast("error", JSON.stringify(error));
       console.log(error);
     }
-  };
+  }; */
+  const router = useRouter();
 
   return (
     <div className="container max-w-screen-lg mx-auto inset-x-0 py-10 w-full px-2 md:px-0">
-      <div className="flex items-center w-full justify-between">
-        <h1 className="text-primary text-2xl font-semibold">Mis empresas</h1>
-        <Link href={"/empresa/crear-empresa"} passHref>
-          <ButtonComponent>+ Crear empresa</ButtonComponent>
-        </Link>
+      <div className="flex items-center w-full mb-6">
+        <h1 className="text-primary text-2xl font-semibold">Mis empresas en Bodasdehoy</h1>
       </div>
 
-      <div className={"grid grid-cols-1 gap-10 py-10 w-full"}>
+      {!loading && !error && dato.length > 0 && (
+        <div className=" w-full grid grid-cols-4  gap-6 px-5 overflow-hidden  ">
+          <Link href={"/empresa/crear-empresa"} passHref>
+            <div className="bg-white h-full w-full rounded-xl shadow-md cursor-pointer flex justify-center items-center ">
+              <img src="/mas.png" alt="agregar" className="h-10 " />
+            </div>
+          </Link>
+
+          {dato?.map((business: business) => (
+            <CardBusiness key={business._id} {...business} redi={`/empresa/dashboard`} />
+          ))}
+
+        </div>
+      )}
+
+
+      {/* <div className={"grid grid-cols-1 gap-10 py-10 w-full"}>
         {loading ? (
           <div className="h-40 w-full flex items-center justify-center transition text-primary">
               <LoadingItem text={"Cargando"} size="small" />
@@ -99,7 +115,7 @@ const Empresas = () => {
         {!loading && !error && dato?.length === 0 && (
           <EmptyComponent text={"No hay empresas creadas"} />
         )}
-        </div>
+        </div>  */}
     </div>
   );
 };
@@ -121,7 +137,7 @@ const BusinessItem: FC<propsBusinessItem> = ({
 }) => {
 
   const router = useRouter();
-  console.log(router)
+  console.log("hola hola hola ",router)
 
   const fases: any = {
     fase1: {
@@ -151,6 +167,7 @@ const BusinessItem: FC<propsBusinessItem> = ({
           srcSet={createSrcSet(imgLogo)}
         />
         <div className="flex flex-col md:flex-row md:space-x-20">
+
           <div>
             <p className="text-md text-gray-600 font-bold tracking-tight">
               {businessName ?? "Titulo de prueba"}

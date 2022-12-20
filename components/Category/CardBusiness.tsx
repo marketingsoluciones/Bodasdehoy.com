@@ -25,6 +25,7 @@ const sizes = {
 interface propsCardBusiness extends Partial<business> {
   promocion?: boolean;
   size? : keyof typeof sizes
+  redi?: any
 }
 export const CardBusiness: FC<propsCardBusiness> = ({
   promocion = false,
@@ -33,13 +34,15 @@ export const CardBusiness: FC<propsCardBusiness> = ({
   city,
   slug,
   content,
-  size = "md"
+  size = "md",
+  redi
+
 }) => {
   const [hoverRef, isHovered] = useHover();
   const router = useRouter()
   
   return (
-    <div ref={hoverRef} onClick={() => router.push(`/empresa/${slug}`)} className={`rounded-xl h-fit w-full transition-all duration-500 cursor-pointer mx-auto inset-x-0  md:mb-0 `}>
+    <div ref={hoverRef} onClick={() =>router.push(redi) /* router.push(`/empresa/${slug}`) */} className={`rounded-xl h-fit w-full transition-all duration-500 cursor-pointer mx-auto inset-x-0  md:mb-0 `}>
       
       <img
         className={`h-60 md:h-60 rounded-xl w-full relative object-cover object-center transition-all ${isHovered ? "opacity-90" : "opacity-100"}`}

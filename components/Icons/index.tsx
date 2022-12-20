@@ -434,7 +434,7 @@ export const HomeIcon: FC<PropsIcon> = (props) => {
 
 export const DolarIcon: FC<PropsIcon> = (props) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-5 h-5">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
       <path 
         strokeLinecap="round" 
         strokeLinejoin="round" 

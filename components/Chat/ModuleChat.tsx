@@ -63,10 +63,7 @@ export const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
       <div className="flex-col h-full absolute top-10 left-0 w-full z-10 bg-white sm:rounded-t-xl">
         <HeaderChat data={data} setConversation={setConversation} />
         {/* BODY */}
-        <div
-          ref={refBoxMsg}
-          className="moduleChat w-full h-full flex flex-col overflow-auto px-5"
-        >
+        <div ref={refBoxMsg} className="bg-red-500 canvasChat w-full h-[100%] flex flex-col overflow-auto px-5">
           {!loading ? (
             // @ts-ignore
             messages?.messages?.map((element, idx: number) => (
@@ -87,9 +84,17 @@ export const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
       </div>
       <style jsx>
         {`
-        .moduleChat{
-          height: calc(100% - 7rem - 40px)
+        @media (max-width: 639px) {
+          .canvasChat{
+            height: calc(100% - 5rem - 40px)
+          }
         }
+        @media (min-width: 639px) {
+          .canvasChat{
+            height: calc(100% - 6rem - 40px)
+          }
+        }
+        
       `}
       </style>
     </>

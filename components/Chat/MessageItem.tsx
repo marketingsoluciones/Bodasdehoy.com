@@ -1,15 +1,17 @@
 import { Interweave } from "interweave";
 import { HashtagMatcher, UrlMatcher } from "interweave-autolink";
 import { FC, useEffect, useRef, useState } from "react";
+import { number } from "yup/lib/locale";
 import { AuthContextProvider } from "../../context";
 import { messageChat } from "../../interfaces";
 import { MessageTime } from "./MessageTime";
 
 interface propsMessageItem {
   message: messageChat
+  setCount: any
 }
 
-export const MessageItem: FC<propsMessageItem> = ({ message }) => {
+export const MessageItem: FC<propsMessageItem> = ({ message, setCount }) => {
   const imgRef = useRef<HTMLElement>(null);
   const { user } = AuthContextProvider();
   const isSender: boolean = user?.uid === message?.emitUserUid
@@ -24,6 +26,11 @@ export const MessageItem: FC<propsMessageItem> = ({ message }) => {
   const handleClick = () => {
     setDateView(!dateView);
   };
+
+  useEffect(() => {
+    setCount((old: number) => old + 1)
+  }, [])
+
 
   useEffect(() => {
     if (message?.image) {
@@ -72,8 +79,7 @@ export const MessageItem: FC<propsMessageItem> = ({ message }) => {
                 <Interweave
                   content={message?.message}
                   matchers={[new UrlMatcher('url'), new HashtagMatcher('hashtag')]}
-                />;
-
+                />
                 {/* {message?.message} */}
               </div>
               <MessageTime createdAt={message?.createdAt} />

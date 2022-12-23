@@ -35,13 +35,6 @@ export const InputChat: FC<propsInputChat> = ({ value, setValue, data }) => {
     const resp = await fetchApi({ query: queries.getScraperMetaData, variables: { url: url } })
     setMessage({ ...message, ...resp })
   }
-  useEffect(() => {
-    console.log(789, message)
-  }, [message])
-
-  useEffect(() => {
-
-  }, [])
 
   useEffect(() => {
     const ele = document.getElementById('input');
@@ -63,7 +56,6 @@ export const InputChat: FC<propsInputChat> = ({ value, setValue, data }) => {
       const valueReplace = value.replace("\n", " ")
       const valueSplit = valueReplace.split(" ")
       const url = valueSplit.filter((element: any) => element.toLowerCase().includes("https:"))[0]
-      console.log(147, url)
       const regex = new RegExp(/^[a-zA-Z0-9][a-zA-Z0-9-_:/?#=]{0,61}[a-zA-Z0-9]{0,1}\.([a-zA-Z]{2,6}|[a-zA-Z0-9-]{1,30}\.[a-zA-Z]{2,3})/);
       if (regex.test(url)) {
         fetch(url)
@@ -76,14 +68,10 @@ export const InputChat: FC<propsInputChat> = ({ value, setValue, data }) => {
   const handleChangeInput = (e: any) => {
     const ele = document.getElementById('input');
     e.target.rows = 1
-    console.log(123, ele?.clientHeight, ele?.scrollHeight)
     if (ele?.clientHeight !== ele?.scrollHeight) {
       const rowT = ele ? (ele?.scrollHeight / 16) - 1 : 1
       e.target.rows = rowT < 5 ? rowT : 4
-      console.log(456, rows)
     }
-    console.log(888, e.target.rows)
-    //e.target.rows = 1
     setValue(e.target.value);
     setMessage({ message: e.target.value })
   };
@@ -92,6 +80,7 @@ export const InputChat: FC<propsInputChat> = ({ value, setValue, data }) => {
   const handleClick = (e: any) => {
     e.preventDefault();
     //PARA ENVIAR MENSAJES
+    console.log("EMIT")
     if (value !== "") {
       socket?.emit(`chat:message`, {
         chatID: data?._id,

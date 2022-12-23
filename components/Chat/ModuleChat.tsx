@@ -17,12 +17,13 @@ export const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
     variables: { IDChat: data?._id, skip: skipMsg, limit: limitMsg },
   }
   const [messages, setMessages, loading, error, fetch] = useFetch(initialQuery);
-
   const { socket } = SocketContextProvider();
   const [value, setValue] = useState("");
+  const [show, setShow] = useState(false);
+  const [count, setCount] = useState<number>(0);
 
   // Ref del div que continene los mensajes para hacer el scroll bottom
-  const refBoxMsg: any = useRef();
+  const refBoxMsg = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (refBoxMsg && refBoxMsg.current) {
@@ -33,12 +34,18 @@ export const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
         behavior: "smooth",
       });
     }
-  }, [refBoxMsg, messages, loading]);
+  }, [refBoxMsg, messages, loading, show]);
 
 
   useEffect(() => {
-    console.log(messages?.messages)
-  }, [messages]);
+    if (!show && count == messages?.messages?.length) {
+      setTimeout(() => {
+        setShow(true)
+      }, 700);
+    }
+  }, [count]);
+
+
 
   // Socket para escuchar evento(ID Chat) para recibir mensajes
   const handleSocket = (data: any) => {
@@ -63,16 +70,22 @@ export const ModuleChat: FC<propsModuleChat> = ({ setConversation, data }) => {
       <div className="flex-col h-full absolute top-10 left-0 w-full z-10 bg-white sm:rounded-t-xl">
         <HeaderChat data={data} setConversation={setConversation} />
         {/* BODY */}
-        <div ref={refBoxMsg} className="bg-red-500 canvasChat w-full h-[100%] flex flex-col overflow-auto px-5">
+        <div ref={refBoxMsg} className={`canvasChat w-full h-[100%] flex flex-col px-5 ${show ? "overflow-auto" : "overflow-hidden"}`}>
           {!loading ? (
-            // @ts-ignore
-            messages?.messages?.map((element, idx: number) => (
-              <MessageItem
-                key={idx}
-                message={element}
-              />
-            )
-            )
+            <>
+              <div className={`${!show && "invisible"}`}>
+                {// @ts-ignore
+                  messages?.messages?.map((element, idx: number) => (
+                    <MessageItem
+                      key={idx}
+                      message={element}
+                      setCount={setCount}
+                    />
+                  ))
+
+                }
+              </div>
+            </>
           ) : (
             <span className="text-gray-400 w-full h-full flex items-center justify-center">
               <LoadingItem size="small" text="" />

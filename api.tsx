@@ -22,7 +22,8 @@ export const api: Fetching = {
         const tokenFinal = Cookies.get("idToken")
         return await instance.post("/graphql", data, {
             headers: {
-                Authorization: `Bearer ${tokenFinal}`
+                Authorization: `Bearer ${tokenFinal}`,
+                Development: "bodasdehoy"
             }
         })
     },

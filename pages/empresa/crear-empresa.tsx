@@ -174,6 +174,7 @@ const FormikStepper = ({
               ...valuesModified,
               mobilePhone: typeof values.mobilePhone === "number" ? JSON.stringify(values.mobilePhone) : values.mobilePhone,
               landline: typeof values.landline === "number" ? JSON.stringify(values.landline) : values.landline,
+              development: "bodasdehoy"
             }, type: "formData"});
             if(data){
               await actions.setFieldValue("_id", values._id ?? data?._id );
@@ -206,7 +207,8 @@ const FormikStepper = ({
             mobilePhone: typeof values.mobilePhone === "number" ? JSON.stringify(values.mobilePhone) : values.mobilePhone,
             landline: typeof values.landline === "number" ? JSON.stringify(values.landline) : values.landline,
             fase: "fase2",
-            status: true
+            status: true,
+            development: "bodasdehoy"
           }});
         } catch (error) {
           console.log(error);

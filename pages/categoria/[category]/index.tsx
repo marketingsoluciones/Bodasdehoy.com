@@ -202,7 +202,9 @@ export const GridCards: FC<{ query: object }> = ({ query }) => {
   const [skip, setSkip] = useState(0);
   const initialQuery = {
     query: queries.getAllBusiness,
-    variables: { criteria: { ...filters?.filters, ...query }, skip, limit },
+    variables: {
+      criteria: { ...filters?.filters, ...query }, skip, limit, development: "bodasdehoy"
+    },
   };
   const [data, setData, loading, error, fetchy] = useFetch(initialQuery);
 
@@ -231,6 +233,7 @@ export const GridCards: FC<{ query: object }> = ({ query }) => {
           criteria: { ...filters?.filters, ...query },
           skip: skip + limit,
           limit,
+          development: "bodasdehoy"
         },
       });
 
@@ -274,7 +277,7 @@ export const GridCards: FC<{ query: object }> = ({ query }) => {
         <div className="w-full grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-6 px-5 overflow-hidden   ">
 
           {data?.results.map((business: business) => (
-            <CardBusiness key={business._id} {...business} redi={`/empresa/${business.slug}`}/>
+            <CardBusiness key={business._id} {...business} redi={`/empresa/${business.slug}`} />
           ))}
           {isFetching && skip <= data.total && (
             <>

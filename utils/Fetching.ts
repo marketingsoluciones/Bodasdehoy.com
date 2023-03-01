@@ -535,8 +535,8 @@ export const queries: queries = {
           role
         }
       }`,
-  getAllBusiness: `query ($criteria :searchCriteriaBusiness, $sort : sortCriteriaBusiness, $skip :Int, $limit : Int) {
-        getAllBusinesses(searchCriteria:$criteria, sort: $sort, skip: $skip, limit: $limit){
+  getAllBusiness: `query ($criteria :searchCriteriaBusiness, $sort : sortCriteriaBusiness, $skip :Int, $limit : Int, $development: String!) {
+        getAllBusinesses(searchCriteria:$criteria, sort: $sort, skip: $skip, limit: $limit, development: $development){
           total
           results{
              _id
@@ -662,6 +662,7 @@ export const queries: queries = {
     $imgLogo : Upload
     $imgMiniatura : Upload
     $status : Boolean
+    $development: String!
     ) {
         createBusiness(
           fase : $fase,
@@ -686,6 +687,7 @@ export const queries: queries = {
             imgLogo : $imgLogo
             imgMiniatura : $imgMiniatura
             status: $status
+            developmen: $development
           }){
           _id,
           fase,

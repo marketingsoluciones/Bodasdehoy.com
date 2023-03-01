@@ -286,3 +286,26 @@ export interface propsModuleChat {
   setConversation: any;
   data: Chat | null;
 }
+
+export interface Notification {
+  _id: string,
+  message: string,
+  createdAt: Date,
+  readAt?: Date
+}
+
+export interface Contact {
+  _id: string,
+  uid: string,
+  type: string,
+  onLine: OnLine,
+  nickName: string,
+  photoURL: string
+  correo: string,
+  events: Event[]
+}
+
+interface OnLine {
+  status: boolean
+  dateConection: number
+}

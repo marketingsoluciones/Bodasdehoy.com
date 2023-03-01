@@ -42,6 +42,7 @@ export const ListChats: FC<propsListChats> = ({ show, setShow }) => {
     const { data: { data } } = await api.graphql({ query, variables })
     console.log(23456789, "ejecuta setDataSearch", "value:", value, "activeSearch", activeSearch)
     setDataSearch(data?.getChats)
+    return data?.getChats
   };
   return (
     <>

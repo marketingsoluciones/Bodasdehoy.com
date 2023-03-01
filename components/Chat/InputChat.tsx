@@ -1,7 +1,7 @@
 import { async } from "@firebase/util";
 import { FC, useEffect, useState } from "react"
 import { SocketContextProvider } from "../../context";
-import useDebounce from "../../hooks/useDebounce";
+import { useDebounce } from "../../hooks/useDebounce";
 import { fetchApi, queries } from "../../utils/Fetching";
 
 
@@ -80,7 +80,7 @@ export const InputChat: FC<propsInputChat> = ({ value, setValue, data }) => {
   const handleClick = (e: any) => {
     e.preventDefault();
     //PARA ENVIAR MENSAJES
-    console.log("EMIT")
+    console.log("EMIT", message, type)
     if (value !== "") {
       socket?.emit(`chat:message`, {
         chatID: data?._id,
@@ -91,25 +91,17 @@ export const InputChat: FC<propsInputChat> = ({ value, setValue, data }) => {
         },
       });
       setValue("");
-      const ele = document.getElementById('input');
-      ele?.setAttribute("rows", "1")
     }
   };
 
   return (
     <>
-      <form className="h-8 relative w-full mt-3 flex items-end" onSubmit={handleClick}>
-        <div className="bg-white ml-1 mr-1 w-full rounded-lg flex items-end">
-          <textarea id="input" name="textarea" rows={rows} autoFocus className="focus:outline-none bg-white rounded-lg w-[calc(100%-45px)] pr-10 pl-3 text-xs" onChange={handleChangeInput} value={value}>
+      <form className="h-8 relative w-full mt-3 flex items-end">
+        <div className="bg-red-500 ml-1 mr-1 w-full h-12 rounded-lg flex items-end">
+          <textarea id="input" name="textarea" autoFocus className="focus:outline-none bg-gray-300 rounded-lg w-[calc(100%-45px)] pr-10 pl-3 text-xs" onChange={handleChangeInput} value={value}>
             Write something here
           </textarea>
         </div>
-        {/* <input
-          onChange={handleChangeInput}
-          //onKeyUp={processChange}
-          value={value}
-          className="focus:outline-none bg-white h-10 border rounded-lg w-full pr-10 pl-3 text-sm"
-        /> */}
         <button onClick={handleClick}>
           <svg
             className="cursor-pointer w-6 h-6 rotate-90 hover:bg-color-base transition p-0.5 absolute inset-y-0 my-auto right-2 text-primary rounded-full "

@@ -372,7 +372,10 @@ const ButtonProviders = () => {
 export async function getServerSideProps() {
   try {
     //console.time("getHome");
-    const data = await fetchApi({ query: queries.getHome });
+    const data = await fetchApi({
+      query: queries.getHome,
+      variables:{development:"bodasdehoy"}
+    });
     //console.timeEnd("getHome");
     return { props: data ?? {} };
   } catch (error) {

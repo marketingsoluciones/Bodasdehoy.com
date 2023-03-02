@@ -20,7 +20,10 @@ const Magazine : NextPage <propsMagazine> = (props) => {
 
     const fetchData = async () => {
         try {
-            const {results} = await fetchApi({query : queries.getAllPost, variables: {sort: {createdAt : 1}, limit: 5}})
+          const { results } = await fetchApi({
+            query: queries.getAllPost,
+            variables: { sort: { createdAt: 1 }, limit: 5, development: "bodasdehoy" }
+          })
             setPost(results)
             
         } catch (error) {
@@ -72,7 +75,10 @@ export default Magazine;
 
 export async function getServerSideProps() {
   try {
-    const data = await fetchApi({query: queries.getMagazine})
+    const data = await fetchApi({
+      query: queries.getMagazine,
+      variables: { development: "bodasdehoy" }
+    })
     return { props: data };
   } catch (error) {
     console.log(error);

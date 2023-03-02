@@ -150,7 +150,7 @@ export const getStaticPaths: GetStaticPaths = async (props) => {
   try {
     const { results } = await fetchApi({
       query: queries.getAllCategoryBusiness,
-      variables: {},
+      variables: { development: "bodasdehoy" },
     });
     const resultsMap = results?.reduce(
       (

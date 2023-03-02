@@ -90,7 +90,7 @@ const FormReviewComponent: FC<any> = forwardRef(
             try {
               const data = await fetchApi({
                 query: queries.createReviews,
-                variables: { args: values },
+                variables: { args: values, development: "bodasdehoy" },
                 token: user?.accessToken,
                 type: "formData",
               });
@@ -176,7 +176,7 @@ const MessageField: FC<propsMessageField> = ({
   const [fieldUpload, metaUpload, helpersUpload] = useField<image[] | null>({
     name: "imgCarrusel",
   });
-  
+
   const [image, setImage] = useState<imageUpload[]>((): any => {
     if (fieldUpload.value) {
       return fieldUpload.value.map((item, idx) => ({
@@ -221,10 +221,10 @@ const MessageField: FC<propsMessageField> = ({
       item.image && !item.image.includes("data:image") && acc.push(item.id);
       return acc;
     }, []);
-   helpersUpload.setValue(files);
+    helpersUpload.setValue(files);
   }, [image]);
 
-  const handleDelete = (id : string) => {
+  const handleDelete = (id: string) => {
     setImage(old => old.filter(itemOld => itemOld.id !== id))
   }
   return (
@@ -265,7 +265,7 @@ const MessageField: FC<propsMessageField> = ({
 };
 
 interface propsImageItem extends imageUpload {
-  handleDelete : CallableFunction
+  handleDelete: CallableFunction
 }
 const ImageItem: FC<propsImageItem> = ({ image, id, handleDelete }) => {
   const [hoverRef, isHovered] = useHover();
@@ -279,9 +279,8 @@ const ImageItem: FC<propsImageItem> = ({ image, id, handleDelete }) => {
       <button
         onClick={() => handleDelete(id)}
         type="button"
-        className={`p-1 rounded bg-red-500 w-full absolute bottom-0 left-0 text-xs hover:bg-red-600 text-white ${
-          isHovered ? "opacity-100" : "opacity-0"
-        } transition`}
+        className={`p-1 rounded bg-red-500 w-full absolute bottom-0 left-0 text-xs hover:bg-red-600 text-white ${isHovered ? "opacity-100" : "opacity-0"
+          } transition`}
       >
         Borrar
       </button>

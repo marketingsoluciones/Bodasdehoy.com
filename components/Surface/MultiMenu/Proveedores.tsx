@@ -11,7 +11,7 @@ const Proveedores = () => {
   const fetchingData = async () => {
     const { results }: { results: category[]; total: number } = await fetchApi({
       query: queries.getAllCategoryBusiness,
-      variables: {},
+      variables: { development: "bodasdehoy" },
     });
     if (results) {
       const dataLocalStorage = localStorage.getItem("dataMenu");

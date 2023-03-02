@@ -113,6 +113,7 @@ export const SubCategoryComponent: FC<subCategory> = (props) => {
       criteria: { subCategories: _id },
       skip: 0,
       limit: 5,
+      development: "bodasdehoy"
     }
   }
   const [latestPost, setLatestPost, loading, error, fetch] = useFetch(initialQuery)
@@ -147,7 +148,7 @@ export const SubCategoryComponent: FC<subCategory> = (props) => {
 export const CategoriesBlog = () => {
   const initialQuery = {
     query: queries.getAllCategoryPost,
-    variables: {}
+    variables: { development: "bodasdehoy" }
   }
   const settings = {
     speed: 200,

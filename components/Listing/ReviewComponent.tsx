@@ -55,6 +55,7 @@ const ReviewComponent: FC<propsReviewComponent> = ({
       skip,
       limit,
       sort: { createdAt: -1 },
+      development: "bodasdehoy"
     },
   });
   const [myReview, setMyReview] = useState<review | undefined>();
@@ -81,6 +82,7 @@ const ReviewComponent: FC<propsReviewComponent> = ({
         skip,
         limit,
         sort: { createdAt: -1 },
+        development: "bodasdehoy"
       },
     });
   };
@@ -95,6 +97,7 @@ const ReviewComponent: FC<propsReviewComponent> = ({
           skip: skip + limit,
           limit,
           sort: { createdAt: -1 },
+          development: "bodasdehoy"
         },
         token: user?.accessToken,
       });
@@ -121,7 +124,10 @@ const ReviewComponent: FC<propsReviewComponent> = ({
     if (user?.uid) {
       const { results, total } = await fetchApi({
         query: queries.getAllReviews,
-        variables: { criteria: { business: _id, user: user?.uid } },
+        variables: {
+          criteria: { business: _id, user: user?.uid },
+          development: "bodasdehoy"
+        },
         token: user?.accessToken,
       });
       setMyReview(results[0]);
@@ -247,7 +253,7 @@ const ReviewComponent: FC<propsReviewComponent> = ({
             </span>
           )
         ) : (
-            <ButtonComponent onClick={() => router.replace(`/login?d=${router.asPath.slice(1, router.asPath.length)}`)}>
+          <ButtonComponent onClick={() => router.replace(`/login?d=${router.asPath.slice(1, router.asPath.length)}`)}>
             Iniciar sesión
           </ButtonComponent>
         )}

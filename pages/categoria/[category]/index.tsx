@@ -388,6 +388,7 @@ export const getStaticProps: GetStaticProps = async ({
       query: queries.getAllCategoryBusiness,
       variables: {
         criteria: { slug: params.category },
+        development: "bodasdehoy"
       },
     });
     //console.timeEnd("Category Page queries");
@@ -408,7 +409,10 @@ export const getStaticProps: GetStaticProps = async ({
 
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
-    const { results } = await fetchApi({ query: queries.getCategories });
+    const { results } = await fetchApi({
+      query: queries.getCategories,
+      variables: { development: "bodasdehoy" }
+    });
     const paths = results.reduce(
       (acc: { params: { category: string } }[], category: category) => {
         category.slug && acc.push({ params: { category: category.slug } })

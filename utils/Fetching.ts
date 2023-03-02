@@ -212,8 +212,8 @@ export const queries: queries = {
       }
     }
   }`,
-  getSubcategoriesPost: `query {
-    getSubCategoryPost{
+  getSubcategoriesPost: `query($development: String!) {
+    getSubCategoryPost(development:$development){
       total
       results{
         _id
@@ -222,8 +222,8 @@ export const queries: queries = {
       }
     }
   }`,
-  getAllCategoryPost: `query {
-    getCategoryPost{
+  getAllCategoryPost: `query($development: String!) {
+    getCategoryPost(development:$development){
       total
       results{
         _id
@@ -354,8 +354,8 @@ export const queries: queries = {
     updatedAt
     }
     }`,
-  getAllPage: `query ( $sort:sortCriteriaPage, $skip: Int, $limit: Int ) {
-    getAllPage( sort:$sort,skip:$skip, limit:$limit){
+  getAllPage: `query ( $sort:sortCriteriaPage, $skip: Int, $limit: Int, $development: String!  ) {
+    getAllPage( sort:$sort,skip:$skip, limit:$limit, development:$development){
     total
     results{
       _id
@@ -493,8 +493,8 @@ export const queries: queries = {
       comment
     }
   }`,
-  getAllReviews: `query ($criteria :searchCriteriaReview, $sort: sortCriteriaReview, $skip: Int, $limit :Int) {
-    getAllReview(searchCriteria: $criteria, sort: $sort, skip: $skip, limit: $limit){
+  getAllReviews: `query ($criteria :searchCriteriaReview, $sort: sortCriteriaReview, $skip: Int, $limit :Int, $development: String!) {
+    getAllReview(searchCriteria: $criteria, sort: $sort, skip: $skip, limit: $limit, development:$development){
       total
       results{
        _id
@@ -723,8 +723,8 @@ export const queries: queries = {
           }
         }
       }`,
-  createReviews: `mutation ($args : inputReview){
-    createReview(args:$args){
+  createReviews: `mutation ($args : inputReview, $development: String!){
+    createReview(args:$args, development:$development){
       _id
       business{
         _id
@@ -755,8 +755,8 @@ export const queries: queries = {
       }
     }
   }`,
-  getCategories: `query {
-    getCategoryBusiness{
+  getCategories: `query ($development: String!){
+    getCategoryBusiness(development:$development){
       total
       results{
         _id
@@ -793,8 +793,8 @@ export const queries: queries = {
   deleteImages: `mutation  ($idImage :ID, $idBusiness:ID, $use : String) {
     deleteUpload(_id:$idImage, businessID:$idBusiness, use:$use)
   }`,
-  getHome: `query {
-    getHome{
+  getHome: `query($development: String!) {
+    getHome(development: $development){
       business{
         _id
         slug
@@ -879,8 +879,8 @@ export const queries: queries = {
   getSlugPosts: `query {
     getSlugPosts
   }`,
-  getAllPost: `query ($criteria : searchCriteriaPost, $sort: sortCriteriaPost, $limit : Int, $skip : Int) {
-    getAllPost(searchCriteria:$criteria, limit : $limit, skip: $skip, sort:$sort){
+  getAllPost: `query ($criteria : searchCriteriaPost, $sort: sortCriteriaPost, $limit : Int, $skip : Int, $development: String! ) {
+    getAllPost(searchCriteria:$criteria, limit : $limit, skip: $skip, sort:$sort, development:$development){
       total
       results{
         _id
@@ -950,8 +950,8 @@ export const queries: queries = {
       }
     }
   }`,
-  getMagazine: `query {
-    getMagazine{
+  getMagazine: `query($development: String!) {
+    getMagazine(development: $development){
       lastestPosts{
         _id
         content
@@ -1026,8 +1026,8 @@ export const queries: queries = {
   deleteBusiness: `mutation ($id : [ID]){
     deleteBusinesses(id: $id)
   }`,
-  getAllCategoryBusiness: `query ($criteria : searchCriteriaCategory, $sort : sortCriteriaCategory, $skip : Int, $limit: Int) {
-    getAllCategoryBusiness(searchCriteria: $criteria, sort: $sort, skip: $skip, limit: $limit){
+  getAllCategoryBusiness: `query ($criteria : searchCriteriaCategory, $sort : sortCriteriaCategory, $skip : Int, $limit: Int, $development: String!) {
+    getAllCategoryBusiness(searchCriteria: $criteria, sort: $sort, skip: $skip, limit: $limit, development: $development){
       total
       results{
         _id

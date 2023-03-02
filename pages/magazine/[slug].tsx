@@ -14,7 +14,10 @@ const Article : FC <Partial<OnePost>> = (props) => {
 
     const fetchData = async () => {
         try {
-            const {results} = await fetchApi({query : queries.getAllPost, variables: {sort: {createdAt : 1}, limit: 5}})
+          const { results } = await fetchApi({
+            query: queries.getAllPost,
+            variables: { sort: { createdAt: 1 }, limit: 5, development: "bodasdehoy" }
+          })
             setPost(results)
             
         } catch (error) {

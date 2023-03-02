@@ -17,7 +17,7 @@ export const MultiMenu : FC <{title: string}> = ({title, children}) => {
 export const fetchingData = async (title: string) => {
     const { results }: { results: category[]; total: number } = await fetchApi({
       query: queries.getAllCategoryBusiness,
-      variables: { criteria: { title } },
+      variables: { criteria: { title }, development: "bodasdehoy" },
     });
     if (results) {
       const dataLocalStorage = localStorage.getItem('dataMenu')

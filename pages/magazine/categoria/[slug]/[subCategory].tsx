@@ -28,6 +28,7 @@ const SubCategory: FC<subCategory> = ({
       criteria: { subCategories: _id },
       skip: 0,
       limit: 10,
+      development: "bodasdehoy"
     },
   };
   const [posts, setPosts, loading, error, fetch] = useFetch(initialQuery);
@@ -38,7 +39,7 @@ const SubCategory: FC<subCategory> = ({
     try {
       const { results } = await fetchApi({
         query: queries.getAllPost,
-        variables: { sort: { createdAt: 1 }, limit: 5 },
+        variables: { sort: { createdAt: 1 }, limit: 5, development: "bodasdehoy" },
       });
       setPost(results);
     } catch (error) {
@@ -166,7 +167,7 @@ export const getStaticPaths: GetStaticPaths = async (props) => {
   try {
     const { results } = await fetchApi({
       query: queries.getAllCategoryPost,
-      variables: {},
+      variables: { development: "bodasdehoy" },
     });
     const resultsMap = results?.reduce(
       (

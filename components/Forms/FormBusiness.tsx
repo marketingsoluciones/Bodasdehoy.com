@@ -24,7 +24,7 @@ interface propsFormYourBusiness {
   values?: any;
 }
 export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
- 
+
   return (
     <div className="flex flex-col gap-10">
       <SectionForm>
@@ -91,16 +91,16 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
           <h2 className="text-primary text-lg font-semibold">Tu empresa</h2>
           <div className=" text-gray-300">
             <span className="grid md:grid-cols-2 md:gap-4">
-              <UploadImage 
-                    label={"Imagen Logo"}
-                    name={"imgLogo"}
-                  />
-              <UploadImage 
-                    label={"Imagen Miniatura"}
-                    name={"imgMiniatura"}
-                  />
+              <UploadImage
+                label={"Imagen Logo"}
+                name={"imgLogo"}
+              />
+              <UploadImage
+                label={"Imagen Miniatura"}
+                name={"imgMiniatura"}
+              />
             </span>
-          
+
             <span className="">
               <InputField
                 name={"businessName"}
@@ -117,7 +117,7 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
 
             <span className="grid md:grid-cols-2 gap-4 mt-4">
               <SelectFieldCoutries name={"country"} label={"País"} />
-              
+
               <InputCity
                 name={"city"}
                 type="text"
@@ -136,7 +136,7 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
                 type={"text"}
               />
             </span>
-            
+
           </div>
         </div>
         <div className="flex flex-col w-full gap-3">
@@ -166,38 +166,41 @@ export const FormYourBusiness: FC<propsFormYourBusiness> = ({ values }) => {
 
 const CategoriesComponent: FC = () => {
   const [categories, setCategories] = useState<Partial<category>[]>([]);
-  const {errors, touched} = useFormikContext<any>()
+  const { errors, touched } = useFormikContext<any>()
 
- 
+
   const fetchData = async () => {
-      try {
-        const {results} = await fetchApi({query: queries.getCategories});
-        const mapResults = results.filter((item: any) => item.subCategories.length > 0 && item)
-        setCategories(mapResults);
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      const { results } = await fetchApi({
+        query: queries.getCategories,
+        variables: { development: "bodasdehoy" }
+      });
+      const mapResults = results.filter((item: any) => item.subCategories.length > 0 && item)
+      setCategories(mapResults);
+    } catch (error) {
+      console.log(error);
     }
+  }
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const removeElementFieldArray = (values : any, id : string) => {
-    return values?.subCategories?.findIndex((item : {_id : string}) => item._id === id)
+  const removeElementFieldArray = (values: any, id: string) => {
+    return values?.subCategories?.findIndex((item: { _id: string }) => item._id === id)
   }
 
   return (
     <div className="flex flex-col w-full gap-3 pb-3">
       <span className="flex items-center gap-2">
-      <h2 className="text-primary text-lg font-semibold">Sector o Actividad</h2>
+        <h2 className="text-primary text-lg font-semibold">Sector o Actividad</h2>
         {errors.subCategories ? (
           <span className="text-red-500 text-xs font-medium ">
             {errors?.subCategories}
           </span>
         ) : null}
       </span>
-      
+
       <div className="grid md:grid-cols-3 gap-10 text-gray-300 justify-center">
         <FieldArray name={"subCategories"}>
           {({ insert, remove, push, form }) =>
@@ -210,11 +213,11 @@ const CategoriesComponent: FC = () => {
                   {category?.subCategories?.map((subCategory: subCategory) => (
                     <Checkbox
                       key={subCategory._id}
-                      checked={form.values?.subCategories?.filter((item : any) => item._id === subCategory._id)?.length > 0}
+                      checked={form.values?.subCategories?.filter((item: any) => item._id === subCategory._id)?.length > 0}
                       label={subCategory.title}
                       name={subCategory.title}
                       onChange={(e: any) =>
-                        e.target.checked ? push({_id : subCategory._id}) : remove(removeElementFieldArray(form.values, subCategory._id))
+                        e.target.checked ? push({ _id: subCategory._id }) : remove(removeElementFieldArray(form.values, subCategory._id))
                       }
                     />
                   ))}

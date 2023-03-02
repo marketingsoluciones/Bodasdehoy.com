@@ -27,7 +27,7 @@ const PageComponent: FC<Page> = (props) => {
                     <div className=" banner -mt-20 w-full h-40" />
 
                     <div className="flex  flex-col md:flex-row items-center space-y-6  md:space-x-10 py-10">
-                        
+
                         <div>
                             <h2 className="text-6xl md:text-6xl text-tertiary  subpixel-antialiased font-bold ">
                                 404
@@ -101,7 +101,10 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
 
 export async function getStaticPaths() {
     try {
-        const { results } = await fetchApi({ query: queries.getAllPage })
+        const { results } = await fetchApi({
+            query: queries.getAllPage,
+            variables: { development: "bodasdehoy" }
+        })
         const result = results?.map((item: Page) => ({ params: { slug: item.slug } }))
         return {
             paths: result, // [ {params: {slug : ///// } } ]

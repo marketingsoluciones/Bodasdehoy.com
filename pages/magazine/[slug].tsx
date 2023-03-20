@@ -88,7 +88,10 @@ export async function getStaticProps({ params }: GetStaticPropsContext) {
 
 export const getStaticPaths: GetStaticPaths = async() => {
   try {
-    const data = await fetchApi({query : queries.getSlugPosts})
+    const data = await fetchApi({
+      query: queries.getSlugPosts,
+       variables: { development: "bodasdehoy" }
+    })
     return {
       paths: data.map((slug : string) => ({params: {slug}})),
       fallback: "blocking",

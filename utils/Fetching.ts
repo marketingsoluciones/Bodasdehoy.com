@@ -873,11 +873,11 @@ export const queries: queries = {
       }
     }
   }`,
-  getSlugBusiness: `query{
-    getSlugBusiness
+  getSlugBusiness: `query ($development: String!){
+    getSlugBusiness (development:$development)
   }`,
-  getSlugPosts: `query {
-    getSlugPosts
+  getSlugPosts: `query ($development: String!){
+    getSlugPosts (development:$development)
   }`,
   getAllPost: `query ($criteria : searchCriteriaPost, $sort: sortCriteriaPost, $limit : Int, $skip : Int, $development: String! ) {
     getAllPost(searchCriteria:$criteria, limit : $limit, skip: $skip, sort:$sort, development:$development){

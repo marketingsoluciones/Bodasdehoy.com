@@ -272,8 +272,8 @@ const Listing: FC<business> = (props) => {
                 <div className="flex gap-4 items-center text-primary w-full justify-center flex-col">
                   {/* Si soy el dueño de la empresa no aparece y si la empresa no tiene userUid tampoco aparece*/}
                   {userUid !== user?.uid && userUid !== '' && <ChatComponentView {...props} />}
-                  
-                  
+
+
 
                   {webPage && (
                     <ItemContact
@@ -313,9 +313,9 @@ const Listing: FC<business> = (props) => {
                       />
                     )}
                   </div>
-                  {userUid !== user?.uid && userUid === '' && <ButtonReclamarEmpresa/>}
+                  {userUid !== user?.uid && userUid === '' && <ButtonReclamarEmpresa />}
                 </div>
-                
+
               </div>
             </div>
             <p className="text-xs w-full text-gray-300 md:-mt-10">
@@ -472,7 +472,10 @@ export const getStaticProps: GetStaticProps = async ({ params }: any) => {
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
   try {
-    const data = await fetchApi({ query: queries.getSlugBusiness });
+    const data = await fetchApi({
+      query: queries.getSlugBusiness,
+      variables: { development: "bodasdehoy" }
+    });
     const paths = data.reduce(
       (acc: { params: { slug: string } }[], slug: string) => {
         slug && acc.push({ params: { slug } });

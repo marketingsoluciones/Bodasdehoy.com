@@ -85,13 +85,11 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({ business }) => {
         >
           <div className='h-96'>
             {data?.map((item: business, idx) => (
-              <>
-                <SwiperSlide key={idx} className="pr-10 pl-10">
-                  <div className='flex '>
-                    <CardBusiness key={item._id} {...item} size={'lg'} redi={`/empresa/${item.slug}`} />
-                  </div>
-                </SwiperSlide>
-              </>
+              <SwiperSlide key={idx} className="pr-10 pl-10">
+                <div className='flex '>
+                  <CardBusiness key={item._id} {...item} size={'lg'} redi={`/empresa/${item.slug}`} />
+                </div>
+              </SwiperSlide>
             ))}
           </div>
 

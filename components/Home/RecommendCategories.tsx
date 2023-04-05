@@ -41,9 +41,6 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
     viajes: <TravelIcon />,
   };
 
-  useEffect(() => {
-    setCategories(data);
-  }, [data]);
   return (
     <div className="max-w-screen-lg mx-auto inset-x-0 w-full">
       <div className="ml-7 pt-2 md:pt-0 md:ml-0">
@@ -77,11 +74,9 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
           {categories &&
             categories.length > 0 &&
             categories?.map((item: Partial<category>, idx: number) => (
-              <>
-                <SwiperSlide key={idx}>
-                  <Category key={idx} {...item} />
-                </SwiperSlide>
-              </>
+              <SwiperSlide key={idx}>
+                <Category key={idx} {...item} />
+              </SwiperSlide>
             ))}
         </Swiper>
       </div>

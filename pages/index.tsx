@@ -131,6 +131,7 @@ const Home: FC<propsHome> = (props) => {
     <section className="w-full">
       <NavbarMobile />
       <div className="sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg banner  md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full">
+        {/* buscar error en features */}
         <Welcome />
       </div>
       <PlaceDiscovery data={props?.categoriesBusiness} />
@@ -202,6 +203,7 @@ export const Welcome: FC = (props) => {
             </InstantSearch>
           </div>
           <div className="md:static">
+            {/* reemplazar slider por otro componente para quitar error Did not expect server HTML to contain a <div> in <div> */}
             <Features />
           </div>
 
@@ -333,31 +335,33 @@ export const Features: FC = () => {
   }
 
   return (
-    <div className=" grid grid-cols-1 overflow-visible z-0">
-      <Slider {...settings}>
-        <div className="">
-          <span style={style.tamañoTexto} className="absolute z-30 bg-tertiary top-14 left-7 opacity-90">
-            proximamente
-          </span>
-          <span className="">
-            {Proximamente.map((item, idx) => (
-              <Feature key={idx} item={item} />
-            ))}
-          </span>
-        </div>
+    <>
+      <div className=" grid grid-cols-1 overflow-visible z-0">
+        <Slider {...settings}>
+          <div className="">
+            <span style={style.tamañoTexto} className="absolute z-30 bg-tertiary top-14 left-7 opacity-90">
+              proximamente
+            </span>
+            <span className="">
+              {Proximamente.map((item, idx) => (
+                <Feature key={idx} item={item} />
+              ))}
+            </span>
+          </div>
 
-        {List.map((item, idx) => (
-          <Link
-            href={item.route}
-            key={idx}
-          >
-            <a >
-              <Feature item={item} />
-            </a>
-          </Link>
-        ))}
-      </Slider>
-    </div>
+          {List.map((item, idx) => (
+            <Link
+              href={item.route}
+              key={idx}
+            >
+              <a >
+                <Feature item={item} />
+              </a>
+            </Link>
+          ))}
+        </Slider>
+      </div>
+    </>
   );
 };
 
@@ -374,7 +378,7 @@ export async function getServerSideProps() {
     //console.time("getHome");
     const data = await fetchApi({
       query: queries.getHome,
-      variables:{development:"bodasdehoy"}
+      variables: { development: "bodasdehoy" }
     });
     //console.timeEnd("getHome");
     return { props: data ?? {} };

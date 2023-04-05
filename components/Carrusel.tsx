@@ -34,12 +34,10 @@ export const Carrusel: FC<propsCarrusel> = ({ slides }) => (
       modules={[Autoplay]}
     >
       {slides?.length > 0 &&
-        slides.map((item: subCategory) => (
-          <>
-            <SwiperSlide >
-              <ItemSubCategory key={item._id} {...item} slugCategory={item.slug} />
-            </SwiperSlide>
-          </>
+        slides.map((item: subCategory, idx: number) => (
+          <SwiperSlide key={idx}>
+            <ItemSubCategory {...item} slugCategory={item.slug} />
+          </SwiperSlide>
         ))}
     </Swiper>
 

@@ -136,11 +136,9 @@ const BlogCategories: FC<{ categories: Partial<category>[] }> = ({
         modules={[Autoplay, Navigation]}
       >
         {categories?.map((item, idx) => (
-          <>
-            <SwiperSlide key={idx} >
-              <Category key={idx} title={item?.title} route={item?.slug} />
-            </SwiperSlide>
-          </>
+          <SwiperSlide key={idx} >
+            <Category key={idx} title={item?.title} route={item?.slug} />
+          </SwiperSlide>
         ))}
       </Swiper>
     </div>
@@ -174,11 +172,9 @@ export const GridPost: FC<{ data: Partial<Post>[] }> = ({ data }) => {
         modules={[Autoplay]}
       >
         {posts?.map((item: Partial<Post>, idx) => (
-          <>
-            <SwiperSlide key={idx} >
-              <PostComponent key={item?._id} {...item} />
-            </SwiperSlide>
-          </>
+          <SwiperSlide key={idx} >
+            <PostComponent key={item?._id} {...item} />
+          </SwiperSlide>
         ))}
       </Swiper>
     </div>

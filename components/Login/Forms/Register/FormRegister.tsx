@@ -160,7 +160,9 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       });
 
       // Almacenar en contexto USER con toda la info
-      setUser({ ...UserFirebase, ...moreInfo });
+      if (moreInfo?.status) {
+        setUser({ ...UserFirebase, ...moreInfo });
+      }
 
       /////// REDIRECIONES ///////
       if (userTemp) {

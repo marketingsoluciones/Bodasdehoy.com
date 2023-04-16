@@ -246,7 +246,7 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
 };
 
 const ProfileMenu: FC<any> = ({ setHovered }) => {
-  const { setUser, user } = AuthContextProvider();
+  const { user } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
   const { _signOut } = useAuthentication()
   /* const [hoverRef, isHovered] = useHover() */

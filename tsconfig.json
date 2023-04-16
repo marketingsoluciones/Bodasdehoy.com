@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -14,6 +18,18 @@
     "isolatedModules": true,
     "jsx": "preserve"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "firebase.js","**/*.jsx", "components/EditorJS/index.tsx", "components/ReclamarEmpresa/ModalReclamarEmprcomponents/ButtonReclamarEmpresa.tsxEmpresa.jsx", "components/ButtonReclamarEmpresa.js"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "firebase.js",
+    "**/*.jsx",
+    "components/EditorJS/index.tsx",
+    "components/ReclamarEmpresa/ModalReclamarEmprcomponents/ButtonReclamarEmpresa.tsxEmpresa.jsx",
+    "components/ButtonReclamarEmpresa.js",
+    "components/Login/Components.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

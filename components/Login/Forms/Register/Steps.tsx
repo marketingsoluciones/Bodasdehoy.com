@@ -130,9 +130,10 @@ export const SecondStep: FC<propsSecondStep> = (props) => {
   return (
     <div className="gap-4 flex flex-col justify-center items-center w-full">
       <LogoFullColor />
-      <h2 className={`font-light text-tertiary flex items-center text-md `}>
-        Crea tu cuenta de Empresa en Bodasdehoy.com
-      </h2>
+      {props?.whoYouAre == "empresa" &&
+        <h2 className={`font-light text-tertiary flex items-center text-md `}>
+          Crea tu cuenta de Empresa en Bodasdehoy.com
+        </h2>}
       <FormRegister {...props} />
       <h2 className={`font-light text-tertiary flex gap-2 items-center text-md mt-2`}>
         Ó

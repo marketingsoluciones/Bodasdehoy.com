@@ -75,7 +75,7 @@ export const useAuthentication = () => {
             query: queries.getUser,
             variables: { uid: res.user.uid },
           });
-          if (moreInfo && res?.user?.email) {
+          if (moreInfo?.status && res?.user?.email) {
             const token = (await res?.user?.getIdTokenResult())?.token;
             const sessionCookie = await getSessionCookie(token)
             if (sessionCookie) { }
@@ -101,7 +101,6 @@ export const useAuthentication = () => {
               toast("success", `Inicio sesión con exito`)
             }
             ///////////////////////////
-
             // else {
             //   await router.push(!redirect ? process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : redirect);
             // }
@@ -120,7 +119,7 @@ export const useAuthentication = () => {
       } catch (error) {
         toast("error", "correo o contraseña inválida");
       }
-      //setLoading(false);
+      setLoading(false);
     },
     [redirect, getSessionCookie, router, setLoading, setUser, setUserTemp, toast]
   );

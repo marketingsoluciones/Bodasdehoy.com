@@ -18,8 +18,11 @@ const instance: AxiosInstance = axios.create({ baseURL: process.env.NEXT_PUBLIC_
 
 export const api: Fetching = {
     graphql: async (data: object, token: string): Promise<AxiosResponse> => {
-        //let tokenFinal : string | null = token ||  Cookies.get("idToken") || ""
-        const tokenFinal = Cookies.get("idToken")
+        const sessionBodas = Cookies.get("sessionBodas")
+        let tokenFinal = undefined
+        if (sessionBodas) {
+            tokenFinal = Cookies.get("idToken")
+        }
         return await instance.post("/graphql", data, {
             headers: {
                 Authorization: `Bearer ${tokenFinal}`,

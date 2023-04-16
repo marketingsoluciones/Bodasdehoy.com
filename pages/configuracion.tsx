@@ -31,7 +31,6 @@ export type optionComponent = {
 const Configuration = () => {
   const [isActive, setActive] = useState(0);
   const {setLoading} = LoadingContextProvider()
-  const {setUser} = AuthContextProvider()
   const {_signOut} = useAuthentication()
   const router = useRouter()
   const toast = useToast()

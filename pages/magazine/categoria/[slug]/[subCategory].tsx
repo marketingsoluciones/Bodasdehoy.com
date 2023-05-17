@@ -95,7 +95,7 @@ const SubCategory: FC<subCategory> = ({
 
           <div className="p-10 bg-color-base flex flex-col items-center justify-center rounded-xl my-6">
             <h2 className="text-xl text-primary">
-              <strong>Recomendados1</strong> para tu boda
+              <strong>Recomendados</strong> para tu boda
             </h2>
             <div className="grid grid-cols-1 w-full">
               {!loading ? (

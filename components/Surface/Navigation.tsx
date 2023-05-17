@@ -125,7 +125,7 @@ const Navbar: FC = () => {
     },
     {
       title: "Lugares para bodas",
-      route: "/categoria/lugares-para-bodas",
+      route: "/categoria/viajes-para-novios",
       component: <LugaresParaBodas />,
     },
   ];
@@ -138,10 +138,10 @@ const Navbar: FC = () => {
           <a>
             <li className="uppercase h-10 flex items-center justify-center cursor-pointer relative  hover:text-tertiary transition text-gray-500  ">
               {title}
-              <svg
+              {/* <svg
                 className={`h-0.5 w-full bg-primary transform transition absolute ${isHovered ? "scale-100" : "scale-0"
                   } `}
-              />
+              /> */}
             </li>
           </a>
         </Link>

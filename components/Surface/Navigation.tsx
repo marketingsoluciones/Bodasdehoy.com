@@ -152,7 +152,7 @@ const Navbar: FC = () => {
   return (
     <>
       <nav className="hidden lg:block">
-        <ul className="flex md:gap-3 lg:gap-4 xl:gap-4 text-sm font-medium text-gray-200">
+        <ul className="flex md:gap-3 lg:gap-4 xl:gap-4 text-sm font-medium text-gray-200 z-50">
           {List.map((item, idx) => (
             <div
               key={idx}

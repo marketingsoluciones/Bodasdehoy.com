@@ -51,11 +51,11 @@ export const Footer: FC = () => {
   return (
     <div className="hidden md:block bg-color-base w-full pb-8 pt-10 container mx-auto inset-x-0 max-w-screen-lg 2xl:max-w-screen-xl w-full">
       <div className="max-w-screen-lg 2xl:max-w-screen-2xl mx-auto inset-x-0">
+          <div className="border-b border-primary pt-10 pb-8   ">
         <Link href={"/"} passHref>
-          <div className="border-b border-primary pt-10 pb-8 cursor-pointer  hover:opacity-95 transform hover:-translate-x-1 transition duration-700">
-            <img src="/logo.webp" alt={"Logo bodasdehoy.com"} className="h-7 object-contain object-center" />
-          </div>
+            <img src="/logo.webp" alt={"Logo bodasdehoy.com"} className="h-7 cursor-pointer object-contain object-center hover:opacity-95 transform hover:-translate-x-1 transition duration-700" />
         </Link>
+          </div>
         <div className="grid grid-cols-3 gap-6 pt-6 pb-8">
 
           <div className="flex gap-4">

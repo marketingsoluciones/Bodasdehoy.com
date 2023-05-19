@@ -260,7 +260,7 @@ const ProfileMenu: FC<any> = ({ setHovered }) => {
     },
     {
       title: "Mis empresas",
-      route: "/empresa",
+      route: user?.role?.includes("empresa")?"https://cms.bodasdehoy.com/?d=business":"/info-empresa",
       icon: <CompanyIcon />,
     },
     {
@@ -328,7 +328,7 @@ const ListItemProfile: FC<Option> = ({
       {(() => {
         if (route) {
           return (
-            <Link href={route}>
+            <Link href={route} passHref>
               <li className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">
                 {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
                 {title}

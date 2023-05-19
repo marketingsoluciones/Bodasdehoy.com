@@ -125,7 +125,7 @@ const Navbar: FC = () => {
     },
     {
       title: "Lugares para bodas",
-      route: "/categoria/viajes-para-novios",
+      route: "/categoria/lugares-para-bodas",
       component: <LugaresParaBodas />,
     },
   ];

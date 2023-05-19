@@ -6,7 +6,7 @@ import Image from "next/image";
 import dynamic from "next/dynamic";
 import { fetchApi, queries } from "../utils/Fetching";
 import { business, fetchCategory, Post } from "../interfaces";
-import {AdsApp,FeaturedCompanies,Magazine,PlaceDiscovery,PodcastList,} from "../components/Home";
+import {AdsApp,CountriesListing,FeaturedCompanies,Magazine,PlaceDiscovery,PodcastList,} from "../components/Home";
 import RecommendCategories from "../components/Home/RecommendCategories";
 import {BurgerIcon,CommunityIcon,DownloadFileIcon,GuestAppIcon,InspirationIcon,Isologo,LogoFullColor,SearchIcon} from "../components/Icons";
 import { auth } from "../firebase";
@@ -45,7 +45,7 @@ const Home: FC<propsHome> = (props) => {
         <Magazine posts={props?.post} categories={props?.categoriesPost} />
         <AdsApp />
         <PodcastList />
-        {/* <DynamicCountriesListing /> */}
+        <CountriesListing />
       </div>
     </section>
   );

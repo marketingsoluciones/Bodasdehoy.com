@@ -26,7 +26,7 @@ export const CountriesListing = () => {
         {name: "Zaragoza", route: ""},
     ]
     return (
-        <div className="hidden md:block max-w-screen-lg mx-auto inset-x-0 w-full">
+        <div className="hidden md:block max-w-screen-lg mx-auto inset-x-0 w-full mt-5">
             <TitleSection principal={"Empresa de bodas"} secondary={"según provincias"} size={"xl"}/>
             <ul className="grid grid-cols-2 md:grid-cols-4 gap-x-10 gap-y-1 py-4">
                 {List.map((item, idx) => (

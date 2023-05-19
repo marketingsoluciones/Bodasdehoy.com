@@ -32,6 +32,9 @@ const DynamicFooter = dynamic((): any =>
 const DynamicFooterMobile = dynamic((): any =>
   import("../components/Surface/FooterMobile").then((mod) => mod.FooterMobile)
 );
+const DynamicNavbarMobile = dynamic((): any =>
+  import("../components/Surface/NavbarMobile").then((mod) => mod.NavbarMobile)
+);
 
 const DefaultLayout: FC = ({ children }) => {
   return (
@@ -54,8 +57,9 @@ const DefaultLayout: FC = ({ children }) => {
                       {/* <ButtonMessages /> */}
                       <ButtonEmpezar />
                       <DynamicNavigation />
+                      <DynamicNavbarMobile/>
                       <NavigationMobile />
-                      <main className="w-full pt-20">
+                      <main className="w-full pt-5 md:pt-20">
                         {/* @ts-ignore */}
                         {children}
                       </main>

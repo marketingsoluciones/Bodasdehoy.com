@@ -50,17 +50,18 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({ business }) => {
     setData(business)
   }, [business])
 
-
   return (
-    <div className="w-full xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto inset-x-0 flex flex-col px-5 md:px-0">
-      <div className="w-max flex flex-col items-center h-full pb-10 mx-auto inset-x-0">
-        <h2 className="w-max text-center text-lg md:text-2xl text-primary font-semibold">
-          Empresas de bodas destacadas
-        </h2>
-        <p className="font-light text-sm w-full text-right text-primary cursor-pointer hover:text-gray-200 transition">
-          Ver todas los proveedores
-        </p>
-      </div>
+    <div className="w-full xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto inset-x-0 flex flex-col px-5 md:px-0 mt-20">
+      <Link href={"/categoria/proveedores"} passHref>
+        <div className="w-max flex flex-col items-center h-full mx-auto inset-x-0">
+          <h2 className="w-max text-center text-lg md:text-2xl text-primary font-semibold cursor-default">
+            Empresas de bodas destacadas
+          </h2>
+          <p className="font-light text-sm w-full text-right text-primary cursor-pointer hover:text-gray-400 transition">
+            Ver todas los proveedores
+          </p>
+        </div>
+      </Link>
 
       <div className="md:grid md:grid-cols-1 w-full mb-16 md:mb-0 h-96">
         <Swiper
@@ -68,10 +69,6 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({ business }) => {
           spaceBetween={0}
           loop={true}
           navigation={true}
-          // autoplay={{
-          //   delay: 2500,
-          //   disableOnInteraction: false,
-          // }}
           breakpoints={{
             640: {
               slidesPerView: 3,

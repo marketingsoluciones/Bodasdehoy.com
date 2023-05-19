@@ -58,7 +58,7 @@ const Article: FC<Partial<OnePost>> = (props) => {
     },
   };
   return (
-    <section className="w-full flex flex-col items-center mt-3 ">
+    <section className="w-full flex flex-col items-center md:mt-3 mt-16 ">
       <div className="max-w-screen-lg mx-auto inset-x-0 px-5 md:px-0">
         <span className="hidden md:block">
           <BreadCumbs />

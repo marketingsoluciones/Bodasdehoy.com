@@ -100,7 +100,7 @@ const Listing: FC<business> = (props) => {
   return (
     <>
       {/* Imagenes solo para moviles */}
-      <div className="md:hidden relative -mt-20">
+      <div className="md:hidden relative md:-mt-20">
         {sendMessage ? (
           <div className="fixed w-screen h-screen top-0 left-0 md:block bg-white p-12 flex flex-col items-center justify-center z-40 ">
             <p className="absolute top-5 text-gray-200 text-lg right-5" onClick={() => setMessage(false)}>

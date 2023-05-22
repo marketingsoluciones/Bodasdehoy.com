@@ -17,7 +17,7 @@ const OrganizadorBoda = () => {
       {List.map((item, idx) => (
         <Link key={idx} href={item.route ?? ""} passHref >
           <a target="_blank" rel="noopener noreferrer">
-            <li className="flex items-center gap-2 text-sm text-gray-600 hover:text-tertiary hover:font-semibold cursor-pointer hover:bg-gray-100 transition p-2 rounded-xl w-max">
+            <li className="flex items-center gap-2 text-sm text-gray-600 hover:text-tertiary hover:font-semibold cursor-pointer hover:bg-gray-100 transition py-2 rounded-xl w-max">
               <div className="w-8 h-8 rounded-full bg-white p-1.5 grid place-items-center">
                 {cloneElement(item.icon, { className: "w-full h-full" })}
               </div>

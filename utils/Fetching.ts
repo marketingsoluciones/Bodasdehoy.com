@@ -124,9 +124,17 @@ type queries = {
   signOut: string
   singleUpload: string;
   getAllLocalities: string;
+  createSubscripcion: string
 };
 
 export const queries: queries = {
+
+  createSubscripcion: `mutation ($email :String, $development:String!){
+  createSubscription(email:$email,development:$development){
+    email
+    }
+  }`,
+
   signOut: `mutation ($sessionCookie :String){
     signOut(sessionCookie:$sessionCookie)
   }`,

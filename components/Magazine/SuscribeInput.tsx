@@ -3,6 +3,7 @@ import { EmailIcon } from "../Icons";
 import { ButtonComponent, InputField } from "../Inputs";
 import { useToast } from "../../hooks/useToast";
 import * as Yup from "yup";
+import { fetchApi, queries } from "../../utils/Fetching";
 
 export const SuscribeInput = () => {
   const toast = useToast()
@@ -11,37 +12,46 @@ export const SuscribeInput = () => {
   };
   const validation = Yup.object(
     {
-      email: Yup.string().required("requerido"),
+      email: Yup.string().required("hola"),
     }
   )
 
+  console.log(validation)
+
+
   const handleSubmit = async (value: any) => {
-    const data = value.email
-    if (data.length > 3) {
-      toast("success", data + " gracias por suscribirte al Newsletter")
-    } else {
+    try {
+      const data = await fetchApi({
+        query: queries.createSubscripcion, variables: {
+          ...value, development: "bodasdehoy"
+        }
+      })
+      if (data?.email) {
+        toast("success", data?.email + " gracias por suscribirte al Newsletter")
+      }
+    } catch (error) {
+      console.log(error)
       toast("error", "sin datos")
     }
   };
 
   return (
-    <div>
+    <div className="h-full flex items-center">
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
         validationSchema={validation}
       >
-
-        <Form className="flex items-center justify-center gap-3">
-            <span className="relative flex ">
-              <EmailIcon className="absolute top-0 my-auto inset-y-0 w-4 h-4 text-gray-200 left-4" />
+        <Form className="flex items-center justify-center gap-3 *h-full">
+            {/* <EmailIcon className="absolute top-0 my-auto inset-y-0 w-4 h-4 text-gray-200 left-4" /> */}
+            <span className="h-full flex items-center">
               <InputField
                 name={"email"}
                 placeholder="correo electronico"
                 type={"email"}
               />
             </span>
-          <button className="bg-primary text-white px-4 py-2 rounded-xl" color="primary" type="submit">Enviar</button>
+            <button className="bg-primary text-white px-4 py-2  rounded-xl" color="primary" type="submit">Enviar</button>
         </Form>
       </Formik>
     </div>

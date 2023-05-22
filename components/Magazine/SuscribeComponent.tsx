@@ -7,7 +7,7 @@ export const SuscribeComponent = () => {
         ¿No te quieres perder las ultimas novedades para tu boda?
       </h3>
       <h4 className="text-sm text-gray-400">Suscribete a nuestra newsletter</h4>
-      <div className=" pt-4">
+      <div className="h-20 flex items-center">
         <SuscribeInput />
       </div>
     </div>

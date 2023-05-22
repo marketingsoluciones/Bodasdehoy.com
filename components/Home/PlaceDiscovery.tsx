@@ -75,11 +75,11 @@ export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({ data }) => {
                 modules={[Autoplay, Navigation]}
               >
                 {state?.subCategories?.map((item: any, idx: any) => (
-                  <>
-                    <SwiperSlide key={idx} className="pr-4 pl-4">
-                      <PlaceCard key={idx} {...item} />
+                  <div key={idx}>
+                    <SwiperSlide  className="pr-4 pl-4">
+                      <PlaceCard  {...item} />
                     </SwiperSlide>
-                  </>
+                  </div>
                 ))}
               </Swiper>
             )}

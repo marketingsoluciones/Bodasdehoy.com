@@ -75,7 +75,7 @@ export const RecommendCategories: FC<propsRecommendCategories> = ({ data }) => {
             categories.length > 0 &&
             categories?.map((item: Partial<category>, idx: number) => (
               <SwiperSlide key={idx}>
-                <Category key={idx} {...item} />
+                <Category  {...item} />
               </SwiperSlide>
             ))}
         </Swiper>

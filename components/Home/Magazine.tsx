@@ -137,7 +137,7 @@ const BlogCategories: FC<{ categories: Partial<category>[] }> = ({
       >
         {categories?.map((item, idx) => (
           <SwiperSlide key={idx} >
-            <Category key={idx} title={item?.title} route={item?.slug} />
+            <Category title={item?.title} route={item?.slug} />
           </SwiperSlide>
         ))}
       </Swiper>

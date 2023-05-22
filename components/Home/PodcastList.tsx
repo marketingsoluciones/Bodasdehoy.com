@@ -76,7 +76,7 @@ export const PodcastList = () => {
             <>
               <SwiperSlide key={idx} >
                 <div className="pt-6 overflow-hidden">
-                  <Podcast key={idx} data={item} />
+                  <Podcast  data={item} />
                 </div>
               </SwiperSlide>
             </>

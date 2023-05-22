@@ -74,7 +74,7 @@ export const AdsApp = () => {
             >
               {List.map((item, idx) => (
                 <SwiperSlide key={idx} className="">
-                  <Feature key={idx} item={item} />
+                  <Feature  item={item} />
                 </SwiperSlide>
               ))}
             </Swiper>

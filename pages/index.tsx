@@ -1,7 +1,5 @@
-import { FC, ReactNode, memo } from "react";
-
 const Slider: any = dynamic((): any => import("react-slick"));
-
+import { FC, ReactNode, memo } from "react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { fetchApi, queries } from "../utils/Fetching";

@@ -42,7 +42,7 @@ export const Footer: FC = () => {
   const handleClick = async () => {
     const lowerCase = user?.role?.map((item: string) => item.toLowerCase())
     if (lowerCase?.includes("empresa")) {
-      router.push("/empresa")
+      router.push("/https://cms.bodasdehoy.com/?d=business")
     } else {
       router.push("/info-empresa")
     }

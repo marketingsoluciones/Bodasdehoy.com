@@ -51,7 +51,7 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({ business }) => {
   }, [business])
 
   return (
-    <div className="w-full xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto inset-x-0 flex flex-col px-5 md:px-0 mt-5">
+    <div className="w-full xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto inset-x-0 flex flex-col px-5 md:px-0 mb-5">
       <Link href={"/categoria/proveedores"} passHref>
         <div className="w-max flex flex-col items-center h-full mx-auto inset-x-0">
           <h2 className="w-max text-center text-lg md:text-2xl text-primary font-semibold cursor-default">

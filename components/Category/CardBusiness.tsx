@@ -9,7 +9,7 @@ import { Markup } from "interweave";
 const sizes = {
   lg: {
     dimensions: "h-[22rem] w-80",
-    fontSize: "text-lg pb-0.5"
+    fontSize: "text-sm pb-0.5"
   },
   md:{
     dimensions:  "h-80 w-60",

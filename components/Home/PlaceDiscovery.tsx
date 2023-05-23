@@ -64,6 +64,10 @@ export const PlaceDiscovery: FC<propsPlaceDiscovery> = ({ data }) => {
                 spaceBetween={0}
                 loop={true}
                 navigation={true}
+                autoplay={{
+                  delay: 2500,
+                  disableOnInteraction: false,
+                }}
                 breakpoints={{
                   640: {
                     slidesPerView: 4,

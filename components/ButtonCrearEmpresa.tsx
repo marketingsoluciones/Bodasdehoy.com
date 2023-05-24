@@ -12,7 +12,7 @@ const ButtonCrearEmpresa = () => {
     const handleClick = async () => {
         const lowerCase = user?.role?.map((item: string) => item.toLowerCase())
         if (lowerCase?.includes("empresa")) {
-            router.push("https://cms.bodasdehoy.com/?d=business")
+            router.push(`${process.env.NEXT_PUBLIC_CMS}`)
         } else {
             router.push("/info-empresa")
         }

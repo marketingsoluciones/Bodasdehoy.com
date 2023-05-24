@@ -260,7 +260,7 @@ const ProfileMenu: FC<any> = ({ setHovered }) => {
     },
     {
       title: "Mis empresas",
-      route: user?.role?.includes("empresa")?"https://cms.bodasdehoy.com/?d=business":"/info-empresa",
+      route: user?.role?.includes("empresa")?process.env.NEXT_PUBLIC_VEWCMS:"/info-empresa",
       icon: <CompanyIcon />,
     },
     {

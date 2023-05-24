@@ -208,7 +208,7 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
             </span>
             <span
               className="hidden md:block pl-3 cursor-pointer transition transform hover:-rotate-6 hover:scale-110"
-              onClick={() => router.push("empresa/crear-empresa")}
+              onClick={() => router.push("/info-empresa")}
             >
               <CompanyIcon className="icon text-gray-500" />
             </span>

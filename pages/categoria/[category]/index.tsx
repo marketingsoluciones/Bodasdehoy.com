@@ -161,12 +161,12 @@ const CategoryPage: FC<category> = (props) => {
   };
 
   return (
-    <section className="flex flex-col gap-10 ">
-      <div>
+    <section className="flex flex-col gap-10  ">
+      {/* <div>
         <NavbarMobile />
-      </div>
+      </div> */}
 
-      <div>
+      <div >
         {/* Imagen Banner */}
         <img
           src={

@@ -84,11 +84,11 @@ export const useAuthentication = () => {
 
             /////// REDIRECIONES ///////
             if (redirect?.split("/")[3] == "info-empresa" && moreInfo.role.includes("empresa")) {
-              await router.push(`${process.env.NEXT_PUBLIC_DIRECTORY}/empresa` ?? "")
+              await router.push(`${process.env.NEXT_PUBLIC_VEWCMS}` ?? "")
               toast("success", `Inicio de sesión de empresa con exito `)
             }
             if (redirect?.split("/")[3] !== "info-empresa" && moreInfo.role.includes("empresa")) {
-              await router.push(redirect ? redirect : `${process.env.NEXT_PUBLIC_DIRECTORY}/empresa` ?? "")
+              await router.push(redirect ? redirect : `${process.env.NEXT_PUBLIC_VEWCMS}` ?? "")
               toast("success", `Inicio sesión con exito`)
             }
 

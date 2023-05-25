@@ -1,4 +1,4 @@
-import { Formik, Form } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import { FC, useContext, Children, memo, Dispatch, SetStateAction, useState } from "react";
 import { DatePicker, InputField, SelectField } from "../../../Inputs";
 import { EmailIcon, EmailIcon as PasswordIcon, UserForm, Eye, EyeSlash, LockClosed, PhoneMobile, } from "../../../Icons";
@@ -14,6 +14,7 @@ import { auth } from "../../../../firebase";
 import InputCity from "../../../Inputs/InputCity";
 import { useAuthentication } from '../../../../utils/Authentication';
 import { useToast } from '../../../../hooks/useToast';
+import { FirebaseError } from "firebase/app";
 
 // Interfaces para el InitialValues del formulario de registro
 interface userInitialValuesPartial {
@@ -191,8 +192,12 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
 
       //toast("success", "Registro realizado con exito")
     } catch (error) {
-      console.log(error);
-      toast("error", "Ups... hubo un error al realizar el registro")
+      console.log(error );
+      if(error instanceof FirebaseError){
+        toast("error", "Ups... este correo ya esta registrado")
+      }else {
+        toast("error", "Ups... algo a salido mal" )
+      }
       setLoading(false);
     }
   };

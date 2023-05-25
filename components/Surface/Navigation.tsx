@@ -215,7 +215,7 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
           </>
         ) : (
           <>
-            <Notification onClick={() => { alert("aqui") }} valir={true} value={9} />
+            {/* <Notification onClick={() => { alert("aqui") }} valir={true} value={9} /> */}
             <div
               className="border-gray-100 border-l text-gray-500 pl-3 flex items-center gap-1 z-40"
               onMouseOver={() => setHovered(true)}

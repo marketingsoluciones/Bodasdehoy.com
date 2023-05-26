@@ -188,7 +188,7 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
   const [isHovered, setHovered] = useState<boolean>(false);
   const router = useRouter();
   const HandleClickUser = () => {
-    !Cookies.get("sessionBodas") ? router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) : router.push("/perfil");
+    !Cookies.get("sessionBodas") ? router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) : router.push("/");
   };
   return (
     <>
@@ -260,8 +260,9 @@ const ProfileMenu: FC<any> = ({ setHovered }) => {
     },
     {
       title: "Mis empresas",
-      route: user?.role?.includes("empresa")?process.env.NEXT_PUBLIC_VEWCMS:"/info-empresa",
+      route: user?.role?.includes("empresa") ? `${process.env.NEXT_PUBLIC_CMS}/?d=viewBusines` : "/info-empresa",
       icon: <CompanyIcon />,
+      target:"_blank"
     },
     {
       title: "Notificaciones",
@@ -309,6 +310,7 @@ interface Option {
   route?: string;
   onClick?: MouseEventHandler;
   sizeIcon?: keyof typeof sizesIcon;
+  target?:string;
 }
 
 const sizesIcon: { xs: string; sm: string } = {
@@ -321,6 +323,7 @@ const ListItemProfile: FC<Option> = ({
   icon,
   sizeIcon = "sm",
   route,
+  target = "",
   onClick,
 }) => {
   return (
@@ -329,10 +332,12 @@ const ListItemProfile: FC<Option> = ({
         if (route) {
           return (
             <Link href={route} passHref>
-              <li className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">
-                {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
-                {title}
-              </li>
+              <a target={target}>
+                <li className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">
+                  {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
+                  {title}
+                </li>
+              </a>
             </Link>
           );
         } else if (onClick) {

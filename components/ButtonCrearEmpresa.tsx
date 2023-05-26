@@ -1,28 +1,37 @@
 import React from 'react'
-import { CrossIcon, UserIcon } from './Icons'
-import { useHover } from '../hooks/useHover';
-import { useRouter } from 'next/router';
+import { CrossIcon} from './Icons'
 import { AuthContextProvider } from '../context';
+import Link from 'next/link';
 
 const ButtonCrearEmpresa = () => {
-    const [hoverRef, isHovered] = useHover()
-    const router = useRouter()
     const { user } = AuthContextProvider()
 
-    const handleClick = async () => {
+    const url =  () => {
         const lowerCase = user?.role?.map((item: string) => item.toLowerCase())
         if (lowerCase?.includes("empresa")) {
-            router.push(`${process.env.NEXT_PUBLIC_CMS}`)
-        } else {
-            router.push("/info-empresa")
+            return `${process.env.NEXT_PUBLIC_CMS}/?d=busines`
         }
+            return "/info-empresa"
     }
+
+    const urlTarget =  () => {
+        const lowerCase = user?.role?.map((item: string) => item.toLowerCase())
+        if (lowerCase?.includes("empresa")) {
+            return `_blank`
+        }
+            return ""
+    }
+
     return (
-   
-            <div ref={hoverRef} onClick={handleClick} className={`hidden sm:flex cursor-pointer bg-color-base font-semibold rounded-full w-max px-4 text-xs py-2 text-primary fixed bottom-12 right-6 z-30 items-center gap-2  transition-all duration-500 shadow-lg`}>
-                <CrossIcon />
-                Publica tu empresa aquí
-            </div>
+        <Link href={url()} >
+            <a target={urlTarget()}>
+                <div className={`hidden sm:flex cursor-pointer bg-color-base font-semibold rounded-full w-max px-4 text-xs py-2 text-primary fixed bottom-12 right-6 z-30 items-center gap-2  transition-all duration-500 shadow-lg`}>
+                    <CrossIcon />
+                    Publica tu empresa aquí
+                </div>
+            </a>
+        </Link>
+
     )
 }
 

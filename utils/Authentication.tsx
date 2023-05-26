@@ -2,11 +2,11 @@ import { useCallback } from "react";
 import { signInWithPopup, UserCredential, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, OAuthProvider } from 'firebase/auth';
 import { useRouter } from "next/router";
 import Cookies from 'js-cookie';
-
 import { LoadingContextProvider, AuthContextProvider } from "../context";
 import { auth } from "../firebase";
 import { fetchApi, queries } from "./Fetching";
 import { useToast } from "../hooks/useToast";
+
 
 export const useAuthentication = () => {
   const { setLoading } = LoadingContextProvider();
@@ -84,11 +84,12 @@ export const useAuthentication = () => {
 
             /////// REDIRECIONES ///////
             if (redirect?.split("/")[3] == "info-empresa" && moreInfo.role.includes("empresa")) {
-              await router.push(`${process.env.NEXT_PUBLIC_VEWCMS}` ?? "")
+              await router.push(`${process.env.NEXT_PUBLIC_CMS}/?d=viewBusines` ?? "")
               toast("success", `Inicio de sesión de empresa con exito `)
             }
             if (redirect?.split("/")[3] !== "info-empresa" && moreInfo.role.includes("empresa")) {
-              await router.push(redirect ? redirect : `${process.env.NEXT_PUBLIC_VEWCMS}` ?? "")
+              window.open(`${process.env.NEXT_PUBLIC_CMS}/?d=viewBusines` ?? "" , '_blank')
+              await router.push( `/` )
               toast("success", `Inicio sesión con exito`)
             }
 

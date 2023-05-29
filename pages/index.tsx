@@ -42,7 +42,7 @@ const Home: FC<propsHome> = (props) => {
         <RecommendCategories data={props?.categoriesBusiness} />
         <Magazine posts={props?.post} categories={props?.categoriesPost} />
         <AdsApp />
-        <PodcastList />
+        {/* <PodcastList /> */}
         <CountriesListing />
       </div>
     </section>

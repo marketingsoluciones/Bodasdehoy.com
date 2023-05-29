@@ -104,9 +104,6 @@ const subCategoryBusinessPage: NextPage<subCategory> = (props) => {
   return (
     <section className="flex flex-col gap-10 ">
       <div>
-        <NavbarMobile/>
-      </div>
-      <div>
         {/* Imagen Banner */}
         <img
           alt={title}

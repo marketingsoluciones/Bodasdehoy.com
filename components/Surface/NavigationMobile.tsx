@@ -39,7 +39,7 @@ export const NavigationMobile = () => {
     },
     {
       icon: <PlusCircle className="w-10 h-10 text-gray-800" />,
-      route: user?.role && user?.role?.length > 0 && user?.role[0] === "empresa" ? "/empresa/crear-empresa" : "/categoria/lugares-para-bodas",
+      route: user?.role && user?.role?.length > 0 && user?.role[0] === "empresa" ? `${process.env.NEXT_PUBLIC_CMS}/?d=busines`: "/info-empresa",
     },
   ];
   return (

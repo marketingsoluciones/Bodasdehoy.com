@@ -91,7 +91,7 @@ const LugaresParaBodas = () => {
         {subCategories.map((item) => (
           <Link
             key={item?._id}
-            href={`/categoria/lugares-para-bodas/`}
+            href={`/categoria/lugares-para-bodas/${item?.slug}`}
             passHref
           >
             <li

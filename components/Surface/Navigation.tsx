@@ -287,10 +287,10 @@ const ProfileMenu: FC<any> = ({ setHovered }) => {
     }`}
       >
         <div className="w-full border-b border-gray-100 pb-2">
-          <p className="text-gray-500 font-extralight uppercase tracking-wider	text-xs text-center ">
+          <p className="text-gray-500 font-extralight uppercase tracking-wider	text-xs text-center  cursor-default">
             {user?.role && user?.role?.length > 0 && user?.role[0]}
           </p>
-          <h3 className="text-primary font-medium w-full text-center">
+          <h3 className="text-primary font-medium w-full text-center cursor-default ">
             {user?.displayName}
           </h3>
         </div>

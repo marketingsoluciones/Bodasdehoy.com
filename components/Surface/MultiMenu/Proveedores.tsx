@@ -40,7 +40,7 @@ const Proveedores = () => {
     <div className="w-full h-full grid gap-3 grid-cols-7 text-gray-600 text-xs  relative">
       {categories?.map((category, idx) => (
         <div key={category._id} className={`relative ${idx !== categories.length - 1 ? " border-r border-gray-200" : ""}`} >
-          <h3 className="text-xs font-bold pb-2 text-left truncate ">
+          <h3 className="text-xs font-bold pb-2 text-left truncate cursor-default ">
             {category.title && capitalize(category.title)}
           </h3>
           <ul className="h- flex flex-col gap-1 items-start col-span-3">

@@ -75,7 +75,7 @@ const LugaresParaBodas = () => {
     }
     return (
 
-      <a key={idx} onClick={onClick1} className="flex flex-col items-center justify-center text-gray-600 p-3 hover:bg-gray-200 transition rounded-xl"
+      <a key={idx} onClick={onClick1} className="cursor-pointer flex flex-col items-center justify-center text-gray-600 p-3 hover:bg-gray-200 transition rounded-xl"
       >
         <div className="bg-white w-16 h-16 p-4 rounded-full">
           {cloneElement(item.icon, { className: "w-full h-full" })}
@@ -105,9 +105,6 @@ const LugaresParaBodas = () => {
         ))}
       </ul>
       <div className="grid grid-cols-3 -mt-8">
-
-
-
         {List.map((item, idx) => (
           <Link
             key={idx}
@@ -117,7 +114,6 @@ const LugaresParaBodas = () => {
           </Link>
         ))}
       </div>
-
     </div>
   );
 };

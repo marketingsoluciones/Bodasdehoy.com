@@ -148,6 +148,11 @@ const RatingField: FC<propsRatingField> = (props) => {
   return (
     <div className="flex items-center justify-center flex-col w-full">
       <label className=" text-tertiary capitalize">{props?.label}</label>
+      {meta.touched && meta.error ? (
+            <span className="text-red-500 text-xs font-medium mb-1 ">
+              Campo requerido
+            </span>
+          ) : null}
       <RatingStars
         size={"lg"}
         rating={field.value}

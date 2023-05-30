@@ -78,21 +78,20 @@ const Magazine: NextPage<propsMagazine> = (props) => {
             searchClient={conditionalQuery}
           >
             <ConnectedSearchBox placeholder="catering, hoteles, fincas, vestidos" />
-            <div className="absolute -bottom-0 -left-5 w-[90%] mx-auto inset-x-0 bg-white shadow translate-y-full max-h-60 overflow-auto no-scrollbar rounded-b-3xl">
+            <div className="absolute z-50 -bottom-0 -left-5 w-[80%] mx-auto inset-x-0 bg-white shadow translate-y-full max-h-60 overflow-auto no-scrollbar rounded-b-3xl">
               <Hits hitComponent={Hit} />
             </div>
           </InstantSearch>
          {/*  <Searcher placeholder={"¿Qué necesitas para tu boda?"} autoFocus /> */}
         </div>
         <PrincipalPost {...lastestPosts[0]} />
-        <div className="w-full flex items-center justify-center flex-col pt-10 ">
+        <div className="w-full flex items-center justify-center flex-col pt-10 z-10">
           <TitleSection
             principal={"Recomendados"}
             secondary={"para tu boda"}
             size={"xl"}
           />
           <GridPost data={fivePost} />
-
         </div>
       </div>
       {/* 2da sección */}

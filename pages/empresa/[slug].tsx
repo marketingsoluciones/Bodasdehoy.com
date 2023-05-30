@@ -125,12 +125,6 @@ const Listing: FC<business> = (props) => {
         className="mx-auto inset-x-0 flex flex-col gap-6 px-5 "
       >
         <BreadCumbs />
-        {/* <div className="hidden sm:block mx-auto inset-x-0 max-w-screen-lg w-full">
-          <span className="flex items-center gap-1 overflow-hidden rounded-md bg-gray-100 text-sm text-gray-500 w-max ">
-            <button className="bg-white w-max rotate-180 p-1 border-l hover:bg-gray-100 transition" onClick={() => router.back()}> <ArrowIcon className="w-6 h-6" /> </button>
-            <span className="px-2 ">Ir atrás</span>
-          </span>
-        </div> */}
         <HeaderListing
           {...props}
           totalReviews={totalReviews}
@@ -140,33 +134,6 @@ const Listing: FC<business> = (props) => {
           <div className="lg:max-w-screen-lg inset-x-0 mx-auto w-full grid md:grid-cols-3 gap-10  ">
             <section className="w-full md:col-span-2">
               <div className=" hidden md:block ">
-                {/* <Swiper
-                  slidesPerView={1}
-                  spaceBetween={0}
-                  loop={true}
-                  navigation={true}
-                  breakpoints={{
-                    640: {
-                      slidesPerView: 1,
-                      spaceBetween: 1,
-                    },
-                  }}
-                  preloadImages={false}
-                  lazy={true}
-                  modules={[Autoplay, Navigation]}
-                >
-                  {imgCarrusel?.map((item, idx) => (
-                    <SwiperSlide key={idx}>
-                      <img
-                        alt={businessName}
-                        className="w-full object-cover h-96 "
-                        src={createURL(item?.i640)}
-                        srcSet={createSrcSet(imgMiniatura)} />
-                    </SwiperSlide>
-
-                  ))}
-
-                </Swiper> */}
                 <Slider {...settings} >
                   {imgCarrusel?.map((item, idx) => (
                     <img
@@ -178,12 +145,6 @@ const Listing: FC<business> = (props) => {
                   ))}
                 </Slider>
               </div>
-              {/*  <img
-                alt={businessName}
-                className="w-full object-cover h-96 hidden md:block"
-                src={createURL(imgMiniatura?.i640)}
-                srcSet={createSrcSet(imgMiniatura)}
-              /> */}
               <div className="hidden md:block bg-gray-200 w-full h-max -mt-4 rounded-lg relative z-10 bg-opacity-30">
                 <div className="bg-white rounded-lg py-3 w-full border border-primary flex items-center justify-between px-16">
                   {List.map((item, idx) => (
@@ -195,12 +156,6 @@ const Listing: FC<business> = (props) => {
                     </Link>
                   ))}
                 </div>
-                {/* Hay que hacerlo para que quede condicional */}
-                {/* <div className="w-full h-full flex items-center justify-center gap-6 py-6">
-                  <PromoActiva />
-                  <svg className="h-12 w-0.5 bg-gray-300" />
-                  <EmpresaDestacada />
-                </div> */}
               </div>
               <div className="flex flex-col flex-wrap gap-12 py-5 pb-0">
                 {content && (
@@ -304,15 +259,14 @@ const Listing: FC<business> = (props) => {
                       route={instagram}
                     />
                   )}
-                  <div className="">
                     {youtube && (
                       <ItemContact
                         icon={<YoutubeIcon className="w-5 h-5" />}
-                        title={youtube.length > 33 ? youtube.substring(0, 30) + "..." : youtube}
+                        title={businessName ?? ""}
                         route={youtube}
                       />
                     )}
-                  </div>
+                  
                   {userUid !== user?.uid && userUid === '' && <ButtonReclamarEmpresa />}
                 </div>
 

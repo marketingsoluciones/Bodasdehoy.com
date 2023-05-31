@@ -19,7 +19,7 @@ export const SuscribeInput = () => {
   console.log(validation)
 
 
-  const handleSubmit = async (value: any) => {
+  const handleSubmit = async (value: any, {resetForm}:any ) => {
     try {
       const data = await fetchApi({
         query: queries.createSubscripcion, variables: {
@@ -28,6 +28,7 @@ export const SuscribeInput = () => {
       })
       if (data?.email) {
         toast("success", data?.email + " gracias por suscribirte al Newsletter")
+        resetForm({value:''})
       }
     } catch (error) {
       console.log(error)

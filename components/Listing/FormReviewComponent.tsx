@@ -154,6 +154,7 @@ const RatingField: FC<propsRatingField> = (props) => {
             </span>
           ) : null}
       <RatingStars
+        active={true}
         size={"lg"}
         rating={field.value}
         outValue={(value: number) => helpers.setValue(value)}

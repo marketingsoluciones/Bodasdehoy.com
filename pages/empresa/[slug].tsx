@@ -259,14 +259,14 @@ const Listing: FC<business> = (props) => {
                       route={instagram}
                     />
                   )}
-                    {youtube && (
-                      <ItemContact
-                        icon={<YoutubeIcon className="w-5 h-5" />}
-                        title={businessName ?? ""}
-                        route={youtube}
-                      />
-                    )}
-                  
+                  {youtube && (
+                    <ItemContact
+                      icon={<YoutubeIcon className="w-5 h-5" />}
+                      title={businessName ?? ""}
+                      route={youtube}
+                    />
+                  )}
+
                   {userUid !== user?.uid && userUid === '' && <ButtonReclamarEmpresa />}
                 </div>
 
@@ -354,6 +354,7 @@ const HeaderListing: FC<propsHeaderListing> = ({
             {businessName}
           </h1>
           <RatingStars
+            active={false}
             rating={averageTotal}
             size={"lg"}
             visibleText={totalReviews}

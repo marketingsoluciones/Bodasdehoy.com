@@ -15,7 +15,7 @@ export const ItemSubCategory: FC<propsItemSubCategory> = ({ imgMiniatura, title,
     <>
     <Link href={`/categoria/${slugCategory}/${slug}`} passHref>
       <button
-        className={`relative focus:ring-4 focus:ring-pink-300 my-1 hover:opacity-90 transition category m-auto inset-0 card w-60 h-24 bg-gray-500 rounded-2xl after:bg-gradient-to-t 
+        className={`${imgMiniatura?"":"hidden"}  relative focus:ring-4 focus:ring-pink-300 my-1 hover:opacity-90 transition category m-auto inset-0 card w-60 h-24 bg-gray-500 rounded-2xl after:bg-gradient-to-t 
         after:from-gray-900 
         after:to-transparent 
         after:w-full after:h-full 

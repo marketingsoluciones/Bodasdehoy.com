@@ -67,8 +67,8 @@ const Magazine: NextPage<propsMagazine> = (props) => {
   };
 
   return (
-    <section className="w-full -mt-6 md:mt-0 md:pt-8 grid gap-6">
-      <div className="max-w-screen-lg mx-auto inset-x-0 grid gap-6 w-full ">
+    <section className="w-full -mt-0 md:mt-0 md:pt-8 grid gap-6">
+      <div className="max-w-screen-lg mx-auto inset-x-0 grid gap-6 w-full  ">
         <h1 className="text-5xl md:text-6xl  font-title text-primary w-full text-center">
           Magazine
         </h1>
@@ -85,7 +85,7 @@ const Magazine: NextPage<propsMagazine> = (props) => {
          {/*  <Searcher placeholder={"¿Qué necesitas para tu boda?"} autoFocus /> */}
         </div>
         <PrincipalPost {...lastestPosts[0]} />
-        <div className="w-full flex items-center justify-center flex-col pt-10 z-10">
+        <div className="w-full flex items-center justify-center flex-col pt-6 z-10 space-y-9">
           <TitleSection
             principal={"Recomendados"}
             secondary={"para tu boda"}

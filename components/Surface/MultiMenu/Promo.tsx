@@ -1,7 +1,10 @@
+import { useRouter } from "next/router";
 export const Promo = () => {
+  const router = useRouter()
+
   return (
     <>
-      <button className="w-full hover:opacity-80 transition bg-primary text-white rounded-lg border border-primary -mt-8 relative flex items-center gap-2 p-3">
+      <button onClick={()=>router.push("/categoria/promociones")} className="w-full hover:opacity-80 transition bg-primary text-white rounded-lg border border-primary -mt-8 relative flex items-center gap-2 p-3">
         <span className="text-3xl font-semibold">%</span>
         <span className="text-left">
         <h3 className="uppercase font-semibold text-md">Promociones</h3>

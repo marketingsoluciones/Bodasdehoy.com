@@ -33,7 +33,7 @@ export const Footer: FC = () => {
     { icon: <FacebookIcon />, link: "https://www.facebook.com/bodasdehoycom" },
     { icon: <InstagramIcon />, link: "https://www.instagram.com/bodasdehoycom/" },
     { icon: <PinterestIcon />, link: "https://www.pinterest.es/bodasdehoycom/" },
-    { icon: <YoutubeIcon />, link: "https://www.youtube.com/bodasdehoy" },
+   /*  { icon: <YoutubeIcon />, link: "https://www.youtube.com/bodasdehoy" }, */
   ]
 
   const [hoverRef, isHovered] = useHover()

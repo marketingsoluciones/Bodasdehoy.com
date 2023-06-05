@@ -131,7 +131,7 @@ export const CompanyCard: FC<propsCompanyCard> = memo(({ data, pricing = true })
             {business?.businessName}
           </h3>
         </Link>
-        <RatingStars rating={4} />
+        <RatingStars rating={4} active={false}/>
         <h3 className="text-gray-500 text-sm">{business?.address}</h3>
         {pricing && (
           <div className="border-t border-b border-primary py-2 my-2 flex items-center justify-center gap-2">
@@ -165,6 +165,7 @@ interface propsRatings {
   size?: string;
   visibleText?: number;
   outValue?: any;
+  active?:boolean;
 }
 
 export const RatingStars: FC<propsRatings> = ({
@@ -172,6 +173,7 @@ export const RatingStars: FC<propsRatings> = ({
   size = "base",
   visibleText,
   outValue = () => { },
+  active
 }) => {
   const matriz: number[] = [1, 2, 3, 4, 5];
   const sizes: any = {
@@ -179,15 +181,16 @@ export const RatingStars: FC<propsRatings> = ({
     lg: "w-4 h-4 mx-0.5",
     xl: "w-5 h-5 mx-0.5",
   };
+  console.log(rating)
   return (
     <div className="flex items-center justify-center h-max gap-2">
-      <div className="flex  items-center cursor-pointer ">
+      <div className={`flex  items-center  ${active === true?"cursor-pointer":"cursor-default"}`}>
         {matriz.map((item, idx) => (
           <StarRating
             key={idx}
             className={`transition ${rating >= item
-              ? "text-yellow-400 hover:opacity-80"
-              : "text-gray-400 hover:text-yellow-400"
+              ? "text-yellow-400 "
+              : active===true?"hover:text-yellow-400 text-gray-400":"text-gray-400 "
               }  ${sizes[size]} `}
             onClick={() => outValue(item)}
           />

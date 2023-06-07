@@ -9,6 +9,8 @@
     "lint": "next lint",
     "sitemap": "next-sitemap --config next-sitemap.config.js"
   },
+  "author": "Jafet Montilla <jafetmontilla@gmail.com>, Francisco Montilla <ciscomontilla@gmail.com>, Eduarcho Chavez <edodch4@gmail.com>",
+  "license": "ISC",
   "dependencies": {
     "@fontsource/italiana": "^4.5.2",
     "@fontsource/montserrat": "^4.5.0",

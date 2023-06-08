@@ -3,6 +3,7 @@ import { LoadingProvider, FiltersProvider } from "../context";
 import ButtonCrearEmpresa from "../components/ButtonCrearEmpresa";
 import ButtonReclamarEmpresa from "../components/ButtonReclamarEmpresa";
 import ButtonEmpezar from "../components/ButtonEmpezar";
+import { FloatButtonchat } from "../components/FloatButtonChat";
 import { NavigationMobile } from "../components/Surface";
 import { FC } from "react";
 import Head from "next/head";
@@ -56,9 +57,10 @@ const DefaultLayout: FC = ({ children }) => {
                       <ButtonCrearEmpresa />
                       {/* <ButtonMessages /> */}
                       <ButtonEmpezar />
+                      <FloatButtonchat/>
                       <DynamicNavigation />
                       <DynamicNavbarMobile/>
-                      <NavigationMobile />
+                      {/* <NavigationMobile /> */}
                       <main className="w-full pt-5 md:pt-20">
                         {/* @ts-ignore */}
                         {children}

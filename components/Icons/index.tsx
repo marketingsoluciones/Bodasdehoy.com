@@ -49,6 +49,15 @@ export const WarningIcon: FC<PropsIcon> = (props) => {
   )
 }
 
+export const ChatpIcon: FC<PropsIcon> = (props) => {
+  return (
+    <svg width="30px" height="30px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#ffffff">
+      <path d="M7 12h10M7 8h6" stroke="#ffffff" stroke-width="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+      <path d="M3 20.29V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H7.961a2 2 0 00-1.561.75l-2.331 2.914A.6.6 0 013 20.29z" stroke="#ffffff" stroke-width="1.5"></path>
+    </svg>
+  )
+}
+
 
 export const ChatIcon: FC<PropsIcon> = (props) => {
   return (
@@ -457,9 +466,9 @@ export const HomeIcon: FC<PropsIcon> = (props) => {
 export const DolarIcon: FC<PropsIcon> = (props) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
-      <path 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
         d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
 

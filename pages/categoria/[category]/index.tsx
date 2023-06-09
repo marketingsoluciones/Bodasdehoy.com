@@ -23,7 +23,7 @@ import { Carrusel } from "../../../components/Carrusel";
 
 const CategoryPage: FC<category> = (props) => {
   const { filters, setFilters, localities, setLocalities } = FiltersContextProvider();
-  const { _id, imgBanner, subCategories, heading, title, description, slug } =props;
+  const { _id, imgBanner, subCategories, heading, title, description, slug } = props;
   const [characteristics, setCharacteristics] = useState([]);
 
   const settings = {
@@ -76,7 +76,7 @@ const CategoryPage: FC<category> = (props) => {
     })()
   }, [subCategories, _id, setLocalities]);
 
- 
+
 
   return (
     <section className="flex flex-col gap-10  ">
@@ -101,7 +101,7 @@ const CategoryPage: FC<category> = (props) => {
       {/* Aside Filters */}
       <div className="xl:max-w-screen-lg 2xl:max-w-screen-xl gap-4 md:gap-10 mx-auto inset-x-0 grid md:grid-cols-7 2xl:grid-cols-5 w-full">
         <Filters optionsCheckbox={{ characteristics }} />
-        <GridCards query={{ categories: _id }} />
+        <GridCards query={{ categories: _id, status: true }} />
       </div>
     </section>
   );
@@ -113,7 +113,7 @@ export const GridCards: FC<{ query: object }> = ({ query }) => {
   const { filters, setFilters } = FiltersContextProvider();
   const [limit, setLimit] = useState(9);
   const [skip, setSkip] = useState(0);
-  
+
   const initialQuery = {
     query: queries.getAllBusiness,
     variables: {

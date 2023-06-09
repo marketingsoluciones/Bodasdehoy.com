@@ -44,14 +44,21 @@ import { createURL } from "../../utils/UrlImage";
 import { capitalize } from "../../utils/Capitalize";
 import Cookies from "js-cookie";
 import { Notification } from "./Notification";
+import { AlertDesarrollo } from "../modals/AlertDesarrollo";
+
+interface propsNavigation {
+  modal: any
+  setModal: any
+}
 
 
-export const Navigation: FC = () => {
+export const Navigation: FC<propsNavigation> = () => {
   const [state, setState] = useState<any>("");
   const [isSearch, setSearch] = useState(false);
+  const [modal, setModal] = useState(false)
   const { setLoading } = LoadingContextProvider();
   const router = useRouter();
-
+  console.log(modal)
   useEffect(() => {
     setSearch(false);
     const start = () => {
@@ -76,6 +83,9 @@ export const Navigation: FC = () => {
 
   return (
     <>
+    {modal ? (
+        <AlertDesarrollo alertDev={modal} setAlertDev={setModal} />
+      ) : null}
       <header className="container max-w-screen-lg 2xl:max-w-screen-xl w-full px-3 sm:px-0 mx-auto inset-x-0 mt-3 absolute hidden sm:block ">
         <div className="bg-white rounded-full h-16 py-3 md:px-10 z-30 px-5 md:px-0 mx-auto inset-x-0  flex items-center  justify-between container relative">
           {isSearch && (
@@ -90,7 +100,7 @@ export const Navigation: FC = () => {
                 </span>
               </Link>
               <Navbar />
-              <Icons handleClickSearch={() => setSearch(!isSearch)} />
+              <Icons handleClickSearch={() => setSearch(!isSearch)} modal={modal} setModal={setModal} />
             </>
           )}
         </div>
@@ -98,6 +108,8 @@ export const Navigation: FC = () => {
     </>
   );
 };
+
+
 
 const Navbar: FC = () => {
   const [selected, setSelect] = useState<number | null>(null);
@@ -181,9 +193,11 @@ const Navbar: FC = () => {
 
 interface propsIcons {
   handleClickSearch?: MouseEventHandler;
+  modal: any
+  setModal: any
 }
 
-export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
+export const Icons: FC<propsIcons> = ({ handleClickSearch, modal, setModal }) => {
   const { user } = AuthContextProvider();
   const [isHovered, setHovered] = useState<boolean>(false);
   const router = useRouter();
@@ -235,7 +249,7 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
                 classNames={"fade"}
               >
                 {/* <div className="bg-red-500 w-[50px] h-[50px] absolute"></div> */}
-                <ProfileMenu setHovered={setHovered} />
+                <ProfileMenu setHovered={setHovered} modal={modal} setModal={setModal} />
               </CSSTransition>
             </div>
           </>
@@ -245,7 +259,20 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch }) => {
   );
 };
 
-const ProfileMenu: FC<any> = ({ setHovered }) => {
+interface Option {
+  title: string;
+  icon: any;
+  route?: any;
+  onClick?: MouseEventHandler;
+  sizeIcon?: keyof typeof sizesIcon;
+  target?: string;
+  state?: any
+  modal?: any
+  setModal?: any
+}
+
+
+const ProfileMenu: FC<any> = ({ setHovered, modal, setModal }) => {
   const { user } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
   const { _signOut } = useAuthentication()
@@ -262,12 +289,13 @@ const ProfileMenu: FC<any> = ({ setHovered }) => {
       title: "Mis empresas",
       route: user?.role?.includes("empresa") ? `${process.env.NEXT_PUBLIC_CMS}/?d=viewBusines` : "/info-empresa",
       icon: <CompanyIcon />,
-      target:"_blank"
+      target: "_blank"
     },
     {
       title: "Notificaciones",
-      route: "/configuracion",
+      route:null /* "/configuracion" */,
       icon: <StarRating />,
+      state: true
     },
     {
       title: "Cerrar Sesion",
@@ -280,6 +308,7 @@ const ProfileMenu: FC<any> = ({ setHovered }) => {
       },
     },
   ];
+
   return (
     <>
       <div
@@ -296,7 +325,7 @@ const ProfileMenu: FC<any> = ({ setHovered }) => {
         </div>
         <ul className="grid grid-cols-2 gap-2 text-xs place-items-center p-2 ">
           {options.map((item: Option, idx) => (
-            <ListItemProfile key={idx} {...item} />
+            <ListItemProfile key={idx} {...item} modal={modal} setModal={setModal} />
           ))}
         </ul>
       </div>
@@ -304,14 +333,6 @@ const ProfileMenu: FC<any> = ({ setHovered }) => {
   );
 };
 
-interface Option {
-  title: string;
-  icon: any;
-  route?: string;
-  onClick?: MouseEventHandler;
-  sizeIcon?: keyof typeof sizesIcon;
-  target?:string;
-}
 
 const sizesIcon: { xs: string; sm: string } = {
   xs: "w-3 h-3",
@@ -325,6 +346,8 @@ const ListItemProfile: FC<Option> = ({
   route,
   target = "",
   onClick,
+  modal,
+  setModal
 }) => {
   return (
     <>
@@ -350,6 +373,11 @@ const ListItemProfile: FC<Option> = ({
               {title}
             </li>
           );
+        } else if (route === null) {
+          return <li onClick={() => setModal(!modal)} className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">
+            {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
+            {title}
+          </li>
         }
       })()}
     </>

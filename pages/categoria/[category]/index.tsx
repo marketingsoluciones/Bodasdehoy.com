@@ -97,7 +97,6 @@ const CategoryPage: FC<category> = (props) => {
       <div className="max-w-screen-lg 2xl:max-w-screen-xl w-full mx-auto inset-x-0 grid grid-cols-1 items-center justify-between top-0 px-5  ">
         <Carrusel slides={subCategories} />
       </div>
-
       {/* Aside Filters */}
       <div className="xl:max-w-screen-lg 2xl:max-w-screen-xl gap-4 md:gap-10 mx-auto inset-x-0 grid md:grid-cols-7 2xl:grid-cols-5 w-full">
         <Filters optionsCheckbox={{ characteristics }} />

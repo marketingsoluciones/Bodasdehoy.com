@@ -25,7 +25,8 @@ export const Sidebar: FC<propsSidebar> = ({ set, state }) => {
     const [showForm, setShowForm] = useState(false)
     const { user } = AuthContextProvider()
     const router = useRouter()
-
+    const  route= user?.role && user?.role?.length > 0 && user?.role[0] === "empresa" ? `${process.env.NEXT_PUBLIC_CMS}/?d=busines`: "/info-empresa"
+      
     const FirstList: ItemNav[] = [
         { title: "Mi boda", route: process.env.NEXT_PUBLIC_EVENTSAPP ?? "" },
         { title: "Novia", route: "/categoria/novias" },
@@ -39,14 +40,6 @@ export const Sidebar: FC<propsSidebar> = ({ set, state }) => {
         { title: "Gestor de invitados", route: process.env.NEXT_PUBLIC_EVENTSAPP ?? "" },
     ]
 
-    const handleClick = async () => {
-        const lowerCase = user?.role?.map((item: string) => item.toLowerCase())
-        if (lowerCase?.includes("empresa")) {
-            router.push("/empresa")
-        } else {
-            router.push("/info-empresa")
-        }
-    }
     return (<>
 
         {showForm ? (
@@ -63,14 +56,27 @@ export const Sidebar: FC<propsSidebar> = ({ set, state }) => {
                                     return (
                                         <span className="text-primary text-xl font-light pb-4">
                                             <Link href={"/login"} passHref>Accede </Link>
-                                            {/* <span className="text-tertiary">o</span> Regístrate */}
+                                            
                                         </span>
                                     )
                                 } else {
                                     return (
-                                        <span className="text-primary text-xl pb-4">
-                                            {user.displayName}
-                                        </span>
+
+                                        <Link href={"/configuracion"} passHref >
+                                            <div className="space-x-2 flex justify-center items-center pb-4">
+                                                <button >
+                                                    <img
+                                                        alt={user?.displayName ?? "nombre"}
+                                                        src={user.photoURL ?? "/placeholder/user.png"}
+                                                        className="w-10 h-10 border border-primary rounded-full cursor-pointer "
+                                                    />
+                                                </button>
+                                                <span className="text-primary text-xl ">
+                                                    {user.displayName}
+                                                </span>
+                                            </div>
+                                        </Link>
+
                                     )
                                 }
                             })()}
@@ -81,20 +87,22 @@ export const Sidebar: FC<propsSidebar> = ({ set, state }) => {
                             <BlockButtons list={FirstList} />
                         </div>
                         <BlockButtons list={SecondaryList} />
-                        <div onClick={handleClick} className={` text-tertiary border-t py-4 `}>
-                            {(() => {
-                                const lowerCase = user?.role?.map((item: string) => item.toLowerCase())
-                                if (lowerCase?.includes("empresa")) {
-                                    return (
-                                        <span>Panel de empresa</span>
-                                    )
-                                } else {
-                                    return (
-                                        <span>Informacion para empresas</span>
-                                    )
-                                }
-                            })()}
-                        </div>
+                        <Link href={route} passHref >
+                            <div className={` text-tertiary border-t py-4 `}>
+                                {(() => {
+                                    const lowerCase = user?.role?.map((item: string) => item.toLowerCase())
+                                    if (lowerCase?.includes("empresa")) {
+                                        return (
+                                            <span>Panel de empresa</span>
+                                        )
+                                    } else {
+                                        return (
+                                            <span>Informacion para empresas</span>
+                                        )
+                                    }
+                                })()}
+                            </div>
+                        </Link>
                     </div>
                     <div className="border-t border-gray-100 py-4 w-full px-5 flex gap-2 items-center justify-start absolute bottom-0 right-0">
                         <SettingsIcon className="text-gray-200 w-5 h-5" />

@@ -28,6 +28,37 @@ export const BellIcon: FC<PropsIcon> = (props) => {
   );
 };
 
+export const WarningIcon: FC<PropsIcon> = (props) => {
+  return (
+    <svg
+      className="absolute left-2 top-2 overflow-visible"
+      style={{}}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M22.5601 16.3001L14.8901 3.58006C14.2598 2.59406 13.1703 1.99744 12.0001 1.99744C10.8299 1.99744 9.74038 2.59406 9.1101 3.58006L1.4401 16.3001C0.888647 17.2193 0.869586 18.3629 1.3901 19.3001C1.99207 20.3552 3.11533 21.0047 4.3301 21.0001H19.6701C20.8766 21.0129 21.9979 20.3798 22.6101 19.3401C23.1462 18.3927 23.1271 17.2293 22.5601 16.3001ZM12.0001 17.0001C11.4478 17.0001 11.0001 16.5523 11.0001 16.0001C11.0001 15.4478 11.4478 15.0001 12.0001 15.0001C12.5524 15.0001 13.0001 15.4478 13.0001 16.0001C13.0001 16.5523 12.5524 17.0001 12.0001 17.0001ZM12.0001 14.0001C12.5524 14.0001 13.0001 13.5523 13.0001 13.0001V9.00006C13.0001 8.44778 12.5524 8.00006 12.0001 8.00006C11.4478 8.00006 11.0001 8.44778 11.0001 9.00006V13.0001C11.0001 13.5523 11.4478 14.0001 12.0001 14.0001Z"
+        fill="#FFC107"
+      />
+    </svg>
+  )
+}
+
+export const ChatpIcon: FC<PropsIcon> = (props) => {
+  return (
+    <svg width="30px" height="30px" strokeWidth="1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" color="#ffffff">
+      <path d="M7 12h10M7 8h6" stroke="#ffffff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"></path>
+      <path d="M3 20.29V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2H7.961a2 2 0 00-1.561.75l-2.331 2.914A.6.6 0 013 20.29z" stroke="#ffffff" strokeWidth="1.5"></path>
+    </svg>
+  )
+}
+
+
 export const ChatIcon: FC<PropsIcon> = (props) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth={0.5} stroke="currentColor" {...props}>
@@ -435,9 +466,9 @@ export const HomeIcon: FC<PropsIcon> = (props) => {
 export const DolarIcon: FC<PropsIcon> = (props) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
-      <path 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
         d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
 

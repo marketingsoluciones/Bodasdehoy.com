@@ -20,7 +20,7 @@ const Article: FC<Partial<OnePost>> = (props) => {
     try {
       const { results } = await fetchApi({
         query: queries.getAllPost,
-        variables: { sort: { createdAt: 1 }, limit: 5, development: "bodasdehoy" }
+        variables: { sort: { createdAt: 1 }, criteria: { status: true }, limit: 5, development: "bodasdehoy" }
       })
       setPost(results)
 

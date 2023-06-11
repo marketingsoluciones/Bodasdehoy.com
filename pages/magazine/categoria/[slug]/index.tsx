@@ -110,7 +110,7 @@ export const SubCategoryComponent: FC<subCategory> = (props) => {
   const initialQuery = {
     query: queries.getAllPost,
     variables: {
-      criteria: { subCategories: _id },
+      criteria: { subCategories: _id, status: true },
       skip: 0,
       limit: 5,
       development: "bodasdehoy"

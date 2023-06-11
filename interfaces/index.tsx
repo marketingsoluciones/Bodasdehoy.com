@@ -228,7 +228,7 @@ export interface SearchCriteria {
   groupSubCategories: string[]
   subCategories: string[]
   tags: string[]
-  status: string
+  status: boolean
   createdAt: number
   updatedAt: number
 }

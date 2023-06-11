@@ -1,4 +1,4 @@
-import { FC} from "react";
+import { FC } from "react";
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { TitleSection } from "../../components/Home";
@@ -29,7 +29,7 @@ const Magazine: NextPage<propsMagazine> = (props) => {
     try {
       const { results } = await fetchApi({
         query: queries.getAllPost,
-        variables: { sort: { createdAt: 1 }, limit: 5, development: "bodasdehoy" }
+        variables: { sort: { createdAt: 1 }, criteria: { status: true }, limit: 5, development: "bodasdehoy" }
       })
       setPost(results)
 
@@ -82,7 +82,7 @@ const Magazine: NextPage<propsMagazine> = (props) => {
               <Hits hitComponent={Hit} />
             </div>
           </InstantSearch>
-         {/*  <Searcher placeholder={"¿Qué necesitas para tu boda?"} autoFocus /> */}
+          {/*  <Searcher placeholder={"¿Qué necesitas para tu boda?"} autoFocus /> */}
         </div>
         <PrincipalPost {...lastestPosts[0]} />
         <div className="w-full flex items-center justify-center flex-col pt-6 z-10 space-y-9">

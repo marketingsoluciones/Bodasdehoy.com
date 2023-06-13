@@ -1,24 +1,19 @@
 const Slider: any = dynamic((): any => import("react-slick"));
-import { FC, ReactNode, memo } from "react";
+import { FC, ReactNode, memo, useState } from "react";
 import Image from "next/image";
 import dynamic from "next/dynamic";
 import { fetchApi, queries } from "../utils/Fetching";
 import { business, fetchCategory, Post } from "../interfaces";
-import {AdsApp,CountriesListing,FeaturedCompanies,Magazine,PlaceDiscovery,PodcastList,} from "../components/Home";
+import { AdsApp, CountriesListing, FeaturedCompanies, Magazine, PlaceDiscovery, PodcastList, } from "../components/Home";
 import RecommendCategories from "../components/Home/RecommendCategories";
-import {BurgerIcon,CommunityIcon,DownloadFileIcon,GuestAppIcon,InspirationIcon,Isologo,LogoFullColor,SearchIcon} from "../components/Icons";
-import { auth } from "../firebase";
-import { Sidebar } from "../components/Surface";
-import { useState } from "react";
-import { SidebarContextProvider } from "../context";
+import { BurgerIcon, CommunityIcon, DownloadFileIcon, GuestAppIcon, InspirationIcon, Isologo, LogoFullColor, SearchIcon } from "../components/Icons";
 import { connectWithQuery, Hit } from "../components/Surface/Navigation";
 import { connectSearchBox, Hits, InstantSearch } from "react-instantsearch-dom";
 import algoliasearch from "algoliasearch/lite";
 import { CloseIcon } from '../components/Icons/index';
-import Cookies from "js-cookie";
 import Link from "next/link";
 import { AuthContextProvider } from '../context'
-import { NavbarMobile } from "../components/Surface/NavbarMobile";
+import ClickAwayListener from "react-click-away-listener";
 
 interface propsHome {
   business: business[];
@@ -30,7 +25,6 @@ interface propsHome {
 const Home: FC<propsHome> = (props) => {
   return (
     <section className="w-full">
-     {/*  <NavbarMobile /> */}
       <div className="sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg banner  md:pt-24 mx-auto inset-x-0 grid grid-col-2 relative w-full">
         {/* buscar error en features */}
         <Welcome />
@@ -107,9 +101,7 @@ export const Welcome: FC = (props) => {
             {/* reemplazar slider por otro componente para quitar error Did not expect server HTML to contain a <div> in <div> */}
             <Features />
           </div>
-
         </div>
-
         <div className={`w-1/2 z-5 absolute right-0  ${user ? "-bottom-16" : "-bottom-16"} md:w-full md:relative md:-bottom-18 md:bottom-0 md:right-0 md:-mt-20`}>
           <Image
             src={"/photo-principal.webp"}
@@ -122,14 +114,6 @@ export const Welcome: FC = (props) => {
           />
         </div>
       </div>
-      {/* <style jsx>
-        {`
-          .image-principal::before{
-            content: "''";
-            position: absolute
-          }
-        `}
-      </style> */}
     </>
   );
 };
@@ -137,23 +121,28 @@ export const Welcome: FC = (props) => {
 export const Searcher: FC<any> = ({
   currentRefinement,
   refine,
-  setSearch,
-  isSearch,
 }) => {
+  const [input,setInput]= useState("")
   return (
-    <div className="relative w-full">
-      <input
-        /* autoFocus */
-        placeholder="catering, hoteles, fincas, vestidos"
-        type="input"
-        value={currentRefinement}
-        onChange={(e) => refine(e.currentTarget.value)}
-        className="px-6 h-14 py-1 md:py-3 w-full rounded-full text-gray-500 text-sm md:text-base focus:outline-none transition shadow-lg"
-      />
-      <span className="bg-primary w-14  h-full rounded-full absolute top-0 right-0 flex items-center justify-center">
-        <SearchIcon className="text-white w-6 h-6" />
-      </span>
-    </div>
+    <ClickAwayListener onClickAway={() => [refine(""), setInput("")]}>
+      <div className="relative w-full">
+        <div className="flex items-center relative">
+          <input
+            placeholder="catering, hoteles, fincas, vestidos"
+            type="input"
+            value={currentRefinement}
+            onChange={(e) => [refine(e.currentTarget.value), setInput(e.target.value)]}
+            className="px-6 h-14 py-1 md:py-3 w-full rounded-full text-gray-500 text-sm md:text-base focus:outline-none transition shadow-lg "
+          />
+          <button onClick={()=>[refine(""), setInput("")]} className={`${input!=""? "block": "hidden"} p-1 bg-color-base rounded-full z-30 right-16 absolute`}>
+            <CloseIcon className="w-5 h-5 text-gray-500 " />
+          </button>
+        </div>
+        <span className="bg-primary w-14  h-full rounded-full absolute top-0 right-0 flex items-center justify-center">
+          <SearchIcon className="text-white w-6 h-6" />
+        </span>
+      </div>
+    </ClickAwayListener>
   );
 };
 

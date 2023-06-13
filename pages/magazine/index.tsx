@@ -1,4 +1,4 @@
-import { FC} from "react";
+import { FC } from "react";
 import { useEffect, useState } from "react";
 import { NextPage } from "next";
 import { TitleSection } from "../../components/Home";
@@ -10,7 +10,8 @@ import { Searcher } from '../index';
 import algoliasearch from "algoliasearch/lite";
 import { connectSearchBox, Hits, InstantSearch } from "react-instantsearch-dom";
 import { connectWithQuery, Hit } from "../../components/Surface/Navigation";
-import { SearchIcon } from "../../components/Icons";
+import { CloseIcon, SearchIcon } from "../../components/Icons";
+import ClickAwayListener from "react-click-away-listener";
 
 
 
@@ -24,12 +25,11 @@ interface propsMagazine {
 const Magazine: NextPage<propsMagazine> = (props) => {
   const { categoriesPost, lastestPosts, postsByCategory, postsMoreViews } = props
   const [fivePost, setPost] = useState<Post[]>([])
-  console.log(props)
   const fetchData = async () => {
     try {
       const { results } = await fetchApi({
         query: queries.getAllPost,
-        variables: { sort: { createdAt: 1 }, limit: 5, development: "bodasdehoy" }
+        variables: { sort: { createdAt: 1 }, criteria: { status: true }, limit: 5, development: "bodasdehoy" }
       })
       setPost(results)
 
@@ -82,7 +82,7 @@ const Magazine: NextPage<propsMagazine> = (props) => {
               <Hits hitComponent={Hit} />
             </div>
           </InstantSearch>
-         {/*  <Searcher placeholder={"¿Qué necesitas para tu boda?"} autoFocus /> */}
+          {/*  <Searcher placeholder={"¿Qué necesitas para tu boda?"} autoFocus /> */}
         </div>
         <PrincipalPost {...lastestPosts[0]} />
         <div className="w-full flex items-center justify-center flex-col pt-6 z-10 space-y-9">
@@ -112,22 +112,29 @@ export default Magazine;
 export const Searche: FC<any> = ({
   currentRefinement,
   refine,
-  setSearch,
-  isSearch,
 }) => {
+  const [input, setInput] = useState("")
+
   return (
-    <div className="relative w-full">
-      <input
-        placeholder="catering, hoteles, fincas, vestidos"
-        type="input"
-        value={currentRefinement}
-        onChange={(e) => refine(e.currentTarget.value)}
-        className="px-6 h-14 py-1 md:py-3 w-full rounded-full text-gray-500 text-sm md:text-base focus:outline-none transition shadow-lg"
-      />
-      <span className="bg-primary w-14  h-full rounded-full absolute top-0 right-0 flex items-center justify-center">
-        <SearchIcon className="text-white w-6 h-6" />
-      </span>
-    </div>
+    <ClickAwayListener onClickAway={() => [refine(""), setInput("")]}>
+      <div className="relative w-full">
+        <div className="flex items-center relative">
+          <input
+            placeholder="catering, hoteles, fincas, vestidos"
+            type="input"
+            value={currentRefinement}
+            onChange={(e) => [refine(e.currentTarget.value), setInput(e.target.value)]}
+            className="px-6 h-14 py-1 md:py-3 w-full rounded-full text-gray-500 text-sm md:text-base focus:outline-none transition shadow-lg"
+          />
+          <button onClick={() => [refine(""), setInput("")]} className={`${input != "" ? "block" : "hidden"} p-1 bg-color-base rounded-full z-50 right-16 absolute`}>
+            <CloseIcon className="w-5 h-5 text-gray-500 " />
+          </button>
+        </div>
+        <span className="bg-primary w-14  h-full rounded-full absolute top-0 right-0 flex items-center justify-center">
+          <SearchIcon className="text-white w-6 h-6" />
+        </span>
+      </div>
+    </ClickAwayListener>
   );
 };
 

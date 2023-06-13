@@ -25,7 +25,7 @@ const SubCategory: FC<subCategory> = ({
   const initialQuery = {
     query: queries.getAllPost,
     variables: {
-      criteria: { subCategories: _id },
+      criteria: { subCategories: _id, status: true },
       skip: 0,
       limit: 10,
       development: "bodasdehoy"
@@ -39,7 +39,7 @@ const SubCategory: FC<subCategory> = ({
     try {
       const { results } = await fetchApi({
         query: queries.getAllPost,
-        variables: { sort: { createdAt: 1 }, limit: 5, development: "bodasdehoy" },
+        variables: { sort: { createdAt: 1 }, criteria: { status: true }, limit: 5, development: "bodasdehoy" },
       });
       setPost(results);
     } catch (error) {

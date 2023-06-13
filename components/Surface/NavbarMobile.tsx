@@ -6,6 +6,7 @@ import { BurgerIcon, CloseIcon, LogoFullColor, SearchIcon } from "../Icons";
 import { useState } from "react";
 import { SidebarContextProvider } from "../../context";
 import Link from "next/link"
+import ClickAwayListener from "react-click-away-listener";
 
 
 
@@ -20,6 +21,8 @@ export const NavbarMobile = () => {
     isSearch,
   }) => {
     return (
+      <ClickAwayListener onClickAway={() =>showSearcher && setShowSearcher(false)}>
+
       <div className="w-full mx-auto inset-x-0 bg-white h-14 -mt-2 rounded-full flex items-center relative">
 
         <input
@@ -34,6 +37,8 @@ export const NavbarMobile = () => {
           <CloseIcon className="w-full h-full" />
         </button>
       </div>
+      </ClickAwayListener>
+
     );
   };
 
@@ -82,13 +87,13 @@ export const NavbarMobile = () => {
           </button>
         </>
       ) : (
-        <InstantSearch indexName="bodasdehoy" searchClient={conditionalQuery}>
-          <ConnectMySearchBox setSearch={setShowSearcher} isSearch={showSearcher} />
-          {/* <SearchBox searchAsYouType={false} /> */}
-          <div className="absolute -bottom-0 left-0 w-[80%] mx-auto inset-x-0 bg-white shadow translate-y-full max-h-60 overflow-auto no-scrollbar  rounded-b-3xl z-40">
-            <Hits hitComponent={Hit} />
-          </div>
-        </InstantSearch>
+          <InstantSearch indexName="bodasdehoy" searchClient={conditionalQuery}>
+            <ConnectMySearchBox setSearch={setShowSearcher} isSearch={showSearcher} />
+            {/* <SearchBox searchAsYouType={false} /> */}
+            <div className="absolute -bottom-0 left-0 w-[80%] mx-auto inset-x-0 bg-white shadow translate-y-full max-h-60 overflow-auto no-scrollbar  rounded-b-3xl z-40">
+              <Hits hitComponent={Hit} />
+            </div>
+          </InstantSearch>
       )}
     </div>
   );

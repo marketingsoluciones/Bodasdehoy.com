@@ -1,50 +1,25 @@
-import {
-  Dispatch,
-  FC,
-  MouseEventHandler,
-  ReactNode,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { Dispatch, FC, MouseEventHandler, ReactNode, SetStateAction, useEffect, useState, } from "react";
 import Link from "next/link";
-import {
-  ArrowIcon,
-  BurgerIcon,
-  CloseIcon,
-  CompanyIcon,
-  LogoFullColor,
-  SearchIcon,
-  UserIcon,
-} from "../Icons";
+import { ArrowIcon, CloseIcon, CompanyIcon, LogoFullColor, SearchIcon, UserIcon, } from "../Icons";
 import { MultiMenu } from "./MultiMenu";
 import { NoviaMenu } from "./MultiMenu/NoviaMenu";
 import { useAuthentication } from '../../utils/Authentication';
 import { LoadingContextProvider, AuthContextProvider } from "../../context";
 import { cloneElement } from "react";
-import { HeartIconFill, StarRating } from "../Icons/index";
-import { TransitionGroup, CSSTransition } from "react-transition-group";
-import { Router, useRouter } from "next/router";
-import { ButtonClose } from "../Inputs";
-import { useToast } from "../../hooks/useToast";
+import { StarRating } from "../Icons/index";
+import { CSSTransition } from "react-transition-group";
+import { useRouter } from "next/router";
 import NovioMenu from "./MultiMenu/NovioMenu";
 import OrganizadorBoda from "./MultiMenu/OrganizadorBoda";
 import Proveedores from "./MultiMenu/Proveedores";
 import LugaresParaBodas from "./MultiMenu/LugaresParaBodas";
 import algoliasearch from "algoliasearch/lite";
-import {
-  InstantSearch,
-  SearchBox,
-  Hits,
-  Highlight,
-  createConnector,
-  connectSearchBox,
-} from "react-instantsearch-dom";
+import { InstantSearch, SearchBox, Hits, Highlight, createConnector, connectSearchBox, } from "react-instantsearch-dom";
 import { createURL } from "../../utils/UrlImage";
 import { capitalize } from "../../utils/Capitalize";
 import Cookies from "js-cookie";
-import { Notification } from "./Notification";
 import { AlertDesarrollo } from "../modals/AlertDesarrollo";
+import ClickAwayListener from "react-click-away-listener";
 
 interface propsNavigation {
   modal: any
@@ -58,7 +33,7 @@ export const Navigation: FC<propsNavigation> = () => {
   const [modal, setModal] = useState(false)
   const { setLoading } = LoadingContextProvider();
   const router = useRouter();
-  console.log(modal)
+  
   useEffect(() => {
     setSearch(false);
     const start = () => {
@@ -83,7 +58,7 @@ export const Navigation: FC<propsNavigation> = () => {
 
   return (
     <>
-    {modal ? (
+      {modal ? (
         <AlertDesarrollo alertDev={modal} setAlertDev={setModal} />
       ) : null}
       <header className="container max-w-screen-lg 2xl:max-w-screen-xl w-full px-3 sm:px-0 mx-auto inset-x-0 mt-3 absolute hidden sm:block ">
@@ -100,7 +75,7 @@ export const Navigation: FC<propsNavigation> = () => {
                 </span>
               </Link>
               <Navbar />
-              <Icons handleClickSearch={() => setSearch(!isSearch)} modal={modal} setModal={setModal} />
+              <Icons handleClickSearch={() => setSearch(!isSearch)}  modal={modal} setModal={setModal} />
             </>
           )}
         </div>
@@ -195,6 +170,7 @@ interface propsIcons {
   handleClickSearch?: MouseEventHandler;
   modal: any
   setModal: any
+  
 }
 
 export const Icons: FC<propsIcons> = ({ handleClickSearch, modal, setModal }) => {
@@ -204,15 +180,16 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch, modal, setModal }) =>
   const HandleClickUser = () => {
     !Cookies.get("sessionBodas") ? router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) : router.push("/");
   };
+  
   return (
     <>
       <div className="flex items-center relative">
-        <button className="hidden md:block px-3 cursor-pointer text-gray-500 focus:outline-none ">
-          <SearchIcon
-            onClick={handleClickSearch}
-            className="icon transition transform hover:-rotate-6 hover:scale-110 "
-          />
-        </button>
+          <button className="hidden md:block px-3 cursor-pointer text-gray-500 focus:outline-none ">
+            <SearchIcon
+              onClick={handleClickSearch}
+              className="icon transition transform hover:-rotate-6 hover:scale-110 "
+            />
+          </button>
         {!user ? (
           <>
             <span className="md:px-3 border-gray-100 py-1 md:border-l md:border-r cursor-pointer text-gray-500">
@@ -293,7 +270,7 @@ const ProfileMenu: FC<any> = ({ setHovered, modal, setModal }) => {
     },
     {
       title: "Notificaciones",
-      route:null /* "/configuracion" */,
+      route: null /* "/configuracion" */,
       icon: <StarRating />,
       state: true
     },
@@ -563,6 +540,9 @@ export const SearchNavigation: FC<any> = ({ setSearch, isSearch }) => {
   };
 
   return (
+    <ClickAwayListener onClickAway={() => isSearch && setSearch(false)}>
+
+    
     <div className="flex items-center w-full justify-between ">
       <InstantSearch
         indexName="bodasdehoy"
@@ -579,5 +559,6 @@ export const SearchNavigation: FC<any> = ({ setSearch, isSearch }) => {
         </div>
       </InstantSearch>
     </div>
+    </ClickAwayListener>
   );
 };

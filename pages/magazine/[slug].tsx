@@ -3,7 +3,7 @@ import { GetStaticPaths, GetStaticProps, NextPage, GetStaticPropsContext } from 
 import { FC, useEffect, useState } from "react";
 import { Searcher } from "..";
 import { Banner, ShareComponent, TagsComponent } from "../../components/Article";
-import { TagIcon } from "../../components/Icons";
+import { CloseIcon, TagIcon } from "../../components/Icons";
 import { RelatedArticles, AsideLastestArticles, SuscribeComponent } from "../../components/Magazine";
 import { BreadCumbs, DisqusComponent } from "../../components/Surface";
 import { OnePost, Post } from "../../interfaces";
@@ -12,6 +12,7 @@ import algoliasearch from "algoliasearch/lite";
 import { connectSearchBox, Hits, InstantSearch } from "react-instantsearch-dom";
 import { connectWithQuery, Hit } from "../../components/Surface/Navigation";
 import { SearchIcon } from "../../components/Icons";
+import ClickAwayListener from "react-click-away-listener";
 
 const Article: FC<Partial<OnePost>> = (props) => {
   const [fivePost, setPost] = useState<Post[]>([])
@@ -110,19 +111,29 @@ export const Searche: FC<any> = ({
   setSearch,
   isSearch,
 }) => {
+  const [input, setInput] = useState("")
+
   return (
-    <div className="relative w-full">
-      <input
-        placeholder="¿Que buscas?"
-        type="input"
-        value={currentRefinement}
-        onChange={(e) => refine(e.currentTarget.value)}
-        className="px-6 h-14 py-1 md:py-3 w-full rounded-full text-gray-500 text-sm md:text-base focus:outline-none transition shadow-lg"
-      />
-      <span className="bg-primary w-14  h-full rounded-full absolute top-0 right-0 flex items-center justify-center">
-        <SearchIcon className="text-white w-6 h-6" />
-      </span>
-    </div>
+    <ClickAwayListener onClickAway={() => [refine(""), setInput("")]}>
+      <div className="relative w-full">
+        <div className="flex items-center relative"> 
+          <input
+            placeholder="¿Que buscas?"
+            type="input"
+            value={currentRefinement}
+            onChange={(e) => [refine(e.currentTarget.value), setInput(e.target.value)]}
+            className="px-6 h-14 py-1 md:py-3 w-full rounded-full text-gray-500 text-sm md:text-base focus:outline-none transition shadow-lg"
+          />
+          <button onClick={()=>[refine(""), setInput("")]} className={`${input!=""? "block": "hidden"} p-1 bg-color-base rounded-full z-30 right-16 absolute`}>
+            <CloseIcon className="w-5 h-5 text-gray-500 " />
+          </button>
+
+        </div>
+        <span className="bg-primary w-14  h-full rounded-full absolute top-0 right-0 flex items-center justify-center">
+          <SearchIcon className="text-white w-6 h-6" />
+        </span>
+      </div>
+    </ClickAwayListener>
   );
 };
 

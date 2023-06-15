@@ -170,7 +170,7 @@ export const Features: FC = () => {
       route: "https://bodasdehoy.com/gestor-de-presupuesto-de-tu-boda/"
     },
     {
-      title: "Gestor de invitados",
+      title: "Organizador de boda",
       icon: <GuestAppIcon className="w-8 h-8" />,
       route: process.env.NEXT_PUBLIC_EVENTSAPP ?? ""
     },

@@ -98,7 +98,7 @@ const Navbar: FC = () => {
 
   const List: Item[] = [
     {
-      title: "Mi boda",
+      title: "organiza tu boda",
       route: process.env.NEXT_PUBLIC_EVENTSAPP ?? "",
       titleInside: "Mi organizador de bodas",
       component: <OrganizadorBoda />,

@@ -1,6 +1,6 @@
 import { Dispatch, FC, MouseEventHandler, ReactNode, SetStateAction, useEffect, useState, } from "react";
 import Link from "next/link";
-import { ArrowIcon, CloseIcon, CompanyIcon, LogoFullColor, SearchIcon, UserIcon, } from "../Icons";
+import { ArrowIcon, CloseIcon, CompanyIcon, Eventos, LogoFullColor, Posts, SearchIcon, UserIcon, WeddingPage, } from "../Icons";
 import { MultiMenu } from "./MultiMenu";
 import { NoviaMenu } from "./MultiMenu/NoviaMenu";
 import { useAuthentication } from '../../utils/Authentication';
@@ -33,7 +33,7 @@ export const Navigation: FC<propsNavigation> = () => {
   const [modal, setModal] = useState(false)
   const { setLoading } = LoadingContextProvider();
   const router = useRouter();
-  
+
   useEffect(() => {
     setSearch(false);
     const start = () => {
@@ -75,7 +75,7 @@ export const Navigation: FC<propsNavigation> = () => {
                 </span>
               </Link>
               <Navbar />
-              <Icons handleClickSearch={() => setSearch(!isSearch)}  modal={modal} setModal={setModal} />
+              <Icons handleClickSearch={() => setSearch(!isSearch)} modal={modal} setModal={setModal} />
             </>
           )}
         </div>
@@ -170,7 +170,7 @@ interface propsIcons {
   handleClickSearch?: MouseEventHandler;
   modal: any
   setModal: any
-  
+
 }
 
 export const Icons: FC<propsIcons> = ({ handleClickSearch, modal, setModal }) => {
@@ -180,16 +180,16 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch, modal, setModal }) =>
   const HandleClickUser = () => {
     !Cookies.get("sessionBodas") ? router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) : router.push("/");
   };
-  
+
   return (
     <>
       <div className="flex items-center relative">
-          <button className="hidden md:block px-3 cursor-pointer text-gray-500 focus:outline-none ">
-            <SearchIcon
-              onClick={handleClickSearch}
-              className="icon transition transform hover:-rotate-6 hover:scale-110 "
-            />
-          </button>
+        <button className="hidden md:block px-3 cursor-pointer text-gray-500 focus:outline-none ">
+          <SearchIcon
+            onClick={handleClickSearch}
+            className="icon transition transform hover:-rotate-6 hover:scale-110 "
+          />
+        </button>
         {!user ? (
           <>
             <span className="md:px-3 border-gray-100 py-1 md:border-l md:border-r cursor-pointer text-gray-500">
@@ -246,6 +246,8 @@ interface Option {
   state?: any
   modal?: any
   setModal?: any
+  rol?: any
+  user?: any
 }
 
 
@@ -261,18 +263,51 @@ const ProfileMenu: FC<any> = ({ setHovered, modal, setModal }) => {
       title: "Mi perfil",
       route: "/configuracion",
       icon: <UserIcon />,
+      rol: "compartido"
+
     },
     {
       title: "Mis empresas",
       route: user?.role?.includes("empresa") ? `${process.env.NEXT_PUBLIC_CMS}/?d=viewBusines` : "/info-empresa",
       icon: <CompanyIcon />,
-      target: "_blank"
+      target: "_blank",
+      rol: "empresa"
+
     },
     {
       title: "Notificaciones",
       route: null /* "/configuracion" */,
       icon: <StarRating />,
-      state: true
+      state: true,
+      rol: "compartido"
+    },
+    {
+      title: "Wedding page",
+      route: null /* "/configuracion" */,
+      icon: <WeddingPage />,
+      state: true,
+      rol: "novios"
+    },
+    {
+      title: "My pages",
+      route: null /* "/configuracion" */,
+      icon: <WeddingPage />,
+      state: true,
+      rol: "empresa"
+    },
+    {
+      title: "Mis post",
+      route: `${process.env.NEXT_PUBLIC_CMS}`,
+      icon: <Posts />,
+      state: true,
+      rol: "compartido"
+    },
+    {
+      title: "Mis eventos",
+      route: `${process.env.NEXT_PUBLIC_EVENTSAPP}`,
+      icon: <Eventos />,
+      state: true,
+      rol: "novios"
     },
     {
       title: "Cerrar Sesion",
@@ -283,6 +318,7 @@ const ProfileMenu: FC<any> = ({ setHovered, modal, setModal }) => {
         _signOut()
         setLoading(false);
       },
+      rol: "compartido"
     },
   ];
 
@@ -300,9 +336,9 @@ const ProfileMenu: FC<any> = ({ setHovered, modal, setModal }) => {
             {user?.displayName}
           </h3>
         </div>
-        <ul className="grid grid-cols-2 gap-2 text-xs place-items-center p-2 ">
+        <ul className="grid grid-cols-2 gap-2 text-xs place-items-left p-2 ">
           {options.map((item: Option, idx) => (
-            <ListItemProfile key={idx} {...item} modal={modal} setModal={setModal} />
+            <ListItemProfile key={idx} {...item} modal={modal} setModal={setModal} user={user} />
           ))}
         </ul>
       </div>
@@ -324,37 +360,129 @@ const ListItemProfile: FC<Option> = ({
   target = "",
   onClick,
   modal,
-  setModal
+  setModal,
+  rol,
+  user
 }) => {
+ /* Validacion de opciones  visibles en el menu desplegable en el navbar dependiendo del tipo de usuario  */
   return (
     <>
       {(() => {
-        if (route) {
-          return (
-            <Link href={route} passHref>
-              <a target={target}>
-                <li className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">
+        if (user?.role.includes("empresa")) {
+          if (rol === "empresa") {
+            if (route) {
+              return (
+                <>
+                  <Link href={route} passHref>
+                    <a target={target}>
+                      <li className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">
+                        {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
+                        {title}
+                      </li>
+                    </a>
+                  </Link>
+                </>
+              )
+            } else if (route === null) {
+              return (
+                <li onClick={() => setModal(!modal)} className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">
                   {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
                   {title}
                 </li>
-              </a>
-            </Link>
-          );
-        } else if (onClick) {
-          return (
-            <li
-              onClick={onClick}
-              className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start"
-            >
-              {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
-              {title}
-            </li>
-          );
-        } else if (route === null) {
-          return <li onClick={() => setModal(!modal)} className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">
-            {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
-            {title}
-          </li>
+              )
+            }
+          } else if (rol === "compartido") {
+            if (onClick) {
+              return (
+                <li
+                  onClick={onClick}
+                  className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start"
+                >
+                  {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
+                  {title}
+                </li>
+              );
+            } else if (route) {
+              return (
+                <>
+                  <Link href={route} passHref>
+                    <a target={target}>
+                      <li className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">
+                        {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
+                        {title}
+                      </li>
+                    </a>
+                  </Link>
+                </>
+              )
+            }
+            else if (route === null) {
+              return (
+                <li onClick={() => setModal(!modal)} className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">
+                  {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
+                  {title}
+                </li>
+              )
+            }
+          }
+        } else if (user?.role.includes('novio') || user?.role.includes('novia')) {
+          if (rol === "compartido") {
+            if (onClick) {
+              return (
+                <li
+                  onClick={onClick}
+                  className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start"
+                >
+                  {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
+                  {title}
+                </li>
+              );
+            } else if (route) {
+              return (
+                <>
+                  <Link href={route} passHref>
+                    <a target={target}>
+                      <li className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">
+                        {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
+                        {title}
+                      </li>
+                    </a>
+                  </Link>
+                </>
+              )
+            }
+            else if (route === null) {
+              return (
+                <li onClick={() => setModal(!modal)} className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">
+                  {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
+                  {title}
+                </li>
+              )
+            }
+          } else if (rol === "novios") {
+            if (route) {
+              return (
+                <>
+                  <Link href={route} passHref>
+                    <a target={target}>
+                      <li className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">
+                        {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
+                        {title}
+                      </li>
+                    </a>
+                  </Link>
+                </>
+              )
+            } else if (route === null) {
+              return (
+                <li onClick={() => setModal(!modal)} className="flex text-gray-500 gap-2 hover:bg-color-base transition cursor-pointer rounded-lg py-1 px-2 items-center justify-start">
+                  {cloneElement(icon, { className: sizesIcon[sizeIcon] })}
+                  {title}
+                </li>
+              )
+            }
+
+          }
         }
       })()}
     </>
@@ -542,23 +670,23 @@ export const SearchNavigation: FC<any> = ({ setSearch, isSearch }) => {
   return (
     <ClickAwayListener onClickAway={() => isSearch && setSearch(false)}>
 
-    
-    <div className="flex items-center w-full justify-between ">
-      <InstantSearch
-        indexName="bodasdehoy"
-        searchClient={conditionalQuery}
-      >
-        <ConnectedSearchBox
-          searchAsYouType={false}
-          setSearch={setSearch}
-          isSearch={isSearch}
-        />
-        {/* <SearchBox searchAsYouType={false} /> */}
-        <div className="absolute -bottom-0 left-0 w-[95%] mx-auto inset-x-0 bg-white shadow translate-y-full max-h-60 overflow-auto no-scrollbar rounded-b-3xl">
-          <Hits hitComponent={Hit} />
-        </div>
-      </InstantSearch>
-    </div>
+
+      <div className="flex items-center w-full justify-between ">
+        <InstantSearch
+          indexName="bodasdehoy"
+          searchClient={conditionalQuery}
+        >
+          <ConnectedSearchBox
+            searchAsYouType={false}
+            setSearch={setSearch}
+            isSearch={isSearch}
+          />
+          {/* <SearchBox searchAsYouType={false} /> */}
+          <div className="absolute -bottom-0 left-0 w-[95%] mx-auto inset-x-0 bg-white shadow translate-y-full max-h-60 overflow-auto no-scrollbar rounded-b-3xl">
+            <Hits hitComponent={Hit} />
+          </div>
+        </InstantSearch>
+      </div>
     </ClickAwayListener>
   );
 };

@@ -58,7 +58,7 @@ export const FeaturedCompanies: FC<propsFeaturedCompanies> = ({ business }) => {
             Empresas de bodas destacadas
           </h2>
           <p className="font-light text-sm w-full text-right text-primary cursor-pointer hover:text-gray-400 transition">
-            Ver todas los proveedores
+            Ver todos los proveedores
           </p>
         </div>
       </Link>

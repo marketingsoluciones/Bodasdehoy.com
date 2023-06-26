@@ -36,22 +36,33 @@ export const AdsApp = () => {
 
   return (
     <>
-      <div className="max-w-screen-lg mx-auto inset-x-0 grid md:grid-cols-2 w-full">
-        <div className="relative p-2 w-full h-72 md:h-auto -ml-4 ">
-          <Image src="/bannerApp.webp" layout={"fill"} objectPosition={"0px -25px"} objectFit={"contain"} alt="banner bodasdehoy" />
-          <div className="absolute bg-tertiary bottom-12 md:left-20 left-16 opacity-90 rounded-full w-20 h-20 p-4 flex items-center justify-center text-white">
-            <h3 className="text-sm md:text-md tracking-widest">GRATIS</h3>
-          </div>
-        </div>
-        <div>
-          <h2 className="font-title text-4xl flex flex-col md:text-6xl w-max mx-auto inset-x-0 text-primary pt-14 pb-10 text-right leading-6">
-            Organiza tu boda
-            <span className="font-display text-xl w-full font-light ">
-              con nuestra app
-            </span>
-          </h2>
+      <div className="flex flex-col items-center pb-5 ">
+        <h2 className="font-title text-4xl text-center md:text-6xl md:w-[45%] mx-auto *inset-x-0 text-primary pt-14 pb-3   ">
+          Tu boda comienza cuando la imaginas
+        </h2>
+        <span className="text-primary pb-3 ">
+          haz tuyo cada instante hasta el gran día
+        </span>
+        <span className="text-center text-gray-600 text-xs w-[80%] md:w-[100%] pb-2">
+          Participa en cada momento de  la preparación de tu boda con la app EVENTOS ORGANIZADOR.<br/>
+        </span>
+        <span className="text-center text-gray-600 text-xs w-[75%] md:w-[100%]">
+          El brillo de tu gran día es el resultado de la perfecta coordinación de muchos detalles.
+        </span>
+      </div>
 
-          <div className="grid grid-cols-1 overflow-hidden px-5 md:px-0 mb-10 ">
+      {/* <span className="font-display text-xl w-full font-light ">
+          con nuestra app
+        </span> */}
+
+      <div className="max-w-screen-lg mx-auto inset-x-0 grid md:grid-cols-2  grid-cols-1 w-full h-[28rem]">
+
+        <div className="relative p-2 w-auto  h-auto  md:h-auto -ml-4   ">
+          <Image src="/bannerApp.webp" layout={"fill"} objectPosition={"50% 50%"} objectFit={"contain"} alt="banner bodasdehoy" />
+        </div>
+
+        <div className="flex flex-col  justify-center cursor-default">
+          <div className=" overflow-hidden px-5 md:px-0 ">
             {/* <Slider {...settings}>
               {List.map((item, idx) => (
                 <Feature key={idx} item={item} />
@@ -74,7 +85,7 @@ export const AdsApp = () => {
             >
               {List.map((item, idx) => (
                 <SwiperSlide key={idx} className="">
-                  <Feature  item={item} />
+                  <Feature item={item} />
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -86,7 +97,7 @@ export const AdsApp = () => {
               <a
                 className="bg-primary rounded-full px-5 py-2 text-white hover:bg-white hover:text-primary transition border border-primary"
               >
-                Empecemos
+                Quiero saber más
               </a>
             </Link>
           </div>

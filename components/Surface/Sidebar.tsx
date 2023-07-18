@@ -37,7 +37,7 @@ export const Sidebar: FC<propsSidebar> = ({ set, state }) => {
 
     const SecondaryList: ItemNav[] = [
         { title: "Magazine", route: "/magazine" },
-        { title: "Gestor de invitados", route: process.env.NEXT_PUBLIC_EVENTSAPP ?? "" },
+        { title: "Gestor de invitados", route:"/welcome-app" /* process.env.NEXT_PUBLIC_EVENTSAPP ?? "" */ },
     ]
 
     return (<>

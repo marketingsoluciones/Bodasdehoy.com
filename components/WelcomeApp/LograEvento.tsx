@@ -1,5 +1,4 @@
 export const LograEvento = () => {
-
     const Data = [
         {
             img: "/comunicacion.png",
@@ -17,16 +16,12 @@ export const LograEvento = () => {
             texto: "Desaciertos en el presupuesto"
         }
     ]
-
-
     return (
         <>
             <div className="py-20 xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto flex flex-col justify-center items-center space-y-10">
-
                 <div className="text-primary text-2xl text-center font-semibold w-[70%] ">
                     Logra un evento perfecto con la herramienta que integra cada faceta de la organización
                 </div>
-
                 <div className="space-y-4 text-gray-500">
                     <p >
                         Hacer que una celebración brille depende de la acción coordinada de diversos factores. Sin tu coordinación precisa son más amplias las posibilidades de error.

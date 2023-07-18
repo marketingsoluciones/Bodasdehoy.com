@@ -10,17 +10,13 @@ export const EventoOrganizador = () => {
             img: "/check.png",
             alt: "check",
             textoImg: "Destaca cada acción en tu planificación por tiempo o importancia",
-            texto: `Registra cada momento dentro de tu planificación de forma visible
-
-            Establece prioridades y acciones en rangos de tiempo de forma gráfica.
-            
-            Tienes la facilidad de recibir las actualizaciones una vez ejecutadas en un panel de manejo intuitivo. Esto te permite hacer un seguimiento de la ejecución de las acciones en tiempo real.`,
+            texto: "Registra cada momento dentro de tu planificación de forma visible. <br/><br/>Establece prioridades y acciones en rangos de tiempo de forma gráfica.<br/><br/>Tienes la facilidad de recibir las actualizaciones una vez ejecutadas en un panel de manejo intuitivo. Esto te permite hacer un seguimiento de la ejecución de las acciones en tiempo real.",
         },
         {
             img: "/calculadora.png",
             alt: "calculadora",
             textoImg: "Crea tu presupuesto sin complicaciones y optimiza su ejecución",
-            texto: `No se trata de solo establecer un presupuesto. Es tener un registro minucioso de su ejecución en cada fase de la organización del tu evento.
+            texto: `No se trata de solo establecer un presupuesto. Es tener un registro minucioso de su ejecución en cada fase de la organización del tu evento.<br/><br/>
 
             Se trata de tener una herramienta que te facilite la gestión de tu presupuesto para cada evento.`,
         },
@@ -28,11 +24,11 @@ export const EventoOrganizador = () => {
             img: "/burbujaTexto.png",
             alt: "burbuja de texto",
             textoImg: "Crea tu presupuesto sin complicaciones y optimiza su ejecución",
-            texto: `Te ayuda a concentrar las comunicaciones necesarias en una misma plataforma:
+            texto: `Te ayuda a concentrar las comunicaciones necesarias en una misma plataforma:<br/><br/>
 
             - Facilita el contacto directo con cada uno de los invitados.
-            Permite la interacción de los invitados entre ellos.
-            - Hace la comunicación con tus proveedores más eficientes porque puedes crear en el un registro de cada avance y secuencia de acción.
+            Permite la interacción de los invitados entre ellos.<br/>
+            - Hace la comunicación con tus proveedores más eficientes porque puedes crear en el un registro de cada avance y secuencia de acción.<br/>
             - Abres un canal de interacción directa entre los proveedores y tus invitados en las acciones que así lo requieran.`,
         },
     ]

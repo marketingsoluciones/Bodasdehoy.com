@@ -4,10 +4,10 @@ export const MasFacil = () => {
     const router = useRouter()
     return (
         <>
-            <div className="grid grid-cols-2 gap-10 xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto ">
-                <div className="space-y-5 flex flex-col justify-center items-center ">
+            <div className="grid md:grid-cols-2 gap-10 xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto px-5 md:px-0 ">
+                <div className="space-y-5 flex flex-col justify-center md:items-center justify-items-center ">
                     <img src="/easy.png" alt="Facil" width={300} />
-                    <p className="text-gray-500 text-center w-[50%]* pl-20 ">
+                    <p className="text-gray-500 text-center px-5 md:px-0 md:pl-20 ">
                         <span className="text-primary">Ahora es más fácil</span> coordinar los detalles de tu evento como un mecanismo perfecto
                     </p>
                 </div>

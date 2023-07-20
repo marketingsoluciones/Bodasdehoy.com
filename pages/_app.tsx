@@ -14,9 +14,11 @@ import 'swiper/css';
 import "swiper/css/bundle";
 import { DefaultSeo } from 'next-seo'
 import SEO from '../next-seo.config'
+import { useEffect, useState } from "react";
 
 
 function MyApp({ Component, pageProps }: AppProps) {
+
 
   return (
     <>

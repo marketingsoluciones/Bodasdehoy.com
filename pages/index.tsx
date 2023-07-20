@@ -122,7 +122,7 @@ export const Searcher: FC<any> = ({
   currentRefinement,
   refine,
 }) => {
-  const [input,setInput]= useState("")
+  const [input, setInput] = useState("")
   return (
     <ClickAwayListener onClickAway={() => [refine(""), setInput("")]}>
       <div className="relative w-full">
@@ -134,7 +134,7 @@ export const Searcher: FC<any> = ({
             onChange={(e) => [refine(e.currentTarget.value), setInput(e.target.value)]}
             className="px-6 h-14 py-1 md:py-3 w-full rounded-full text-gray-500 text-sm md:text-base focus:outline-none transition shadow-lg "
           />
-          <button onClick={()=>[refine(""), setInput("")]} className={`${input!=""? "block": "hidden"} p-1 bg-color-base rounded-full z-30 right-16 absolute`}>
+          <button onClick={() => [refine(""), setInput("")]} className={`${input != "" ? "block" : "hidden"} p-1 bg-color-base rounded-full z-30 right-16 absolute`}>
             <CloseIcon className="w-5 h-5 text-gray-500 " />
           </button>
         </div>

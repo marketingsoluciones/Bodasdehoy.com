@@ -1,11 +1,22 @@
+import { useEffect, useState } from "react"
 import { CrearEvento } from "../components/WelcomeApp/CrearEvento"
 import { EventoOrganizador } from "../components/WelcomeApp/EventoOrganizador"
 import { ExtraInfo } from "../components/WelcomeApp/ExtraInfo"
 import { FacilGestion } from "../components/WelcomeApp/FacilGestion"
 import { LograEvento } from "../components/WelcomeApp/LograEvento"
 import { MasFacil } from "../components/WelcomeApp/MasFacil"
+import { SidebarContextProvider } from "../context"
 
 const WelcomeApp = () => {
+    const { setShowButtons } = SidebarContextProvider()
+    useEffect(() => {
+        setShowButtons(false)
+        return () => {
+            setShowButtons(true)
+        }
+    }, [])
+
+
     return (
         <>
             <section className="w-full">

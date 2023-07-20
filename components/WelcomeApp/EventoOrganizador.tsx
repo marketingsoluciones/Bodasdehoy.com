@@ -56,10 +56,10 @@ export const EventoOrganizador = () => {
 
     return (
         <>
-            <div className="flex justify-center mb-20" >
-                <p className="text-gray-500 w-[65%] text-center text-3xl">Navega dentro de tu <span className="text-primary">EventosOrganizador</span> y descubre el nuevo significado de llevar la batuta en la planeación de eventos</p>
+            <div className="flex justify-center mt-10 md:mt-0 mb-10 md:mb-20 "  >
+                <p className="text-gray-500 md:w-[65%] w-[95%] text-center text-2xl md:text-3xl">Navega dentro de tu <span className="text-primary">EventosOrganizador</span> y descubre el nuevo significado de llevar la batuta en la planeación de eventos</p>
             </div>
-            <div className="my-8 " >
+            <div className="md:my-8 " >
                 <CuadroResumen DataCuadro={DataCuadro} />
             </div>
             <div>

@@ -19,10 +19,10 @@ export const LograEvento = () => {
     return (
         <>
             <div className="py-20 xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto flex flex-col justify-center items-center space-y-10">
-                <div className="text-primary text-2xl text-center font-semibold w-[70%] ">
+                <div className="text-primary md:text-2xl text-xl text-center font-semibold md:w-[70%] px-5 md:px-0 ">
                     Logra un evento perfecto con la herramienta que integra cada faceta de la organización
                 </div>
-                <div className="space-y-4 text-gray-500">
+                <div className="space-y-4 text-gray-500 px-5 md:px-0">
                     <p >
                         Hacer que una celebración brille depende de la acción coordinada de diversos factores. Sin tu coordinación precisa son más amplias las posibilidades de error.
                     </p>
@@ -30,9 +30,9 @@ export const LograEvento = () => {
                         Logra un evento exitoso evitando:
                     </p>
                 </div>
-                <div className="grid grid-cols-3">
+                <div className="grid md:grid-cols-3 space-y-5 md:space-y-0">
                     {Data.map((item, idx) => (
-                        <div key={idx} className="flex justify-center items-center gap-5" >
+                        <div key={idx} className="flex md:justify-center  items-center gap-5" >
                             <img src={item.img} alt={item.alt} />
                             <span className="text-gray-400" >{item.texto}</span>
                         </div>

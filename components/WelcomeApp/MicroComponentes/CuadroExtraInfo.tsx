@@ -1,13 +1,13 @@
 export const CuadroExtraInfo = () => {
     return (
         <>
-            <div className="grid grid-cols-2 gap-10">
-                <div className="flex justify-end items-center text-end w-[40%]* ">
-                    <p className="w-[90%] text-4xl text-gray-500">
+            <div className="grid md:grid-cols-2 gap-10">
+                <div className="flex justify-end items-center text-end pr-5 md:px-0 ">
+                    <p className="md:w-[90%] text-4xl text-gray-500">
                         ¿Cómo integras el <span className="text-primary">EventosOrganizador</span> en la planificación de tu evento?
                     </p>
                 </div>
-                <p className="text-md  text-gray-600">
+                <p className="text-md px-5 md:px-0 text-gray-600">
                     Al igual que el mecanismo de un reloj, un evento exige que todo funcione en el momento correcto. Cada pieza debe entrar en acción en solo cuando corresponde.<br /><br />
 
                     El EventoOrganizador es la herramienta que integra en un solo panel todas las funciones que necesitas para llevar el control y seguimiento de cada fase el la organización de tu evento. Antes, durante y después de su celebración.<br /><br />
@@ -58,11 +58,11 @@ export const CuadroExtraInfo2 = () => {
 
     return (
         <>
-            <div className="grid grid-cols-2 gap-5">
+            <div className="grid  md:grid-cols-2 gap-5 px-5 md:px-0 ">
                 {Data.map((item,idx)=>(
                     <div key={idx}>
                         <p className="text-primary text-lg ">{item.title}</p>
-                        <p className="text-gray-600 w-[85%]">{item.texto}</p>
+                        <p className="text-gray-600 md:w-[85%]">{item.texto}</p>
                     </div>
                 ))}
             </div>

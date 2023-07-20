@@ -5,18 +5,18 @@ export const CrearEvento = () => {
     return (
         <>
             <div className="mb-14">
-                <div className=" pl-[37%] text-primary text-end ">
+                <div className="px-5 md:px-0 md:pl-[37%] text-primary text-center md:text-end ">
                     Obtén una visión panorámica de cada acción en la organización de tu evento.
                     Gestiona tu planificación y garantiza que tu boda, fiesta, ceremonia, celebración o actividad corporativa sea un éxito.
                 </div>
                 <div className="flex justify-center items-center">
                     <img src="/bannerApp.webp" width={500} />
                 </div>
-                <div className="grid grid-cols-2 mt-10 " >
+                <div className="grid md:grid-cols-2 mt-10 space-y-8 md:space-y-0 " >
                     <div className="flex items-start justify-center">
                         <img src="/EventoOrganizador.png" width={350} />
                     </div>
-                    <div className=" space-y-4 flex flex-col justify-center items-center">
+                    <div className="px-5 md:px-0 space-y-4 flex flex-col justify-center items-center">
                         <p className="text-primary">
                             Esta poderosa herramienta te ayuda a hacer el seguimiento detallado del avance de tu celebración de forma automática y con la precisión propia de un reloj suizo.
                         </p>

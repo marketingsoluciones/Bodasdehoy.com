@@ -8,15 +8,10 @@ import useFetch from "../../../hooks/useFetch";
 import { LoadingItem } from "../../../components/Loading";
 import EmptyComponent from "../../../components/Surface/EmptyComponent";
 import { FiltersContextProvider, } from "../../../context/FiltersContext";
-import { LocationFilter, CheckBoxFilter, } from "../../../components/Inputs/Filters";
-import { BurgerIcon, LogoFullColor, SearchIcon } from "../../../components/Icons";
+import {  CheckBoxFilter, } from "../../../components/Inputs/Filters";
 import useInfiniteScroll from "../../../hooks/useInfiniteScroll";
 import SkeletonCardBusiness from "../../../components/Category/SkeletonCardBusiness";
-import algoliasearch from "algoliasearch/lite";
-import { connectSearchBox, Hits, InstantSearch } from "react-instantsearch-dom";
-import { SidebarContextProvider } from "../../../context";
-import { CloseIcon } from '../../../components/Icons/index';
-import { Hit } from "../../../components/Surface/Navigation";
+
 import { Carrusel } from "../../../components/Carrusel";
 
 

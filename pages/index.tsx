@@ -7,13 +7,14 @@ import { business, fetchCategory, Post } from "../interfaces";
 import { AdsApp, CountriesListing, FeaturedCompanies, Magazine, PlaceDiscovery, PodcastList, } from "../components/Home";
 import RecommendCategories from "../components/Home/RecommendCategories";
 import { BurgerIcon, CommunityIcon, DownloadFileIcon, GuestAppIcon, InspirationIcon, Isologo, LogoFullColor, SearchIcon } from "../components/Icons";
-import { connectWithQuery, Hit } from "../components/Surface/Navigation";
+import { connectWithQuery } from "../components/Surface/Navigation";
 import { connectSearchBox, Hits, InstantSearch } from "react-instantsearch-dom";
 import algoliasearch from "algoliasearch/lite";
 import { CloseIcon } from '../components/Icons/index';
 import Link from "next/link";
 import { AuthContextProvider } from '../context'
 import ClickAwayListener from "react-click-away-listener";
+import { Hit } from "../components/Surface/SearchNavigation";
 
 interface propsHome {
   business: business[];

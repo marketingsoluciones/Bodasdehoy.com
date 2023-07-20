@@ -9,9 +9,11 @@ import { GraphQL, fetchApi, queries } from '../../utils/Fetching';
 import { Searcher } from '../index';
 import algoliasearch from "algoliasearch/lite";
 import { connectSearchBox, Hits, InstantSearch } from "react-instantsearch-dom";
-import { connectWithQuery, Hit } from "../../components/Surface/Navigation";
+import { connectWithQuery } from "../../components/Surface/Navigation";
 import { CloseIcon, SearchIcon } from "../../components/Icons";
 import ClickAwayListener from "react-click-away-listener";
+import { Hit } from "../../components/Surface/SearchNavigation";
+
 
 
 

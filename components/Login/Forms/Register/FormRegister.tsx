@@ -1,14 +1,14 @@
-import { Formik, Form, ErrorMessage } from "formik";
-import { FC, useContext, Children, memo, Dispatch, SetStateAction, useState } from "react";
-import { DatePicker, InputField, SelectField } from "../../../Inputs";
-import { EmailIcon, EmailIcon as PasswordIcon, UserForm, Eye, EyeSlash, LockClosed, PhoneMobile, } from "../../../Icons";
-import { createUserWithEmailAndPassword, updateProfile, UserCredential, NextOrObserver, User } from "@firebase/auth";
+import { Formik, Form } from "formik";
+import { FC, Children, memo, Dispatch, SetStateAction, useState } from "react";
+import { DatePicker, InputField } from "../../../Inputs";
+import { EmailIcon, UserForm, Eye, EyeSlash, LockClosed, PhoneMobile, } from "../../../Icons";
+import { createUserWithEmailAndPassword, updateProfile, UserCredential } from "@firebase/auth";
 import * as yup from "yup";
 import { UserMax } from "../../../../context/AuthContext";
 import { AuthContextProvider, LoadingContextProvider, } from "../../../../context";
 import router from "next/router";
 import { ValidationSchemaRegister } from "./ValidationRegister";
-import { GraphQL, fetchApi, queries } from "../../../../utils/Fetching";
+import { fetchApi, queries } from "../../../../utils/Fetching";
 import SelectFieldCoutries from "../../../Inputs/SelectFieldCoutries";
 import { auth } from "../../../../firebase";
 import InputCity from "../../../Inputs/InputCity";
@@ -192,11 +192,11 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
 
       //toast("success", "Registro realizado con exito")
     } catch (error) {
-      console.log(error );
-      if(error instanceof FirebaseError){
+      console.log(error);
+      if (error instanceof FirebaseError) {
         toast("error", "Ups... este correo ya esta registrado")
-      }else {
-        toast("error", "Ups... algo a salido mal" )
+      } else {
+        toast("error", "Ups... algo a salido mal")
       }
       setLoading(false);
     }
@@ -320,7 +320,7 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
   const [passwordView, setPasswordView] = useState(false)
   return (
     <>
-      <div className="w-full col-span-2">
+      <div className="col-span-2">
         <InputField
           name="fullName"
           //placeholder="Jhon Doe"
@@ -331,7 +331,7 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
         />
       </div>
 
-      <div className="w-full relative ">
+      <div className="col-span-2">
         <InputField
           name="email"
           //placeholder="jhondoe@gmail.com"
@@ -342,7 +342,7 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
         />
       </div>
 
-      <div className="w-full relative ">
+      <div className="w-full relative">
         <InputField
           name="password"
           type={!passwordView ? "password" : "text"}
@@ -355,7 +355,7 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
         </div>
       </div>
 
-      <div className="w-full relative ">
+      {/* <div className="w-full relative ">
         <SelectFieldCoutries name="country" label={"País"} />
       </div>
 
@@ -370,9 +370,9 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
 
       <div className="w-full relative ">
         <DatePicker name={"weddingDate"} label={"Fecha del evento"} />
-      </div>
+      </div> */}
 
-      <div className="w-full relative ">
+      <div className="w-full relative">
         <InputField
           name="phoneNumber"
           type="number"
@@ -445,7 +445,7 @@ const BusinessWithEmailAndPassword: FC<propsForm> = () => {
   const [passwordView, setPasswordView] = useState(false)
   return (
     <>
-      <div className="w-full col-span-2">
+      <div className="col-span-2">
         <InputField
           name="fullName"
           //placeholder="Jhon Doe"
@@ -456,7 +456,7 @@ const BusinessWithEmailAndPassword: FC<propsForm> = () => {
         />
       </div>
 
-      <div className="w-full relative ">
+      <div className="col-span-2">
         <InputField
           name="email"
           label="Correo electronico"
@@ -467,7 +467,7 @@ const BusinessWithEmailAndPassword: FC<propsForm> = () => {
 
       </div>
 
-      <div className="w-full relative ">
+      <div className="w-full relative">
         <InputField
           name="password"
           type={!passwordView ? "password" : "text"}
@@ -480,7 +480,7 @@ const BusinessWithEmailAndPassword: FC<propsForm> = () => {
         </div>
       </div>
 
-      <div className="w-full relative ">
+      <div className="w-full">
         <InputField
           name="phoneNumber"
           type="number"

@@ -18,15 +18,14 @@ export const InputField: FC<propsField> = ({
   //@ts-ignore
   const [field, meta, { setValue }] = useField({ ...props });
 
-  const className: string = `bg-color-base text-sm focus:border focus:border-primary border-transparent focus:ring-transparent pr-3 py-2 rounded-lg w-full focus:outline-none placeholder-gray-400 text-gray-700 transition ${
-    icon ? "pl-12" : "pl-3"
-  }`;
+  const className: string = `bg-color-base text-sm focus:border focus:border-primary border-transparent focus:ring-transparent pr-3 py-2 rounded-lg w-full focus:outline-none placeholder-gray-400 text-gray-700 transition ${icon ? "pl-12" : "pl-3"
+    }`;
   return (
     <div className="relative">
       <span className="flex items-center gap-2">
         <label className="text-sm text-gray-500">{label}</label>
         {meta.touched && meta.error ? (
-          <span className="text-red-500 text-xs font-medium ">
+          <span className="text-red-500 text-xs font-medium absolute z-10 translate-y-14">
             Campo requerido
           </span>
         ) : null}

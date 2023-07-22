@@ -4,7 +4,6 @@ import { ArrowIcon, CloseIcon, CompanyIcon, LogoFullColor, SearchIcon, UserIcon,
 import { LoadingContextProvider, AuthContextProvider } from "../../context";
 import { useRouter } from "next/router";
 import { createConnector, connectSearchBox, } from "react-instantsearch-dom";
-import Cookies from "js-cookie";
 import { AlertDesarrollo } from "../modals/AlertDesarrollo";
 import { SearchNavigation } from "./SearchNavigation";
 import { ProfileMenu } from "./MultiMenu/ProfileMenu";
@@ -80,10 +79,6 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch, modal, setModal }) =>
   const { user } = AuthContextProvider();
   const [isHovered, setHovered] = useState<boolean>(false);
   const router = useRouter();
-  const HandleClickUser = () => {
-    !Cookies.get("sessionBodas") ? router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) : router.push("/");
-  };
-
   return (
     <>
       <div className="flex items-center relative">
@@ -99,7 +94,7 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch, modal, setModal }) =>
               className="md:px-3 border-gray-100 py-1 md:border-l md:border-r cursor-pointer text-gray-500 flex"
               onMouseOver={() => setHovered(true)}
               onMouseLeave={() => setHovered(false)}>
-              <span onClick={HandleClickUser}>
+              <span >
                 <UserIcon className="icon transition transform hover:-rotate-6 hover:scale-110" />
               </span>
               <ArrowIcon className="w-4 h-4 rotate-90 transform cursor-pointer" />

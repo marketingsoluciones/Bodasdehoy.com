@@ -8,9 +8,9 @@ export const ValidationSchemaRegister = {
     fullName: yup.string().required("Campo requerido"),
     email: yup.string().email().required("Campo requerido"),
     password: yup.string().required("Campo requerido").min(8),
-    city: yup.string().required("Campo requerido"),
-    country: yup.string().required("Campo requerido"),
-    weddingDate: yup.date().required("Campo requerido"),
+    //cuntry: yup.string().required("Campo requerido"),
+    //weity: yup.string().required("Campo requerido"),
+    //coddingDate: yup.date().required("Campo requerido"),
     phoneNumber: yup.number().required("Campo requerido"),
   }),
   // Schema de validacion user con valores parciales

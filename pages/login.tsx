@@ -38,6 +38,9 @@ const PageLogin: FC = () => {
   }, []);
 
   useEffect(() => {
+    if (r?.query?.q === "register") {
+      setStage("register")
+    }
     /////// REDIRECIONES ///////
     if (r?.query?.d === "app") {
       setRedirect(process.env.NEXT_PUBLIC_EVENTSAPP ?? "")

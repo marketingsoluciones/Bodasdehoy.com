@@ -13,10 +13,10 @@ const WelcomeApp = () => {
                     <CrearEvento />
                 </div>
                 <div className="relative">
-                    <div className="bg-white w-full md:pb-20">
+                    <div className="bg-white md:pb-20">
                         <LograEvento />
                     </div>
-                    <div className="hidden md:block absolute top-[25%] left-[16%]">
+                    <div className="hidden md:block absolute md:top-[25%] md:left-[18%]  ">
                         <img src="/imgPrincipal.png" alt="imagne principal" width={900} />
                     </div>
                     <div className="sm:max-w-screen-sm md:max-w-screen-md lg:max-w-screen-lg md:pt-60 mx-auto ">

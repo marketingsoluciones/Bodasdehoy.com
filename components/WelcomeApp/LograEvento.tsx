@@ -57,8 +57,8 @@ export const LograEvento = () => {
                             modules={[Pagination,Autoplay]}
                         >
                             {Data.map((item, idx) => (
-                                <SwiperSlide>
-                                    <div key={idx} className="flex justify-center items-center gap-5 mb-10 w-full  " >
+                                <SwiperSlide key={idx}>
+                                    <div  className="flex justify-center items-center gap-5 mb-10 w-full  " >
                                         <div className="">
                                             <img src={item.img} alt={item.alt}  width={8} height={5}/>
                                         </div>

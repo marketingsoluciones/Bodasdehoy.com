@@ -56,8 +56,8 @@ export const EventoOrganizador = () => {
 
     return (
         <>
-            <div className="flex justify-center mt-10 md:mt-0 mb-10 md:mb-20 "  >
-                <p className="text-gray-500 md:w-[65%] w-[95%] text-center text-2xl md:text-3xl">Navega dentro de tu <span className="text-primary">EventosOrganizador</span> y descubre el nuevo significado de llevar la batuta en la planeación de eventos</p>
+            <div className="flex justify-center my-10 md:mt-0 px-10 md:px-0 "  >
+                <p className="text-gray-500 md:w-[65%] text-center text-2xl md:text-3xl">Navega dentro de tu <span className="text-primary">EventosOrganizador</span> y descubre el nuevo significado de llevar la batuta en la planeación de eventos</p>
             </div>
             <div className="md:my-8 " >
                 <CuadroResumen DataCuadro={DataCuadro} />
@@ -65,7 +65,7 @@ export const EventoOrganizador = () => {
             <div>
                 <CirculoResumen DataCirculo={DataCirculo} />
             </div>
-            <div className="flex flex-col justify-center items-center space-y-5 mb-10">
+            <div className="flex flex-col justify-center items-center space-y-5 mb-10 px-10">
                 <p className="text-primary text-xl font-semibold">Inicia tu prueba gratis ¡ahora!</p>
                 <button onClick={()=>router.push(`${process.env.NEXT_PUBLIC_EVENTSAPP}`)} className=" text-primary bg-yellow-button py-[8px] px-[22px] shadow-md">
                         CREAR EVENTO

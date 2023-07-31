@@ -12,6 +12,17 @@
   color: #f7628c !important;
 }
 
+.swiper-pagination-bullet-active {
+  background: #f7628c !important;
+}
+
+.swiper-container-horizontal > .swiper-pagination-bullets,
+.swiper-pagination-custom,
+.swiper-pagination-fraction {
+  bottom: 0;
+  ;
+}
+
 .slick-prev:before,
 .slick-next:before {
   font-family: 'slick';

@@ -3,7 +3,7 @@ export const FacilGestion = () => {
     return (
         <>
 
-            <div className="flex flex-col justify-center items-center gap-5 py-20 px-5 md:px-0">
+            <div className="flex flex-col justify-center items-center gap-5 md:py-20 py-10 px-10 md:px-0">
                 <p className="text-primary text-center text-xl md:w-[57%] font-semibold  ">Facilita la gestión de la organización de tu evento desde una sola herramienta</p>
                 <p className="text-gray-600 md:w-[80%]">
                     Hasta ahora existen infinidad de apps y herramientas en el mercado para la planificación de eventos. Cada una de ellas especializadas en distintos aspectos de la organización.<br/><br/>

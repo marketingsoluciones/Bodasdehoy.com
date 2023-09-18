@@ -40,6 +40,11 @@ type Boton = {
 };
 
 const Listing: FC<business> = (props) => {
+  const { user } = AuthContextProvider();
+  const router = useRouter()
+  const [sendMessage, setMessage] = useState(false);
+  const [totalReviews, setTotalReviews] = useState(0);
+
   const {
     imgMiniatura,
     businessName,
@@ -62,18 +67,26 @@ const Listing: FC<business> = (props) => {
 
   } = props;
 
-  const [sendMessage, setMessage] = useState(false);
+  const [averageTotal, setAverageTotal] = useState<number>(review);
+  const [reviewsProps, setReviewsProps] = useState<reviewsT>(reviewsT);
+  const [newRout, setNewRout] = useState("")
+  const http = 'http://'
+  const inclu = webPage.includes(http)
+
+useEffect(()=>{
+  if (inclu == false) {
+    setNewRout(webPage.replace('www', 'http://www'))
+  }else{
+    setNewRout(webPage)
+  }
+}, [webPage])
+
   const List: Boton[] = [
     //{ title: "Descripción", route: "#description", icon: <DocsIcon /> },
     { title: "Opiniones", route: "#reviews", icon: <OpinionesIcon /> },
     { title: "Cómo llegar", route: "#maps", icon: <Location2Icon /> },
     { title: "Preguntas", route: "#questions", icon: <PreguntasIcon /> },
   ];
-  const { user } = AuthContextProvider();
-  const router = useRouter()
-  const [averageTotal, setAverageTotal] = useState<number>(review);
-  const [totalReviews, setTotalReviews] = useState(0);
-  const [reviewsProps, setReviewsProps] = useState<reviewsT>(reviewsT);
 
   const scroll = () => {
     window.scrollTo(0, document.body.scrollHeight);
@@ -125,11 +138,13 @@ const Listing: FC<business> = (props) => {
         className="mx-auto inset-x-0 flex flex-col gap-6 px-5 "
       >
         <BreadCumbs />
+
         <HeaderListing
           {...props}
           totalReviews={totalReviews}
           averageTotal={averageTotal}
         />
+
         <div className="md:bg-white w-full">
           <div className="lg:max-w-screen-lg inset-x-0 mx-auto w-full grid md:grid-cols-3 gap-10  ">
             <section className="w-full md:col-span-2">
@@ -222,19 +237,18 @@ const Listing: FC<business> = (props) => {
                 )}
               </div>
             </section>
+
             <div className="  md:block w-full ... relative ">
               <div className="bg-white shadow md:-mt-12 rounded-xl  p-4 relative">
                 <div className="flex gap-4 items-center text-primary w-full justify-center flex-col">
                   {/* Si soy el dueño de la empresa no aparece y si la empresa no tiene userUid tampoco aparece*/}
                   {userUid !== user?.uid && userUid !== '' && <ChatComponentView {...props} />}
 
-
-
                   {webPage && (
                     <ItemContact
                       icon={<WebSiteIcon className="w-5 h-5" />}
                       title={webPage.length > 33 ? webPage.substring(0, 30) + "..." : webPage}
-                      route={webPage}
+                      route={newRout}
                     />
                   )}
                   {landline && (

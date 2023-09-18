@@ -19,7 +19,6 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       onClick: async () => { await router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) },
       icon: <UserIcon />,
       rol: undefined,
-
     },
     {
       title: "Registrase",
@@ -37,7 +36,6 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       title: "Mis empresas",
       onClick: async () => { await router.push(user?.role?.includes("empresa") ? `${process.env.NEXT_PUBLIC_CMS}/?d=viewBusines` : "/info-empresa") },
       icon: <CompanyIcon />,
-      target: "_blank",
       rol: ["empresa", ""],
     },
     {

@@ -71,13 +71,14 @@ const Listing: FC<business> = (props) => {
   const [reviewsProps, setReviewsProps] = useState<reviewsT>(reviewsT);
   const [newRout, setNewRout] = useState("")
   const http = 'http://'
-  const inclu = webPage.includes(http)
+  const inclu = webPage?.includes(http)
 
 useEffect(()=>{
   if (inclu == false) {
-    setNewRout(webPage.replace('www', 'http://www'))
+    if(webPage)
+    setNewRout(webPage?.replace('www', 'http://www'))
   }else{
-    setNewRout(webPage)
+    setNewRout(webPage?webPage:"/")
   }
 }, [webPage])
 

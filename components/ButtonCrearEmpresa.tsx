@@ -15,23 +15,19 @@ const ButtonCrearEmpresa = () => {
         return "/info-empresa"
     }
 
-
+    
     if (showButtons) {
         return (
             <Link href={url()} >
-                <div className={`hidden sm:flex cursor-pointer bg-color-base font-semibold rounded-full w-max px-4 text-xs py-2 text-primary fixed bottom-12 right-6 z-30 items-center gap-2  transition-all duration-500 shadow-lg`}>
-                    <CrossIcon />
-                    Publica tu empresa aquí
-                </div>
+                    <div className={`hidden sm:flex cursor-pointer bg-color-base font-semibold rounded-full w-max px-4 text-xs py-2 text-primary fixed bottom-12 right-6 z-30 items-center gap-2  transition-all duration-500 shadow-lg`}>
+                        <CrossIcon />
+                        Publica tu empresa aquí
+                    </div>
             </Link>
 
         )
     }
-    return (
-        <>
-        
-        </>
-    )
+    return (<></>)
 }
 
 export default ButtonCrearEmpresa

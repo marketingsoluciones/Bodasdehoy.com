@@ -23,7 +23,14 @@ export const CrearEvento = () => {
                         <p className="text-primary font-semibold">
                             Coordina desde tu móvil todas las acciones para un evento memorable.
                         </p>
-                        <button onClick={() => router.push(`${window.origin.includes("://test.") ? "test" : ""}${process.env.NEXT_PUBLIC_EVENTSAPP}`)} className=" text-primary bg-yellow-button py-[8px] px-[22px] shadow-md">
+                        <button
+                            onClick={async () => {
+                                const path = `${window.origin.includes("://test.") ? "test" : ""}${process.env.NEXT_PUBLIC_EVENTSAPP}`
+                                console.log(window.origin, path)
+                                await router.push(path)
+                            }
+                            }
+                            className=" text-primary bg-yellow-button py-[8px] px-[22px] shadow-md">
                             CREA GRATIS TU EVENTO
                         </button>
                     </div>

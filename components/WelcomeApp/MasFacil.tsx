@@ -23,7 +23,7 @@ export const MasFacil = () => {
 
                         No pagues más por muchas aplicaciones o software de planificación, cuando puedes hacer toda la magia desde una misma herramienta.
                     </p>
-                    <button onClick={()=>router.push(`${process.env.NEXT_PUBLIC_EVENTSAPP}`)} className=" text-primary bg-yellow-button py-[8px] px-[22px] shadow-md">
+                    <button onClick={() => router.push(window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "")} className=" text-primary bg-yellow-button py-[8px] px-[22px] shadow-md">
                         CREAR EVENTO
                     </button>
                 </div>

@@ -17,7 +17,7 @@ type Item = {
 const List: Item[] = [
   {
     title: "organiza tu boda",
-    route: "/welcome-app"/* process.env.NEXT_PUBLIC_EVENTSAPP ?? "" */,
+    route: "/welcome-app",
     titleInside: "Mi organizador de bodas",
     component: <OrganizadorBoda />,
   },

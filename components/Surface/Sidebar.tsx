@@ -28,7 +28,7 @@ export const Sidebar: FC<propsSidebar> = ({ set, state }) => {
     const  route= user?.role && user?.role?.length > 0 && user?.role[0] === "empresa" ? `${process.env.NEXT_PUBLIC_CMS}/?d=busines`: "/info-empresa"
       
     const FirstList: ItemNav[] = [
-        { title: "Organiza tu Boda", route: process.env.NEXT_PUBLIC_EVENTSAPP ?? "" },
+        { title: "Organiza tu Boda", route: window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" },
         { title: "Novia", route: "/categoria/novias" },
         { title: "Novio", route: "/categoria/novios" },
         { title: "Proveedores", route: "/categoria/proveedores" },
@@ -37,7 +37,7 @@ export const Sidebar: FC<propsSidebar> = ({ set, state }) => {
 
     const SecondaryList: ItemNav[] = [
         { title: "Magazine", route: "/magazine" },
-        { title: "Gestor de invitados", route:"/welcome-app" /* process.env.NEXT_PUBLIC_EVENTSAPP ?? "" */ },
+        { title: "Gestor de invitados", route:"/welcome-app"  },
     ]
 
     return (<>

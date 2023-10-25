@@ -173,7 +173,7 @@ export const Features: FC = () => {
     {
       title: "Organizador de boda",
       icon: <GuestAppIcon className="w-8 h-8" />,
-      route: process.env.NEXT_PUBLIC_EVENTSAPP ?? ""
+      route: window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" 
     },
     {
       title: "Inspiración",
@@ -188,7 +188,7 @@ export const Features: FC = () => {
   const Feature: FC<propsFeature> = memo(({ item }) => {
     return (
       <div className="flex items-center gap-3 py-3 pl-2 w-full static ">
-        <span className="p-4 bg-white shadow rounded-full bg-white grid place-items-center transform transition duration-800 hover:scale-110 hover:-rotate-12 focus:outline-none z-20">
+        <span className="p-4 shadow rounded-full bg-white grid place-items-center transform transition duration-800 hover:scale-110 hover:-rotate-12 focus:outline-none z-20">
           {item.icon}
         </span>
         <h2 className="text-tertiary w-32 text-sm md:text-lg leading-6 font-semibold  hover:text-primary transition duration-800">

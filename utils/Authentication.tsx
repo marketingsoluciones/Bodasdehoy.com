@@ -98,9 +98,6 @@ export const useAuthentication = () => {
               toast("success", `Inicio sesión con exito`)
             }
             ///////////////////////////
-            // else {
-            //   await router.push(!redirect ? process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : redirect);
-            // }
           } else {
             toast("error", "aun no está registrado");
             //verificar que firebase me devuelva un correo del usuario

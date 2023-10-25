@@ -67,7 +67,7 @@ export const EventoOrganizador = () => {
             </div>
             <div className="flex flex-col justify-center items-center space-y-5 mb-10 px-10">
                 <p className="text-primary text-xl font-semibold">Inicia tu prueba gratis ¡ahora!</p>
-                <button onClick={()=>router.push(`${process.env.NEXT_PUBLIC_EVENTSAPP}`)} className=" text-primary bg-yellow-button py-[8px] px-[22px] shadow-md">
+                <button onClick={() => router.push(window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "")} className=" text-primary bg-yellow-button py-[8px] px-[22px] shadow-md">
                         CREAR EVENTO
                 </button>
             </div>

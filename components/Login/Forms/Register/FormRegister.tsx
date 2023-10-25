@@ -167,26 +167,17 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       }
 
       /////// REDIRECIONES ///////
-      if (userTemp) {
-        setUser(userTemp)
-        setUserTemp(null)
-      }
       if (redirect?.split("/")[3] == "info-empresa" && moreInfo.role.includes("empresa")) {
-        await router.push(`${process.env.NEXT_PUBLIC_DIRECTORY}/empresa` ?? "")
-        toast("success", `Registro de Empresa realizado con exito `)
-        setLoading(false);
+        const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") : process.env.NEXT_PUBLIC_EVENTSAPP
+        await router.push(path ?? "")
+        toast("success", `Inicio de sesión de empresa con exito `)
       }
-      if (redirect?.split("/")[3] !== "info-empresa" && moreInfo.role.includes("empresa")) {
-        await router.push(redirect ? redirect : `${process.env.NEXT_PUBLIC_DIRECTORY}/empresa` ?? "")
-        toast("success", `Inicio sesión con exito`)
-      }
-
       if (redirect?.split("/")[3] == "info-empresa" && !moreInfo.role.includes("empresa")) {
         await router.push(redirect)
         toast("warning", `Inicio sesión con una cuenta que no es de empresa`)
       }
-      if (redirect?.split("/")[3] !== "info-empresa" && !moreInfo.role.includes("empresa")) {
-        await router.push(redirect ? redirect : process.env.NEXT_PUBLIC_EVENTSAPP ?? "")
+      if (redirect?.split("/")[3] !== "info-empresa") {
+        await router.push(redirect ? redirect : "/")
         toast("success", `Inicio sesión con exito`)
       }
       ///////////////////////////

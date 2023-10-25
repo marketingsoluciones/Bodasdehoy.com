@@ -43,7 +43,7 @@ const PageLogin: FC = () => {
     }
     /////// REDIRECIONES ///////
     if (r?.query?.d === "app") {
-      setRedirect(process.env.NEXT_PUBLIC_EVENTSAPP ?? "")
+      setRedirect(window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "")
     }
     if (r?.query?.d === "info-empresa") {
       setRedirect(`${process.env.NEXT_PUBLIC_DIRECTORY}/${r?.query?.d}` ?? "")

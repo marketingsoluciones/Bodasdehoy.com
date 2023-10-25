@@ -85,11 +85,11 @@ export const useAuthentication = () => {
 
             /////// REDIRECIONES ///////
             if (redirect?.split("/")[3] == "info-empresa" && moreInfo.role.includes("empresa")) {
-              await router.push(`${window.origin.includes("://test") ? "test" : ""}${process.env.NEXT_PUBLIC_CMS}/`)
+              await router.push(`${window.origin.includes("://test.") ? "test" : ""}${process.env.NEXT_PUBLIC_CMS}/`)
               toast("success", `Inicio de sesión de empresa con exito `)
             }
             // if (redirect?.split("/")[3] !== "info-empresa" && moreInfo.role.includes("empresa")) {
-            //   await router.push(`${window.origin.includes("://test") ? "test" : ""}${process.env.NEXT_PUBLIC_CMS}/`)
+            //   await router.push(`${window.origin.includes("://test.") ? "test" : ""}${process.env.NEXT_PUBLIC_CMS}/`)
             //   toast("success", `Inicio sesión con exito`)
             // }
 

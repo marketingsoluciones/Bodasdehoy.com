@@ -34,7 +34,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
     },
     {
       title: "Mis empresas",
-      onClick: async () => { await router.push(user?.role?.includes("empresa") ? `${window.origin.includes("://test") ? "test" : ""}${process.env.NEXT_PUBLIC_CMS}` : "/info-empresa") },
+      onClick: async () => { await router.push(user?.role?.includes("empresa") ? `${window.origin.includes("://test.") ? "test" : ""}${process.env.NEXT_PUBLIC_CMS}` : "/info-empresa") },
       icon: <CompanyIcon />,
       rol: ["empresa", ""],
     },

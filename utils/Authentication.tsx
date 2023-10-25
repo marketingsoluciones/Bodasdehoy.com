@@ -24,7 +24,8 @@ export const useAuthentication = () => {
       if (authResult?.sessionCookie) {
         const { sessionCookie } = authResult;
         // Setear en localStorage token JWT
-        Cookies.set("sessionBodas", sessionCookie, { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
+        const dateExpire = new Date(new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000))
+        Cookies.set("sessionBodas", sessionCookie, { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire });
         return sessionCookie
       } else {
         console.warn("No se pudo cargar la cookie de sesión por que hubo un problema")
@@ -84,21 +85,20 @@ export const useAuthentication = () => {
 
             /////// REDIRECIONES ///////
             if (redirect?.split("/")[3] == "info-empresa" && moreInfo.role.includes("empresa")) {
-              await router.push(`${process.env.NEXT_PUBLIC_CMS}/?d=viewBusines` ?? "")
+              await router.push(`${window.origin.includes("://test") ? "test" : ""}${process.env.NEXT_PUBLIC_CMS}/`)
               toast("success", `Inicio de sesión de empresa con exito `)
             }
-            if (redirect?.split("/")[3] !== "info-empresa" && moreInfo.role.includes("empresa")) {
-              window.open(`${process.env.NEXT_PUBLIC_CMS}/?d=viewBusines` ?? "" , '_blank')
-              await router.push( `/` )
-              toast("success", `Inicio sesión con exito`)
-            }
+            // if (redirect?.split("/")[3] !== "info-empresa" && moreInfo.role.includes("empresa")) {
+            //   await router.push(`${window.origin.includes("://test") ? "test" : ""}${process.env.NEXT_PUBLIC_CMS}/`)
+            //   toast("success", `Inicio sesión con exito`)
+            // }
 
             if (redirect?.split("/")[3] == "info-empresa" && !moreInfo.role.includes("empresa")) {
               await router.push(redirect)
               toast("warning", `Inicio sesión con una cuenta que no es de empresa`)
             }
-            if (redirect?.split("/")[3] !== "info-empresa" && !moreInfo.role.includes("empresa")) {
-              await router.push(redirect ? redirect : process.env.NEXT_PUBLIC_EVENTSAPP ?? "")
+            if (redirect?.split("/")[3] !== "info-empresa") {
+              await router.push(redirect ? redirect : "/")
               toast("success", `Inicio sesión con exito`)
             }
             ///////////////////////////

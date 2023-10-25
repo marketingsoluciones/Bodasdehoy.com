@@ -148,7 +148,8 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
         if (usuario) {
           updateProfile(usuario, { displayName: values.fullName });
           // Almacenar token en localStorage
-          getSessionCookie((await usuario?.getIdTokenResult())?.token)
+          const resp = getSessionCookie((await usuario?.getIdTokenResult())?.token)
+          console.log(30007, resp)
         }
       });
 
@@ -160,7 +161,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
         }
       });
 
-      // Almacenar en contexto USER con toda la info
+      // Almacenar en contexto USER con toda la info 
       if (moreInfo?.status) {
         setUser({ ...UserFirebase, ...moreInfo });
       }

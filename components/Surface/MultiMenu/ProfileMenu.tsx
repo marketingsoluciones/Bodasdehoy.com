@@ -35,9 +35,8 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
     },
     {
       title: "Mis empresas",
-      onClick: async () => { await router.push(user?.role?.includes("empresa") ? `${process.env.NEXT_PUBLIC_CMS}/?d=viewBusines` : "/info-empresa") },
+      onClick: async () => { await router.push(user?.role?.includes("empresa") ? `${window.origin.includes("://test") ? "test" : ""}${process.env.NEXT_PUBLIC_CMS}` : "/info-empresa") },
       icon: <CompanyIcon />,
-      target: "_blank",
       rol: ["empresa", ""],
     },
     {
@@ -102,7 +101,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       timeout={300}
       classNames={"fade"}>
       < div
-        className={`w-80 p-3 h-20 rounded-xl h-max bg-white shadow-md absolute bottom-0 right-0 inset-y-full overflow-hidden z-50 
+        className={`w-80 p-3 rounded-xl h-max bg-white shadow-md absolute bottom-0 right-0 inset-y-full translate-y-1 overflow-hidden z-50 
     }`}
       >
         <div className="w-full border-b border-gray-100 pb-2">

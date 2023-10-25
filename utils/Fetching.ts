@@ -134,7 +134,7 @@ export const queries: queries = {
     email
     }
   }`,
-
+ 
   signOut: `mutation ($sessionCookie :String){
     signOut(sessionCookie:$sessionCookie)
   }`,

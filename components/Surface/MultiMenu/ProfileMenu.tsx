@@ -19,7 +19,6 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       onClick: async () => { await router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) },
       icon: <UserIcon />,
       rol: undefined,
-
     },
     {
       title: "Registrase",
@@ -57,12 +56,12 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
     //   icon: <WeddingPage />,
     //   rol: ["empresa"],
     // },
-    {
+    /* {
       title: "Mis post",
       onClick: async () => { await router.push(`${process.env.NEXT_PUBLIC_CMS}/posts`) },
       icon: <Posts />,
       rol: ["novio", "novia", "otro", "empresa"],
-    },
+    }, */
     {
       title: "Mis eventos",
       onClick: async () => { await router.push(`/welcome-app`) },

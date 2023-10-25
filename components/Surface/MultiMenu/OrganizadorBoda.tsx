@@ -4,26 +4,27 @@ import { FC } from "react";
 import Link from "next/link";
 
 const OrganizadorBoda = () => {
+  const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? ""
   const List = [
-    { icon: <GlobosIcon />, title: "Mis eventos", route: `${process.env.NEXT_PUBLIC_EVENTSAPP}/` },
-    { icon: <UserIcon />, title: "Invitados", route: `${process.env.NEXT_PUBLIC_EVENTSAPP}/invitados` },
-    { icon: <TableIcon />, title: "Mesas", route: `${process.env.NEXT_PUBLIC_EVENTSAPP}/mesas` },
-    { icon: <RegaloIcon />, title: "Lista de regalos", route: `${process.env.NEXT_PUBLIC_EVENTSAPP}/lista-regalos` },
-    { icon: <PresupuestoIcon />, title: "Presupuesto", route: `${process.env.NEXT_PUBLIC_EVENTSAPP}/presupuesto` },
-    { icon: <InvitacionesIcon />, title: "Invitaciones", route: `${process.env.NEXT_PUBLIC_EVENTSAPP}/invitaciones` },
+    { icon: <GlobosIcon />, title: "Mis eventos", route: `${path}/` },
+    { icon: <UserIcon />, title: "Invitados", route: `${path}/invitados` },
+    { icon: <TableIcon />, title: "Mesas", route: `${path}/mesas` },
+    { icon: <RegaloIcon />, title: "Lista de regalos", route: `${path}/lista-regalos` },
+    { icon: <PresupuestoIcon />, title: "Presupuesto", route: `${path}/presupuesto` },
+    { icon: <InvitacionesIcon />, title: "Invitaciones", route: `${path}/invitaciones` },
   ];
   return (
     <ul className="w-full flex items-center justify-between">
       {List.map((item, idx) => (
         <Link key={idx} href={item.route ?? ""} passHref >
-          
-            <li className="flex items-center gap-2 text-sm text-gray-600 hover:text-tertiary hover:font-semibold cursor-pointer hover:bg-gray-100 transition py-2 rounded-xl w-max">
-              <div className="w-8 h-8 rounded-full bg-white p-1.5 grid place-items-center">
-                {cloneElement(item.icon, { className: "w-full h-full" })}
-              </div>
-              <p className="">{item.title}</p>
-            </li>
-          
+
+          <li className="flex items-center gap-2 text-sm text-gray-600 hover:text-tertiary hover:font-semibold cursor-pointer hover:bg-gray-100 transition py-2 rounded-xl w-max">
+            <div className="w-8 h-8 rounded-full bg-white p-1.5 grid place-items-center">
+              {cloneElement(item.icon, { className: "w-full h-full" })}
+            </div>
+            <p className="">{item.title}</p>
+          </li>
+
         </Link>
       ))}
     </ul>

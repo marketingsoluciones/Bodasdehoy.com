@@ -25,8 +25,8 @@ export const Sidebar: FC<propsSidebar> = ({ set, state }) => {
     const [showForm, setShowForm] = useState(false)
     const { user } = AuthContextProvider()
     const router = useRouter()
-    const  route= user?.role && user?.role?.length > 0 && user?.role[0] === "empresa" ? `${process.env.NEXT_PUBLIC_CMS}/?d=busines`: "/info-empresa"
-      
+    const route = user?.role && user?.role?.length > 0 && user?.role[0] === "empresa" ? `${process.env.NEXT_PUBLIC_CMS}/?d=busines` : "/info-empresa"
+
     const FirstList: ItemNav[] = [
         { title: "Organiza tu Boda", route: process.env.NEXT_PUBLIC_EVENTSAPP ?? "" },
         { title: "Novia", route: "/categoria/novias" },
@@ -37,7 +37,7 @@ export const Sidebar: FC<propsSidebar> = ({ set, state }) => {
 
     const SecondaryList: ItemNav[] = [
         { title: "Magazine", route: "/magazine" },
-        { title: "Gestor de invitados", route:"/welcome-app"  },
+        { title: "Gestor de invitados", route: "/welcome-app" },
     ]
 
     return (<>
@@ -56,7 +56,7 @@ export const Sidebar: FC<propsSidebar> = ({ set, state }) => {
                                     return (
                                         <span className="text-primary text-xl font-light pb-4">
                                             <Link href={"/login"} passHref>Accede </Link>
-                                            
+
                                         </span>
                                     )
                                 } else {

@@ -173,7 +173,7 @@ export const Features: FC = () => {
     {
       title: "Organizador de boda",
       icon: <GuestAppIcon className="w-8 h-8" />,
-      route: process.env.NEXT_PUBLIC_EVENTSAPP ?? ""
+      route: window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? ""
     },
     {
       title: "Inspiración",

@@ -2,7 +2,7 @@ import { FC } from "react";
 import { connectSearchBox, Hits, InstantSearch } from "react-instantsearch-dom";
 import algoliasearch from "algoliasearch/lite"
 import { connectWithQuery } from "../Surface/Navigation";
-import { BurgerIcon, CloseIcon, LogoFullColor, SearchIcon } from "../Icons";
+import { BurgerIcon, CloseIcon, LogoFullColor, MenuIcon, SearchIcon } from "../Icons";
 import { useState } from "react";
 import { SidebarContextProvider } from "../../context";
 import Link from "next/link"
@@ -23,15 +23,13 @@ export const NavbarMobile = () => {
   }) => {
     return (
       <ClickAwayListener onClickAway={() => showSearcher && setShowSearcher(false)}>
-
-        <div className="w-full mx-auto inset-x-0 bg-white h-14 -mt-2 rounded-full flex items-center relative">
-
+        <div className="w-full mx-auto inset-x-0 bg-white h-14 rounded-full flex items-center relative">
           <input
             autoFocus
             type="input"
             value={currentRefinement}
             onChange={(e) => refine(e.currentTarget.value)}
-            className="w-full border-none bg-none w-full h-full rounded-full pl-8 focus:outline-none text-sm text-gray-700"
+            className="border-none bg-none w-full h-full rounded-full pl-8 focus:outline-none text-sm text-gray-700"
             placeholder="Buscar en bodasdehoy.com"
           />
           <button onClick={() => setShowSearcher(!showSearcher)} className="w-5 h-5  absolute right-5 ">
@@ -39,7 +37,6 @@ export const NavbarMobile = () => {
           </button>
         </div>
       </ClickAwayListener>
-
     );
   };
 
@@ -68,11 +65,11 @@ export const NavbarMobile = () => {
     },
   };
   return (
-    <div className=" md:hidden mx-auto *inset-x-0 w-full px-5 sm:hidden* relative pt-5 *mb-10 flex items-center justify-between  ">
+    <div className="md:hidden mx-auto *inset-x-0 w-full h-[72px] px-2 sm:hidden* relative  *mb-10 flex items-center">
       {!showSearcher ? (
-        <>
+        <div className="flex w-full max-h-60 justify-between">
           <button className="p-2" onClick={() => setShowSidebar(true)}>
-            <BurgerIcon />
+            <MenuIcon className="w-8 h-8 text-gray-600" />
           </button>
           <Link
             href={"/"}
@@ -84,14 +81,14 @@ export const NavbarMobile = () => {
             className="p-2"
             onClick={() => setShowSearcher(!showSearcher)}
           >
-            <SearchIcon />
+            <SearchIcon className="mr-2" />
           </button>
-        </>
+        </div>
       ) : (
         <InstantSearch indexName="bodasdehoy" searchClient={conditionalQuery}>
           <ConnectMySearchBox setSearch={setShowSearcher} isSearch={showSearcher} />
           {/* <SearchBox searchAsYouType={false} /> */}
-          <div className="absolute -bottom-0 left-0 w-[80%] mx-auto inset-x-0 bg-white shadow translate-y-full max-h-60 overflow-auto no-scrollbar  rounded-b-3xl z-40">
+          <div className="absolute -bottom-0 *left-0 w-[80%] mx-auto *inset-x-0 bg-white shadow translate-y-full max-h-60 overflow-auto no-scrollbar  rounded-b-3xl z-40">
             <Hits hitComponent={Hit} />
           </div>
         </InstantSearch>

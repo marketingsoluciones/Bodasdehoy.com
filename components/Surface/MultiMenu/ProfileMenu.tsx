@@ -5,6 +5,10 @@ import { useRouter } from "next/router";
 import { ListItemProfile, Option } from "./ListItemProfile";
 import { CompanyIcon, Eventos, Posts, StarRating, UserIcon, WeddingPage } from "../../Icons";
 import { CSSTransition } from "react-transition-group";
+import { PiUserPlusLight } from "react-icons/pi"
+import { RiLoginBoxLine } from "react-icons/ri"
+import { MdLogout } from "react-icons/md"
+import { BiBell } from "react-icons/bi"
 
 export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal }) => {
   const { user } = AuthContextProvider();
@@ -15,15 +19,15 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
 
   const options: Option[] = [
     {
-      title: "Ingresar",
+      title: "Iniciar sesión",
       onClick: async () => { await router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) },
-      icon: <UserIcon />,
+      icon: <RiLoginBoxLine />,
       rol: undefined,
     },
     {
-      title: "Registrase",
+      title: "Registrarse",
       onClick: async () => { await router.push(`/login?q=register&d=${router.asPath.slice(1, router.asPath.length)}`) },
-      icon: <UserIcon />,
+      icon: <PiUserPlusLight />,
       rol: undefined,
     },
     {
@@ -35,8 +39,8 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
     {
       title: "Mis empresas",
       onClick: async () => {
-        const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS 
-        await router.push(user?.role?.includes("empresa") ? path ??"" : "/info-empresa")
+        const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
+        await router.push(user?.role?.includes("empresa") ? path ?? "" : "/info-empresa")
       },
       icon: <CompanyIcon />,
       rol: ["empresa", ""],
@@ -44,7 +48,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
     {
       title: "Notificaciones",
       onClick: async () => { setModal(!modal) },
-      icon: <StarRating />,
+      icon: <BiBell />,
       rol: ["novio", "novia", "otro", "empresa"],
     },
     {
@@ -73,7 +77,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
     },
     {
       title: "Cerrar Sesion",
-      icon: <UserIcon />,
+      icon: <MdLogout />,
       onClick: async () => {
         setHovered(false)
         setLoading(true);

@@ -1,13 +1,5 @@
 import { useRouter } from "next/router";
-import {
-  createContext,
-  FC,
-  useState,
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-} from "react";
+import { createContext, FC, useState, Dispatch, SetStateAction, useContext, useEffect } from "react";
 import { Sidebar } from "../components/Surface";
 
 type Context = {
@@ -38,7 +30,7 @@ const SidebarProvider: FC = ({ children }): JSX.Element => {
 
   return (
     <SidebarContext.Provider value={{ showSidebar, setShowSidebar, showButtons, setShowButtons }}>
-      <Sidebar set={setShowSidebar} state={showSidebar} />
+      <Sidebar setShowSidebar={setShowSidebar} showSidebar={showSidebar} />
       {children}
     </SidebarContext.Provider>
   );

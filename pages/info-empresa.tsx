@@ -6,6 +6,7 @@ import { PropsIcon } from "../components/Icons/index";
 import Slider from "react-slick";
 import Link from "next/link";
 import ReclamarEmpresa from "../components/ReclamarEmpresa/ReclamarEmpresa"
+import { CheckboxScreen } from "../components/CheckboxScreen";
 
 interface sliderItem {
   icon: any;
@@ -44,7 +45,7 @@ const InfoEmpresas = () => {
         <h1 className="text-3xl text-tertiary font-medium pb-2">
           ¡Llega a más novios cada mes!
         </h1>
-        <div className="grid md:grid-cols-2 pt-4 w-full gap-2 w-full">
+        <div className="grid md:grid-cols-2 pt-4 gap-2 w-full">
           {features.map((item, idx) => (
             <div key={idx} className="w-full flex  text-sm gap-2 items-center">
               <CheckIcon className="w-4 h-4 border border-primary rounded-full text-primary" />
@@ -68,6 +69,9 @@ const InfoEmpresas = () => {
               INICIA SESION
             </ButtonComponent>
           </Link>
+        </div>
+        <div className="mx-auto w-max pt-2">
+          <CheckboxScreen setState={() => { }} />
         </div>
       </div>
       <div className="w-full bg-color-base grid grid-cols-1 p-10">

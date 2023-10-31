@@ -1,18 +1,5 @@
 import React, { ReactNode, useState, cloneElement } from "react";
-import {
-  BurgerIcon,
-  CompanyIcon,
-  CrossIcon,
-  HomeIcon,
-  LightBulb,
-  MessageIcon,
-  PlusCircle,
-  UserIcon,
-} from "../Icons";
-import Image from "next/image";
-import Logo from "../../public/logo.webp";
-import { Icons } from "./Navigation";
-import { Sidebar } from "./";
+import {  PlusCircle} from "../Icons";
 import { AuthContextProvider, ChatContextProvider } from "../../context";
 import Link from "next/link";
 import { useToast } from '../../hooks/useToast';
@@ -20,7 +7,6 @@ import { useRouter } from "next/router";
 
 export const NavigationMobile = () => {
   const router = useRouter();
-  const [showSidebar, setShowSidebar] = useState(false);
   const { user } = AuthContextProvider();
   const { setShow, show } = ChatContextProvider()
   const toast = useToast()

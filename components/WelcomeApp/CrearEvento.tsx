@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { CheckboxScreen } from "../../components/CheckboxScreen";
 
 export const CrearEvento = () => {
     const router = useRouter()
@@ -26,13 +27,13 @@ export const CrearEvento = () => {
                         <button
                             onClick={async () => {
                                 const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") : process.env.NEXT_PUBLIC_EVENTSAPP
-                                console.log(window.origin, path)
                                 await router.push(path ?? "")
                             }
                             }
                             className=" text-primary bg-yellow-button py-[8px] px-[22px] shadow-md">
                             CREA GRATIS TU EVENTO
                         </button>
+                        <CheckboxScreen setState={() => { }} />
                     </div>
                 </div>
             </div>

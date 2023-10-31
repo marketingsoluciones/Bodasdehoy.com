@@ -35,7 +35,6 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
     const router = useRouter()
     const toast = useToast()
 
-    const route = user?.role && user?.role?.length > 0 && user?.role[0] === "empresa" ? `${process.env.NEXT_PUBLIC_CMS}/?d=busines` : "/info-empresa"
 
     const ListaNavbar: ItemNav[] = [
         {
@@ -78,7 +77,10 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
         {
             title: "Mis empresas",
             icon: "",
-            route: route,
+            onClick: async () => {
+                const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
+                await router.push(user?.role?.includes("empresa") ? path ?? "" : "/info-empresa")
+            },
             user: "all"
         },
         {

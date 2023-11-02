@@ -50,7 +50,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
     {
       title: "Mis post",
       onClick: async () => {
-        toast("success", "debes ininiciar sessión o registrarte")
+        !user?.uid && toast("success", "debes ininiciar sessión o registrarte")
         const path = `${window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS}/InfoPage/publicaciones`
         await router.push(user?.uid ? path ?? "" : `/login?d=${router.asPath.slice(1, router.asPath.length)}&end=${process.env.NEXT_PUBLIC_CMS}/InfoPage/publicaciones`)
       },

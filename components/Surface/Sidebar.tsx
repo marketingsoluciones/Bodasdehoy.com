@@ -73,7 +73,15 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
             route: "/magazine",
             user: "all"
         },
-
+        {
+            title: "Mis post",
+            icon: "",
+            onClick: async () => {
+                const path = `${window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS}/InfoPage/publicaciones`
+                await router.push(path ?? "")
+            },
+            user: "loged"
+        },
         {
             title: "Mis empresas",
             icon: "",

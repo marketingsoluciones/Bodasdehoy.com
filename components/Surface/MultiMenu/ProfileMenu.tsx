@@ -31,19 +31,14 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       rol: undefined,
     },
     {
-      title: "Mi perfil",
-      onClick: async () => { await router.push(`/configuracion`) },
-      icon: <UserIcon />,
-      rol: ["novio", "novia", "otro", "empresa"],
-    },
-    {
       title: "Mis empresas",
       onClick: async () => {
         const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
+        console.log(10005, path)
         await router.push(user?.role?.includes("empresa") ? path ?? "" : "/info-empresa")
       },
       icon: <CompanyIcon />,
-      rol: ["empresa", ""],
+      rol: ["all"],
     },
     {
       title: "Notificaciones",
@@ -52,28 +47,28 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       rol: ["novio", "novia", "otro", "empresa"],
     },
     {
+      title: "Mis post",
+      onClick: async () => { await router.push(`${window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS}/InfoPage/publicaciones`) },
+      icon: <Posts />,
+      rol: ["novio", "novia", "otro", "empresa"],
+    },
+    {
       title: "Wedding page",
       onClick: async () => { setModal(!modal) },
       icon: <WeddingPage />,
       rol: ["novio", "novia", "otro", "empresa"],
     },
-    // {
-    //   title: "My pages",
-    //   onClick: async () => { setModal(!modal) },
-    //   icon: <WeddingPage />,
-    //   rol: ["empresa"],
-    // },
-    /* {
-      title: "Mis post",
-      onClick: async () => { await router.push(`${process.env.NEXT_PUBLIC_CMS}/posts`) },
-      icon: <Posts />,
-      rol: ["novio", "novia", "otro", "empresa"],
-    }, */
     {
       title: "Mis eventos",
       onClick: async () => { await router.push(`/welcome-app`) },
       icon: <Eventos />,
       rol: ["all"],
+    },
+    {
+      title: "Mi perfil",
+      onClick: async () => { await router.push(`/configuracion`) },
+      icon: <UserIcon />,
+      rol: ["novio", "novia", "otro", "empresa"],
     },
     {
       title: "Cerrar Sesion",

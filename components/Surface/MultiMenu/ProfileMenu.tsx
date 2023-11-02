@@ -9,11 +9,13 @@ import { PiUserPlusLight } from "react-icons/pi"
 import { RiLoginBoxLine } from "react-icons/ri"
 import { MdLogout } from "react-icons/md"
 import { BiBell } from "react-icons/bi"
+import { useToast } from "../../../hooks/useToast";
 
 export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal }) => {
   const { user } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
   const { _signOut } = useAuthentication()
+  const toast = useToast()
 
   const router = useRouter()
 
@@ -34,7 +36,6 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       title: "Mis empresas",
       onClick: async () => {
         const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
-        console.log(10005, path)
         await router.push(user?.role?.includes("empresa") ? path ?? "" : "/info-empresa")
       },
       icon: <CompanyIcon />,
@@ -48,9 +49,13 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
     },
     {
       title: "Mis post",
-      onClick: async () => { await router.push(`${window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS}/InfoPage/publicaciones`) },
+      onClick: async () => {
+        toast("success", "debes ininiciar sessión o registrarte")
+        const path = `${window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS}/InfoPage/publicaciones`
+        await router.push(user?.uid ? path ?? "" : `/login?d=${router.asPath.slice(1, router.asPath.length)}&end=${process.env.NEXT_PUBLIC_CMS}/InfoPage/publicaciones`)
+      },
       icon: <Posts />,
-      rol: ["novio", "novia", "otro", "empresa"],
+      rol: ["all"],
     },
     {
       title: "Wedding page",

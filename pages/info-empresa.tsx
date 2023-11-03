@@ -7,6 +7,10 @@ import Slider from "react-slick";
 import Link from "next/link";
 import ReclamarEmpresa from "../components/ReclamarEmpresa/ReclamarEmpresa"
 import { CheckboxScreen } from "../components/CheckboxScreen";
+import { AuthContextProvider } from "../context";
+import { fetchApi, queries } from "../utils/Fetching";
+import { useToast } from "../hooks/useToast";
+import { useRouter } from "next/router";
 
 interface sliderItem {
   icon: any;
@@ -15,6 +19,9 @@ interface sliderItem {
 }
 
 const InfoEmpresas = () => {
+  const { user } = AuthContextProvider()
+  const toast = useToast()
+  const router = useRouter()
   const features = [
     "Recibe solicitudes de presupuesto de novios interesados",
     "Consigue nuevos clientes y posiciona tu negocio",
@@ -37,6 +44,16 @@ const InfoEmpresas = () => {
     },
   ];
 
+  const handleClick = async () => {
+    const resp = await fetchApi({
+      query: queries.updateAccount
+    })
+    if (resp === "ok") {
+      toast("success", "ahora tu cuenta es de empresa")
+      const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
+      await router.push(path ?? "")
+    }
+  }
 
   return (
     <div className="w-full bg-white">
@@ -53,7 +70,22 @@ const InfoEmpresas = () => {
             </div>
           ))}
         </div>
-        <div className="mx-auto w-max pt-8">
+        {user?.uid &&
+          <>
+            <h3 className="text-center text-tertiary py-3 px-8 mt-2 text-sm">
+              Puedes convertir gratis tu cuenta en una cuenta de empresa
+            </h3>
+            <div className="mx-auto w-max ">
+              <ButtonComponent onClick={handleClick}>
+                Convertir mi cuenta en empresa
+              </ButtonComponent>
+            </div>
+            <h3 className="text-center text-tertiary font-medium">
+              O
+            </h3>
+          </>
+        }
+        <div className={`mx-auto w-max ${user?.uid ? "pt-1" : "pt-8"}`}>
           <Link href={"/login?d=info-empresa&f=register"} passHref >
             <ButtonComponent>
               REGISTRATE <strong>GRATIS</strong> COMO EMPRESA
@@ -61,7 +93,7 @@ const InfoEmpresas = () => {
           </Link>
         </div>
         <h3 className="text-center text-tertiary font-medium py-3 ">
-          O si ya tienes una cuenta empresa
+          Y si ya tienes una cuenta empresa
         </h3>
         <div className="mx-auto w-max pt-2">
           <Link href={"/login?d=info-empresa"} passHref >
@@ -69,9 +101,6 @@ const InfoEmpresas = () => {
               INICIA SESION
             </ButtonComponent>
           </Link>
-        </div>
-        <div className="mx-auto w-max pt-2">
-          <CheckboxScreen setState={() => { }} />
         </div>
       </div>
       <div className="w-full bg-color-base grid grid-cols-1 p-10">

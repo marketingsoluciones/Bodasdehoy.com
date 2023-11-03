@@ -125,6 +125,7 @@ type queries = {
   singleUpload: string;
   getAllLocalities: string;
   createSubscripcion: string
+  updateAccount: string
 };
 
 export const queries: queries = {
@@ -134,7 +135,7 @@ export const queries: queries = {
     email
     }
   }`,
- 
+
   signOut: `mutation ($sessionCookie :String){
     signOut(sessionCookie:$sessionCookie)
   }`,
@@ -1082,6 +1083,9 @@ export const queries: queries = {
         location
       }
     }
+  }`,
+  updateAccount: `mutation { 
+    updateAccount 
   }`,
 };
 

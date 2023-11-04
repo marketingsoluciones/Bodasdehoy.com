@@ -88,18 +88,18 @@ export const useAuthentication = () => {
               await router.push(`${router?.query?.end}`)
               toast("success", `Inicio sesión con exito`)
             } else {
-              if (redirect?.split("/")[3] == "info-empresa" && moreInfo.role.includes("empresa")) {
-                const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") : process.env.NEXT_PUBLIC_EVENTSAPP
-                await router.push(path ?? "")
-                toast("success", `Inicio de sesión de empresa con exito `)
-              }
-              if (redirect?.split("/")[3] == "info-empresa" && !moreInfo.role.includes("empresa")) {
-                await router.push(redirect)
-                toast("warning", `Inicio sesión con una cuenta que no es de empresa`)
-              }
+              // if (redirect?.split("/")[3] == "info-empresa" && moreInfo.role.includes("empresa")) {
+              //   const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") : process.env.NEXT_PUBLIC_EVENTSAPP
+              //   await router.push(path ?? "")
+              //   toast("success", `Inicio de sesión de empresa con exito1 `)
+              // }
+              // if (redirect?.split("/")[3] == "info-empresa" && !moreInfo.role.includes("empresa")) {
+              //   await router.push(redirect)
+              //   toast("warning", `Inicio sesión con una cuenta que no es de empresa1`)
+              // }
               if (redirect?.split("/")[3] !== "info-empresa") {
                 await router.push(redirect ? redirect : "/")
-                toast("success", `Inicio sesión con exito`)
+                toast("success", `Inicio sesión con exito1`)
               }
             }
             ///////////////////////////

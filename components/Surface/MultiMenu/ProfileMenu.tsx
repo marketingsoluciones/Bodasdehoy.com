@@ -76,7 +76,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       rol: ["novio", "novia", "otro", "empresa"],
     },
     {
-      title: "Cerrar Sesion",
+      title: "Cerrar Sesión",
       icon: <MdLogout />,
       onClick: async () => {
         setHovered(false)

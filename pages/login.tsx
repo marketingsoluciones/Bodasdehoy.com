@@ -52,7 +52,10 @@ const PageLogin: FC = () => {
         setFStageRegister(1)
       }
     }
-    if (r?.query?.d !== "app" && r?.query?.d !== "info-empresa" && r?.query?.d !== "") {
+    if (r?.query?.d === "cms") {
+      setRedirect(window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_CMS ?? "")
+    }
+    if (r?.query?.d !== "app" && r?.query?.d !== "info-empresa" && r?.query?.d !== "cms" && r?.query?.d !== "") {
       setRedirect(`/${r?.query?.d}` ?? "")
     }
     ///////////////////////////    

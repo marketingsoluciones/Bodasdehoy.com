@@ -65,13 +65,13 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
             console.info("Guardo datos en contexto react");
           } else {
             console.info("NO tengo user de contexto de firebase");
-            const { customToken } = await fetchApi({
+            const result = await fetchApi({
               query: queries.authStatus,
               variables: { sessionCookie },
             });
             console.info("Llamo con mi sessionCookie para traerme customToken");
-            console.info("Custom token", customToken)
-            customToken && signInWithCustomToken(auth, customToken);
+            console.info("Custom token", result?.customToken)
+            result?.customToken && signInWithCustomToken(auth, result.customToken);
             console.info("Hago sesion con el custom token");
           }
         }

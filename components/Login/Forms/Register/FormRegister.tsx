@@ -202,58 +202,50 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
   return (
     <>
       <FormikStepper handleSubmit={handleSubmit}>
-        <Form className="w-full text-gray-200 md:grid md:grid-cols-2 md:gap-6 space-y-5 md:space-y-0 flex flex-col">
-          {(() => {
-            if (whoYouAre.toLowerCase() !== "empresa") {
-              if (!user?.uid && !userTemp?.uid) {
-                return (
-                  <UserWithEmailAndPassword
-                    initialValues={userInitialValuesTotal}
-                    validationSchema={
-                      ValidationSchemaRegister.userValidationTotal
-                    }
-                  />
-                );
-              } else {
-                {
-                  userInitialValuesPartial.fullName = !userTemp?.displayName ? "" : userTemp.displayName
-                  userInitialValuesPartial.email = !userTemp?.email ? "" : userTemp.email
-                }
-                return (
-                  <UserDataAPI
-                    initialValues={userInitialValuesPartial}
-                    validationSchema={
-                      ValidationSchemaRegister.userValidationPartial
-                    }
-                  />
-                );
-              }
-            } else {
-              if (!user?.uid && !userTemp?.uid) {
-                return (
-                  <BusinessWithEmailAndPassword
-                    initialValues={businessInitialValuesTotal}
-                    validationSchema={
-                      ValidationSchemaRegister.businessValidationTotal
-                    }
-                  />
-                );
-              } else {
-                {
-                  businessInitialValuesPartial.fullName = !userTemp?.displayName ? "" : userTemp.displayName
-                  businessInitialValuesPartial.email = !userTemp?.email ? "" : userTemp.email
-                }
-                return (
-                  <BusinessDataAPI
-                    initialValues={businessInitialValuesPartial}
-                    validationSchema={
-                      ValidationSchemaRegister.businessValidationPartial
-                    }
-                  />
-                );
-              }
-            }
-          })()}
+        <Form className="w-full md:w-[350px] text-gray-200 *md:grid *md:grid-cols-2 md:gap-6 space-y-5 md:space-y-0 flex flex-col">
+          {
+            whoYouAre.toLowerCase() !== "empresa"
+              ? !user?.uid && !userTemp?.uid ?
+                <UserWithEmailAndPassword
+                  initialValues={userInitialValuesTotal}
+                  validationSchema={
+                    ValidationSchemaRegister.userValidationTotal
+                  }
+                />
+                :
+                // {
+                //   userInitialValuesPartial.fullName = !userTemp?.displayName ? "" : userTemp.displayName
+                //   userInitialValuesPartial.email = !userTemp?.email ? "" : userTemp.email
+                // }
+
+                <UserDataAPI
+                  initialValues={userInitialValuesPartial}
+                  validationSchema={
+                    ValidationSchemaRegister.userValidationPartial
+                  }
+                />
+              :
+              !user?.uid && !userTemp?.uid
+                ?
+                <BusinessWithEmailAndPassword
+                  initialValues={businessInitialValuesTotal}
+                  validationSchema={
+                    ValidationSchemaRegister.businessValidationTotal
+                  }
+                />
+                :
+                // {
+                //   businessInitialValuesPartial.fullName = !userTemp?.displayName ? "" : userTemp.displayName
+                //   businessInitialValuesPartial.email = !userTemp?.email ? "" : userTemp.email
+                // }
+
+                <BusinessDataAPI
+                  initialValues={businessInitialValuesPartial}
+                  validationSchema={
+                    ValidationSchemaRegister.businessValidationPartial
+                  }
+                />
+          }
           <div className="flex items-center w-fit col-span-2 gap-6 mx-auto inset-x-0 ">
             {/* <button
               type={"button"}
@@ -319,32 +311,30 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
     <>
       <div className="col-span-2">
         <InputField
+          name="identifier"
+          type="text"
+          autoComplete="off"
+          //placeholder="jhondoe@gmail.com"
+          //icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+          label={"Número de teléfono o correo electrónico"}
+        />
+      </div>
+      <div className="col-span-2">
+        <InputField
           name="fullName"
           //placeholder="Jhon Doe"
           type="text"
           autoComplete="off"
-          icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Nombre y apellidos"}
+          //icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+          label={"Nombre y Apellidos"}
         />
       </div>
-
-      <div className="col-span-2">
-        <InputField
-          name="email"
-          //placeholder="jhondoe@gmail.com"
-          type="email"
-          autoComplete="off"
-          icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Correo electronico"}
-        />
-      </div>
-
       <div className="w-full relative">
         <InputField
           name="password"
           type={!passwordView ? "password" : "text"}
           autoComplete="off"
-          icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+          //icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
           label={"Contraseña"}
         />
         <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
@@ -369,7 +359,7 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
         <DatePicker name={"weddingDate"} label={"Fecha del evento"} />
       </div> */}
 
-      <div className="w-full relative">
+      {/* <div className="w-full relative">
         <InputField
           name="phoneNumber"
           type="number"
@@ -377,7 +367,7 @@ const UserWithEmailAndPassword: FC<propsForm> = () => {
           icon={<PhoneMobile className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
           label={"Número de telefono"}
         />
-      </div>
+      </div> */}
     </>
   );
 };
@@ -392,7 +382,7 @@ const UserDataAPI: FC<propsForm> = () => {
           type="text"
           autoComplete="off"
           icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto" />}
-          label={"Nombre y apellidos"}
+          label={"Nombre y Apellidos"}
           disabled
         />
       </div>
@@ -444,47 +434,35 @@ const BusinessWithEmailAndPassword: FC<propsForm> = () => {
     <>
       <div className="col-span-2">
         <InputField
+          name="identifier"
+          type="text"
+          autoComplete="off"
+          //placeholder="jhondoe@gmail.com"
+          //icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+          label={"Número de teléfono o correo electrónico"}
+        />
+      </div>
+      <div className="col-span-2">
+        <InputField
           name="fullName"
           //placeholder="Jhon Doe"
           type="text"
           autoComplete="off"
-          icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Nombre y apellidos"}
+          //icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+          label={"Nombre y Apellidos"}
         />
       </div>
-
-      <div className="col-span-2">
-        <InputField
-          name="email"
-          label="Correo electronico"
-          type="email"
-          autoComplete="off"
-          icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 m-auto left-4 text-gray-500" />}
-        />
-
-      </div>
-
       <div className="w-full relative">
         <InputField
           name="password"
           type={!passwordView ? "password" : "text"}
           autoComplete="off"
-          icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+          //icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
           label={"Contraseña"}
         />
         <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
           {!passwordView ? <Eye /> : <EyeSlash />}
         </div>
-      </div>
-
-      <div className="w-full">
-        <InputField
-          name="phoneNumber"
-          type="number"
-          autoComplete="off"
-          icon={<PhoneMobile className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Número de telefono"}
-        />
       </div>
     </>
   );
@@ -500,7 +478,7 @@ const BusinessDataAPI: FC<propsForm> = () => {
           type="text"
           autoComplete="off"
           icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Nombre y apellidos"}
+          label={"Nombre y Apellidos"}
         />
       </div>
 

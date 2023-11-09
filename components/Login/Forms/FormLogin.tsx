@@ -49,11 +49,12 @@ const FormLogin: FC<any> = ({ setStage }) => {
       <Form className=" text-gray-200 flex flex-col gap-2 py-3 w-full *md:w-3/4 ">
         <span className="w-full relative ">
           <InputField
-            label={"Correo electronico"}
+            label={"Número de teléfono o correo electrónico"}
             name="identifier"
+            autoComplete="off"
             // placeholder="ingrese correo electrónico"
-            icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto text-gray-500" />}
-            type="email"
+            //icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto text-gray-500" />}
+            type="text"
           />
 
         </span>
@@ -63,7 +64,7 @@ const FormLogin: FC<any> = ({ setStage }) => {
             name="password"
             type={!passwordView ? "password" : "text"}
             autoComplete="off"
-            icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+            //icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
             label={"Contraseña"}
           />
           <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
@@ -71,7 +72,7 @@ const FormLogin: FC<any> = ({ setStage }) => {
           </div>
         </span>
         <span className="text-sm text-red">
-          <ErrorMessage name="wrong" />
+          {/* <ErrorMessage name="wrong" /> */}
         </span>
         {/*  <span 
           className="text-sm text-primary w-full text-left hover:text-gray-300 transition cursor-pointer"

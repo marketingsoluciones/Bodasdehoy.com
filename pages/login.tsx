@@ -5,6 +5,7 @@ import { Login, Register, ResetPass } from '../components/Login/Forms';
 import { AuthContextProvider } from "../context";
 import { firebaseClient } from "../firebase"
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
+import { ArrowLeft } from "../components/Icons";
 
 // Tipos de datos personalizados
 type Forms = {
@@ -32,6 +33,7 @@ const PageLogin: FC = () => {
   const { user, userTemp, setUserTemp } = AuthContextProvider();
   const [stage, setStage] = useState<keyof typeof Stages>("login");
   const [fStageRegister, setFStageRegister] = useState(0)
+  const [stageRegister, setStageRegister] = useState(0)
 
   useEffect(() => {
     setRedirect(null)
@@ -65,7 +67,7 @@ const PageLogin: FC = () => {
 
   const Stages: Forms = {
     login: <Login setStage={setStage} />,
-    register: <Register fStageRegister={fStageRegister} setStage={setStage} />,
+    register: <Register fStageRegister={fStageRegister} setStage={setStage} stageRegister={stageRegister} setStageRegister={setStageRegister} />,
     resetPassword: <ResetPass setStage={setStage} />
   };
 
@@ -107,15 +109,24 @@ const PageLogin: FC = () => {
     }
   }, [r.query, keyDown]);
 
+  const handleClose = () => {
+    setTimeout(() => {
+      router.push(!redirect ? "/" : redirect)
+    }, 100);
+  }
+
   return (
     <>
       <div className="w-screen fixed h-full top-0 left-0 md:grid z-30 grid-cols-5 ">
+        <ArrowLeft className="absolute w-6 h-6 z-[10] text-gray-500 cursor-pointer translate-x-5 translate-y-5" onClick={() => {
+          if (stageRegister > 0) {
+            setStageRegister(stageRegister - 1)
+            return
+          }
+          handleClose()
+        }} />
         <div className="bg-white w-full h-full col-span-3 relative flex items-center justify-center  ">
-          <ButtonClose onClick={() => {
-            setTimeout(() => {
-              router.push(!redirect ? "/" : redirect)
-            }, 100);
-          }} />
+          <ButtonClose onClick={handleClose} />
           <div className="flex flex-col items-center gap-4 w-full px-10 md:px-0 sm:w-3/4 md:w-2/3  ">
             {Stages[stage]}
           </div>

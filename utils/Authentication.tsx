@@ -1,11 +1,12 @@
 import { useCallback } from "react";
-import { signInWithPopup, UserCredential, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, OAuthProvider } from 'firebase/auth';
+import { signInWithPopup, UserCredential, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, OAuthProvider, signInWithPhoneNumber } from 'firebase/auth';
 import { useRouter } from "next/router";
 import Cookies from 'js-cookie';
 import { LoadingContextProvider, AuthContextProvider } from "../context";
 import { auth } from "../firebase";
 import { fetchApi, queries } from "./Fetching";
 import { useToast } from "../hooks/useToast";
+import { PhoneNumberUtil } from 'google-libphonenumber';
 
 
 export const useAuthentication = () => {
@@ -38,6 +39,14 @@ export const useAuthentication = () => {
 
   }, [])
 
+  const phoneUtil = PhoneNumberUtil.getInstance();
+  const isPhoneValid = (phone: string) => {
+    try {
+      return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone));
+    } catch (error) {
+      return false;
+    }
+  };
   const signIn = useCallback(
     async (type: keyof typeof types, payload) => {
       /*
@@ -48,6 +57,10 @@ export const useAuthentication = () => {
           4.- Almacenar en una cookie el token de la sessionCookie
           5.- Mutar el contexto User de React con los datos de Firebase + MoreInfo (API BODAS)
       */
+      if (isPhoneValid(payload.identifier)) {
+        console.log("isPhoneValid")
+        return
+      }
       setLoading(true);
 
       const types = {

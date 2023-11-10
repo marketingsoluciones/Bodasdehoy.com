@@ -8,13 +8,25 @@ import { fetchApi, queries } from "./Fetching";
 import { useToast } from "../hooks/useToast";
 import { PhoneNumberUtil } from 'google-libphonenumber';
 
+export const phoneUtil = PhoneNumberUtil.getInstance();
+
 
 export const useAuthentication = () => {
   const { setLoading } = LoadingContextProvider();
-  const { setUser, setUserTemp, redirect, setRedirect } = AuthContextProvider();
-
+  const { setUser, setUserTemp, redirect, setRedirect, geoInfo } = AuthContextProvider();
   const toast = useToast();
   const router = useRouter();
+
+  const isPhoneValid = (phone: string) => {
+    try {
+      if (phone[0] === "0") {
+        phone = `+${phoneUtil.getCountryCodeForRegion(geoInfo.ipcountry)}${phone.slice(1, phone.length)}`
+      }
+      return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone));
+    } catch (error) {
+      return false;
+    }
+  };
 
   const getSessionCookie = useCallback(async (tokenID): Promise<string | undefined> => {
     if (tokenID) {
@@ -39,14 +51,6 @@ export const useAuthentication = () => {
 
   }, [])
 
-  const phoneUtil = PhoneNumberUtil.getInstance();
-  const isPhoneValid = (phone: string) => {
-    try {
-      return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone));
-    } catch (error) {
-      return false;
-    }
-  };
   const signIn = useCallback(
     async (type: keyof typeof types, payload) => {
       /*
@@ -57,7 +61,7 @@ export const useAuthentication = () => {
           4.- Almacenar en una cookie el token de la sessionCookie
           5.- Mutar el contexto User de React con los datos de Firebase + MoreInfo (API BODAS)
       */
-      if (isPhoneValid(payload.identifier)) {
+      if (await isPhoneValid(payload.identifier)) {
         console.log("isPhoneValid")
         return
       }
@@ -164,5 +168,5 @@ export const useAuthentication = () => {
     }
   };
 
-  return { signIn, getSessionCookie, _signOut, resetPassword };
+  return { signIn, getSessionCookie, _signOut, resetPassword, isPhoneValid };
 };

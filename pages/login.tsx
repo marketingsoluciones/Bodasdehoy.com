@@ -119,6 +119,10 @@ const PageLogin: FC = () => {
     <>
       <div className="w-screen fixed h-full top-0 left-0 md:grid z-30 grid-cols-5 ">
         <ArrowLeft className="absolute w-6 h-6 z-[10] text-gray-500 cursor-pointer translate-x-5 translate-y-5" onClick={() => {
+          if (stage === "resetPassword") {
+            setStage("login")
+            return
+          }
           if (stageRegister > 0) {
             setStageRegister(stageRegister - 1)
             return

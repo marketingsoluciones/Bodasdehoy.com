@@ -29,6 +29,8 @@ type Context = {
   setUserTemp: Dispatch<SetStateAction<Partial<UserMax | null>>>;
   redirect: string | null;
   setRedirect: Dispatch<SetStateAction<Partial<string | null>>>;
+  geoInfo: any,
+  setGeoInfo: any,
 };
 
 const initialContext: Context = {
@@ -38,6 +40,8 @@ const initialContext: Context = {
   setUserTemp: (user) => { },
   redirect: null,
   setRedirect: (user) => { },
+  geoInfo: null,
+  setGeoInfo: () => { },
 };
 
 const AuthContext = createContext<Context>(initialContext);
@@ -46,6 +50,7 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
   const [user, setUser] = useState<Partial<UserMax | null>>(null);
   const [userTemp, setUserTemp] = useState<Partial<UserMax | null>>(null);
   const [redirect, setRedirect] = useState<Partial<string | null>>(null);
+  const [geoInfo, setGeoInfo] = useState<any>();
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user: any) => {
@@ -91,8 +96,15 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
     })
   }, [])
 
+  useEffect(() => {
+    fetchApi({
+      query: queries.getGeoInfo,
+      variables: {},
+    }).then((geoInfo: any) => setGeoInfo(geoInfo)).catch((err: any) => console.log(err))
+  }, [])
+
   return (
-    <AuthContext.Provider value={{ user, setUser, userTemp, setUserTemp, redirect, setRedirect }}>
+    <AuthContext.Provider value={{ user, setUser, userTemp, setUserTemp, redirect, setRedirect, geoInfo, setGeoInfo }}>
       {children}
     </AuthContext.Provider>
   );

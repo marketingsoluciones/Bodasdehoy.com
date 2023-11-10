@@ -89,6 +89,8 @@ export const fetchApi: CallableFunction = async ({
 };
 
 type queries = {
+  getGeoInfo: string
+  getEmailValid: string,
   createUser: string;
   createBusiness: string;
   createReviews: string;
@@ -129,6 +131,39 @@ type queries = {
 };
 
 export const queries: queries = {
+  getEmailValid: `query ($email :String){
+    getEmailValid(email:$email){
+      valid
+      validators{
+        regex{
+          valid, reason
+        }
+        typo{
+          valid, reason
+        }
+        disposable{
+          valid, reason
+        }
+        mx{
+          valid, reason
+        }
+        smtp{
+          valid, reason
+        }
+      }
+      reason
+    }
+  }`,
+
+  getGeoInfo: `query  {
+    getGeoInfo {
+      referer
+      acceptLanguage
+      loop
+      connectingIp
+      ipcountry
+    }
+  }`,
 
   createSubscripcion: `mutation ($email :String, $development:String!){
   createSubscription(email:$email,development:$development){

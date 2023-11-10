@@ -12,7 +12,7 @@ import { fetchApi, queries } from "../../../../utils/Fetching";
 import SelectFieldCoutries from "../../../Inputs/SelectFieldCoutries";
 import { auth } from "../../../../firebase";
 import InputCity from "../../../Inputs/InputCity";
-import { useAuthentication } from '../../../../utils/Authentication';
+import { phoneUtil, useAuthentication } from '../../../../utils/Authentication';
 import { useToast } from '../../../../hooks/useToast';
 import { FirebaseError } from "firebase/app";
 
@@ -28,15 +28,16 @@ interface userInitialValuesPartial {
   uid: string;
 }
 interface userInitialValuesTotal {
+  identifier: string
   fullName: string;
-  email: string;
   password: string;
-  city: string;
-  country: string;
-  weddingDate: Date | undefined;
-  phoneNumber: string;
-  role: string;
-  uid: string;
+  // email: string;
+  // city: string;
+  // country: string;
+  // weddingDate: Date | undefined;
+  // phoneNumber: string;
+  // role: string;
+  // uid: string;
 }
 interface businessInitialValuesPartial {
   fullName: string;
@@ -45,10 +46,11 @@ interface businessInitialValuesPartial {
   role: string
 }
 interface businessInitialValuesTotal {
+  identifier: string
   fullName: string;
-  email: string;
+  //email: string;
   password: string;
-  phoneNumber: string;
+  //phoneNumber: string;
   role: string
 }
 
@@ -70,10 +72,35 @@ interface propsFormRegister {
 }
 
 const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stageRegister }) => {
-  const { setUser, user, setUserTemp, userTemp, redirect } = AuthContextProvider();
+  const { setUser, user, setUserTemp, userTemp, redirect, geoInfo } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
-  const { getSessionCookie } = useAuthentication();
+  const { getSessionCookie, isPhoneValid } = useAuthentication();
   const toast = useToast()
+  let oldValue: any = ""
+  const validationSchema = yup.object().shape({
+    identifier: yup.string().required("Campo requerido").test("Unico", "Número inválido", (value) => {
+      const name = document.activeElement?.getAttribute("name")
+      if (name !== "identifier" && !value?.includes("@")) {
+        return isPhoneValid(value ?? "")
+      } else {
+        return true
+      }
+    }).test("Unico", "Correo inválido", async (value) => {
+      const name = document.activeElement?.getAttribute("name")
+      if (name !== "identifier" && value?.includes("@") && oldValue !== value) {
+        oldValue = value
+        const result = await fetchApi({
+          query: queries.getEmailValid,
+          variables: { email: value },
+        })
+        return result?.valid
+      } else {
+        return true
+      }
+    }),
+    fullName: yup.string().required("Campo requerido"),
+    password: yup.string().required("Campo requerido").min(8),
+  })
 
   //Initial values de cada form
   const userInitialValuesPartial: userInitialValuesPartial = {
@@ -90,16 +117,17 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
 
   const userInitialValuesTotal: userInitialValuesTotal = {
     // Envio a firebase
+    identifier: "",
     fullName: "",
-    email: "",
+    //email: "",
     password: "",
     //Envio a la api
-    city: "",
-    country: "",
-    weddingDate: undefined,
-    phoneNumber: "",
-    role: whoYouAre || "",
-    uid: "",
+    //city: "",
+    //country: "",
+    //weddingDate: undefined,
+    //phoneNumber: "",
+    //role: whoYouAre || "",
+    //uid: "",
   };
 
   const businessInitialValuesPartial: businessInitialValuesPartial = {
@@ -113,80 +141,105 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
 
   const businessInitialValuesTotal: businessInitialValuesTotal = {
     // Envio a firebase
+    identifier: "",
     fullName: "",
-    email: "",
+    //email: "",
     password: "",
     //Envio a la api
-    phoneNumber: "",
+    //phoneNumber: "",
     role: whoYouAre || "",
   };
 
   // Funcion a ejecutar para el submit del formulario
   const handleSubmit = async (values: any, actions: any) => {
+
     try {
-      setLoading(true);
+      console.log(values)
+      //setLoading(true);
       let UserFirebase: Partial<UserMax> = user ?? {};
-
+      console.log("values", values)
       // Si es registro completo
-      if (!user?.uid && !userTemp?.uid) {
-        // Autenticacion con firebase
-        const res: UserCredential = await createUserWithEmailAndPassword(
-          auth,
-          values.email,
-          values.password
-        );
-        UserFirebase = res.user;
-        // Almacenamiento en values del UID de firebase
-        values.uid = res.user.uid;
-      } else {
-        // Si existe usuario firebase pero faltan datos de ciudad, etc.
-        values.uid = userTemp?.uid;
-      }
-
-      // Actualizar displayName
-      auth?.onAuthStateChanged(async (usuario: any) => {
-        if (usuario) {
-          updateProfile(usuario, { displayName: values.fullName });
-          // Almacenar token en localStorage
-          const resp = getSessionCookie((await usuario?.getIdTokenResult())?.token)
-          console.log(30007, resp)
-        }
-      });
-
-      // Crear usuario en MongoDB
-      const moreInfo = await fetchApi({
-        query: queries.createUser, variables: {
-          ...values,
-          phoneNumber: JSON.stringify(values.phoneNumber),
-        }
-      });
-
-      // Almacenar en contexto USER con toda la info 
-      if (moreInfo?.status) {
-        setUser({ ...UserFirebase, ...moreInfo });
-      }
-
-      /////// REDIRECIONES ///////
-      if (router?.query?.end) {
-        await router.push(`${router?.query?.end}`)
-        toast("success", `Inicio sesión con exito`)
-      } else {
-        if (router?.query?.d == "info-empresa" && moreInfo.role.includes("empresa")) {
-          const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
-          await router.push(path ?? "")
-          toast("success", `Cuenta de empresa creada con exito`)
-        }
-        if (router?.query?.d == "info-empresa" && !moreInfo.role.includes("empresa")) {
-          await router.push("/info-empresa")
-          toast("warning", `Inicio sesión con una cuenta que no es de empresa`)
-        }
-        if (router?.query?.d !== "info-empresa") {
-          await router.push(redirect ? redirect : "/")
-          toast("success", `Cuenta creada con exito`)
+      if (values.identifier.includes === "@") {
+        if (!user?.uid && !userTemp?.uid) {
+          // Autenticacion con firebase
+          const res: UserCredential = await createUserWithEmailAndPassword(
+            auth,
+            values.identifier,
+            values.password
+          );
+          UserFirebase = res.user;
+          // Almacenamiento en values del UID de firebase
+          values.uid = res.user.uid;
+        } else {
+          // Si existe usuario firebase pero faltan datos de ciudad, etc.
+          values.uid = userTemp?.uid;
         }
       }
-      ///////////////////////////
-
+      if (values.identifier.includes !== "@") {
+        if (values.identifier[0] === "0") {
+          values.identifier = `+${phoneUtil.getCountryCodeForRegion(geoInfo.ipcountry)}${values.identifier.slice(1, values.identifier.length)}`
+        }
+        console.log("values", values)
+        // if (!user?.uid && !userTemp?.uid) {
+        //   // Autenticacion con firebase
+        //   const res: UserCredential = await createUserWithEmailAndPassword(
+        //     auth,
+        //     values.identifier,
+        //     values.password
+        //   );
+        //   UserFirebase = res.user;
+        //   // Almacenamiento en values del UID de firebase
+        //   values.uid = res.user.uid;
+        // } else {
+        //   // Si existe usuario firebase pero faltan datos de ciudad, etc.
+        //   values.uid = userTemp?.uid;
+        // }
+      }
+      /*
+            // Actualizar displayName
+            auth?.onAuthStateChanged(async (usuario: any) => {
+              if (usuario) {
+                updateProfile(usuario, { displayName: values.fullName });
+                // Almacenar token en localStorage
+                const resp = getSessionCookie((await usuario?.getIdTokenResult())?.token)
+                console.log(30007, resp)
+              }
+            });
+      
+            // Crear usuario en MongoDB
+            const moreInfo = await fetchApi({
+              query: queries.createUser, variables: {
+                ...values,
+                phoneNumber: JSON.stringify(values.phoneNumber),
+              }
+            });
+      
+            // Almacenar en contexto USER con toda la info 
+            if (moreInfo?.status) {
+              setUser({ ...UserFirebase, ...moreInfo });
+            }
+      
+            /////// REDIRECIONES ///////
+            if (router?.query?.end) {
+              await router.push(`${router?.query?.end}`)
+              toast("success", `Inicio sesión con exito`)
+            } else {
+              if (router?.query?.d == "info-empresa" && moreInfo.role.includes("empresa")) {
+                const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
+                await router.push(path ?? "")
+                toast("success", `Cuenta de empresa creada con exito`)
+              }
+              if (router?.query?.d == "info-empresa" && !moreInfo.role.includes("empresa")) {
+                await router.push("/info-empresa")
+                toast("warning", `Inicio sesión con una cuenta que no es de empresa`)
+              }
+              if (router?.query?.d !== "info-empresa") {
+                await router.push(redirect ? redirect : "/")
+                toast("success", `Cuenta creada con exito`)
+              }
+            }
+            ///////////////////////////
+      */
       //toast("success", "Registro realizado con exito")
     } catch (error) {
       console.log(error);
@@ -203,7 +256,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     <>
       <FormikStepper handleSubmit={handleSubmit}>
         <Form className="w-full md:w-[350px] text-gray-200 *md:grid *md:grid-cols-2 md:gap-6 space-y-5 md:space-y-0 flex flex-col">
-          {
+          {false ?
             whoYouAre.toLowerCase() !== "empresa"
               ? !user?.uid && !userTemp?.uid ?
                 <UserWithEmailAndPassword
@@ -245,6 +298,10 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
                     ValidationSchemaRegister.businessValidationPartial
                   }
                 />
+            : <UserWithEmailAndPassword
+              initialValues={userInitialValuesTotal}
+              validationSchema={validationSchema}
+            />
           }
           <div className="flex items-center w-fit col-span-2 gap-6 mx-auto inset-x-0 ">
             {/* <button

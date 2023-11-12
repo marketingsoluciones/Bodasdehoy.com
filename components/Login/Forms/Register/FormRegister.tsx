@@ -75,21 +75,32 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       }
     }),
     //fullName: yup.string().required("Campo requerido"),
-    password: yup.string().test("Unico", `Debe contener ${activeSaveRegister.type === "password" ? "8" : "6"} caractéres`, (value: any) => {
+    password: yup.string().test("Unico", `Debe contener ${activeSaveRegister.type === "password" ? "entre 8 y 10" : "6"} caractéres`, (value: any) => {
       const name = document.activeElement?.getAttribute("name")
       if (activeSaveRegister.state && name !== "password") {
-        return value?.length > (activeSaveRegister.type == "password" ? 7 : 5)
+        return value?.length > (activeSaveRegister.type == "password" ? 7 : 5) && value?.length < (activeSaveRegister.type == "password" ? 11 : 7)
       } else {
+        return true
+      }
+    }).test("Unico", `Código inválido`, async (value: any) => {
+      //const name = document.activeElement?.getAttribute("name")
+      if (activeSaveRegister.state
+        //  && name !== "password"
+      ) {
         if (activeSaveRegister.type !== "password" && value?.length === 6) {
           console.log(value)
           console.log(values && { ...values, password: value })
-          let resp: boolean | undefined = true
-          nextSave(values && { ...values, password: value }).then(result => { resp = result })
+          const resp = await nextSave(values && { ...values, password: value })
+          console.log(222555, resp)
           return resp
+        } else {
+          console.log("aqui")
+          return true
         }
+      } else {
         return true
       }
-    }),
+    })
   })
 
   useEffect(() => {
@@ -103,38 +114,33 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       if (!values?.identifier.includes("@")) {
         console.log(verificationId)
         const authCredential = PhoneAuthProvider.credential(verificationId, values?.password ?? "");
+        console.log(55544411, "authCredential", authCredential)
         const userCredential = await signInWithCredential(getAuth(), authCredential);
-        console.log('verify: ', userCredential);
+        console.log(55544422, 'verify: ', userCredential);
         UserFirebase = userCredential.user;
       }
       //setLoading(true);
-
       if (values?.identifier.includes("@")) {
         console.log("correo")
-        if (!user?.uid && !userTemp?.uid) {
-          // Autenticacion con firebase
-          const userCredential: UserCredential = await createUserWithEmailAndPassword(
-            getAuth(),
-            values?.identifier,
-            values?.password
-          );
-          console.log(123555, userCredential)
-          UserFirebase = userCredential.user;
-          // Almacenamiento en values del UID de firebase
-          values.uid = userCredential.user.uid;
-        } else {
-          // Si existe usuario firebase pero faltan datos de ciudad, etc.
-          values.uid = userTemp?.uid;
-        }
+        const userCredential: UserCredential = await createUserWithEmailAndPassword(
+          getAuth(),
+          values?.identifier,
+          values?.password
+        );
+        console.log(123555, userCredential)
+        UserFirebase = userCredential.user;
       }
+
       console.log("UserFirebase", UserFirebase)
-    } catch (error) {
-      console.log(error);
+      values.uid = UserFirebase.uid;
+    } catch (error: any) {
+      console.log(error?.message);
       if (error instanceof FirebaseError) {
-        toast("error", "Ups... este correo ya esta registrado")
+        //toast("error", "Ups... este correo ya esta registrado")
       } else {
         toast("error", "Ups... algo a salido mal")
       }
+      return false
       setLoading(false);
     }
 
@@ -151,37 +157,37 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     });
 
     // Crear usuario en MongoDB
-    const moreInfo = await fetchApi({
+    fetchApi({
       query: queries.createUser, variables: {
         ...values,
       }
-    });
-    console.log(888877, moreInfo)
-    // Almacenar en contexto USER con toda la info 
-    if (moreInfo?.status) {
+    }).then(async (moreInfo: any) => {
+      console.log(888877, moreInfo)
+      // Almacenar en contexto USER con toda la info 
       setUser({ ...UserFirebase, ...moreInfo });
-    }
 
-    /////// REDIRECIONES ///////
-    if (router?.query?.end) {
-      await router.push(`${router?.query?.end}`)
-      toast("success", `Inicio sesión con exito`)
-    } else {
-      if (router?.query?.d == "info-empresa" && moreInfo.role.includes("empresa")) {
-        const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
-        await router.push(path ?? "")
-        toast("success", `Cuenta de empresa creada con exito`)
+      /////// REDIRECIONES ///////
+      if (router?.query?.end) {
+        await router.push(`${router?.query?.end}`)
+        toast("success", `Inicio sesión con exito`)
+      } else {
+        if (router?.query?.d == "info-empresa" && moreInfo.role.includes("empresa")) {
+          const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
+          await router.push(path ?? "")
+          toast("success", `Cuenta de empresa creada con exito`)
+        }
+        if (router?.query?.d == "info-empresa" && !moreInfo.role.includes("empresa")) {
+          await router.push("/info-empresa")
+          toast("warning", `Inicio sesión con una cuenta que no es de empresa`)
+        }
+        if (router?.query?.d !== "info-empresa") {
+          await router.push(redirect ? redirect : "/")
+          toast("success", `Cuenta creada con exito`)
+        }
       }
-      if (router?.query?.d == "info-empresa" && !moreInfo.role.includes("empresa")) {
-        await router.push("/info-empresa")
-        toast("warning", `Inicio sesión con una cuenta que no es de empresa`)
-      }
-      if (router?.query?.d !== "info-empresa") {
-        await router.push(redirect ? redirect : "/")
-        toast("success", `Cuenta creada con exito`)
-      }
-    }
-    ///////////////////////////
+      ///////////////////////////
+    })
+
 
     //toast("success", "Registro realizado con exito")
     return true
@@ -274,7 +280,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
               : <div className="w-full relative mt-6">
                 <InputField
                   name="password"
-                  type={!activeSaveRegister.state ? activeSaveRegister.type : passwordView ? "password" : "text"}
+                  type={activeSaveRegister.type === "password" ? passwordView ? "password" : "text" : "text"}
                   autoComplete="off"
                   label={activeSaveRegister.type === "password" ? "Contraseña" : "Código"}
                 />

@@ -48,7 +48,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       rol: ["novio", "novia", "otro", "empresa"],
     },
     {
-      title: "Mis post",
+      title: "Mis publicaciones",
       onClick: async () => {
         !user?.uid && toast("success", "debes ininiciar sessión o registrarte")
         const path = `${window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS}/InfoPage/publicaciones`

@@ -1,58 +1,25 @@
 import { Formik, Form } from "formik";
-import { FC, Children, memo, Dispatch, SetStateAction, useState } from "react";
+import { FC, Children, memo, Dispatch, SetStateAction, useState, useEffect, useRef } from "react";
 import { DatePicker, InputField } from "../../../Inputs";
 import { EmailIcon, UserForm, Eye, EyeSlash, LockClosed, PhoneMobile, } from "../../../Icons";
-import { createUserWithEmailAndPassword, updateProfile, UserCredential } from "@firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, UserCredential, getAuth, RecaptchaVerifier, PhoneAuthProvider, signInWithCredential } from "@firebase/auth";
 import * as yup from "yup";
 import { UserMax } from "../../../../context/AuthContext";
 import { AuthContextProvider, LoadingContextProvider, } from "../../../../context";
-import router from "next/router";
-import { ValidationSchemaRegister } from "./ValidationRegister";
 import { fetchApi, queries } from "../../../../utils/Fetching";
-import SelectFieldCoutries from "../../../Inputs/SelectFieldCoutries";
-import { auth } from "../../../../firebase";
-import InputCity from "../../../Inputs/InputCity";
 import { phoneUtil, useAuthentication } from '../../../../utils/Authentication';
 import { useToast } from '../../../../hooks/useToast';
 import { FirebaseError } from "firebase/app";
+import { useRouter } from "next/router";
 
-// Interfaces para el InitialValues del formulario de registro
-interface userInitialValuesPartial {
-  fullName: string;
-  email: string;
-  city: string;
-  country: string;
-  weddingDate: Date | undefined;
-  phoneNumber: string;
-  role: string;
-  uid: string;
-}
-interface userInitialValuesTotal {
+interface initialValues {
+  uid?: string
   identifier: string
   fullName: string;
   password: string;
-  // email: string;
-  // city: string;
-  // country: string;
-  // weddingDate: Date | undefined;
-  // phoneNumber: string;
-  // role: string;
-  // uid: string;
-}
-interface businessInitialValuesPartial {
-  fullName: string;
-  email: String,
-  phoneNumber: string;
   role: string
 }
-interface businessInitialValuesTotal {
-  identifier: string
-  fullName: string;
-  //email: string;
-  password: string;
-  //phoneNumber: string;
-  role: string
-}
+
 
 // Set de mensajes de error
 yup.setLocale({
@@ -61,10 +28,6 @@ yup.setLocale({
   },
 });
 
-/*
-  ### Componente FormRegister(Formik) ###
-  @params whoYouAre : tipo de perfil seleccionado
-*/
 interface propsFormRegister {
   whoYouAre: string;
   setStageRegister: Dispatch<SetStateAction<number>>
@@ -72,11 +35,23 @@ interface propsFormRegister {
 }
 
 const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stageRegister }) => {
+  const router = useRouter()
   const { setUser, user, setUserTemp, userTemp, redirect, geoInfo } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
   const { getSessionCookie, isPhoneValid } = useAuthentication();
   const toast = useToast()
-  let oldValue: any = ""
+  const [activeSaveRegister, setActiveSaveRegister] = useState({ state: false, type: "" })
+  const [passwordView, setPasswordView] = useState(true)
+  const [verificationId, setVerificationId] = useState("")
+  const [values, setValues] = useState<initialValues | null>()
+
+  const initialValues: initialValues = {
+    identifier: "",
+    fullName: "",
+    password: "",
+    role: whoYouAre
+  };
+
   const validationSchema = yup.object().shape({
     identifier: yup.string().required("Campo requerido").test("Unico", "Número inválido", (value) => {
       const name = document.activeElement?.getAttribute("name")
@@ -87,160 +62,174 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       }
     }).test("Unico", "Correo inválido", async (value) => {
       const name = document.activeElement?.getAttribute("name")
-      if (name !== "identifier" && value?.includes("@") && oldValue !== value) {
-        oldValue = value
+      if (name !== "identifier" && value?.includes("@")) {
+        console.log(value)
         const result = await fetchApi({
           query: queries.getEmailValid,
           variables: { email: value },
         })
+        console.log(result)
         return result?.valid
       } else {
         return true
       }
     }),
-    fullName: yup.string().required("Campo requerido"),
-    password: yup.string().required("Campo requerido").min(8),
+    //fullName: yup.string().required("Campo requerido"),
+    password: yup.string().test("Unico", `Debe contener ${activeSaveRegister.type === "password" ? "8" : "6"} caractéres`, (value: any) => {
+      const name = document.activeElement?.getAttribute("name")
+      if (activeSaveRegister.state && name !== "password") {
+        return value?.length > (activeSaveRegister.type == "password" ? 7 : 5)
+      } else {
+        if (activeSaveRegister.type !== "password" && value?.length === 6) {
+          console.log(value)
+          console.log(values && { ...values, password: value })
+          let resp: boolean | undefined = true
+          nextSave(values && { ...values, password: value }).then(result => { resp = result })
+          return resp
+        }
+        return true
+      }
+    }),
   })
 
-  //Initial values de cada form
-  const userInitialValuesPartial: userInitialValuesPartial = {
-    fullName: "",
-    email: "",
-    //Envio a la api
-    city: "",
-    country: "",
-    weddingDate: new Date(),
-    phoneNumber: "",
-    role: whoYouAre || "",
-    uid: "",
-  };
+  useEffect(() => {
+    console.log(activeSaveRegister)
+  }, [activeSaveRegister])
 
-  const userInitialValuesTotal: userInitialValuesTotal = {
-    // Envio a firebase
-    identifier: "",
-    fullName: "",
-    //email: "",
-    password: "",
-    //Envio a la api
-    //city: "",
-    //country: "",
-    //weddingDate: undefined,
-    //phoneNumber: "",
-    //role: whoYouAre || "",
-    //uid: "",
-  };
-
-  const businessInitialValuesPartial: businessInitialValuesPartial = {
-    // Envio a firebase
-    fullName: "",
-    email: "",
-    //Envio a la api
-    phoneNumber: "",
-    role: whoYouAre || "",
-  };
-
-  const businessInitialValuesTotal: businessInitialValuesTotal = {
-    // Envio a firebase
-    identifier: "",
-    fullName: "",
-    //email: "",
-    password: "",
-    //Envio a la api
-    //phoneNumber: "",
-    role: whoYouAre || "",
-  };
-
-  // Funcion a ejecutar para el submit del formulario
-  const handleSubmit = async (values: any, actions: any) => {
-
+  const nextSave = async (values: any) => {
+    let UserFirebase: Partial<UserMax> = user ?? {};
+    console.log(98888, values)
     try {
-      console.log(values)
+      if (!values?.identifier.includes("@")) {
+        console.log(verificationId)
+        const authCredential = PhoneAuthProvider.credential(verificationId, values?.password ?? "");
+        const userCredential = await signInWithCredential(getAuth(), authCredential);
+        console.log('verify: ', userCredential);
+        UserFirebase = userCredential.user;
+      }
       //setLoading(true);
-      let UserFirebase: Partial<UserMax> = user ?? {};
-      console.log("values", values)
-      // Si es registro completo
-      if (values.identifier.includes === "@") {
+
+      if (values?.identifier.includes("@")) {
+        console.log("correo")
         if (!user?.uid && !userTemp?.uid) {
           // Autenticacion con firebase
-          const res: UserCredential = await createUserWithEmailAndPassword(
-            auth,
-            values.identifier,
-            values.password
+          const userCredential: UserCredential = await createUserWithEmailAndPassword(
+            getAuth(),
+            values?.identifier,
+            values?.password
           );
-          UserFirebase = res.user;
+          console.log(123555, userCredential)
+          UserFirebase = userCredential.user;
           // Almacenamiento en values del UID de firebase
-          values.uid = res.user.uid;
+          values.uid = userCredential.user.uid;
         } else {
           // Si existe usuario firebase pero faltan datos de ciudad, etc.
           values.uid = userTemp?.uid;
         }
       }
-      if (values.identifier.includes !== "@") {
-        if (values.identifier[0] === "0") {
-          values.identifier = `+${phoneUtil.getCountryCodeForRegion(geoInfo.ipcountry)}${values.identifier.slice(1, values.identifier.length)}`
-        }
-        console.log("values", values)
-        // if (!user?.uid && !userTemp?.uid) {
-        //   // Autenticacion con firebase
-        //   const res: UserCredential = await createUserWithEmailAndPassword(
-        //     auth,
-        //     values.identifier,
-        //     values.password
-        //   );
-        //   UserFirebase = res.user;
-        //   // Almacenamiento en values del UID de firebase
-        //   values.uid = res.user.uid;
-        // } else {
-        //   // Si existe usuario firebase pero faltan datos de ciudad, etc.
-        //   values.uid = userTemp?.uid;
-        // }
+      console.log("UserFirebase", UserFirebase)
+    } catch (error) {
+      console.log(error);
+      if (error instanceof FirebaseError) {
+        toast("error", "Ups... este correo ya esta registrado")
+      } else {
+        toast("error", "Ups... algo a salido mal")
       }
-      /*
-            // Actualizar displayName
-            auth?.onAuthStateChanged(async (usuario: any) => {
-              if (usuario) {
-                updateProfile(usuario, { displayName: values.fullName });
-                // Almacenar token en localStorage
-                const resp = getSessionCookie((await usuario?.getIdTokenResult())?.token)
-                console.log(30007, resp)
-              }
+      setLoading(false);
+    }
+
+
+
+    // Actualizar displayName
+    getAuth()?.onAuthStateChanged(async (usuario: any) => {
+      if (usuario) {
+        updateProfile(usuario, { displayName: values?.fullName });
+        // Almacenar token en localStorage
+        const resp = await getSessionCookie((await usuario?.getIdTokenResult())?.token)
+        console.log(30007, resp)
+      }
+    });
+
+    // Crear usuario en MongoDB
+    const moreInfo = await fetchApi({
+      query: queries.createUser, variables: {
+        ...values,
+      }
+    });
+    console.log(888877, moreInfo)
+    // Almacenar en contexto USER con toda la info 
+    if (moreInfo?.status) {
+      setUser({ ...UserFirebase, ...moreInfo });
+    }
+
+    /////// REDIRECIONES ///////
+    if (router?.query?.end) {
+      await router.push(`${router?.query?.end}`)
+      toast("success", `Inicio sesión con exito`)
+    } else {
+      if (router?.query?.d == "info-empresa" && moreInfo.role.includes("empresa")) {
+        const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
+        await router.push(path ?? "")
+        toast("success", `Cuenta de empresa creada con exito`)
+      }
+      if (router?.query?.d == "info-empresa" && !moreInfo.role.includes("empresa")) {
+        await router.push("/info-empresa")
+        toast("warning", `Inicio sesión con una cuenta que no es de empresa`)
+      }
+      if (router?.query?.d !== "info-empresa") {
+        await router.push(redirect ? redirect : "/")
+        toast("success", `Cuenta creada con exito`)
+      }
+    }
+    ///////////////////////////
+
+    //toast("success", "Registro realizado con exito")
+    return true
+  }
+
+  // Funcion a ejecutar para el submit del formulario 
+
+  const handleSubmit = async (values: any) => {
+    try {
+      console.log(100004, "values", values, !values.identifier.includes("@"))
+      if (!activeSaveRegister.state) {
+        setActiveSaveRegister({ state: true, type: values.identifier.includes("@") ? "password" : "text" })
+
+        if (!values.identifier.includes("@")) {
+          if (values.identifier[0] === "0") {
+            values.identifier = `+${phoneUtil.getCountryCodeForRegion(geoInfo.ipcountry)}${values.identifier.slice(1, values.identifier.length)}`
+          }
+          getAuth().languageCode = 'es';
+          const applicationVerifier = new RecaptchaVerifier(
+            'sign-in-button',
+            {
+              size: 'invisible',
+            },
+            getAuth(),
+          );
+          console.log("applicationVerifier", applicationVerifier)
+          const provider = new PhoneAuthProvider(getAuth());
+
+          provider.verifyPhoneNumber(values.identifier, applicationVerifier)
+            .then((verificationId) => {
+              // Código de verificación enviado con éxito
+              // Guarda verificationId para su uso posterior al verificar el código
+              setVerificationId(verificationId)
+              console.log('Código de verificación enviado:', verificationId);
+            })
+            .catch((error) => {
+              // Manejo de errores
+              console.error('Error al enviar el código de verificación:', error);
             });
-      
-            // Crear usuario en MongoDB
-            const moreInfo = await fetchApi({
-              query: queries.createUser, variables: {
-                ...values,
-                phoneNumber: JSON.stringify(values.phoneNumber),
-              }
-            });
-      
-            // Almacenar en contexto USER con toda la info 
-            if (moreInfo?.status) {
-              setUser({ ...UserFirebase, ...moreInfo });
-            }
-      
-            /////// REDIRECIONES ///////
-            if (router?.query?.end) {
-              await router.push(`${router?.query?.end}`)
-              toast("success", `Inicio sesión con exito`)
-            } else {
-              if (router?.query?.d == "info-empresa" && moreInfo.role.includes("empresa")) {
-                const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
-                await router.push(path ?? "")
-                toast("success", `Cuenta de empresa creada con exito`)
-              }
-              if (router?.query?.d == "info-empresa" && !moreInfo.role.includes("empresa")) {
-                await router.push("/info-empresa")
-                toast("warning", `Inicio sesión con una cuenta que no es de empresa`)
-              }
-              if (router?.query?.d !== "info-empresa") {
-                await router.push(redirect ? redirect : "/")
-                toast("success", `Cuenta creada con exito`)
-              }
-            }
-            ///////////////////////////
-      */
-      //toast("success", "Registro realizado con exito")
+        }
+        setValues(values)
+        return
+      }
+      if (values.identifier.includes("@")) {
+        console.log("hago guardar", values)
+        nextSave(values)
+      }
+
     } catch (error) {
       console.log(error);
       if (error instanceof FirebaseError) {
@@ -252,76 +241,60 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     }
   };
 
+
+
   return (
     <>
-      <FormikStepper handleSubmit={handleSubmit}>
+      <Formik
+        initialValues={initialValues ?? {}}
+        validationSchema={validationSchema ?? {}}
+        onSubmit={handleSubmit}
+      >
         <Form className="w-full md:w-[350px] text-gray-200 *md:grid *md:grid-cols-2 md:gap-6 space-y-5 md:space-y-0 flex flex-col">
-          {false ?
-            whoYouAre.toLowerCase() !== "empresa"
-              ? !user?.uid && !userTemp?.uid ?
-                <UserWithEmailAndPassword
-                  initialValues={userInitialValuesTotal}
-                  validationSchema={
-                    ValidationSchemaRegister.userValidationTotal
-                  }
+          <div className="h-[136px]">
+            {!activeSaveRegister.state
+              ? <>
+                <div className="col-span-2 mb-4">
+                  <InputField
+                    name="identifier"
+                    type="text"
+                    autoComplete="off"
+                    label={"Número de teléfono o correo electrónico"}
+                  />
+                </div>
+                <div className="col-span-2">
+                  <InputField
+                    name="fullName"
+                    type="text"
+                    autoComplete="off"
+                    label={"Nombre y Apellido"}
+                  />
+                </div>
+              </>
+              : <div className="w-full relative mt-6">
+                <InputField
+                  name="password"
+                  type={!activeSaveRegister.state ? activeSaveRegister.type : passwordView ? "password" : "text"}
+                  autoComplete="off"
+                  label={activeSaveRegister.type === "password" ? "Contraseña" : "Código"}
                 />
-                :
-                // {
-                //   userInitialValuesPartial.fullName = !userTemp?.displayName ? "" : userTemp.displayName
-                //   userInitialValuesPartial.email = !userTemp?.email ? "" : userTemp.email
-                // }
-
-                <UserDataAPI
-                  initialValues={userInitialValuesPartial}
-                  validationSchema={
-                    ValidationSchemaRegister.userValidationPartial
-                  }
-                />
-              :
-              !user?.uid && !userTemp?.uid
-                ?
-                <BusinessWithEmailAndPassword
-                  initialValues={businessInitialValuesTotal}
-                  validationSchema={
-                    ValidationSchemaRegister.businessValidationTotal
-                  }
-                />
-                :
-                // {
-                //   businessInitialValuesPartial.fullName = !userTemp?.displayName ? "" : userTemp.displayName
-                //   businessInitialValuesPartial.email = !userTemp?.email ? "" : userTemp.email
-                // }
-
-                <BusinessDataAPI
-                  initialValues={businessInitialValuesPartial}
-                  validationSchema={
-                    ValidationSchemaRegister.businessValidationPartial
-                  }
-                />
-            : <UserWithEmailAndPassword
-              initialValues={userInitialValuesTotal}
-              validationSchema={validationSchema}
-            />
-          }
+                {activeSaveRegister.type === "password" && <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
+                  {!passwordView ? <Eye /> : <EyeSlash />}
+                </div>}
+              </div>
+            }
+          </div>
           <div className="flex items-center w-fit col-span-2 gap-6 mx-auto inset-x-0 ">
-            {/* <button
-              type={"button"}
-              disabled={stageRegister === 0}
-              onClick={() => setStageRegister(old => old - 1)}
-              className=" col-span-2 bg-gray-400  rounded-full px-10 py-2 text-white font-medium mx-auto inset-x-0 hover:bg-tertiary transition"
-            >
-              Atras
-            </button> */}
             <button
-              type={"submit"}
-              className=" col-span-2 bg-primary rounded-full px-10 py-2 text-white font-medium mx-auto inset-x-0 hover:bg-tertiary transition"
+              id="sign-in-button"
+              type="submit"
+              className=" col-span-2 bg-primary rounded-full px-10 py-2 text-white font-medium mx-auto inset-x-0 md:hover:bg-tertiary transition"
             >
-              Registrar
+              {!activeSaveRegister.state ? "Registrar" : "guardar"}
             </button>
-
           </div>
         </Form>
-      </FormikStepper>
+      </Formik>
       <style jsx>
         {`
           input[type="number"]::-webkit-inner-spin-button,
@@ -335,7 +308,17 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
   );
 };
 
+
 export default FormRegister;
+
+
+
+
+
+
+
+
+
 
 interface propsFormikStepper {
   handleSubmit: any;
@@ -356,209 +339,8 @@ export const FormikStepper: FC<propsFormikStepper> = memo(
   }
 );
 
-interface propsForm {
-  initialValues: any;
-  validationSchema: any;
-}
 
 
-const UserWithEmailAndPassword: FC<propsForm> = () => {
-  const [passwordView, setPasswordView] = useState(false)
-  return (
-    <>
-      <div className="col-span-2">
-        <InputField
-          name="identifier"
-          type="text"
-          autoComplete="off"
-          //placeholder="jhondoe@gmail.com"
-          //icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Número de teléfono o correo electrónico"}
-        />
-      </div>
-      <div className="col-span-2">
-        <InputField
-          name="fullName"
-          //placeholder="Jhon Doe"
-          type="text"
-          autoComplete="off"
-          //icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Nombre y Apellidos"}
-        />
-      </div>
-      <div className="w-full relative">
-        <InputField
-          name="password"
-          type={!passwordView ? "password" : "text"}
-          autoComplete="off"
-          //icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Contraseña"}
-        />
-        <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
-          {!passwordView ? <Eye /> : <EyeSlash />}
-        </div>
-      </div>
 
-      {/* <div className="w-full relative ">
-        <SelectFieldCoutries name="country" label={"País"} />
-      </div>
 
-      <div className="w-full relative ">
-        <InputCity
-          name={"city"}
-          label={"Ciudad"}
-          type="text"
-        />
 
-      </div>
-
-      <div className="w-full relative ">
-        <DatePicker name={"weddingDate"} label={"Fecha del evento"} />
-      </div> */}
-
-      {/* <div className="w-full relative">
-        <InputField
-          name="phoneNumber"
-          type="number"
-          autoComplete="off"
-          icon={<PhoneMobile className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Número de telefono"}
-        />
-      </div> */}
-    </>
-  );
-};
-
-const UserDataAPI: FC<propsForm> = () => {
-  return (
-    <>
-      <div className="w-full col-span-2">
-        <InputField
-          name="fullName"
-          placeholder="Jhon Doe"
-          type="text"
-          autoComplete="off"
-          icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto" />}
-          label={"Nombre y Apellidos"}
-          disabled
-        />
-      </div>
-
-      <div className="w-full col-span-2">
-        <InputField
-          name="email"
-          placeholder="jhondoe@gmail.com"
-          type="email"
-          autoComplete="off"
-          icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Correo electronico"}
-          disabled
-        />
-      </div>
-
-      <div className="w-full relative ">
-        <SelectFieldCoutries name="country" label={"País"} />
-      </div>
-
-      <div className="w-full relative ">
-        <InputCity
-          name={"city"}
-          label={"Ciudad"}
-          type="text"
-        />
-
-      </div>
-
-      <div className="w-full relative ">
-        <DatePicker name={"weddingDate"} label={"Fecha del evento"} />
-      </div>
-
-      <div className="w-full relative ">
-        <InputField
-          name="phoneNumber"
-          type="number"
-          autoComplete="off"
-          label={"Número de telefono"}
-        />
-      </div>
-    </>
-  );
-};
-
-const BusinessWithEmailAndPassword: FC<propsForm> = () => {
-  const [passwordView, setPasswordView] = useState(false)
-  return (
-    <>
-      <div className="col-span-2">
-        <InputField
-          name="identifier"
-          type="text"
-          autoComplete="off"
-          //placeholder="jhondoe@gmail.com"
-          //icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Número de teléfono o correo electrónico"}
-        />
-      </div>
-      <div className="col-span-2">
-        <InputField
-          name="fullName"
-          //placeholder="Jhon Doe"
-          type="text"
-          autoComplete="off"
-          //icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Nombre y Apellidos"}
-        />
-      </div>
-      <div className="w-full relative">
-        <InputField
-          name="password"
-          type={!passwordView ? "password" : "text"}
-          autoComplete="off"
-          //icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Contraseña"}
-        />
-        <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
-          {!passwordView ? <Eye /> : <EyeSlash />}
-        </div>
-      </div>
-    </>
-  );
-};
-
-const BusinessDataAPI: FC<propsForm> = () => {
-  return (
-    <>
-      <div className="w-full col-span-2">
-        <InputField
-          name="fullName"
-          //placeholder="Jhon Doe"
-          type="text"
-          autoComplete="off"
-          icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Nombre y Apellidos"}
-        />
-      </div>
-
-      <div className="w-full col-span-2 ">
-        <InputField
-          name="email"
-          label="Correo electronico"
-          type="email"
-          autoComplete="off"
-          icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 m-auto left-4 text-gray-500" />}
-          disabled
-        />
-      </div>
-
-      <div className="w-full relative ">
-        <InputField
-          name="phoneNumber"
-          type="number"
-          autoComplete="off"
-          icon={<PhoneMobile className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
-          label={"Número de telefono"}
-        />
-      </div>
-    </>
-  );
-};

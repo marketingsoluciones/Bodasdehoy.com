@@ -74,7 +74,7 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
             user: "all"
         },
         {
-            title: "Mis post",
+            title: "Mis publicaciones",
             icon: "",
             onClick: async () => {
                 !user?.uid && toast("success", "debes ininiciar sessión o registrarte")

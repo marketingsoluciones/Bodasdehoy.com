@@ -282,7 +282,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
                   name="password"
                   type={activeSaveRegister.type === "password" ? passwordView ? "password" : "text" : "text"}
                   autoComplete="off"
-                  label={activeSaveRegister.type === "password" ? "Contraseña" : "Código"}
+                  label={activeSaveRegister.type === "password" ? "Contraseña" : `Código enviado al ${values?.identifier}`}
                 />
                 {activeSaveRegister.type === "password" && <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
                   {!passwordView ? <Eye /> : <EyeSlash />}

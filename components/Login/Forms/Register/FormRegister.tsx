@@ -2,7 +2,7 @@ import { Formik, Form } from "formik";
 import { FC, Children, memo, Dispatch, SetStateAction, useState, useEffect, useRef } from "react";
 import { DatePicker, InputField } from "../../../Inputs";
 import { EmailIcon, UserForm, Eye, EyeSlash, LockClosed, PhoneMobile, } from "../../../Icons";
-import { createUserWithEmailAndPassword, updateProfile, UserCredential, getAuth, RecaptchaVerifier, PhoneAuthProvider, signInWithCredential } from "@firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, UserCredential, getAuth, RecaptchaVerifier, PhoneAuthProvider, signInWithCredential, updatePhoneNumber, updateEmail } from "@firebase/auth";
 import * as yup from "yup";
 import { UserMax } from "../../../../context/AuthContext";
 import { AuthContextProvider, LoadingContextProvider, } from "../../../../context";
@@ -17,6 +17,7 @@ interface initialValues {
   identifier: string
   fullName: string;
   password: string;
+  phoneNumber: string
   role: string
 }
 
@@ -40,7 +41,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
   const { setLoading } = LoadingContextProvider();
   const { getSessionCookie, isPhoneValid } = useAuthentication();
   const toast = useToast()
-  const [activeSaveRegister, setActiveSaveRegister] = useState({ state: false, type: "" })
+  const [activeSaveRegister, setActiveSaveRegister] = useState({ state: true, type: "" })
   const [passwordView, setPasswordView] = useState(true)
   const [verificationId, setVerificationId] = useState("")
   const [values, setValues] = useState<initialValues | null>()
@@ -49,9 +50,9 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     identifier: "",
     fullName: "",
     password: "",
+    phoneNumber: `+${phoneUtil.getCountryCodeForRegion(geoInfo.ipcountry)}`,
     role: whoYouAre
   };
-
   const validationSchema = yup.object().shape({
     identifier: yup.string().required("Campo requerido").test("Unico", "Número inválido", (value) => {
       const name = document.activeElement?.getAttribute("name")
@@ -63,40 +64,36 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     }).test("Unico", "Correo inválido", async (value) => {
       const name = document.activeElement?.getAttribute("name")
       if (name !== "identifier" && value?.includes("@")) {
-        console.log(value)
         const result = await fetchApi({
           query: queries.getEmailValid,
           variables: { email: value },
         })
-        console.log(result)
         return result?.valid
       } else {
         return true
       }
     }),
-    //fullName: yup.string().required("Campo requerido"),
-    password: yup.string().test("Unico", `Debe contener ${activeSaveRegister.type === "password" ? "entre 8 y 10" : "6"} caractéres`, (value: any) => {
+    fullName: yup.string().required("Campo requerido"),
+    password: yup.string().required("Campo requerido").test("Unico", `Debe contener entre 8 y 12 caractéres`, (value: any) => {
       const name = document.activeElement?.getAttribute("name")
-      if (activeSaveRegister.state && name !== "password") {
-        return value?.length > (activeSaveRegister.type == "password" ? 7 : 5) && value?.length < (activeSaveRegister.type == "password" ? 11 : 7)
+      if (name !== "password") {
+        return value?.length > 7 && value?.length < 11
       } else {
         return true
       }
-    }).test("Unico", `Código inválido`, async (value: any) => {
-      //const name = document.activeElement?.getAttribute("name")
-      if (activeSaveRegister.state
-        //  && name !== "password"
-      ) {
-        if (activeSaveRegister.type !== "password" && value?.length === 6) {
-          console.log(value)
-          console.log(values && { ...values, password: value })
-          const resp = await nextSave(values && { ...values, password: value })
-          console.log(222555, resp)
-          return resp
-        } else {
-          console.log("aqui")
-          return true
-        }
+    }),
+    phoneNumber: yup.string().test("Unico", `Campo requerido`, (value: any) => {
+      const name = document.activeElement?.getAttribute("name")
+      if (value.length < 4) {
+        return false
+      } else {
+        return true
+      }
+    }).test("Unico", `Número inválido`, (value: any) => {
+      const name = document.activeElement?.getAttribute("name")
+      if (name !== "phoneNumber" && value.length > 3) {
+        console.log(1001, value)
+        return isPhoneValid(value)
       } else {
         return true
       }
@@ -109,8 +106,8 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
 
   const nextSave = async (values: any) => {
     let UserFirebase: Partial<UserMax> = user ?? {};
-    console.log(98888, values)
     try {
+      /*Aquí para regsitrase con número de teléfono*/
       if (!values?.identifier.includes("@")) {
         console.log(verificationId)
         const authCredential = PhoneAuthProvider.credential(verificationId, values?.password ?? "");
@@ -118,8 +115,10 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
         const userCredential = await signInWithCredential(getAuth(), authCredential);
         console.log(55544422, 'verify: ', userCredential);
         UserFirebase = userCredential.user;
+
+        await updatePhoneNumber(userCredential.user, values.phoneNumber)
       }
-      //setLoading(true);
+      /*Aquí para regsitrase con correo electrónico*/
       if (values?.identifier.includes("@")) {
         console.log("correo")
         const userCredential: UserCredential = await createUserWithEmailAndPassword(
@@ -127,6 +126,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
           values?.identifier,
           values?.password
         );
+        // aqui updatePhoneNumber    
         console.log(123555, userCredential)
         UserFirebase = userCredential.user;
       }
@@ -136,12 +136,11 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     } catch (error: any) {
       console.log(error?.message);
       if (error instanceof FirebaseError) {
-        //toast("error", "Ups... este correo ya esta registrado")
+        toast("error", "Ups... este correo ya esta registrado")
       } else {
         toast("error", "Ups... algo a salido mal")
       }
       return false
-      setLoading(false);
     }
 
 
@@ -200,7 +199,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       console.log(100004, "values", values, !values.identifier.includes("@"))
       if (!activeSaveRegister.state) {
         setActiveSaveRegister({ state: true, type: values.identifier.includes("@") ? "password" : "text" })
-
+        /*Aquí para regsitrase con número de teléfono*/
         if (!values.identifier.includes("@")) {
           if (values.identifier[0] === "0") {
             values.identifier = `+${phoneUtil.getCountryCodeForRegion(geoInfo.ipcountry)}${values.identifier.slice(1, values.identifier.length)}`
@@ -231,6 +230,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
         setValues(values)
         return
       }
+      /*Aquí para regsitrase con correo electrónico*/
       if (values.identifier.includes("@")) {
         console.log("hago guardar", values)
         nextSave(values)
@@ -256,47 +256,52 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
         validationSchema={validationSchema ?? {}}
         onSubmit={handleSubmit}
       >
-        <Form className="w-full md:w-[350px] text-gray-200 *md:grid *md:grid-cols-2 md:gap-6 space-y-5 md:space-y-0 flex flex-col">
-          <div className="h-[136px]">
-            {!activeSaveRegister.state
-              ? <>
-                <div className="col-span-2 mb-4">
-                  <InputField
-                    name="identifier"
-                    type="text"
-                    autoComplete="off"
-                    label={"Número de teléfono o correo electrónico"}
-                  />
-                </div>
-                <div className="col-span-2">
-                  <InputField
-                    name="fullName"
-                    type="text"
-                    autoComplete="off"
-                    label={"Nombre y Apellido"}
-                  />
-                </div>
-              </>
-              : <div className="w-full relative mt-6">
-                <InputField
-                  name="password"
-                  type={activeSaveRegister.type === "password" ? passwordView ? "password" : "text" : "text"}
-                  autoComplete="off"
-                  label={activeSaveRegister.type === "password" ? "Contraseña" : `Código enviado al ${values?.identifier}`}
-                />
-                {activeSaveRegister.type === "password" && <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
-                  {!passwordView ? <Eye /> : <EyeSlash />}
-                </div>}
-              </div>
-            }
+        <Form className="w-full md:w-[350px] text-gray-200 *md:grid *md:grid-cols-2 gap-4 md:gap-5 md:space-y-0 flex flex-col">
+          <div className="col-span-2">
+            <InputField
+              name="fullName"
+              type="text"
+              autoComplete="off"
+              label={"Nombre y Apellido"}
+              icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+            />
           </div>
-          <div className="flex items-center w-fit col-span-2 gap-6 mx-auto inset-x-0 ">
+          <div className="col-span-2">
+            <InputField
+              name="identifier"
+              type="text"
+              autoComplete="off"
+              label={"Correo electrónico"}
+              icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto text-gray-500" />}
+            />
+          </div>
+          <div className="w-full relative">
+            <InputField
+              name="password"
+              type={passwordView ? "password" : "text"}
+              autoComplete="off"
+              label="Contraseña"
+              icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />} />
+            <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
+              {!passwordView ? <Eye /> : <EyeSlash />}
+            </div>
+          </div>
+          <span className="w-full relative ">
+            <InputField
+              name="phoneNumber"
+              type="text"
+              autoComplete="off"
+              icon={<PhoneMobile className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
+              label={"Número de telefono"}
+            />
+          </span>
+          <div className="flex items-center w-fit col-span-2 gap-6 mx-auto pt-3 ">
             <button
               id="sign-in-button"
               type="submit"
-              className=" col-span-2 bg-primary rounded-full px-10 py-2 text-white font-medium mx-auto inset-x-0 md:hover:bg-tertiary transition"
+              className="col-span-2 bg-primary rounded-full px-10 py-2 text-white font-medium mx-auto inset-x-0 md:hover:bg-tertiary transition"
             >
-              {!activeSaveRegister.state ? "Registrar" : "guardar"}
+              Registrar
             </button>
           </div>
         </Form>

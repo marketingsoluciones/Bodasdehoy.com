@@ -15,6 +15,7 @@ import Link from "next/link";
 import { AuthContextProvider } from '../context'
 import ClickAwayListener from "react-click-away-listener";
 import { Hit } from "../components/Surface/SearchNavigation";
+import Cookies from "js-cookie";
 
 interface propsHome {
   business: business[];
@@ -163,6 +164,10 @@ export const Features: FC = () => {
       route: "/"
     },
   ]
+  const cookieContent = JSON.parse(Cookies.get("guestbodas") ?? "{}")
+  const path = cookieContent?.eventCreated
+    ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? ""
+    : "/welcome-app/"
 
   const List: ItemList[] = [
     {
@@ -171,9 +176,9 @@ export const Features: FC = () => {
       route: "https://bodasdehoy.com/gestor-de-presupuesto-de-tu-boda/"
     },
     {
-      title: "Organizador de boda",
+      title: "Organizador de bodas",
       icon: <GuestAppIcon className="w-8 h-8" />,
-      route: process.env.NEXT_PUBLIC_EVENTSAPP ?? ""
+      route: path
     },
     {
       title: "Inspiración",

@@ -94,14 +94,14 @@ const PageLogin: FC = () => {
     }
   }, [stage, setUserTemp]);
 
-  useEffect(() => {
-    user?.uid && !user.city && setStage("register");
-  }, [user]);
+  // useEffect(() => {
+  //   user?.uid && !user.city && setStage("register");
+  // }, [user]);
 
-  //monta el formulario para crear cuenta logeando con proveedor
-  useEffect(() => {
-    userTemp?.uid && setStage("register");
-  }, [userTemp]);
+  // //monta el formulario para crear cuenta logeando con proveedor
+  // useEffect(() => {
+  //   userTemp?.uid && setStage("register");
+  // }, [userTemp]);
 
   useEffect(() => {
     if (r.query) {

@@ -28,7 +28,7 @@ export const CrearEvento = () => {
                             onClick={async () => {
                                 const asd = `${process.env.NEXT_PUBLIC_EVENTSAPP}/?c=true`
                                 const path = window.origin.includes("://test.") ? asd?.replace("//", "//test") : asd
-                                await router.push(path ?? "")
+                                router.push(path ?? "")
                             }
                             }
                             className=" text-primary bg-yellow-button py-[8px] px-[22px] shadow-md">

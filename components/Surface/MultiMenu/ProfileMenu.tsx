@@ -23,13 +23,13 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
   const options: Option[] = [
     {
       title: "Iniciar sesión",
-      onClick: async () => { await router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) },
+      onClick: async () => { router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) },
       icon: <RiLoginBoxLine />,
       rol: undefined,
     },
     {
       title: "Registrarse",
-      onClick: async () => { await router.push(`/login?q=register&d=${router.asPath.slice(1, router.asPath.length)}`) },
+      onClick: async () => { router.push(`/login?q=register&d=${router.asPath.slice(1, router.asPath.length)}`) },
       icon: <PiUserPlusLight />,
       rol: undefined,
     },
@@ -37,7 +37,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       title: "Mis empresas",
       onClick: async () => {
         const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
-        await router.push(user?.role?.includes("empresa") ? path ?? "" : "/info-empresa")
+        router.push(user?.role?.includes("empresa") ? path ?? "" : "/info-empresa")
       },
       icon: <CompanyIcon />,
       rol: ["all"],
@@ -53,7 +53,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       onClick: async () => {
         !user?.uid && toast("success", "debes ininiciar sessión o registrarte")
         const path = `${window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS}/InfoPage/publicaciones`
-        await router.push(user?.uid ? path ?? "" : `/login?d=${router.asPath.slice(1, router.asPath.length)}&end=${path}`)
+        router.push(user?.uid ? path ?? "" : `/login?d=${router.asPath.slice(1, router.asPath.length)}&end=${path}`)
       },
       icon: <Posts />,
       rol: ["all"],
@@ -67,14 +67,14 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
     {
       title: "Mis eventos",
       onClick: async () => {
-        await router.push(cookieContent?.eventCreated ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",)
+        router.push(cookieContent?.eventCreated ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",)
       },
       icon: <Eventos />,
       rol: ["all"],
     },
     {
       title: "Mi perfil",
-      onClick: async () => { await router.push(`/configuracion`) },
+      onClick: async () => { router.push(`/configuracion`) },
       icon: <UserIcon />,
       rol: ["novio", "novia", "otro", "empresa"],
     },

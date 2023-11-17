@@ -1,5 +1,5 @@
 import { Form, Formik, FormikConfig, FormikValues, useFormikContext } from "formik";
-import {Children,FC,useState,cloneElement,useReducer,Reducer,useEffect,useRef,LegacyRef} from "react";
+import { Children, FC, useState, cloneElement, useReducer, Reducer, useEffect, useRef, LegacyRef } from "react";
 import IndiceSteps from "../../components/Business/IndiceSteps";
 import { FormYourBusiness, FormQuestion } from "../../components/Forms";
 import { ButtonComponent } from "../../components/Inputs";
@@ -23,17 +23,17 @@ const reducer = (state: any, action: any) => {
   }
 };
 
-const CreateBusiness : NextPage <{business : Partial<business>}> = (props) => {
+const CreateBusiness: NextPage<{ business: Partial<business> }> = (props) => {
   const [step, setStep] = useReducer<Reducer<number, number>>(reducer, 0);
-  
+
 
   const reduceBusiness = Object?.entries(props.business ?? {}).reduce((acc: any, item: any) => {
-    if(item[1]){
+    if (item[1]) {
       //@ts-ignore
       acc[item[0]] = item[1]
     }
     return acc
-  },{})
+  }, {})
 
   const router = useRouter()
   const refHeader = useRef<any>()
@@ -44,18 +44,18 @@ const CreateBusiness : NextPage <{business : Partial<business>}> = (props) => {
         src={"/bannerCreateBusiness.webp"}
         className="md:w-full   md:h-80 -mt-20 md:object-center object-cover absolute top-0 md:left-0 z-0 "
       />
-      <div ref={refHeader} tabIndex={0}  className="max-w-screen-lg mx-auto inset-x-0 z-10 relative md:py-10 py-5">
+      <div ref={refHeader} tabIndex={0} className="max-w-screen-lg mx-auto inset-x-0 z-10 relative md:py-10 py-5">
         <h2 className="text-3xl font-medium font-medium text-tertiary w-full text-center mt-6">
           ¡Empecemos el registro!
         </h2>
         <div className="hidden md:block">
-          <IndiceSteps step={step} />  
+          <IndiceSteps step={step} />
         </div>
       </div>
 
       <div className="max-w-screen-md md:py-20 mx-auto inset-x-0 px-3 md:px-0 py-18">
         <FormikStepper
-        refHeader={refHeader}
+          refHeader={refHeader}
           step={step}
           setStep={setStep}
           initialValues={{
@@ -67,17 +67,17 @@ const CreateBusiness : NextPage <{business : Partial<business>}> = (props) => {
             businessName: "",
             country: "",
             city: "",
-            zip : "",
+            zip: "",
             address: "",
             description: "",
-            coordinates : null,
+            coordinates: null,
             imgLogo: null,
             imgMiniatura: null,
             subcategories: [],
             ...reduceBusiness
           }}
           onSubmit={async (values) => {
-            await router.push("/empresa")
+            router.push("/empresa")
           }}
         >
           <FormikStep
@@ -133,18 +133,18 @@ const FormikStepper = ({
   const [canNextForce, setCanNextForce] = useState(false)
 
   useEffect(() => {
-   setTotalSections(ChildrenArray?.length)
+    setTotalSections(ChildrenArray?.length)
   }, [ChildrenArray])
-  
+
 
   const isLastStep = () => {
     return step === totalSections - 1;
   };
 
   const handleSubmit = async (values: FormikValues, actions: any) => {
-    
+
     values.userUid = user?.uid;
-    
+
 
     if (isLastStep()) {
       await props.onSubmit(values, actions);
@@ -155,39 +155,41 @@ const FormikStepper = ({
       case 0:
         const createBusinessAndGetQuestions = async () => {
           setCanNextForce(true)
-          const valuesModified = {...values}
+          const valuesModified = { ...values }
 
           delete valuesModified.imgBanner
           delete valuesModified.updatedAt
           delete valuesModified.createdAt
           delete valuesModified.questionsAndAnswers
           delete valuesModified.characteristics
-          if(valuesModified.coordinates.lat){
+          if (valuesModified.coordinates.lat) {
             valuesModified.coordinates = {
               type: "Point",
               coordinates: [valuesModified.coordinates.lng, valuesModified.coordinates.lat]
             }
           }
-          
+
           //if (!values._id) {
-            const data = await fetchApi({query : queries.createBusiness, variables: {
+          const data = await fetchApi({
+            query: queries.createBusiness, variables: {
               ...valuesModified,
               mobilePhone: typeof values.mobilePhone === "number" ? JSON.stringify(values.mobilePhone) : values.mobilePhone,
               landline: typeof values.landline === "number" ? JSON.stringify(values.landline) : values.landline,
               development: "bodasdehoy"
-            }, type: "formData"});
-            if(data){
-              await actions.setFieldValue("_id", values._id ?? data?._id );
-              await actions.setFieldValue("imgMiniatura", data?.imgMiniatura );
-              await actions.setFieldValue("imgLogo", data?.imgLogo );
-              setData(data)
-              setCanNextForce(false)
-            }
-            
-            
-          };
-          
-          try {
+            }, type: "formData"
+          });
+          if (data) {
+            await actions.setFieldValue("_id", values._id ?? data?._id);
+            await actions.setFieldValue("imgMiniatura", data?.imgMiniatura);
+            await actions.setFieldValue("imgLogo", data?.imgLogo);
+            setData(data)
+            setCanNextForce(false)
+          }
+
+
+        };
+
+        try {
           createBusinessAndGetQuestions();
         } catch (error) {
           console.log(error);
@@ -199,17 +201,19 @@ const FormikStepper = ({
         break;
       //Form Questions | Segundo formulario
       case 1:
-        
+
         setStep({ type: "NEXT" });
         try {
-          await fetchApi({query : queries.createBusiness, variables: {
-            ...values,
-            mobilePhone: typeof values.mobilePhone === "number" ? JSON.stringify(values.mobilePhone) : values.mobilePhone,
-            landline: typeof values.landline === "number" ? JSON.stringify(values.landline) : values.landline,
-            fase: "fase2",
-            status: true,
-            development: "bodasdehoy"
-          }});
+          await fetchApi({
+            query: queries.createBusiness, variables: {
+              ...values,
+              mobilePhone: typeof values.mobilePhone === "number" ? JSON.stringify(values.mobilePhone) : values.mobilePhone,
+              landline: typeof values.landline === "number" ? JSON.stringify(values.landline) : values.landline,
+              fase: "fase2",
+              status: true,
+              development: "bodasdehoy"
+            }
+          });
         } catch (error) {
           console.log(error);
         }
@@ -218,23 +222,23 @@ const FormikStepper = ({
       default:
         break;
     }
-    
+
     refHeader.current.focus()
   };
 
   useEffect(() => {
-    if(!canNextForce){
-      if(step >= 0 && step < totalSections){
+    if (!canNextForce) {
+      if (step >= 0 && step < totalSections) {
         setCanNext(false)
       } else {
         setCanNext(true)
       }
     }
   }, [step, totalSections, canNextForce])
-  
-  const canPrevious = (step: number) : boolean | undefined => {
-    
-    if(step > 0 && step <= totalSections - 1){
+
+  const canPrevious = (step: number): boolean | undefined => {
+
+    if (step > 0 && step <= totalSections - 1) {
       return false
     } else {
       return true
@@ -249,16 +253,16 @@ const FormikStepper = ({
       validationSchema={currentChild?.props?.validationSchema}
     >
       <Form autoComplete={"off"}>
-        {cloneElement(currentChild, {data, setCanNext})}
+        {cloneElement(currentChild, { data, setCanNext })}
         <div className="flex items-center justify-between w-full py-4 px-10">
-          
-            <ButtonComponent type="button" disabled={canPrevious(step)} onClick={() => {
-              setStep({ type: "PREV" })
-            }}>
-              Atras
-            </ButtonComponent>
-         
-        <ButtonComponent disabled={canNext} variant={"primary"} type={"submit"}>{step + 1 === totalSections ? "Finalizar" : "Siguiente"}</ButtonComponent>
+
+          <ButtonComponent type="button" disabled={canPrevious(step)} onClick={() => {
+            setStep({ type: "PREV" })
+          }}>
+            Atras
+          </ButtonComponent>
+
+          <ButtonComponent disabled={canNext} variant={"primary"} type={"submit"}>{step + 1 === totalSections ? "Finalizar" : "Siguiente"}</ButtonComponent>
         </div>
       </Form>
 
@@ -283,14 +287,14 @@ const FormikStep = ({ children, ...props }: FormikStepProps) => {
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   try {
-    
-    if(context.query.id){
-      const result = await fetchApi({query : queries.getOneBusiness, variables: {id : context.query.id}})
+
+    if (context.query.id) {
+      const result = await fetchApi({ query: queries.getOneBusiness, variables: { id: context.query.id } })
       return {
-        props: {business : result},
+        props: { business: result },
       };
     }
-    
+
     return {
       props: {},
     };

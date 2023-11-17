@@ -31,7 +31,7 @@ interface propsSidebar {
 export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
 
     const [showForm, setShowForm] = useState(false)
-    const { user } = AuthContextProvider()
+    const { user, setUser } = AuthContextProvider()
     const router = useRouter()
     const toast = useToast()
     const cookieContent = JSON.parse(Cookies.get("guestbodas") ?? "{}")
@@ -79,7 +79,7 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
             onClick: async () => {
                 !user?.uid && toast("success", "debes ininiciar sessión o registrarte")
                 const path = `${window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS}/InfoPage/publicaciones`
-                await router.push(user?.uid ? path ?? "" : `/login?d=${router.asPath.slice(1, router.asPath.length)}&end=${path}`)
+                router.push(user?.uid ? path ?? "" : `/login?d=${router.asPath.slice(1, router.asPath.length)}&end=${path}`)
             },
             user: "all"
         },
@@ -88,7 +88,7 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
             icon: "",
             onClick: async () => {
                 const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
-                await router.push(user?.role?.includes("empresa") ? path ?? "" : "/info-empresa")
+                router.push(user?.role?.includes("empresa") ? path ?? "" : "/info-empresa")
             },
             user: "all"
         },
@@ -130,6 +130,7 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
                 Cookies.remove("sessionBodas", { domain: process.env.NEXT_PUBLIC_DOMINIO });
                 Cookies.remove("idToken", { domain: process.env.NEXT_PUBLIC_DOMINIO });
                 signOut(getAuth());
+                setUser(null)
                 toast("success", "Gracias por su visita")
             },
             user: "loged"
@@ -146,7 +147,7 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
                 item.onClick()
                 return
             }
-            await router.push(item?.route ?? "")
+            router.push(item?.route ?? "")
         } catch (error) {
             console.log(error)
         }
@@ -171,11 +172,11 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
                                 {user?.displayName
                                     ? <span className="capitalize">{user?.displayName}</span>
                                     : <div className="text-sm">
-                                        <span onClick={async () => { await router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) }}>
+                                        <span onClick={async () => { router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) }}>
                                             Iniciar sesión
                                         </span>
 
-                                        <span onClick={async () => { await router.push(`/login?q=register&d=${router.asPath.slice(1, router.asPath.length)}`) }} className="m-1">
+                                        <span onClick={async () => { router.push(`/login?q=register&d=${router.asPath.slice(1, router.asPath.length)}`) }} className="m-1">
                                             / Registrarse
                                         </span>
                                     </div>}

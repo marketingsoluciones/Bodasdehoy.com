@@ -1,4 +1,4 @@
-import { User, getAuth } from "@firebase/auth";
+import { User } from "@firebase/auth";
 import {
   createContext,
   FC,
@@ -54,7 +54,7 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
   const [geoInfo, setGeoInfo] = useState<any>();
 
   useEffect(() => {
-    getAuth().onAuthStateChanged(async (user: any) => {
+    auth.onAuthStateChanged(async (user: any) => {
       setTimeout(async () => {
         const sessionCookie = Cookies.get("sessionBodas");
         console.info("Verificando cookie", sessionCookie);
@@ -87,7 +87,7 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
             });
             console.info("Llamo con mi sessionCookie para traerme customToken");
             console.info("Custom token", result?.customToken)
-            result?.customToken && signInWithCustomToken(getAuth(), result.customToken);
+            result?.customToken && signInWithCustomToken(auth, result.customToken);
             console.info("Hago sesion con el custom token");
           }
         }
@@ -96,7 +96,7 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
   }, []);
 
   useEffect(() => {
-    getAuth().onIdTokenChanged(async user => {
+    auth.onIdTokenChanged(async user => {
       if (user) {
         const dateExpire = new Date(new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000))
         Cookies.set("idToken", await user.getIdToken(), { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })

@@ -67,7 +67,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
     {
       title: "Mis eventos",
       onClick: async () => {
-        router.push(cookieContent?.eventCreated ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",)
+        router.push(cookieContent?.eventCreated || user?.uid ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",)
       },
       icon: <Eventos />,
       rol: ["all"],

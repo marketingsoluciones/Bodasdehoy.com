@@ -7,6 +7,7 @@ import LugaresParaBodas from "./MultiMenu/LugaresParaBodas";
 import Link from "next/link";
 import { MultiMenu } from "./MultiMenu";
 import Cookies from "js-cookie";
+import { AuthContextProvider } from "../../context";
 
 type Item = {
   title: string;
@@ -19,8 +20,9 @@ type Item = {
 
 export const Navbar: FC = () => {
   const [selected, setSelect] = useState<number | null>(null);
+  const {user } = AuthContextProvider()
   const cookieContent = JSON.parse(Cookies.get("guestbodas") ?? "{}")
-  const path = cookieContent?.eventCreated
+  const path = cookieContent?.eventCreated || user?.uid
     ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? ""
     : "/welcome-app/"
 

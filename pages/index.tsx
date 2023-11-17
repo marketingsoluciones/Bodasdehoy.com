@@ -151,6 +151,7 @@ export const Searcher: FC<any> = ({
 const ConnectedSearchBox = connectWithQuery(Searcher);
 
 export const Features: FC = () => {
+  const { user } = AuthContextProvider()
   type ItemList = {
     title: string;
     icon: ReactNode;
@@ -165,7 +166,7 @@ export const Features: FC = () => {
     },
   ]
   const cookieContent = JSON.parse(Cookies.get("guestbodas") ?? "{}")
-  const path = cookieContent?.eventCreated
+  const path = cookieContent?.eventCreated || user?.uid
     ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? ""
     : "/welcome-app/"
 

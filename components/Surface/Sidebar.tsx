@@ -40,7 +40,7 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
         {
             title: "Organiza tu Boda",
             icon: "",
-            route: cookieContent?.eventCreated ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",
+            route: cookieContent?.eventCreated || user?.uid  ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",
             user: "all"
         },
         {
@@ -95,7 +95,7 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
         {
             title: "Mis eventos",
             icon: "",
-            route: cookieContent?.eventCreated ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",
+            route: cookieContent?.eventCreated || user?.uid ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",
             user: "all"
         },
         {

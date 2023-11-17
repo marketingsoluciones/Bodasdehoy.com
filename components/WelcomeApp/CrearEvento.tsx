@@ -26,14 +26,15 @@ export const CrearEvento = () => {
                         </p>
                         <button
                             onClick={async () => {
-                                const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") : process.env.NEXT_PUBLIC_EVENTSAPP
+                                const asd = `${process.env.NEXT_PUBLIC_EVENTSAPP}/?c=true`
+                                const path = window.origin.includes("://test.") ? asd?.replace("//", "//test") : asd
                                 await router.push(path ?? "")
                             }
                             }
                             className=" text-primary bg-yellow-button py-[8px] px-[22px] shadow-md">
                             CREA GRATIS TU EVENTO
                         </button>
-                        <CheckboxScreen setState={() => { }} />
+                        {/* <CheckboxScreen setState={() => { }} /> */}
                     </div>
                 </div>
             </div>

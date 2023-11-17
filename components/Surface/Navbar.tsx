@@ -1,4 +1,4 @@
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 import OrganizadorBoda from "./MultiMenu/OrganizadorBoda";
 import { NoviaMenu } from "./MultiMenu/NoviaMenu";
 import NovioMenu from "./MultiMenu/NovioMenu";
@@ -6,6 +6,7 @@ import Proveedores from "./MultiMenu/Proveedores";
 import LugaresParaBodas from "./MultiMenu/LugaresParaBodas";
 import Link from "next/link";
 import { MultiMenu } from "./MultiMenu";
+import Cookies from "js-cookie";
 
 type Item = {
   title: string;
@@ -14,30 +15,35 @@ type Item = {
   component?: ReactNode;
 };
 
-const List: Item[] = [
-  {
-    title: "organiza tu boda",
-    route: "/welcome-app",
-    titleInside: "Mi organizador de bodas",
-    component: <OrganizadorBoda />,
-  },
-  { title: "Novia", route: "/categoria/novias", component: <NoviaMenu /> },
-  { title: "Novio", route: "/categoria/novios", component: <NovioMenu /> },
-  {
-    title: "Proveedores",
-    route: "/categoria/proveedores",
-    component: <Proveedores />,
-  },
-  {
-    title: "Lugares para bodas",
-    route: "/categoria/lugares-para-bodas",
-    component: <LugaresParaBodas />,
-  },
-];
+
 
 export const Navbar: FC = () => {
   const [selected, setSelect] = useState<number | null>(null);
+  const cookieContent = JSON.parse(Cookies.get("guestbodas") ?? "{}")
+  const path = cookieContent?.eventCreated
+    ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? ""
+    : "/welcome-app/"
 
+  const List: Item[] = [
+    {
+      title: "organiza tu boda",
+      route: path,
+      titleInside: "Mi organizador de bodas",
+      component: <OrganizadorBoda />,
+    },
+    { title: "Novia", route: "/categoria/novias", component: <NoviaMenu /> },
+    { title: "Novio", route: "/categoria/novios", component: <NovioMenu /> },
+    {
+      title: "Proveedores",
+      route: "/categoria/proveedores",
+      component: <Proveedores />,
+    },
+    {
+      title: "Lugares para bodas",
+      route: "/categoria/lugares-para-bodas",
+      component: <LugaresParaBodas />,
+    },
+  ];
   return (
     <>
       <nav className="hidden lg:block">
@@ -68,7 +74,12 @@ export const Navbar: FC = () => {
   );
 };
 
-const ItemList: FC<Item> = ({ title, route }) => {
+const ItemList: FC<Item> = ({ title, route: asd }) => {
+  const [route, setRoute] = useState("")
+  useEffect(() => {
+    setRoute(asd)
+  }, [asd])
+
   return (
     <>
       <Link href={route} passHref>

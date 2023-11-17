@@ -10,6 +10,7 @@ import { RiLoginBoxLine } from "react-icons/ri"
 import { MdLogout } from "react-icons/md"
 import { BiBell } from "react-icons/bi"
 import { useToast } from "../../../hooks/useToast";
+import Cookies from "js-cookie";
 
 export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal }) => {
   const { user } = AuthContextProvider();
@@ -18,7 +19,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
   const toast = useToast()
 
   const router = useRouter()
-
+  const cookieContent = JSON.parse(Cookies.get("guestbodas") ?? "{}")
   const options: Option[] = [
     {
       title: "Iniciar sesión",
@@ -65,7 +66,9 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
     },
     {
       title: "Mis eventos",
-      onClick: async () => { await router.push(`/welcome-app`) },
+      onClick: async () => {
+        await router.push(cookieContent?.eventCreated ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",)
+      },
       icon: <Eventos />,
       rol: ["all"],
     },

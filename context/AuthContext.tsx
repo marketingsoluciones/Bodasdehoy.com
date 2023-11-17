@@ -12,6 +12,7 @@ import { auth } from "../firebase";
 import { fetchApi, queries } from "../utils/Fetching";
 import Cookies from 'js-cookie'
 import { signInWithCustomToken } from "firebase/auth";
+import { nanoid } from "nanoid";
 
 export interface UserMax extends User {
   city?: string;
@@ -57,6 +58,16 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
       setTimeout(async () => {
         const sessionCookie = Cookies.get("sessionBodas");
         console.info("Verificando cookie", sessionCookie);
+        if (!sessionCookie) {
+          const cookieContent = JSON.parse(Cookies.get("guestbodas") ?? "{}")
+          let guestUid = cookieContent?.guestUid
+          if (!guestUid) {
+            const dateExpire = new Date(new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000))
+            guestUid = nanoid(28)
+            Cookies.set("guestbodas", JSON.stringify({ guestUid }), { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
+          }
+          setUserTemp({ uid: guestUid, displayName: "guest" })
+        }
         if (sessionCookie) {
           console.info("Tengo cookie de sesion");
           if (user) {
@@ -79,9 +90,6 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
             result?.customToken && signInWithCustomToken(auth, result.customToken);
             console.info("Hago sesion con el custom token");
           }
-        }
-        if (!sessionCookie) {
-          setUser(null)
         }
       }, 800);
     });

@@ -34,13 +34,13 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
     const { user } = AuthContextProvider()
     const router = useRouter()
     const toast = useToast()
-
+    const cookieContent = JSON.parse(Cookies.get("guestbodas") ?? "{}")
 
     const ListaNavbar: ItemNav[] = [
         {
             title: "Organiza tu Boda",
             icon: "",
-            route: "/welcome-app",
+            route: cookieContent?.eventCreated ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",
             user: "all"
         },
         {
@@ -95,7 +95,7 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
         {
             title: "Mis eventos",
             icon: "",
-            route: "/welcome-app",
+            route: cookieContent?.eventCreated ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",
             user: "all"
         },
         {
@@ -192,11 +192,6 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
                                     <button className="flex gap-3 capitalize" >{item.icon} {item.title}</button>
                                 </li>
                             ))}
-                            {/* {ListaNavbar.map((item, idx) => (
-                                    <Link key={idx} href={item.route} passHref>
-                                        <p className="flex text-primary  py-2 font-display text-md items-center justify-start w-full cursor-pointer hover:text-gray-300 transition">{item.title}</p>
-                                    </Link>
-                                ))} */}
                         </ul>
 
                         <p className="text-xs text-primary font-bold absolute h-max bottom-20 mx-auto w-max inset-x-0">Bodasdehoy.com</p>

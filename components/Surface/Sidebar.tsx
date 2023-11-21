@@ -14,6 +14,7 @@ import { useToast } from "../../hooks/useToast"
 import { MdLogout } from "react-icons/md"
 import { BiBell } from "react-icons/bi"
 import { RiLoginBoxLine } from "react-icons/ri"
+import { useAuthentication } from "../../utils/Authentication"
 
 type ItemNav = {
     title: string
@@ -29,7 +30,7 @@ interface propsSidebar {
 }
 // menu hamburguesa en el mobile 
 export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
-
+    const { _signOut } = useAuthentication()
     const [showForm, setShowForm] = useState(false)
     const { user, setUser } = AuthContextProvider()
     const router = useRouter()
@@ -40,7 +41,7 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
         {
             title: "Organiza tu Boda",
             icon: "",
-            route: cookieContent?.eventCreated || user?.uid  ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",
+            route: cookieContent?.eventCreated || user?.uid ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",
             user: "all"
         },
         {
@@ -126,12 +127,7 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
             title: "Cerrar sesión",
             icon: <MdLogout className="w-6 h-6" />,
             onClick: () => {
-                router.push("/")
-                Cookies.remove("sessionBodas", { domain: process.env.NEXT_PUBLIC_DOMINIO });
-                Cookies.remove("idToken", { domain: process.env.NEXT_PUBLIC_DOMINIO });
-                signOut(getAuth());
-                setUser(null)
-                toast("success", "Gracias por su visita")
+                _signOut()
             },
             user: "loged"
         },

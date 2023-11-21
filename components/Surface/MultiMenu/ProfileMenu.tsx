@@ -3,7 +3,7 @@ import { AuthContextProvider, LoadingContextProvider } from "../../../context";
 import { useAuthentication } from "../../../utils/Authentication";
 import { useRouter } from "next/router";
 import { ListItemProfile, Option } from "./ListItemProfile";
-import { CompanyIcon, Eventos, Posts, StarRating, UserIcon, WeddingPage } from "../../Icons";
+import { CompanyIcon, CorazonPaddinIcon, Eventos, Posts, StarRating, UserIcon, WeddingPage } from "../../Icons";
 import { CSSTransition } from "react-transition-group";
 import { PiUserPlusLight } from "react-icons/pi"
 import { RiLoginBoxLine } from "react-icons/ri"
@@ -73,6 +73,12 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       rol: ["all"],
     },
     {
+      title: "Proveedores",
+      onClick: async () => { router.push(`/`) },
+      icon: <CorazonPaddinIcon />,
+      rol: ["novio", "novia", "otro", "empresa"],
+    },
+    {
       title: "Mi perfil",
       onClick: async () => { router.push(`/configuracion`) },
       icon: <UserIcon />,
@@ -85,7 +91,6 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
         setHovered(false)
         setLoading(true);
         _signOut()
-        setLoading(false);
       },
       rol: ["novio", "novia", "otro", "empresa"],
     },
@@ -110,7 +115,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       timeout={300}
       classNames={"fade"}>
       < div
-        className={`w-80 p-3 rounded-xl h-max bg-white shadow-md absolute bottom-0 right-0 inset-y-full translate-y-1 overflow-hidden z-50 
+        className={`bg-white w-80 p-3 rounded-xl h-max shadow-md absolute bottom-0 right-0 inset-y-full translate-y-1 overflow-hidden z-50 
     }`}
       >
         <div className="w-full border-b border-gray-100 pb-2">

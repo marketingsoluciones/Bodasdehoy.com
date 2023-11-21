@@ -156,10 +156,10 @@ export const useAuthentication = () => {
     await fetchApi({ query: queries.signOut, variables: { sessionCookie: Cookies.get("sessionBodas") } })
     Cookies.remove("sessionBodas", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
     Cookies.remove("idToken", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
-    setUser(null);
     signOut(getAuth());
+    setUser(null)
+    toast("success", "Gracias por su visita")
     router.push("/");
-    toast("success", "Gracias por visitarnos, te esperamos luego 😀");
   }, [router, setUser, toast])
 
 

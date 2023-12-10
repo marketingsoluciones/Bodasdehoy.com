@@ -95,7 +95,7 @@ const Configuration = () => {
             components={components}
             actived={isActive}
             onClick={handleClickOption}
-            setAlertDev= {setModal}
+            setAlertDev={setModal}
             alertDev={modal}
           />
         </div>
@@ -104,7 +104,8 @@ const Configuration = () => {
     </>
   );
 };
-export default PagesWithAuth(Configuration);
+export default Configuration;
+//export default PagesWithAuth(Configuration);
 
 export const BlockConfiguration: FC<{ title: string; subtitle?: string }> = ({
   title,

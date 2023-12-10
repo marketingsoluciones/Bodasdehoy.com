@@ -84,14 +84,14 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     }),
     phoneNumber: yup.string().test("Unico", `Campo requerido`, (value: any) => {
       const name = document.activeElement?.getAttribute("name")
-      if (value.length < 4) {
+      if (value?.length < 4) {
         return false
       } else {
         return true
       }
     }).test("Unico", `Número inválido`, (value: any) => {
       const name = document.activeElement?.getAttribute("name")
-      if (name !== "phoneNumber" && value.length > 3) {
+      if (name !== "phoneNumber" && value?.length > 3) {
         console.log(1001, value)
         return isPhoneValid(value)
       } else {

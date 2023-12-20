@@ -85,7 +85,7 @@ export const Providers: FC<any> = ({ setStage }) => {
         ))}
       </div> */}
         <div className="">
-          <ButtonProvider provider="Google" handle={GoogleProvider()} icon={<GoogleIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
+          <ButtonProvider provider="Google" handle={GoogleProvider() } icon={<GoogleIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
           <ButtonProvider provider="Facebook" handle={FacebookProvider} icon={<FacebookIcon2 className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
           {/* <ButtonProvider provider="Apple" handle={AppleProvidor()} icon={<AppleIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} /> */}
         </div>

@@ -1,14 +1,11 @@
 import dynamic from "next/dynamic";
 import { LoadingProvider, FiltersProvider } from "../context";
 import ButtonCrearEmpresa from "../components/ButtonCrearEmpresa";
-import ButtonReclamarEmpresa from "../components/ButtonReclamarEmpresa";
 import ButtonEmpezar from "../components/ButtonEmpezar";
 import { FloatButtonchat } from "../components/FloatButtonChat";
-import { NavigationMobile } from "../components/Surface";
 import { FC } from "react";
 import Head from "next/head";
 import Script from "next/script";
-import { ButtonMessages } from "../components/ButtonMessages";
 const DynamicAuthProvider = dynamic((): any =>
   import("../context").then((mod) => mod.AuthProvider)
 );
@@ -57,9 +54,9 @@ const DefaultLayout: FC = ({ children }) => {
                       <ButtonCrearEmpresa />
                       {/* <ButtonMessages /> */}
                       <ButtonEmpezar />
-                      <FloatButtonchat/>
+                      <FloatButtonchat />
                       <DynamicNavigation />
-                      <DynamicNavbarMobile/>
+                      <DynamicNavbarMobile />
                       {/* <NavigationMobile /> */}
                       <main className="w-full pt-5 md:pt-20">
                         {/* @ts-ignore */}

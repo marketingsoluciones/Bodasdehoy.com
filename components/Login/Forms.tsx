@@ -9,13 +9,15 @@ import PageLogin from "../../pages/login"
 interface propsLogin {
   fStageRegister?: any
   setStage: CallableFunction;
+  stageRegister?: any
+  setStageRegister?: any
 }
 
 export const Login: FC<propsLogin> = ({ setStage }) => {
 
   return (
     <>
-      <div className=" h-full">
+      <div className="h-full">
         <div className="flex flex-col items-center justify-center w-full">
           <LogoFullColor className="w-auto h-10" />
         </div>
@@ -23,8 +25,8 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
           Accede a tu cuenta
         </h2>
         <Providers setStage={setStage} />
-        <h2 className={`font-light text-tertiary flex gap-2 items-center text-md `}>
-          O accede con tu email
+        <h2 className={`font-light w-full text-tertiary text-center text-md `}>
+          ó
         </h2>
         <FormLogin setStage={setStage} />
         <RegisterQuestion onClick={() => setStage("register")} />
@@ -34,9 +36,9 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
   );
 };
 
-export const Register: FC<propsLogin> = ({ setStage, fStageRegister }) => {
+export const Register: FC<propsLogin> = ({ setStage, fStageRegister, stageRegister, setStageRegister }) => {
   const [whoYouAre, setWhoYouAre] = useState<string>(fStageRegister == 1 ? "empresa" : "");
-  const [stageRegister, setStageRegister] = useState(fStageRegister)
+
   return (
     <>
       {(() => {
@@ -59,7 +61,10 @@ export const Register: FC<propsLogin> = ({ setStage, fStageRegister }) => {
         ¿Dispones de una cuenta?
         <span
           className="text-sm text-primary font-semibold cursor-pointer hover:text-tertiary transition"
-          onClick={() => setStage("login")}
+          onClick={() => {
+            setStageRegister(0)
+            setStage("login")
+          }}
         >
           Inicia Sesión
         </span>

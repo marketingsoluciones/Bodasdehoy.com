@@ -2,8 +2,8 @@ export const CuadroExtraInfo = () => {
     return (
         <>
             <div className="grid md:grid-cols-2 gap-10">
-                <div className="flex justify-end items-center text-end pr-5 md:px-0 ">
-                    <p className="md:w-[90%] text-4xl text-gray-500">
+                <div className="flex justify-end items-center text-end  ">
+                    <p className="md:w-[90%] text-4xl text-gray-500 ">
                         ¿Cómo integras el <span className="text-primary">EventosOrganizador</span> en la planificación de tu evento?
                     </p>
                 </div>
@@ -58,11 +58,11 @@ export const CuadroExtraInfo2 = () => {
 
     return (
         <>
-            <div className="grid  md:grid-cols-2 gap-5 px-5 md:px-0 ">
+            <div className="grid md:w-[85%]  md:grid-cols-2 gap-10 ">
                 {Data.map((item,idx)=>(
-                    <div key={idx}>
-                        <p className="text-primary text-lg ">{item.title}</p>
-                        <p className="text-gray-600 md:w-[85%]">{item.texto}</p>
+                    <div key={idx}  >
+                        <p className="text-primary text-lg">{item.title}</p>
+                        <p className="text-gray-600 md:w-[85%]*">{item.texto}</p>
                     </div>
                 ))}
             </div>

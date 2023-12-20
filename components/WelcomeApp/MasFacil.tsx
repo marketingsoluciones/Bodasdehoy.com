@@ -4,10 +4,10 @@ export const MasFacil = () => {
     const router = useRouter()
     return (
         <>
-            <div className="grid md:grid-cols-2 gap-10 xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto px-5 md:px-0 ">
+            <div className="grid md:grid-cols-2 gap-10 xl:max-w-screen-lg 2xl:max-w-screen-lg mx-auto px-10 md:px-0 ">
                 <div className="space-y-5 flex flex-col justify-center md:items-center justify-items-center ">
                     <img src="/easy.png" alt="Facil" width={300} />
-                    <p className="text-gray-500 text-center px-5 md:px-0 md:pl-20 ">
+                    <p className="text-gray-500 text-center  md:px-0 md:pl-20 ">
                         <span className="text-primary">Ahora es más fácil</span> coordinar los detalles de tu evento como un mecanismo perfecto
                     </p>
                 </div>
@@ -23,7 +23,7 @@ export const MasFacil = () => {
 
                         No pagues más por muchas aplicaciones o software de planificación, cuando puedes hacer toda la magia desde una misma herramienta.
                     </p>
-                    <button onClick={()=>router.push(`${process.env.NEXT_PUBLIC_EVENTSAPP}`)} className=" text-primary bg-yellow-button py-[8px] px-[22px] shadow-md">
+                    <button onClick={() => router.push(window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "")} className=" text-primary bg-yellow-button py-[8px] px-[22px] shadow-md">
                         CREAR EVENTO
                     </button>
                 </div>

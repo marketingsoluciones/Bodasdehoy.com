@@ -15,6 +15,7 @@ import Link from "next/link";
 import { AuthContextProvider } from '../context'
 import ClickAwayListener from "react-click-away-listener";
 import { Hit } from "../components/Surface/SearchNavigation";
+import Cookies from "js-cookie";
 
 interface propsHome {
   business: business[];
@@ -150,6 +151,7 @@ export const Searcher: FC<any> = ({
 const ConnectedSearchBox = connectWithQuery(Searcher);
 
 export const Features: FC = () => {
+  const { user } = AuthContextProvider()
   type ItemList = {
     title: string;
     icon: ReactNode;
@@ -163,6 +165,10 @@ export const Features: FC = () => {
       route: "/"
     },
   ]
+  const cookieContent = JSON.parse(Cookies.get("guestbodas") ?? "{}")
+  const path = cookieContent?.eventCreated || user?.uid
+    ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? ""
+    : "/welcome-app/"
 
   const List: ItemList[] = [
     {
@@ -171,9 +177,9 @@ export const Features: FC = () => {
       route: "https://bodasdehoy.com/gestor-de-presupuesto-de-tu-boda/"
     },
     {
-      title: "Organizador de boda",
+      title: "Organizador de bodas",
       icon: <GuestAppIcon className="w-8 h-8" />,
-      route: process.env.NEXT_PUBLIC_EVENTSAPP ?? ""
+      route: path
     },
     {
       title: "Inspiración",
@@ -188,7 +194,7 @@ export const Features: FC = () => {
   const Feature: FC<propsFeature> = memo(({ item }) => {
     return (
       <div className="flex items-center gap-3 py-3 pl-2 w-full static ">
-        <span className="p-4 bg-white shadow rounded-full bg-white grid place-items-center transform transition duration-800 hover:scale-110 hover:-rotate-12 focus:outline-none z-20">
+        <span className="p-4 shadow rounded-full bg-white grid place-items-center transform transition duration-800 hover:scale-110 hover:-rotate-12 focus:outline-none z-20">
           {item.icon}
         </span>
         <h2 className="text-tertiary w-32 text-sm md:text-lg leading-6 font-semibold  hover:text-primary transition duration-800">
@@ -266,12 +272,10 @@ const ButtonProviders = () => {
 
 export async function getServerSideProps() {
   try {
-    //console.time("getHome");
     const data = await fetchApi({
       query: queries.getHome,
       variables: { development: "bodasdehoy" }
     });
-    //console.timeEnd("getHome");
     return { props: data ?? {} };
   } catch (error) {
     console.log(error);

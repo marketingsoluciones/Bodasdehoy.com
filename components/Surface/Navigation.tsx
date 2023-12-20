@@ -80,53 +80,31 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch, modal, setModal }) =>
   const [isHovered, setHovered] = useState<boolean>(false);
   const router = useRouter();
   return (
-    <>
-      <div className="flex items-center relative">
-        <button className="hidden md:block px-3 cursor-pointer text-gray-500 focus:outline-none ">
-          <SearchIcon
-            onClick={handleClickSearch}
-            className="icon transition transform hover:-rotate-6 hover:scale-110 "
-          />
-        </button>
-        {!user ? (
-          <>
-            <div
-              className="md:px-3 border-gray-100 py-1 md:border-l md:border-r cursor-pointer text-gray-500 flex"
-              onMouseOver={() => setHovered(true)}
-              onMouseLeave={() => setHovered(false)}>
-              <span >
-                <UserIcon className="icon transition transform hover:-rotate-6 hover:scale-110" />
-              </span>
-              <ArrowIcon className="w-4 h-4 rotate-90 transform cursor-pointer" />
-              <ProfileMenu isHovered={isHovered} setHovered={setHovered} modal={modal} setModal={setModal} />
-            </div>
-            <span
-              className="hidden md:block pl-3 cursor-pointer transition transform hover:-rotate-6 hover:scale-110"
-              onClick={() => router.push("/info-empresa")}
-            >
-              <CompanyIcon className="icon text-gray-500" />
-            </span>
-          </>
-        ) : (
-          <>
-            {/* <Notification onClick={() => { alert("aqui") }} valir={true} value={9} /> */}
-            <div
-              className="border-gray-100 border-l text-gray-500 pl-3 flex items-center gap-1 z-40"
-              onMouseOver={() => setHovered(true)}
-              onMouseLeave={() => setHovered(false)}
-            >
-              <img
-                alt={user?.displayName ?? "nombre"}
-                src={user.photoURL ?? "/placeholder/user.png"}
-                className="w-10 h-10 border border-primary rounded-full cursor-pointer"
-              />
-              <ArrowIcon className="w-4 h-4 rotate-90 transform cursor-pointer" />
-              <ProfileMenu isHovered={isHovered} setHovered={setHovered} modal={modal} setModal={setModal} />
-            </div>
-          </>
-        )}
+    <div className="flex items-center relative">
+      <button className="hidden md:block px-3 cursor-pointer text-gray-500 focus:outline-none ">
+        <SearchIcon
+          onClick={handleClickSearch}
+          className="icon transition transform hover:-rotate-6 hover:scale-110 "
+        />
+      </button>
+      <div
+        className="border-gray-100 border-l text-gray-500 pl-3 flex items-center gap-1 z-40"
+        onMouseOver={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        {!user
+          ? <span >
+            <UserIcon className="icon w-8 h-8 text-gray-400 transition transform hover:-rotate-6 hover:scale-110" />
+          </span>
+          : <img
+            alt={user?.displayName ?? "nombre"}
+            src={user?.photoURL ?? "/placeholder/user.png"}
+            className="w-9 h-9 border border-primary rounded-full cursor-pointer"
+          />}
+        <ArrowIcon className="w-4 h-4 rotate-90 transform cursor-pointer" />
+        <ProfileMenu isHovered={isHovered} setHovered={setHovered} modal={modal} setModal={setModal} />
       </div>
-    </>
+    </div>
   );
 };
 

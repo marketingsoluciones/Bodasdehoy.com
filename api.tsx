@@ -47,10 +47,10 @@ export const api: Fetching = {
     socketIO: ({ token }: { token: string }) => {
         const socket = io(process.env.NEXT_PUBLIC_BASE_URL ?? "", {
             auth: {
-                token: `Bearer ${token}`
+                token: `Bearer ${token}`,
+                development: "bodasdehoy",
             }
         })
-
         return socket
     }
 }

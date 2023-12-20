@@ -3,48 +3,60 @@ import { AuthContextProvider, LoadingContextProvider } from "../../../context";
 import { useAuthentication } from "../../../utils/Authentication";
 import { useRouter } from "next/router";
 import { ListItemProfile, Option } from "./ListItemProfile";
-import { CompanyIcon, Eventos, Posts, StarRating, UserIcon, WeddingPage } from "../../Icons";
+import { CompanyIcon, CorazonPaddinIcon, Eventos, Posts, StarRating, UserIcon, WeddingPage } from "../../Icons";
 import { CSSTransition } from "react-transition-group";
+import { PiUserPlusLight } from "react-icons/pi"
+import { RiLoginBoxLine } from "react-icons/ri"
+import { MdLogout } from "react-icons/md"
+import { BiBell } from "react-icons/bi"
+import { useToast } from "../../../hooks/useToast";
+import Cookies from "js-cookie";
 
 export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal }) => {
   const { user } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
   const { _signOut } = useAuthentication()
+  const toast = useToast()
 
   const router = useRouter()
-
+  const cookieContent = JSON.parse(Cookies.get("guestbodas") ?? "{}")
   const options: Option[] = [
     {
-      title: "Ingresar",
-      onClick: async () => { await router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) },
-      icon: <UserIcon />,
-      rol: undefined,
-
-    },
-    {
-      title: "Registrase",
-      onClick: async () => { await router.push(`/login?q=register&d=${router.asPath.slice(1, router.asPath.length)}`) },
-      icon: <UserIcon />,
+      title: "Iniciar sesión",
+      onClick: async () => { router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) },
+      icon: <RiLoginBoxLine />,
       rol: undefined,
     },
     {
-      title: "Mi perfil",
-      onClick: async () => { await router.push(`/configuracion`) },
-      icon: <UserIcon />,
-      rol: ["novio", "novia", "otro", "empresa"],
+      title: "Registrarse",
+      onClick: async () => { router.push(`/login?q=register&d=${router.asPath.slice(1, router.asPath.length)}`) },
+      icon: <PiUserPlusLight />,
+      rol: undefined,
     },
     {
       title: "Mis empresas",
-      onClick: async () => { await router.push(user?.role?.includes("empresa") ? `${process.env.NEXT_PUBLIC_CMS}/?d=viewBusines` : "/info-empresa") },
+      onClick: async () => {
+        const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
+        router.push(user?.role?.includes("empresa") ? path ?? "" : "/info-empresa")
+      },
       icon: <CompanyIcon />,
-      target: "_blank",
-      rol: ["empresa", ""],
+      rol: ["all"],
     },
     {
       title: "Notificaciones",
       onClick: async () => { setModal(!modal) },
-      icon: <StarRating />,
+      icon: <BiBell />,
       rol: ["novio", "novia", "otro", "empresa"],
+    },
+    {
+      title: "Mis publicaciones",
+      onClick: async () => {
+        !user?.uid && toast("success", "debes ininiciar sessión o registrarte")
+        const path = `${window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS}/InfoPage/publicaciones`
+        router.push(user?.uid ? path ?? "" : `/login?d=${router.asPath.slice(1, router.asPath.length)}&end=${path}`)
+      },
+      icon: <Posts />,
+      rol: ["all"],
     },
     {
       title: "Wedding page",
@@ -52,32 +64,33 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       icon: <WeddingPage />,
       rol: ["novio", "novia", "otro", "empresa"],
     },
-    // {
-    //   title: "My pages",
-    //   onClick: async () => { setModal(!modal) },
-    //   icon: <WeddingPage />,
-    //   rol: ["empresa"],
-    // },
-    {
-      title: "Mis post",
-      onClick: async () => { await router.push(`${process.env.NEXT_PUBLIC_CMS}/posts`) },
-      icon: <Posts />,
-      rol: ["novio", "novia", "otro", "empresa"],
-    },
     {
       title: "Mis eventos",
-      onClick: async () => { await router.push(`/welcome-app`) },
+      onClick: async () => {
+        router.push(cookieContent?.eventCreated || user?.uid ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",)
+      },
       icon: <Eventos />,
       rol: ["all"],
     },
     {
-      title: "Cerrar Sesion",
+      title: "Proveedores",
+      onClick: async () => { router.push(`/`) },
+      icon: <CorazonPaddinIcon />,
+      rol: ["novio", "novia", "otro", "empresa"],
+    },
+    {
+      title: "Mi perfil",
+      onClick: async () => { router.push(`/configuracion`) },
       icon: <UserIcon />,
+      rol: ["novio", "novia", "otro", "empresa"],
+    },
+    {
+      title: "Cerrar Sesión",
+      icon: <MdLogout />,
       onClick: async () => {
         setHovered(false)
         setLoading(true);
         _signOut()
-        setLoading(false);
       },
       rol: ["novio", "novia", "otro", "empresa"],
     },
@@ -102,7 +115,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       timeout={300}
       classNames={"fade"}>
       < div
-        className={`w-80 p-3 h-20 rounded-xl h-max bg-white shadow-md absolute bottom-0 right-0 inset-y-full overflow-hidden z-50 
+        className={`bg-white w-80 p-3 rounded-xl h-max shadow-md absolute bottom-0 right-0 inset-y-full translate-y-1 overflow-hidden z-50 
     }`}
       >
         <div className="w-full border-b border-gray-100 pb-2">

@@ -31,13 +31,10 @@ const SocketProvider: FC = ({ children }): JSX.Element => {
   const [socket, setSocket] = useState<Socket | null>(initialContext.socket);
 
   useEffect(() => {
-    console.log("setSocket", user)
     const token = Cookies.get("idToken")
-    console.log("token", token)
-    console.log("socket", socket?.connected)
-    if (token && !socket?.connected) {
-      console.log("Conecta...")
-      setSocket(api.socketIO({ token }));
+   if (token && !socket?.connected) {
+      console.log("=======> Conecta...")
+      setSocket(api.socketIO({ token }))
     }
     if (!token && socket) {
       console.log("desconecta...")

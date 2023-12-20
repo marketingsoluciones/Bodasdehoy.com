@@ -10,14 +10,20 @@ import Link from "next/link";
 
 export const MiPerfil = () => {
   const { user } = AuthContextProvider();
+  const [path, setPath] = useState("")
   const initialValues = {
     Usuario: "" + -+6,
   };
 
+  useEffect(() => {
+    setPath(window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "")
+  }, [])
+
+
   return (
     <div className="flex flex-col w-full gap-6 container ">
-      <div className={`${user?.role?.includes("empresa")?"hidden":"ml-auto hidden md:block"}`}>
-        <Link href={process.env.NEXT_PUBLIC_EVENTSAPP ?? "/"} passHref>
+      <div className={`${user?.role?.includes("empresa") ? "hidden" : "ml-auto hidden md:block"}`}>
+        <Link href={path} passHref>
           <button
             className="bg-white text-primary border border-primary px-4 py-2 text-sm rounded-xl w-fit"
             type="button"

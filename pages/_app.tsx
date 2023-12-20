@@ -15,6 +15,7 @@ import "swiper/css/bundle";
 import { DefaultSeo } from 'next-seo'
 import SEO from '../next-seo.config'
 import { useEffect, useState } from "react";
+import { InfoDevelopment } from '../components/InfoDevelopment';
 
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -24,6 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <DefaultLayout>
         <ChatComponent />
+        <InfoDevelopment />
         <DefaultSeo {...SEO} />
         <Component {...pageProps} />
       </DefaultLayout>

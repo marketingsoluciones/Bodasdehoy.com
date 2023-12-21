@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FC, MouseEventHandler, ReactNode, useEffect, useState } from "react";
-import {FacebookIcon,InstagramIcon,PinterestIcon,YoutubeIcon,} from "../Icons";
+import { FacebookIcon, InstagramIcon, PinterestIcon, YoutubeIcon, } from "../Icons";
 import { AuthContextProvider } from '../../context';
 
 type Item = {
@@ -22,7 +22,7 @@ export const Footer: FC = () => {
 
   const ListEmpresa: Item[] = [
 
-    { title: "Añadir mi empresa", route: redirect},
+    { title: "Añadir mi empresa", route: redirect },
     { title: "Herramienta para promocionar tus servicios", route: "/magazine/categoria/actualidad/marketing-para-empresas-de-bodas" },
   ];
 

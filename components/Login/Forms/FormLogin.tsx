@@ -36,7 +36,7 @@ const FormLogin: FC<any> = ({ setStage }) => {
 
   const handleSubmit = async (values: MyFormValues, actions: any) => {
     try {
-      signIn("credentials", values)
+      signIn({ type: "credentials", payload: values, setStage })
     } catch (error: any) {
       setLoading(false)
       console.error(JSON.stringify(error));

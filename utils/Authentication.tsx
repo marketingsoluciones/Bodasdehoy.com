@@ -136,14 +136,14 @@ export const useAuthentication = () => {
               ///////////////////////////
             } else {
               console.log("/////----///////////------> aqui", res?.user)
-              fetchApi({
-                query: queries.createUser,
-                variables: {
-                  uid: res?.user?.uid,
-                  role: whoYouAre
-                }
-              }).then(async () => {
-                if (whoYouAre) {
+              if (whoYouAre !== "") {
+                fetchApi({
+                  query: queries.createUser,
+                  variables: {
+                    uid: res?.user?.uid,
+                    role: whoYouAre
+                  }
+                }).then(async () => {
                   const token = (await res?.user?.getIdTokenResult())?.token;
                   await getSessionCookie(token)
                   const dateExpire = new Date(new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000))
@@ -169,11 +169,11 @@ export const useAuthentication = () => {
                     }
                   }
                   ///////////////////////////
-                } else {
-                  toast("error", `${res?.user?.email} no está registrado`)
-                  toast("success", `Haz click en Regístrate`)
-                }
-              })
+                })
+              } else {
+                toast("error", `${res?.user?.email} no está registrado`)
+                toast("success", `Haz click en Regístrate`)
+              }
             }
           })
         }

@@ -11,7 +11,7 @@ interface propsLogin {
   setStage: CallableFunction;
   stageRegister?: any
   setStageRegister?: any
-  whoYouAre: string
+  whoYouAre?: string
   setWhoYouAre?: any
 }
 
@@ -30,7 +30,7 @@ export const Login: FC<propsLogin> = ({ setStage, whoYouAre, setWhoYouAre }) => 
         <h2 className={`font-light text-tertiary flex items-center text-md `}>
           Accede a tu cuenta
         </h2>
-        <Providers setStage={setStage} whoYouAre={whoYouAre} />
+        <Providers setStage={setStage} whoYouAre={whoYouAre ?? ""} />
         <h2 className={`font-light w-full text-tertiary text-center text-md `}>
           ó
         </h2>
@@ -56,7 +56,7 @@ export const Register: FC<propsLogin> = ({ setStage, fStageRegister, stageRegist
             return <FirstStep setStageRegister={setStageRegister} value={setWhoYouAre} />
             break;
           case 1:
-            return <SecondStep setStageRegister={setStageRegister} stageRegister={stageRegister} whoYouAre={whoYouAre} setStage={setStage} />
+            return <SecondStep setStageRegister={setStageRegister} stageRegister={stageRegister} whoYouAre={whoYouAre ?? ""} setStage={setStage} />
             break;
           default:
             return <PageLogin />

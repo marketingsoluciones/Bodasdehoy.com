@@ -11,10 +11,6 @@ export const WhoYouAre = ({ select, setSelect }: propsWhoYouAre) => {
     icon: string;
   };
 
-  useEffect(() => {
-    console.log(select)
-  }, [select])
-
   const List: TypeOption[] = [
     { title: "novia", icon: "/FormRegister/icon-women.webp" },
     { title: "novio", icon: "/FormRegister/icon-men.webp" },

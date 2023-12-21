@@ -18,8 +18,8 @@ const PageLogin: FC = () => {
 
 
   const Stages: Forms = {
-    login: <Login setStage={setStage} />,
-    register: <Register setStage={setStage} />,
+    login: <Login setStage={setStage} whoYouAre="" />,
+    register: <Register setStage={setStage} whoYouAre="" />,
   };
 
   const keyDown: any = (event: KeyboardEvent) => {

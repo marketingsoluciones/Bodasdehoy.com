@@ -171,6 +171,7 @@ export const useAuthentication = () => {
                   ///////////////////////////
                 } else {
                   toast("error", `${res?.user?.email} no está registrado`)
+                  toast("success", `Haz click en Regístrate`)
                 }
               })
             }

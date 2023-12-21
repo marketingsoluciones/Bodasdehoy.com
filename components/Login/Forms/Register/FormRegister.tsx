@@ -11,6 +11,7 @@ import { phoneUtil, useAuthentication } from '../../../../utils/Authentication';
 import { useToast } from '../../../../hooks/useToast';
 import { FirebaseError } from "firebase/app";
 import { useRouter } from "next/router";
+import { redirections } from "./redirections";
 
 interface initialValues {
   uid?: string
@@ -50,7 +51,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     identifier: "",
     fullName: "",
     password: "",
-    phoneNumber: `+${phoneUtil.getCountryCodeForRegion(geoInfo.ipcountry)}`,
+    phoneNumber: `+${phoneUtil?.getCountryCodeForRegion(geoInfo?.ipcountry)}`,
     role: whoYouAre
   };
   const validationSchema = yup.object().shape({
@@ -154,37 +155,15 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
         console.log(30007, resp)
       }
     });
-
     // Crear usuario en MongoDB
     fetchApi({
-      query: queries.createUser, variables: {
-        ...values,
+      query: queries.createUser,
+      variables: {
+        role: values.role, uid: values.uid,
       }
     }).then(async (moreInfo: any) => {
-      console.log(888877, moreInfo)
-      // Almacenar en contexto USER con toda la info 
       setUser({ ...UserFirebase, ...moreInfo });
-
-      /////// REDIRECIONES ///////
-      if (router?.query?.end) {
-        router.push(`${router?.query?.end}`)
-        toast("success", `Inicio sesión con exito`)
-      } else {
-        if (router?.query?.d == "info-empresa" && moreInfo.role.includes("empresa")) {
-          const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
-          router.push(path ?? "")
-          toast("success", `Cuenta de empresa creada con exito`)
-        }
-        if (router?.query?.d == "info-empresa" && !moreInfo.role.includes("empresa")) {
-          router.push("/info-empresa")
-          toast("warning", `Inicio sesión con una cuenta que no es de empresa`)
-        }
-        if (router?.query?.d !== "info-empresa") {
-          router.push(redirect ? redirect : "/")
-          toast("success", `Cuenta creada con exito`)
-        }
-      }
-      ///////////////////////////
+      redirections({ router, moreInfo, redirect, toast })
     })
 
 

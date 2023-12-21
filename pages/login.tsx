@@ -34,6 +34,7 @@ const PageLogin: FC = () => {
   const [stage, setStage] = useState<keyof typeof Stages>("login");
   const [fStageRegister, setFStageRegister] = useState(0)
   const [stageRegister, setStageRegister] = useState(0)
+  const [whoYouAre, setWhoYouAre] = useState<string>("");
 
   useEffect(() => {
     setRedirect(null)
@@ -66,9 +67,9 @@ const PageLogin: FC = () => {
 
 
   const Stages: Forms = {
-    login: <Login setStage={setStage} />,
-    register: <Register fStageRegister={fStageRegister} setStage={setStage} stageRegister={stageRegister} setStageRegister={setStageRegister} />,
-    resetPassword: <ResetPass setStage={setStage} />
+    login: <Login setStage={setStage} whoYouAre={whoYouAre} setWhoYouAre={setWhoYouAre} />,
+    register: <Register setStage={setStage} stageRegister={stageRegister} setStageRegister={setStageRegister} whoYouAre={whoYouAre} setWhoYouAre={setWhoYouAre} />,
+    resetPassword: <ResetPass setStage={setStage} whoYouAre={whoYouAre} />
   };
 
   const keyDown: any = useCallback((event: KeyboardEvent) => {

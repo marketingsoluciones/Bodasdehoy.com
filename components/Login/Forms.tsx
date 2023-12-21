@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { LogoFullColor } from "../Icons";
 import { BusinessAccess, Providers, RegisterQuestion, ResetPassword } from "./Components";
 import FormLogin from "./Forms/FormLogin";
@@ -11,9 +11,15 @@ interface propsLogin {
   setStage: CallableFunction;
   stageRegister?: any
   setStageRegister?: any
+  whoYouAre: string
+  setWhoYouAre?: any
 }
 
-export const Login: FC<propsLogin> = ({ setStage }) => {
+export const Login: FC<propsLogin> = ({ setStage, whoYouAre, setWhoYouAre }) => {
+  useEffect(() => {
+    setWhoYouAre("")
+  }, [])
+
 
   return (
     <>
@@ -24,7 +30,7 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
         <h2 className={`font-light text-tertiary flex items-center text-md `}>
           Accede a tu cuenta
         </h2>
-        <Providers setStage={setStage} />
+        <Providers setStage={setStage} whoYouAre={whoYouAre} />
         <h2 className={`font-light w-full text-tertiary text-center text-md `}>
           ó
         </h2>
@@ -36,8 +42,11 @@ export const Login: FC<propsLogin> = ({ setStage }) => {
   );
 };
 
-export const Register: FC<propsLogin> = ({ setStage, fStageRegister, stageRegister, setStageRegister }) => {
-  const [whoYouAre, setWhoYouAre] = useState<string>(fStageRegister == 1 ? "empresa" : "");
+export const Register: FC<propsLogin> = ({ setStage, fStageRegister, stageRegister, setStageRegister, whoYouAre, setWhoYouAre }) => {
+  useEffect(() => {
+    setWhoYouAre(fStageRegister == 1 ? "empresa" : "")
+  }, [])
+
 
   return (
     <>

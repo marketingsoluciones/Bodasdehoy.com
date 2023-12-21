@@ -86,7 +86,7 @@ const InfoEmpresas = () => {
           </>
         }
         <div className={`mx-auto w-max ${user?.uid ? "pt-1" : "pt-8"}`}>
-          <Link href={"/login?d=info-empresa&f=register"} passHref >
+          <Link href={`/login?d=${router?.query?.d ? router.query.d : "info-empresa"}&f=register`} passHref >
             <ButtonComponent>
               REGISTRATE <strong>GRATIS</strong> COMO EMPRESA
             </ButtonComponent>
@@ -96,7 +96,7 @@ const InfoEmpresas = () => {
           Y si ya tienes una cuenta empresa
         </h3>
         <div className="mx-auto w-max pt-2">
-          <Link href={"/login?d=info-empresa"} passHref >
+          <Link href={`/login?d=${router?.query?.d ? router.query.d : "info-empresa"}`} passHref >
             <ButtonComponent>
               INICIA SESION
             </ButtonComponent>

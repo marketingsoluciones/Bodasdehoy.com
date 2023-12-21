@@ -43,50 +43,18 @@ export const ResetPassword: FC<propsResetPassword> = ({ onClick }) => {
   );
 };
 
+interface propsProviders {
+  setStage: any
+  whoYouAre: string
+}
+export const Providers: FC<propsProviders> = ({ setStage, whoYouAre }) => {
 
-export const Providers: FC<any> = ({ setStage }) => {
-
-
-  const { signIn } = useAuthentication();
-  const toast = useToast();
-  const { setLoading } = LoadingContextProvider();
-
-  const handleClick = async (provider: any) => {
-    try {
-      signIn("provider", provider);
-    } catch (error) {
-      setLoading(false);
-      toast("error", JSON.stringify(error));
-      console.log("este es un error en el onClick de los listProviders", error);
-    }
-  };
-
-  /* const ListProviders = [
-    {
-      icon: <FacebookIcon className="w-5 h-5" />,
-      function: () => handleClick(FacebookProvider),
-    },
-    {
-      icon: <GoogleIcon className="w-5 h-5" />,
-      function: () => handleClick(GoogleProvider()),
-    },
-    {
-      icon: <AppleIcon className="w-5 h-5" />,
-      function: () => alert("Aun por configurar"),
-    },
-  ];
- */
   return (
     <>
       <div className={`text-center flex flex-col gap-2 w-full items-center `}>
-        {/* <div className="gap-4 flex items-center">
-        {ListProviders.map((item, idx) => (
-          <Icon key={idx} icon={item.icon} onClick={item.function} />
-        ))}
-      </div> */}
         <div className="">
-          <ButtonProvider provider="Google" handle={GoogleProvider() } icon={<GoogleIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
-          <ButtonProvider provider="Facebook" handle={FacebookProvider} icon={<FacebookIcon2 className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
+          <ButtonProvider provider="Google" handle={GoogleProvider()} setStage={setStage} whoYouAre={whoYouAre} icon={<GoogleIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
+          <ButtonProvider provider="Facebook" handle={FacebookProvider} setStage={setStage} whoYouAre={whoYouAre} icon={<FacebookIcon2 className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
           {/* <ButtonProvider provider="Apple" handle={AppleProvidor()} icon={<AppleIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} /> */}
         </div>
       </div>

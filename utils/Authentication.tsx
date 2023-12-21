@@ -50,9 +50,41 @@ export const useAuthentication = () => {
 
   }, [])
 
+  const types = {
+    provider: async (payload: any) => {
+      try {
+        const asdf = await signInWithPopup(getAuth(), payload)
+        console.log(8445, asdf)
+        return asdf
+      } catch (error: any) {
+        setLoading(false);
+        const er = error.toString().split(".")[0].split(": Error ")[1]
+        if (er == "(auth/account-exists-with-different-credential)") {
+          toast("error", "El correo asociado a su provedor ya se encuentra registrado en bodasdehoy.com");
+        }
+      }
+    },
+    credentials: async (payload: any) => await signInWithEmailAndPassword(getAuth(), payload.identifier, payload.password),
+    phone: async (payload: any, verificationId: any) => {
+      console.log("verificationId", verificationId)
+      const authCredential = PhoneAuthProvider.credential(verificationId, payload?.password ?? "");
+      console.log(55544411, "authCredential", authCredential)
+      const userCredential = await signInWithCredential(getAuth(), authCredential);
+      console.log(userCredential)
+      return userCredential
+    }
+  };
+
+  interface propsSinnIn {
+    type: keyof typeof types
+    payload: any
+    verificationId?: any
+    setStage: any
+    whoYouAre?: any
+  }
   const signIn = useCallback(
-    async (type: keyof typeof types, payload, verificationId?) => {
-      console.log(8444, type)
+    async ({ type, payload, verificationId, setStage, whoYouAre }: propsSinnIn) => {
+      console.log(8444, whoYouAre)
       /*
           ### Login por primera vez
           1.- Verificar tipo de login y tomar del diccionario el metodo
@@ -63,34 +95,11 @@ export const useAuthentication = () => {
       */
 
 
-      const types = {
-        provider: async () => {
-          try {
-            const asdf = await signInWithPopup(getAuth(), payload)
 
-            return asdf
-          } catch (error: any) {
-            setLoading(false);
-            const er = error.toString().split(".")[0].split(": Error ")[1]
-            if (er == "(auth/account-exists-with-different-credential)") {
-              toast("error", "El correo asociado a su provedor ya se encuentra registrado en bodasdehoy.com");
-            }
-          }
-        },
-        credentials: async () => await signInWithEmailAndPassword(getAuth(), payload.identifier, payload.password),
-        phone: async () => {
-          console.log("verificationId", verificationId)
-          const authCredential = PhoneAuthProvider.credential(verificationId, payload?.password ?? "");
-          console.log(55544411, "authCredential", authCredential)
-          const userCredential = await signInWithCredential(getAuth(), authCredential);
-          console.log(userCredential)
-          return userCredential
-        }
-      };
 
       // Autenticar con firebase
       try {
-        const res: UserCredential | void = await types[type]();
+        const res: UserCredential | void = await types[type](payload, verificationId);
         console.log("***/////-----", res?.user?.uid)
         if (res) {
           // Solicitar datos adicionales del usuario
@@ -99,23 +108,21 @@ export const useAuthentication = () => {
             variables: { uid: res.user.uid },
           }).then(async (moreInfo: any) => {
 
-            console.log("***/////-----1", moreInfo)
+            console.log("***/////-----101", moreInfo)
             if (moreInfo?.status) {
               const token = (await res?.user?.getIdTokenResult())?.token;
-              const sessionCookie = await getSessionCookie(token)
-              if (sessionCookie) { }
-              // Actualizar estado con los dos datos
+              await getSessionCookie(token)
               setUser({ ...res.user, ...moreInfo });
               console.log(4001, router?.query?.end)
               /////// REDIRECIONES ///////
               if (router?.query?.end) {
                 router.push(`${router?.query?.end}`)
-                toast("success", `Inicio sesión con exito`)
+                toast("success", `Inicio sesión con éxito`)
               } else {
                 if (router?.query?.d == "info-empresa" && moreInfo.role.includes("empresa")) {
                   const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
                   router.push(path ?? "")
-                  toast("success", `Inicio de sesión de empresa con exito`)
+                  toast("success", `Inicio de sesión de empresa con éxito`)
                 }
                 if (router?.query?.d == "info-empresa" && !moreInfo.role.includes("empresa")) {
                   router.push("/info-empresa")
@@ -123,22 +130,49 @@ export const useAuthentication = () => {
                 }
                 if (router?.query?.d !== "info-empresa") {
                   router.push(redirect ? redirect : "/")
-                  toast("success", `Inicio sesión con exito`)
+                  toast("success", `Inicio sesión con éxito`)
                 }
               }
               ///////////////////////////
             } else {
-              toast("error", "aun no está registrado");
-              //verificar que firebase me devuelva un correo del usuario
-              if (res?.user?.email) {
-                //seteo usuario temporal pasar nombre y apellido de firebase a formulario de registro
-                setUserTemp({ ...res.user });
-                toast("success", "Seleccione quien eres y luego completa el formulario");
-                return false
-              } else {
-                toast("error", "usted debe tener asociado un correo a su cuenta de proveedor");
-                return false
-              }
+              console.log("/////----///////////------> aqui", res?.user)
+              fetchApi({
+                query: queries.createUser,
+                variables: {
+                  uid: res?.user?.uid,
+                  role: whoYouAre
+                }
+              }).then(async () => {
+                if (whoYouAre) {
+                  const token = (await res?.user?.getIdTokenResult())?.token;
+                  await getSessionCookie(token)
+                  const dateExpire = new Date(new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000))
+                  Cookies.set("idToken", await res?.user?.getIdToken(), { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
+                  setUser({ ...res.user, role: [whoYouAre] });
+                  /////// REDIRECIONES ///////
+                  if (router?.query?.end) {
+                    router.push(`${router?.query?.end}`)
+                    toast("success", `Registro sesión con éxito`)
+                  } else {
+                    if (router?.query?.d == "info-empresa" && [whoYouAre].includes("empresa")) {
+                      const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
+                      router.push(path ?? "")
+                      toast("success", `Registro de sesión de empresa con éxito`)
+                    }
+                    if (router?.query?.d == "info-empresa" && ![whoYouAre].includes("empresa")) {
+                      router.push("/info-empresa")
+                      toast("warning", `Registro sesión con una cuenta que no es de empresa`)
+                    }
+                    if (router?.query?.d !== "info-empresa") {
+                      router.push(redirect ? redirect : "/")
+                      toast("success", `Registro sesión con éxito`)
+                    }
+                  }
+                  ///////////////////////////
+                } else {
+                  toast("error", `${res?.user?.email} no está registrado`)
+                }
+              })
             }
           })
         }

@@ -204,15 +204,15 @@ const CategoriesComponent: FC = () => {
       <div className="grid md:grid-cols-3 gap-10 text-gray-300 justify-center">
         <FieldArray name={"subCategories"}>
           {({ insert, remove, push, form }) =>
-            categories?.map((category: Partial<category>) => (
-              <div key={category._id} className="flex flex-col gap-4">
+            categories?.map((category: Partial<category>, idx: number) => (
+              <div key={idx} className="flex flex-col gap-4">
                 <h3 className="text-primary font-medium capitalize">
                   {category?.title}
                 </h3>
                 <div className="flex flex-col gap-6">
-                  {category?.subCategories?.map((subCategory: subCategory) => (
+                  {category?.subCategories?.map((subCategory: subCategory, idx: number) => (
                     <Checkbox
-                      key={subCategory._id}
+                      key={idx}
                       checked={form.values?.subCategories?.filter((item: any) => item._id === subCategory._id)?.length > 0}
                       label={subCategory.title}
                       name={subCategory.title}

@@ -15,7 +15,6 @@ export const CuadroResumen: FC<PropsCuadroResumen> = ({ DataCuadro }) => {
                 {DataCuadro.map((item: any, idx: any) => {
                     const theData = { __html: item.texto }
                     return (
-                        <>
                             <div key={idx} className="flex flex-col md:flex-row bg-white  w-[100%] rounded-3xl shadow-lg">
                                 <div className="md:w-[30%] text-white text-center text-sm bg-green-secundario flex flex-col items-center justify-center p-5 rounded-3xl gap-3">
                                     <img src={item.img} alt={item.alt} width={70} />
@@ -25,7 +24,6 @@ export const CuadroResumen: FC<PropsCuadroResumen> = ({ DataCuadro }) => {
                                     <p dangerouslySetInnerHTML={theData}></p>
                                 </div>
                             </div>
-                        </>
                     )
                 })}
             </div>
@@ -43,9 +41,7 @@ export const CuadroResumen: FC<PropsCuadroResumen> = ({ DataCuadro }) => {
                     {DataCuadro.map((item: any, idx: any) => {
                         const theData = { __html: item.texto }
                         return (
-                            <>
-                                <SwiperSlide key={idx}
-                                >
+                                <SwiperSlide key={idx}>
                                     <div className="flex flex-col mx-10  bg-white rounded-3xl shadow-lg mb-10">
                                         <div className=" text-white text-center text-sm bg-green-secundario flex flex-col items-center p-5 rounded-3xl gap-3">
                                             <div className="w-1/2 h-1/2">
@@ -58,7 +54,6 @@ export const CuadroResumen: FC<PropsCuadroResumen> = ({ DataCuadro }) => {
                                         </div>
                                     </div>
                                 </SwiperSlide>
-                            </>
                         )
                     })}
                 </Swiper>

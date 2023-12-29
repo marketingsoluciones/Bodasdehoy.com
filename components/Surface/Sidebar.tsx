@@ -164,7 +164,7 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
                                 className="object-cover w-16 h-16 rounded-full"
                                 alt={user?.displayName ?? ""}
                             />
-                            <p className="min-h-[36px] text-lg text-white pt-2">
+                            <div className="min-h-[36px] text-lg text-white pt-2">
                                 {user?.displayName
                                     ? <span className="capitalize">{user?.displayName}</span>
                                     : <div className="text-sm">
@@ -176,7 +176,7 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
                                             / Registrarse
                                         </span>
                                     </div>}
-                            </p>
+                            </div>
                         </div>
 
                         <ul className="flex flex-col pl-6 pt-2">

@@ -18,8 +18,8 @@ interface propsFormQuestion {
 }
 export const FormQuestion: FC<propsFormQuestion> = ({ data }) => {
   const { values, setFieldValue } = useFormikContext<FormikValues>();
-     
-  
+
+
   return (
     <div className="flex flex-col gap-10">
       <SectionForm>
@@ -78,33 +78,33 @@ const QuestionsComponent: FC<{ data: questionsAndAnswers[] }> = ({ data }) => {
   const { values, setFieldValue } = useFormikContext<FormikValues>();
 
   useEffect(() => {
-    if(values.questionsAndAnswers){
-      const mapResult = values.questionsAndAnswers.reduce((acc:any,item : questionsAndAnswers) => {
+    if (values.questionsAndAnswers) {
+      const mapResult = values.questionsAndAnswers.reduce((acc: any, item: questionsAndAnswers) => {
         acc[item.questions._id] = item.answers
         return acc
       }, {})
       setFieldValue("questionsAndAnswers2", mapResult)
     }
-  }, []) 
+  }, [])
 
-  
+
   useEffect(() => {
     if (values.questionsAndAnswers2) {
       const arrCharac = Object?.entries(values?.questionsAndAnswers2 ?? {});
       const reduce = arrCharac?.reduce((acc: any, item: any) => {
-          acc.push({ questions: {_id : item[0]}, answers: item[1] });
+        acc.push({ questions: { _id: item[0] }, answers: item[1] });
         return acc;
       }, []);
       values && setFieldValue("questionsAndAnswers", reduce);
     }
   }, [values.questionsAndAnswers2]);
-  
+
 
   return (
     <div className="w-full flex flex-col gap-3 ">
-      {data?.map((item : questionsAndAnswers) => {
+      {data?.map((item: questionsAndAnswers, idx: number) => {
         return (
-          <div key={item.questions._id} className="text-primary text-lg">
+          <div key={idx} className="text-primary text-lg">
             <InputField
               name={`questionsAndAnswers2.${item.questions._id}`}
               type="text"
@@ -128,23 +128,23 @@ const CharacteristicComponent: FC<propsCharacteristicsComponent> = ({
 
 
   useEffect(() => {
-    if(values.characteristics){
-      const mapResult = values.characteristics.reduce((acc:any,item : characteristic) => {
-        if(item.characteristic._id){
+    if (values.characteristics) {
+      const mapResult = values.characteristics.reduce((acc: any, item: characteristic) => {
+        if (item.characteristic._id) {
           acc[item.characteristic._id] = item.items.map((character) => character.title)
         }
         return acc
       }, {})
       setFieldValue("characteristics2", mapResult)
     }
-  }, []) 
+  }, [])
 
   useEffect(() => {
     if (values.characteristics2) {
       const arrCharac = Object?.entries(values?.characteristics2 ?? {});
       const reduce = arrCharac?.reduce((acc: any, item: any) => {
         if (item[1]?.length > 0) {
-          acc.push({ characteristic: {_id : item[0]}, items: item[1]?.map((item: string) => ({title: item})) });
+          acc.push({ characteristic: { _id: item[0] }, items: item[1]?.map((item: string) => ({ title: item })) });
         }
         return acc;
       }, []);
@@ -158,8 +158,8 @@ const CharacteristicComponent: FC<propsCharacteristicsComponent> = ({
       <p className="text-sm text-gray-500 w-full">
         Selecciona las caracteristicas que definan tu empresa.
       </p>
-      {data?.map((item) => (
-        <div key={item.characteristic._id} className="flex flex-col gap-6 pt-6">
+      {data?.map((item, idx: number) => (
+        <div key={idx} className="flex flex-col gap-6 pt-6">
           <FieldArrayWithProps
             key={item?.characteristic?._id}
             data={item?.characteristic?.items}
@@ -179,7 +179,7 @@ interface propsFieldArrayWithProps {
   data: character[];
   label: string;
   name: string
-  values : string[]
+  values: string[]
 }
 const FieldArrayWithProps: FC<propsFieldArrayWithProps> = ({
   data,
@@ -203,9 +203,9 @@ const FieldArrayWithProps: FC<propsFieldArrayWithProps> = ({
       <FieldArray name={name}>
         {({ remove, push }) => (
           <div className="grid md:grid-cols-3 gap-3 py-2 ">
-            {dataArray?.map((item: character) => (
+            {dataArray?.map((item: character, idx: number) => (
               <Checkbox
-                key={item._id}
+                key={idx}
                 checked={values?.includes(item.title)}
                 label={item.title}
                 name={item.title}
@@ -213,8 +213,8 @@ const FieldArrayWithProps: FC<propsFieldArrayWithProps> = ({
                   e.target.checked
                     ? push(item.title)
                     : remove(
-                        handleRemove(values, item.title)
-                      )
+                      handleRemove(values, item.title)
+                    )
                 }
               />
             ))}

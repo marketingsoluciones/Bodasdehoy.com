@@ -23,6 +23,7 @@ export const parseJwt = (token: string) => {
 }
 
 export const useAuthentication = () => {
+  console.log("useAuthentication")
   const { setLoading } = LoadingContextProvider();
   const { setUser, setUserTemp, redirect, setRedirect, geoInfo } = AuthContextProvider();
   const toast = useToast();

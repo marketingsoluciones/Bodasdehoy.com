@@ -44,6 +44,7 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
   const [geoInfo, setGeoInfo] = useState<any>();
 
   useEffect(() => {
+    console.log("authContext")
     auth.onAuthStateChanged(async (user: any) => {
       if (!user) {
         setUser(user)

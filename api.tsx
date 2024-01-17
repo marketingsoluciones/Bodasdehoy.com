@@ -17,7 +17,9 @@ const instance: AxiosInstance = axios.create({ baseURL: process.env.NEXT_PUBLIC_
 export const api: Fetching = {
     graphql: async (data: object, token: string): Promise<AxiosResponse> => {
         let idToken = null
-        if (getAuth().currentUser) {
+        console.log("api", data)
+        const sessionCookie = Cookies.get("sessionBodas")
+        if (getAuth().currentUser && sessionCookie) {
             idToken = Cookies.get("idToken")
             if (!idToken) {
                 idToken = await getAuth().currentUser?.getIdToken(true)

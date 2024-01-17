@@ -1,16 +1,7 @@
-import {
-  createContext,
-  FC,
-  useState,
-  useEffect,
-  useContext,
-  SetStateAction,
-} from "react";
+import { createContext, FC, useState, useEffect, useContext } from "react";
 import { Socket } from "socket.io-client";
 import { AuthContextProvider } from ".";
 import { api } from '../api';
-import { Dispatch } from 'react';
-import { getCookie } from '../utils/Cookies';
 import Cookies from "js-cookie";
 
 
@@ -32,12 +23,10 @@ const SocketProvider: FC = ({ children }): JSX.Element => {
 
   useEffect(() => {
     const token = Cookies.get("idToken")
-   if (token && !socket?.connected) {
-      console.log("=======> Conecta...")
+    if (token && !socket?.connected) {
       setSocket(api.socketIO({ token }))
     }
     if (!token && socket) {
-      console.log("desconecta...")
       socket.disconnect();
     }
   }, [user])

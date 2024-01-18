@@ -46,14 +46,13 @@ export const api: Fetching = {
         return await axios.get('https://restcountries.com/v3.1/all')
     },
 
-    socketIO: ({ token, meta }: { token: string, meta: string }) => {
-        console.log("**********///////------>", "API socket", meta)
+    socketIO: ({ token, origin }: { token: string, origin: string }) => {
         const manager = new Manager(process.env.NEXT_PUBLIC_BASE_URL ?? "")
         const socket = manager.socket("/", {
             auth: {
                 token: `Bearer ${token}`,
                 development: "bodasdehoy",
-                meta
+                origin
             }
         })
         return socket

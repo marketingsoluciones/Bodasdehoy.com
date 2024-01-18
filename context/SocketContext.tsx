@@ -23,9 +23,8 @@ const SocketProvider: FC = ({ children }): JSX.Element => {
 
   useEffect(() => {
     const token = Cookies.get("idToken")
-    console.log(555411, navigator.userAgent)
     if (token && !socket?.connected) {
-      setSocket(api.socketIO({ token, meta: navigator }))
+      setSocket(api.socketIO({ token, origin: window.origin }))
     }
     if (!token && socket) {
       console.log(1445411155, "socket.disconnect")

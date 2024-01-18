@@ -188,12 +188,15 @@ export const useAuthentication = () => {
     await fetchApi({ query: queries.signOut, variables: { sessionCookie: Cookies.get("sessionBodas") } })
     Cookies.remove("sessionBodas", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
     Cookies.remove("idToken", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
-    await getAuth().signOut().then(() => {
-      console.log("signOut con éxito")
-    })
-      .catch((error) => {
-        console.log(error);
-      });
+    setTimeout(async () => {
+      await getAuth().signOut().then(() => {
+        console.log("signOut con éxito")
+        setUser(null)
+      })
+        .catch((error) => {
+          console.log(error);
+        });
+    }, 700);
     setUser(null)
     toast("success", "Gracias por su visita")
     router.push("/");

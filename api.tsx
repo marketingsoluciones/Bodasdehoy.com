@@ -17,7 +17,6 @@ const instance: AxiosInstance = axios.create({ baseURL: process.env.NEXT_PUBLIC_
 export const api: Fetching = {
     graphql: async (data: object, token: string): Promise<AxiosResponse> => {
         let idToken = null
-        console.log("api")
         if (getAuth().currentUser) {
             idToken = Cookies.get("idToken")
             if (!idToken) {

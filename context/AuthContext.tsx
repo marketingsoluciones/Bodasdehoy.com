@@ -49,9 +49,12 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
     const currentUser = getAuth().currentUser
     const sessionCookie = Cookies.get("sessionBodas")
     console.log("authContext", currentUser)
-    if (currentUser && !sessionCookie) {
-      console.log("---------------////////////////---->", 10004)
-      getAuth().signOut()
+    if (!sessionCookie) {
+      Cookies.remove("idToken", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
+      if (currentUser) {
+        console.log("---------------////////////////---->", 10004)
+        getAuth().signOut()
+      }
     }
     auth.onAuthStateChanged(async (user: any) => {
       if (!user) {

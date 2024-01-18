@@ -106,6 +106,7 @@ export const useAuthentication = () => {
         if (res) {
           const idToken = await res?.user?.getIdToken()
           const dateExpire = new Date(parseJwt(idToken).exp * 1000)
+          console.log("idToken", 103, dateExpire)
           Cookies.set("idToken", idToken, { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
           fetchApi({
             query: queries.getUser,

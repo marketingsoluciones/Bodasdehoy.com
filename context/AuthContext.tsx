@@ -1,7 +1,8 @@
-import { User } from "@firebase/auth";
+import { User, getAuth } from "@firebase/auth";
 import { createContext, FC, useState, Dispatch, SetStateAction, useEffect, useContext } from "react";
 import { auth } from "../firebase";
 import { fetchApi, queries } from "../utils/Fetching";
+import Cookies from "js-cookie";
 
 
 export interface UserMax extends User {
@@ -45,6 +46,13 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
 
   useEffect(() => {
     console.log("authContext")
+    const currentUser = getAuth().currentUser
+    const sessionCookie = Cookies.get("sessionBodas")
+    console.log("authContext", currentUser)
+    if (currentUser && !sessionCookie) {
+      console.log("---------------////////////////---->", 10004)
+      getAuth().signOut()
+    }
     auth.onAuthStateChanged(async (user: any) => {
       if (!user) {
         setUser(user)

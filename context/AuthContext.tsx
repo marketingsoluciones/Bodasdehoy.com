@@ -46,26 +46,23 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
 
   useEffect(() => {
     console.log("authContext")
-    const currentUser = getAuth().currentUser
-    const sessionCookie = Cookies.get("sessionBodas")
-    console.log("authContext", currentUser)
-    if (!sessionCookie) {
-      Cookies.remove("idToken", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
-      if (currentUser) {
-        console.log("---------------////////////////---->", 10004)
-        getAuth().signOut()
-      }
-    }
     auth.onAuthStateChanged(async (user: any) => {
       if (!user) {
         setUser(user)
       }
-      if (user && window.location.pathname !== "/login") {
+      const sessionBodas = Cookies.get("sessionBodas")
+      if (user && window.location.pathname !== "/login" && sessionBodas) {
+        console.log("********************------", 1000055)
         const moreInfo = await fetchApi({
           query: queries.getUser,
           variables: { uid: user?.uid },
         });
-        setUser({ ...user, ...moreInfo });
+        if (moreInfo) {
+          setUser({ ...user, ...moreInfo });
+        } else {
+          Cookies.remove("idToken", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
+          getAuth().signOut()
+        }
       }
     });
   }, []);

@@ -140,11 +140,13 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       const dateExpire = new Date(parseJwt(idToken).exp * 1000)
       console.log("idToken", 102, dateExpire)
       Cookies.set("idToken", idToken, { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
+      await getSessionCookie(idToken)
       // Crear usuario en MongoDB
+      console.log("********************------", 1000056, UserFirebase)
       fetchApi({
         query: queries.createUser,
         variables: {
-          role: values.role, uid: values.uid,
+          role: values.role, uid: values.uid, email: UserFirebase?.email
         }
       }).then(async (moreInfo: any) => {
         setUser({ ...UserFirebase, ...moreInfo });

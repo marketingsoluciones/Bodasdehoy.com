@@ -45,14 +45,12 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
   const [geoInfo, setGeoInfo] = useState<any>();
 
   useEffect(() => {
-    console.log("authContext")
     auth.onAuthStateChanged(async (user: any) => {
       if (!user) {
         setUser(user)
       }
       const sessionBodas = Cookies.get("sessionBodas")
       if (user && window.location.pathname !== "/login" && sessionBodas) {
-        console.log("********************------", 1000055)
         const moreInfo = await fetchApi({
           query: queries.getUser,
           variables: { uid: user?.uid },

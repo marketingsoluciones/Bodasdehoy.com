@@ -112,7 +112,6 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       }
       /*Aquí para regsitrase con correo electrónico*/
       if (values?.identifier.includes("@")) {
-        console.log("correo")
         const userCredential: UserCredential = await createUserWithEmailAndPassword(
           getAuth(),
           values?.identifier,
@@ -138,11 +137,9 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       updateProfile(UserFirebase, { displayName: values?.fullName });
       const idToken = await UserFirebase?.getIdToken()
       const dateExpire = new Date(parseJwt(idToken).exp * 1000)
-      console.log("idToken", 102, dateExpire)
       Cookies.set("idToken", idToken, { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
       await getSessionCookie(idToken)
       // Crear usuario en MongoDB
-      console.log("********************------", 1000056, UserFirebase)
       fetchApi({
         query: queries.createUser,
         variables: {

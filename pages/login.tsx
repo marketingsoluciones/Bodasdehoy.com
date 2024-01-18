@@ -24,7 +24,6 @@ const PageLogin: FC = () => {
       // tokens as needed.
       isTokenAutoRefreshEnabled: true
     });
-    console.log(234567, appCheck)
   } catch (error) {
     console.log(error)
   }

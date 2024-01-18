@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios'
 import Cookies from 'js-cookie';
-import { io } from "socket.io-client";
+import { io, Manager } from "socket.io-client";
 import { getAuth } from 'firebase/auth';
 import { parseJwt } from './utils/Authentication';
 
@@ -46,11 +46,14 @@ export const api: Fetching = {
         return await axios.get('https://restcountries.com/v3.1/all')
     },
 
-    socketIO: ({ token }: { token: string }) => {
-        const socket = io(process.env.NEXT_PUBLIC_BASE_URL ?? "", {
+    socketIO: ({ token, meta }: { token: string, meta: string }) => {
+        console.log("**********///////------>", "API socket", meta)
+        const manager = new Manager(process.env.NEXT_PUBLIC_BASE_URL ?? "")
+        const socket = manager.socket("/", {
             auth: {
                 token: `Bearer ${token}`,
                 development: "bodasdehoy",
+                meta
             }
         })
         return socket

@@ -1,7 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse } from 'axios'
 import Cookies from 'js-cookie';
-import { io } from "socket.io-client";
-import { getCookie } from './utils/Cookies';
+import { io, Manager } from "socket.io-client";
+import { getAuth } from 'firebase/auth';
+import { parseJwt } from './utils/Authentication';
 
 
 type Fetching = {
@@ -11,21 +12,21 @@ type Fetching = {
     socketIO: CallableFunction
 }
 
-
-
 const instance: AxiosInstance = axios.create({ baseURL: process.env.NEXT_PUBLIC_BASE_URL })
-
 
 export const api: Fetching = {
     graphql: async (data: object, token: string): Promise<AxiosResponse> => {
-        const sessionBodas = Cookies.get("sessionBodas")
-        let tokenFinal = undefined
-        if (sessionBodas) {
-            tokenFinal = Cookies.get("idToken")
+        let idToken = Cookies.get("idToken")
+        if (getAuth().currentUser) {
+            if (!idToken) {
+                idToken = await getAuth().currentUser?.getIdToken(true)
+                const dateExpire = new Date(parseJwt(idToken ?? "").exp * 1000)
+                Cookies.set("idToken", idToken ?? "", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
+            }
         }
         return await instance.post("/graphql", data, {
             headers: {
-                Authorization: `Bearer ${tokenFinal}`,
+                Authorization: `Bearer ${idToken}`,
                 Development: "bodasdehoy"
             }
         })
@@ -44,11 +45,15 @@ export const api: Fetching = {
         return await axios.get('https://restcountries.com/v3.1/all')
     },
 
-    socketIO: ({ token }: { token: string }) => {
-        const socket = io(process.env.NEXT_PUBLIC_BASE_URL ?? "", {
+    socketIO: ({ token, origin }: { token: string, origin: string }) => {
+        const manager = new Manager(process.env.NEXT_PUBLIC_BASE_URL ?? "", {
+            closeOnBeforeunload: true
+        })
+        const socket = manager.socket("/", {
             auth: {
                 token: `Bearer ${token}`,
                 development: "bodasdehoy",
+                origin
             }
         })
         return socket

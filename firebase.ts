@@ -1,10 +1,5 @@
-import { initializeApp, getApp, getApps } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import { GoogleAuthProvider, FacebookAuthProvider, getAuth, OAuthProvider } from "firebase/auth";
-import { useEffect, useState } from "react";
-import { getStorage, ref, uploadBytes } from "firebase/storage"
-import { string } from "yup";
-import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
-
 
 const otherAppConfig = {
   apiKey: "AIzaSyDVMoVLWWvolofYOcTYA0JZ0QHyng72LAM",

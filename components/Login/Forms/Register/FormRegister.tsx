@@ -1,17 +1,17 @@
 import { Formik, Form } from "formik";
-import { FC, Children, memo, Dispatch, SetStateAction, useState, useEffect, useRef } from "react";
-import { DatePicker, InputField } from "../../../Inputs";
+import { FC, Children, memo, Dispatch, SetStateAction, useState, useEffect } from "react";
+import { InputField } from "../../../Inputs";
 import { EmailIcon, UserForm, Eye, EyeSlash, LockClosed, PhoneMobile, } from "../../../Icons";
-import { createUserWithEmailAndPassword, updateProfile, UserCredential, getAuth, RecaptchaVerifier, PhoneAuthProvider, signInWithCredential, updatePhoneNumber, updateEmail } from "@firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, UserCredential, getAuth, RecaptchaVerifier, PhoneAuthProvider, signInWithCredential, updatePhoneNumber } from "@firebase/auth";
 import * as yup from "yup";
-import { UserMax } from "../../../../context/AuthContext";
 import { AuthContextProvider, LoadingContextProvider, } from "../../../../context";
 import { fetchApi, queries } from "../../../../utils/Fetching";
-import { phoneUtil, useAuthentication } from '../../../../utils/Authentication';
+import { parseJwt, phoneUtil, useAuthentication } from '../../../../utils/Authentication';
 import { useToast } from '../../../../hooks/useToast';
 import { FirebaseError } from "firebase/app";
 import { useRouter } from "next/router";
 import { redirections } from "./redirections";
+import Cookies from "js-cookie";
 
 interface initialValues {
   uid?: string
@@ -21,7 +21,6 @@ interface initialValues {
   phoneNumber: string
   role: string
 }
-
 
 // Set de mensajes de error
 yup.setLocale({
@@ -93,7 +92,6 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     }).test("Unico", `Número inválido`, (value: any) => {
       const name = document.activeElement?.getAttribute("name")
       if (name !== "phoneNumber" && value?.length > 3) {
-        console.log(1001, value)
         return isPhoneValid(value)
       } else {
         return true
@@ -101,38 +99,28 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     })
   })
 
-  useEffect(() => {
-    console.log(activeSaveRegister)
-  }, [activeSaveRegister])
-
   const nextSave = async (values: any) => {
-    let UserFirebase: Partial<UserMax> = user ?? {};
+    let UserFirebase: any = user ?? {};
     try {
       /*Aquí para regsitrase con número de teléfono*/
       if (!values?.identifier.includes("@")) {
-        console.log(verificationId)
         const authCredential = PhoneAuthProvider.credential(verificationId, values?.password ?? "");
-        console.log(55544411, "authCredential", authCredential)
         const userCredential = await signInWithCredential(getAuth(), authCredential);
-        console.log(55544422, 'verify: ', userCredential);
         UserFirebase = userCredential.user;
 
         await updatePhoneNumber(userCredential.user, values.phoneNumber)
       }
       /*Aquí para regsitrase con correo electrónico*/
       if (values?.identifier.includes("@")) {
-        console.log("correo")
         const userCredential: UserCredential = await createUserWithEmailAndPassword(
           getAuth(),
           values?.identifier,
           values?.password
         );
         // aqui updatePhoneNumber    
-        console.log(123555, userCredential)
         UserFirebase = userCredential.user;
       }
 
-      console.log("UserFirebase", UserFirebase)
       values.uid = UserFirebase.uid;
     } catch (error: any) {
       console.log(error?.message);
@@ -144,28 +132,30 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       return false
     }
 
-
-
     // Actualizar displayName
-    getAuth()?.onAuthStateChanged(async (usuario: any) => {
-      if (usuario) {
-        updateProfile(usuario, { displayName: values?.fullName });
-        // Almacenar token en localStorage
-        const resp = await getSessionCookie((await usuario?.getIdTokenResult())?.token)
-        console.log(30007, resp)
-      }
-    });
-    // Crear usuario en MongoDB
-    fetchApi({
-      query: queries.createUser,
-      variables: {
-        role: values.role, uid: values.uid,
-      }
-    }).then(async (moreInfo: any) => {
-      setUser({ ...UserFirebase, ...moreInfo });
-      redirections({ router, moreInfo, redirect, toast })
-    })
-
+    if (UserFirebase) {
+      updateProfile(UserFirebase, { displayName: values?.fullName })
+        .then(async () => {
+          const idToken = await getAuth().currentUser?.getIdToken(true)
+          console.log("*************************----------**********8888888885 parseJwt", parseJwt(idToken ?? ""))
+          const dateExpire = new Date(parseJwt(idToken ?? "").exp * 1000)
+          Cookies.set("idToken", idToken ?? "", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
+          await getSessionCookie(idToken)
+          // Crear usuario en MongoDB
+          fetchApi({
+            query: queries.createUser,
+            variables: {
+              role: values.role, uid: values.uid, email: UserFirebase?.email
+            }
+          }).then(async (moreInfo: any) => {
+            setUser({ ...UserFirebase, ...moreInfo });
+            redirections({ router, moreInfo, redirect, toast })
+          })
+        })
+        .catch((error): any => {
+          console.log(45111, error)
+        })
+    }
 
     //toast("success", "Registro realizado con exito")
     return true
@@ -175,7 +165,6 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
 
   const handleSubmit = async (values: any) => {
     try {
-      console.log(100004, "values", values, !values.identifier.includes("@"))
       if (!activeSaveRegister.state) {
         setActiveSaveRegister({ state: true, type: values.identifier.includes("@") ? "password" : "text" })
         /*Aquí para regsitrase con número de teléfono*/
@@ -191,7 +180,6 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
             },
             getAuth(),
           );
-          console.log("applicationVerifier", applicationVerifier)
           const provider = new PhoneAuthProvider(getAuth());
 
           provider.verifyPhoneNumber(values.identifier, applicationVerifier)
@@ -199,7 +187,6 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
               // Código de verificación enviado con éxito
               // Guarda verificationId para su uso posterior al verificar el código
               setVerificationId(verificationId)
-              console.log('Código de verificación enviado:', verificationId);
             })
             .catch((error) => {
               // Manejo de errores
@@ -211,7 +198,6 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       }
       /*Aquí para regsitrase con correo electrónico*/
       if (values.identifier.includes("@")) {
-        console.log("hago guardar", values)
         nextSave(values)
       }
 
@@ -225,8 +211,6 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       setLoading(false);
     }
   };
-
-
 
   return (
     <>
@@ -298,15 +282,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
   );
 };
 
-
 export default FormRegister;
-
-
-
-
-
-
-
 
 
 

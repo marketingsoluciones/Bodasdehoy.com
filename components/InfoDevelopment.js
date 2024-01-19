@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react"
-import { AuthContextProvider, EventContextProvider } from "../context"
+import { AuthContextProvider } from "../context"
+import { parseJwt } from "../utils/Authentication"
+import Cookies from "js-cookie"
 
 export const InfoDevelopment = () => {
   const [isMounted, setIsMounted] = useState(false)
   const [isDevelopment, setIsDevelopment] = useState(false)
   const { user, userTemp } = AuthContextProvider()
+  const [dateExpire, setDateExpire] = useState("")
 
   useEffect(() => {
     if (!isMounted) {
@@ -20,8 +23,10 @@ export const InfoDevelopment = () => {
     const c = path?.split(".")
     const idx = c?.findIndex(el => el === "com")
     setIsDevelopment(idx === -1)
+    const idToken = Cookies.get("idToken")
+    const d = new Date(parseJwt(idToken).exp * 1000)
+    setDateExpire(`${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`)
   }, [isMounted])
-
 
   return (
     <>
@@ -31,8 +36,7 @@ export const InfoDevelopment = () => {
             <li>url: {window?.location?.hostname}</li>
             <li>user: {user?.uid}</li>
             <li>userTemp: {userTemp?.uid}</li>
-            {/* <li>domain: {config?.domain}</li>
-            <li>event?.nombre: {event?.nombre}</li> */}
+            <li>idTokenExp: {dateExpire}</li>
           </ul>
         </div>
       }

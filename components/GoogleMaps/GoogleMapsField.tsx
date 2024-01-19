@@ -180,9 +180,9 @@ export const Search: FC<propsSearchPlaces> = ({ panTo, center, initialValue, sli
       </span>
       {status === "OK" && (
         <ul className="text-xs absolute z-20 bg-white w-full text-gray-500">
-          {data?.slice(0, slice ? 1 : undefined)?.map((item: google.maps.places.AutocompletePrediction) => (
+          {data?.slice(0, slice ? 1 : undefined)?.map((item: google.maps.places.AutocompletePrediction, idx: number) => (
             <li
-              key={item.place_id}
+              key={idx}
               className="py-2 px-3 border-b cursor-pointer hover:bg-gray-100 transition relative"
               onClick={() => setSelected(item.description)}
             >{item.description} </li>

@@ -13,7 +13,6 @@ const SignOut: FC = () => {
   useEffect(() => {
     if (r?.query?.end === "true") {
       if (!mount) {
-        console.log(1234567)
         _signOut()
         setMount(true)
       }

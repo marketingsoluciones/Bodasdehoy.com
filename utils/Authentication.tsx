@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { signInWithPopup, UserCredential, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, OAuthProvider, signInWithPhoneNumber, getAuth, PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
+import { signInWithPopup, UserCredential, signInWithEmailAndPassword, sendPasswordResetEmail, getAuth, PhoneAuthProvider, signInWithCredential } from 'firebase/auth';
 import { useRouter } from "next/router";
 import Cookies from 'js-cookie';
 import { LoadingContextProvider, AuthContextProvider } from "../context";
@@ -9,6 +9,18 @@ import { PhoneNumberUtil } from 'google-libphonenumber';
 
 export const phoneUtil = PhoneNumberUtil.getInstance();
 
+export const parseJwt = (token: string) => {
+  if (token) {
+    let base64Url = token.split('.')[1];
+    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    let jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+  }
+  return {}
+}
 
 export const useAuthentication = () => {
   const { setLoading } = LoadingContextProvider();
@@ -54,7 +66,6 @@ export const useAuthentication = () => {
     provider: async (payload: any) => {
       try {
         const asdf = await signInWithPopup(getAuth(), payload)
-        console.log(8445, asdf)
         return asdf
       } catch (error: any) {
         setLoading(false);
@@ -66,11 +77,8 @@ export const useAuthentication = () => {
     },
     credentials: async (payload: any) => await signInWithEmailAndPassword(getAuth(), payload.identifier, payload.password),
     phone: async (payload: any, verificationId: any) => {
-      console.log("verificationId", verificationId)
       const authCredential = PhoneAuthProvider.credential(verificationId, payload?.password ?? "");
-      console.log(55544411, "authCredential", authCredential)
       const userCredential = await signInWithCredential(getAuth(), authCredential);
-      console.log(userCredential)
       return userCredential
     }
   };
@@ -84,7 +92,6 @@ export const useAuthentication = () => {
   }
   const signIn = useCallback(
     async ({ type, payload, verificationId, setStage, whoYouAre }: propsSinnIn) => {
-      console.log(8444, whoYouAre)
       /*
           ### Login por primera vez
           1.- Verificar tipo de login y tomar del diccionario el metodo
@@ -93,27 +100,19 @@ export const useAuthentication = () => {
           4.- Almacenar en una cookie el token de la sessionCookie
           5.- Mutar el contexto User de React con los datos de Firebase + MoreInfo (API BODAS)
       */
-
-
-
-
-      // Autenticar con firebase
       try {
         const res: UserCredential | void = await types[type](payload, verificationId);
-        console.log("***/////-----", res?.user?.uid)
         if (res) {
-          // Solicitar datos adicionales del usuario
+          const idToken = await res?.user?.getIdToken()
+          const dateExpire = new Date(parseJwt(idToken).exp * 1000)
+          Cookies.set("idToken", idToken, { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
           fetchApi({
             query: queries.getUser,
             variables: { uid: res.user.uid },
           }).then(async (moreInfo: any) => {
-
-            console.log("***/////-----101", moreInfo)
             if (moreInfo?.status) {
-              const token = (await res?.user?.getIdTokenResult())?.token;
-              await getSessionCookie(token)
+              await getSessionCookie(idToken)
               setUser({ ...res.user, ...moreInfo });
-              console.log(4001, router?.query?.end)
               /////// REDIRECIONES ///////
               if (router?.query?.end) {
                 router.push(`${router?.query?.end}`)
@@ -135,7 +134,6 @@ export const useAuthentication = () => {
               }
               ///////////////////////////
             } else {
-              console.log("/////----///////////------> aqui", res?.user)
               if (whoYouAre !== "") {
                 fetchApi({
                   query: queries.createUser,
@@ -144,10 +142,7 @@ export const useAuthentication = () => {
                     role: whoYouAre
                   }
                 }).then(async () => {
-                  const token = (await res?.user?.getIdTokenResult())?.token;
-                  await getSessionCookie(token)
-                  const dateExpire = new Date(new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000))
-                  Cookies.set("idToken", await res?.user?.getIdToken(), { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
+                  await getSessionCookie(idToken)
                   setUser({ ...res.user, role: [whoYouAre] });
                   /////// REDIRECIONES ///////
                   if (router?.query?.end) {
@@ -191,7 +186,15 @@ export const useAuthentication = () => {
     await fetchApi({ query: queries.signOut, variables: { sessionCookie: Cookies.get("sessionBodas") } })
     Cookies.remove("sessionBodas", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
     Cookies.remove("idToken", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
-    signOut(getAuth());
+    setTimeout(async () => {
+      await getAuth().signOut().then(() => {
+        console.log("signOut con éxito")
+        setUser(null)
+      })
+        .catch((error) => {
+          console.log(error);
+        });
+    }, 700);
     setUser(null)
     toast("success", "Gracias por su visita")
     router.push("/");

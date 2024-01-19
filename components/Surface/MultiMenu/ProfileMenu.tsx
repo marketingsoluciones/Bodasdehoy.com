@@ -60,7 +60,9 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
     },
     {
       title: "Wedding page",
-      onClick: async () => { setModal(!modal) },
+      onClick: async () => { 
+        router.push( window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CUSTOMWEB?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_CUSTOMWEB ?? "" ,)
+      },
       icon: <WeddingPage />,
       rol: ["novio", "novia", "otro", "empresa"],
     },

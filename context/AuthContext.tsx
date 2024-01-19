@@ -1,18 +1,9 @@
-import { User } from "@firebase/auth";
-import {
-  createContext,
-  FC,
-  useState,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useContext,
-} from "react";
+import { User, getAuth } from "@firebase/auth";
+import { createContext, FC, useState, Dispatch, SetStateAction, useEffect, useContext } from "react";
 import { auth } from "../firebase";
 import { fetchApi, queries } from "../utils/Fetching";
-import Cookies from 'js-cookie'
-import { signInWithCustomToken } from "firebase/auth";
-import { nanoid } from "nanoid";
+import Cookies from "js-cookie";
+
 
 export interface UserMax extends User {
   city?: string;
@@ -55,55 +46,24 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user: any) => {
-      setTimeout(async () => {
-        const sessionCookie = Cookies.get("sessionBodas");
-        console.info("Verificando cookie", sessionCookie);
-        if (!sessionCookie) {
-          const cookieContent = JSON.parse(Cookies.get("guestbodas") ?? "{}")
-          let guestUid = cookieContent?.guestUid
-          if (!guestUid) {
-            const dateExpire = new Date(new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000))
-            guestUid = nanoid(28)
-            Cookies.set("guestbodas", JSON.stringify({ guestUid }), { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
-          }
-          setUserTemp({ uid: guestUid, displayName: "guest" })
+      if (!user) {
+        setUser(user)
+      }
+      const sessionBodas = Cookies.get("sessionBodas")
+      if (user && window.location.pathname !== "/login" && sessionBodas) {
+        const moreInfo = await fetchApi({
+          query: queries.getUser,
+          variables: { uid: user?.uid },
+        });
+        if (moreInfo) {
+          setUser({ ...user, ...moreInfo });
+        } else {
+          Cookies.remove("idToken", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
+          getAuth().signOut()
         }
-        if (sessionCookie) {
-          console.info("Tengo cookie de sesion");
-          if (user) {
-            console.info("Tengo user de contexto firebase");
-            const moreInfo = await fetchApi({
-              query: queries.getUser,
-              variables: { uid: user?.uid },
-            });
-            moreInfo && console.info("Tengo datos de la base de datos");
-            setUser({ ...user, ...moreInfo });
-            console.info("Guardo datos en contexto react");
-          } else {
-            console.info("NO tengo user de contexto de firebase");
-            const result = await fetchApi({
-              query: queries.authStatus,
-              variables: { sessionCookie },
-            });
-            console.info("Llamo con mi sessionCookie para traerme customToken");
-            console.info("Custom token", result?.customToken)
-            result?.customToken && signInWithCustomToken(auth, result.customToken);
-            console.info("Hago sesion con el custom token");
-          }
-        }
-      }, 800);
+      }
     });
   }, []);
-
-  useEffect(() => {
-    auth.onIdTokenChanged(async user => {
-      const sessionCookie = Cookies.get("sessionBodas");
-      if (user && sessionCookie) {
-        const dateExpire = new Date(new Date(new Date().getTime() + 365 * 24 * 60 * 60 * 1000))
-        Cookies.set("idToken", await user.getIdToken(), { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
-      }
-    })
-  }, [])
 
   useEffect(() => {
     fetchApi({

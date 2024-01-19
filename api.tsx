@@ -16,9 +16,8 @@ const instance: AxiosInstance = axios.create({ baseURL: process.env.NEXT_PUBLIC_
 
 export const api: Fetching = {
     graphql: async (data: object, token: string): Promise<AxiosResponse> => {
-        let idToken = null
+        let idToken = Cookies.get("idToken")
         if (getAuth().currentUser) {
-            idToken = Cookies.get("idToken")
             if (!idToken) {
                 idToken = await getAuth().currentUser?.getIdToken(true)
                 const dateExpire = new Date(parseJwt(idToken ?? "").exp * 1000)
@@ -47,7 +46,9 @@ export const api: Fetching = {
     },
 
     socketIO: ({ token, origin }: { token: string, origin: string }) => {
-        const manager = new Manager(process.env.NEXT_PUBLIC_BASE_URL ?? "")
+        const manager = new Manager(process.env.NEXT_PUBLIC_BASE_URL ?? "", {
+            closeOnBeforeunload: true
+        })
         const socket = manager.socket("/", {
             auth: {
                 token: `Bearer ${token}`,

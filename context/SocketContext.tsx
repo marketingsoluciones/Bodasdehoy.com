@@ -3,6 +3,7 @@ import { Socket } from "socket.io-client";
 import { AuthContextProvider } from ".";
 import { api } from '../api';
 import Cookies from "js-cookie";
+import { parseJwt } from "../utils/Authentication";
 
 
 type Context = {
@@ -22,12 +23,15 @@ const SocketProvider: FC = ({ children }): JSX.Element => {
   const [socket, setSocket] = useState<Socket | null>(initialContext.socket);
 
   useEffect(() => {
+    console.log("=======> User", user)
     const token = Cookies.get("idToken")
+    console.log("=======> parseJwt", parseJwt(token ?? ""))
     if (token && !socket?.connected) {
+      console.log("=======> Conecta...")
       setSocket(api.socketIO({ token, origin: window.origin }))
     }
     if (!token && socket) {
-      console.log(1445411155, "socket.disconnect")
+      console.log("=======> desconecta...")
       socket.disconnect();
     }
   }, [user])

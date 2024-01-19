@@ -134,21 +134,27 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
 
     // Actualizar displayName
     if (UserFirebase) {
-      updateProfile(UserFirebase, { displayName: values?.fullName });
-      const idToken = await UserFirebase?.getIdToken()
-      const dateExpire = new Date(parseJwt(idToken).exp * 1000)
-      Cookies.set("idToken", idToken, { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
-      await getSessionCookie(idToken)
-      // Crear usuario en MongoDB
-      fetchApi({
-        query: queries.createUser,
-        variables: {
-          role: values.role, uid: values.uid, email: UserFirebase?.email
-        }
-      }).then(async (moreInfo: any) => {
-        setUser({ ...UserFirebase, ...moreInfo });
-        redirections({ router, moreInfo, redirect, toast })
-      })
+      updateProfile(UserFirebase, { displayName: values?.fullName })
+        .then(async () => {
+          const idToken = await getAuth().currentUser?.getIdToken(true)
+          console.log("*************************----------**********8888888885 parseJwt", parseJwt(idToken ?? ""))
+          const dateExpire = new Date(parseJwt(idToken ?? "").exp * 1000)
+          Cookies.set("idToken", idToken ?? "", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
+          await getSessionCookie(idToken)
+          // Crear usuario en MongoDB
+          fetchApi({
+            query: queries.createUser,
+            variables: {
+              role: values.role, uid: values.uid, email: UserFirebase?.email
+            }
+          }).then(async (moreInfo: any) => {
+            setUser({ ...UserFirebase, ...moreInfo });
+            redirections({ router, moreInfo, redirect, toast })
+          })
+        })
+        .catch((error): any => {
+          console.log(45111, error)
+        })
     }
 
     //toast("success", "Registro realizado con exito")

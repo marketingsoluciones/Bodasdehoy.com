@@ -16,13 +16,17 @@ const instance: AxiosInstance = axios.create({ baseURL: process.env.NEXT_PUBLIC_
 
 export const api: Fetching = {
     graphql: async (data: object, token: string): Promise<AxiosResponse> => {
-        let idToken = Cookies.get("idToken")
-        if (getAuth().currentUser) {
-            if (!idToken) {
-                idToken = await getAuth().currentUser?.getIdToken(true)
-                const dateExpire = new Date(parseJwt(idToken ?? "").exp * 1000)
-                Cookies.set("idToken", idToken ?? "", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
+        let idToken = Cookies.get("idTokenV0.1.0")
+        try {
+            if (getAuth().currentUser) {
+                if (!idToken) {
+                    idToken = await getAuth().currentUser?.getIdToken(true)
+                    const dateExpire = new Date(parseJwt(idToken ?? "").exp * 1000)
+                    Cookies.set("idTokenV0.1.0", idToken ?? "", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
+                }
             }
+        } catch (error) {
+            //            
         }
         return await instance.post("/graphql", data, {
             headers: {

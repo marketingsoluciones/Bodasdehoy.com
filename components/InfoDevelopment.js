@@ -23,7 +23,7 @@ export const InfoDevelopment = () => {
     const c = path?.split(".")
     const idx = c?.findIndex(el => el === "com")
     setIsDevelopment(idx === -1)
-    const idToken = Cookies.get("idToken")
+    const idToken = Cookies.get("idTokenV0.1.0")
     const d = new Date(parseJwt(idToken).exp * 1000)
     setDateExpire(`${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`)
   }, [isMounted])

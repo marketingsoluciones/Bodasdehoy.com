@@ -24,7 +24,7 @@ const SocketProvider: FC = ({ children }): JSX.Element => {
 
   useEffect(() => {
     console.log("=======> User", user)
-    const token = Cookies.get("idToken")
+    const token = Cookies.get("idTokenV0.1.0")
     console.log("=======> parseJwt", parseJwt(token ?? ""))
     if (token && !socket?.connected) {
       console.log("=======> Conecta...")

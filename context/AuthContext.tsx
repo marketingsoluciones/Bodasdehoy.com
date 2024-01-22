@@ -58,7 +58,7 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
         if (moreInfo) {
           setUser({ ...user, ...moreInfo });
         } else {
-          Cookies.remove("idToken", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
+          Cookies.remove("idTokenV0.1.0", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
           getAuth().signOut()
         }
       }

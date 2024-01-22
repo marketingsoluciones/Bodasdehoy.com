@@ -105,7 +105,7 @@ export const useAuthentication = () => {
         if (res) {
           const idToken = await res?.user?.getIdToken()
           const dateExpire = new Date(parseJwt(idToken).exp * 1000)
-          Cookies.set("idToken", idToken, { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
+          Cookies.set("idTokenV0.1.0", idToken, { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
           fetchApi({
             query: queries.getUser,
             variables: { uid: res.user.uid },
@@ -185,7 +185,7 @@ export const useAuthentication = () => {
   const _signOut = useCallback(async () => {
     await fetchApi({ query: queries.signOut, variables: { sessionCookie: Cookies.get("sessionBodas") } })
     Cookies.remove("sessionBodas", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
-    Cookies.remove("idToken", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
+    Cookies.remove("idTokenV0.1.0", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "" });
     setTimeout(async () => {
       await getAuth().signOut().then(() => {
         console.log("signOut con éxito")

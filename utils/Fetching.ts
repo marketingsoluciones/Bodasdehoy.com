@@ -128,6 +128,7 @@ type queries = {
   getAllLocalities: string;
   createSubscripcion: string
   updateAccount: string
+  createUserWithPassword: string
 };
 
 export const queries: queries = {
@@ -1121,6 +1122,9 @@ export const queries: queries = {
   }`,
   updateAccount: `mutation { 
     updateAccount 
+  }`,
+  createUserWithPassword: `mutation($email:String, $password:String) { 
+    createUserWithPassword(email:$email, password:$password)
   }`,
 };
 

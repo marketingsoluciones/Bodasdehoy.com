@@ -1,8 +1,10 @@
+import crypto from 'crypto'
+import { publicKey } from './../../../../publicKey.js'
 import { Formik, Form } from "formik";
 import { FC, Children, memo, Dispatch, SetStateAction, useState, useEffect } from "react";
 import { InputField } from "../../../Inputs";
 import { EmailIcon, UserForm, Eye, EyeSlash, LockClosed, PhoneMobile, } from "../../../Icons";
-import { createUserWithEmailAndPassword, updateProfile, UserCredential, getAuth, RecaptchaVerifier, PhoneAuthProvider, signInWithCredential, updatePhoneNumber } from "@firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile, UserCredential, getAuth, RecaptchaVerifier, PhoneAuthProvider, signInWithCredential, updatePhoneNumber, signInWithCustomToken } from "@firebase/auth";
 import * as yup from "yup";
 import { AuthContextProvider, LoadingContextProvider, } from "../../../../context";
 import { fetchApi, queries } from "../../../../utils/Fetching";
@@ -123,13 +125,41 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
 
       values.uid = UserFirebase.uid;
     } catch (error: any) {
-      console.log(error?.message);
       if (error instanceof FirebaseError) {
-        toast("error", "Ups... este correo ya esta registrado")
+        if (error.code === "auth/email-already-in-use") {
+          try {
+            const data = values?.password
+            const encryptedData = crypto.publicEncrypt(
+              {
+                key: publicKey,
+                padding: crypto.constants.RSA_PKCS1_PADDING,
+                oaepHash: 'sha256',
+              },
+              Buffer.from(data)
+            );
+            const result = await fetchApi({
+              query: queries.createUserWithPassword,
+              variables: { email: values.identifier, password: encryptedData.toString('hex') },
+            })
+            if (result === "apiBodas/email-already-in-use") {
+              console.log(550012, error.code)
+              toast("error", "Ups... este correo ya esta registrado1")
+              return false
+            }
+            const asd = await signInWithCustomToken(getAuth(), result)
+            UserFirebase = asd.user
+
+            values.uid = UserFirebase.uid
+          } catch (error) {
+            console.log(55001, error)
+            return false
+          }
+        }
+
       } else {
         toast("error", "Ups... algo a salido mal")
+        return false
       }
-      return false
     }
 
     // Actualizar displayName

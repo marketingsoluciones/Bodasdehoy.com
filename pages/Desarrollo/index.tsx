@@ -53,7 +53,7 @@ const Desarrollo = () =>{
 
         <div className=" h-full col-span-3 relative flex  m-10 items-center justify-center w-full ">
             <Formik initialValues={initialValues} onSubmit={handleSubmit} >
-                <Form className=" flex flex-col gap-4 bg-white p-10 rounded-md items-center justify-center w-2/5">
+                <Form className=" flex flex-col gap-4 bg-white p-10 rounded-lg items-center justify-center w-2/5">
                     <h3>Recupera tu contraseña</h3>
 
                     <div className=" w-2/4 " >

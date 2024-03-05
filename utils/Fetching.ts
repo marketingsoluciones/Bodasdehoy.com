@@ -129,9 +129,27 @@ type queries = {
   createSubscripcion: string
   updateAccount: string
   createUserWithPassword: string
+  getCodePage: string
 };
 
 export const queries: queries = {
+  getCodePage: `query ($args:inputCodePage, $sort:sortCriteriaCodePage, $skip:Int, $limit:Int){
+    getCodePage(args:$args, sort:$sort, skip:$skip, limit:$limit){
+      total
+      results{
+        _id
+        title
+        slug
+        htmlPage {
+          _id
+          html
+          css
+          js
+          status
+        }
+      }
+    }
+  }`,
   getEmailValid: `query ($email :String){
     getEmailValid(email:$email){
       valid

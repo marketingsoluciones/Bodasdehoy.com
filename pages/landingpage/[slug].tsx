@@ -1,14 +1,27 @@
 import { GetStaticPropsContext, NextPage } from "next";
 import { Page } from "../../interfaces";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { fetchApi, queries } from "../../utils/Fetching";
 
 
 const PageComponent: FC<any> = (props) => {
+    const [isMounted, setIsMounted] = useState(false)
+    useEffect(() => {
+        if (!isMounted) {
+            setIsMounted(true)
+        }
+        return () => {
+            setIsMounted(false)
+        }
+    }, [])
+
     return (
-        <div className="max-w-screen-lg md:mx-auto mx-5 inset-x-0  ">
-            hola mundo
-        </div>
+        <>
+            <div dangerouslySetInnerHTML={{ __html: props?.htmlPage?.html }} />
+            <style>
+                {isMounted && props?.htmlPage?.css}
+            </style>
+        </>
     )
 }
 

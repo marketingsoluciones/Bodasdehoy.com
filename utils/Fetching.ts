@@ -139,13 +139,10 @@ export const queries: queries = {
       results{
         _id
         title
-        slug
-        htmlPage {
-          _id
+        htmlPages{
+          title
           html
           css
-          js
-          status
         }
       }
     }

@@ -128,9 +128,25 @@ type queries = {
   getAllLocalities: string;
   createSubscripcion: string
   updateAccount: string
+  createUserWithPassword: string
+  getCodePage: string
 };
 
 export const queries: queries = {
+  getCodePage: `query ($args:inputCodePage, $sort:sortCriteriaCodePage, $skip:Int, $limit:Int){
+    getCodePage(args:$args, sort:$sort, skip:$skip, limit:$limit){
+      total
+      results{
+        _id
+        title
+        htmlPages{
+          title
+          html
+          css
+        }
+      }
+    }
+  }`,
   getEmailValid: `query ($email :String){
     getEmailValid(email:$email){
       valid
@@ -1121,6 +1137,9 @@ export const queries: queries = {
   }`,
   updateAccount: `mutation { 
     updateAccount 
+  }`,
+  createUserWithPassword: `mutation($email:String, $password:String) { 
+    createUserWithPassword(email:$email, password:$password)
   }`,
 };
 

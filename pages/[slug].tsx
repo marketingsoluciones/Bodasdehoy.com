@@ -46,6 +46,7 @@ export default PageComponent
 
 export async function getStaticProps({ params }: GetStaticPropsContext) {
     try {
+        console.log(100000005442, params)
         const dataProps = await fetchApi({ query: queries.getOnePage, variables: { slug: params?.slug } })
         if (dataProps) {
             return {
@@ -70,10 +71,12 @@ export async function getStaticPaths() {
             variables: { development: "bodasdehoy" }
         })
         const result = results?.map((item: Page) => ({ params: { slug: item.slug } }))
-        return {
+        const params = {
             paths: result, // [ {params: {slug : ///// } } ]
             fallback: true // false or 'blocking'
-        };
+        }
+        console.log(100000005441, params)
+        return params;
     } catch (error) {
         console.log(error)
         return {

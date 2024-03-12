@@ -38,7 +38,7 @@ export async function getStaticProps({ params }: any) {
         const resultsFilter = results.find((elem: any) => elem._id.includes(params?.slug[0].slice(-6)))
         const props = resultsFilter.htmlPages.find((elem: any) => elem.title === params?.slug[1])
         if (props?.title) {
-            return { props } //if exist
+            return { props, revalidate: 10 } //if exist
         }
         return { notFound: true } // not exist
     } catch (error) {

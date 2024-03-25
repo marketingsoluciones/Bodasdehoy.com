@@ -56,7 +56,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     role: whoYouAre
   };
   const validationSchema = yup.object().shape({
-    identifier: yup.string().required("Campo requerido").test("Unico", "Número inválido", (value) => {
+    identifier: yup.string().required("Campo requerido").test("Unico", "Correo inválido", (value) => {
       const name = document.activeElement?.getAttribute("name")
       if (name !== "identifier" && !value?.includes("@")) {
         return isPhoneValid(value ?? "")
@@ -143,7 +143,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
             })
             if (result === "apiBodas/email-already-in-use") {
               console.log(550012, error.code)
-              toast("error", "Ups... este correo ya esta registrado1")
+              toast("error", "Ups... este correo ya está registrado1")
               return false
             }
             const asd = await signInWithCustomToken(getAuth(), result)
@@ -234,7 +234,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     } catch (error) {
       console.log(error);
       if (error instanceof FirebaseError) {
-        toast("error", "Ups... este correo ya esta registrado")
+        toast("error", "Ups... este correo ya está registrado")
       } else {
         toast("error", "Ups... algo a salido mal")
       }

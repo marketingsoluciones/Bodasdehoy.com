@@ -28,7 +28,7 @@
     "components/ReclamarEmpresa/ModalReclamarEmprcomponents/ButtonReclamarEmpresa.tsxEmpresa.jsx",
     "components/ButtonReclamarEmpresa.js",
     "components/Login/Components.tsx"
-  ],
+, "gtas.js"  ],
   "exclude": [
     "node_modules"
   ]

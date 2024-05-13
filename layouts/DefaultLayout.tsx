@@ -6,6 +6,8 @@ import { FloatButtonchat } from "../components/FloatButtonChat";
 import { FC } from "react";
 import Head from "next/head";
 import Script from "next/script";
+import GoogleAnalytics from '../components/GoogleAnalitytcs';
+
 const DynamicAuthProvider = dynamic((): any =>
   import("../context").then((mod) => mod.AuthProvider)
 );
@@ -59,7 +61,7 @@ const DefaultLayout: FC = ({ children }) => {
                       <DynamicNavbarMobile />
                       {/* <NavigationMobile /> */}
                       <main className="w-full pt-5 md:pt-20">
-                        {/* @ts-ignore */}
+                        {!!process?.env?.NEXT_PUBLIC_ID_ANALYTICS && <GoogleAnalytics />}
                         {children}
                       </main>
                       <DynamicFooter />

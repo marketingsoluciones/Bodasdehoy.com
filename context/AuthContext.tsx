@@ -12,6 +12,16 @@ export interface UserMax extends User {
   role?: string[];
   accessToken?: string;
   _id?: string;
+  link_id?: undefined,
+  SetLink_id?: undefined,
+  storage_id?: undefined,
+  SetStorage_id?: undefined,
+  linkMedia?: undefined,
+  SetLinkMedia?: undefined,
+  preregister?: undefined,
+  SetPreregister?: undefined,
+  WihtProvider?: undefined,
+  SetWihtProvider?: undefined,
 }
 
 type Context = {
@@ -21,8 +31,18 @@ type Context = {
   setUserTemp: Dispatch<SetStateAction<Partial<UserMax | null>>>;
   redirect: string | null;
   setRedirect: Dispatch<SetStateAction<Partial<string | null>>>;
-  geoInfo: any,
-  setGeoInfo: any,
+  geoInfo: any
+  setGeoInfo: any
+  link_id: any
+  SetLink_id: any
+  storage_id: any
+  SetStorage_id: any
+  linkMedia: any
+  SetLinkMedia: any
+  preregister: any
+  SetPreregister: any
+  WihtProvider: any
+  SetWihtProvider: any
 };
 
 const initialContext: Context = {
@@ -34,6 +54,16 @@ const initialContext: Context = {
   setRedirect: (user) => { },
   geoInfo: null,
   setGeoInfo: () => { },
+  link_id: null,
+  SetLink_id: () => { },
+  storage_id: null,
+  SetStorage_id: () => { },
+  linkMedia: null,
+  SetLinkMedia: () => { },
+  preregister: null,
+  SetPreregister: () => { },
+  WihtProvider: null,
+  SetWihtProvider: () => { },
 };
 
 const AuthContext = createContext<Context>(initialContext);
@@ -43,6 +73,11 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
   const [userTemp, setUserTemp] = useState<Partial<UserMax | null>>(null);
   const [redirect, setRedirect] = useState<Partial<string | null>>(null);
   const [geoInfo, setGeoInfo] = useState<any>();
+  const [link_id, SetLink_id] = useState<string | string[] | null>(null);
+  const [preregister, SetPreregister] = useState<any>(null)
+  const [linkMedia, SetLinkMedia] = useState<string | string[] | null>(null)
+  const [storage_id, SetStorage_id] = useState<string | null>(null)
+  const [WihtProvider, SetWihtProvider] = useState<boolean>(false)
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user: any) => {
@@ -73,7 +108,7 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, setUser, userTemp, setUserTemp, redirect, setRedirect, geoInfo, setGeoInfo }}>
+    <AuthContext.Provider value={{ user, setUser, userTemp, setUserTemp, redirect, setRedirect, geoInfo, setGeoInfo, link_id, SetLink_id, storage_id, SetStorage_id, linkMedia, SetLinkMedia, preregister, SetPreregister, SetWihtProvider, WihtProvider, }}>
       {children}
     </AuthContext.Provider>
   );

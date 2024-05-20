@@ -3,6 +3,8 @@ import { createContext, FC, useState, Dispatch, SetStateAction, useEffect, useCo
 import { auth } from "../firebase";
 import { fetchApi, queries } from "../utils/Fetching";
 import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+import { nanoid, customAlphabet, } from 'nanoid'
 
 
 export interface UserMax extends User {
@@ -75,9 +77,43 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
   const [geoInfo, setGeoInfo] = useState<any>();
   const [link_id, SetLink_id] = useState<string | string[] | null>(null);
   const [preregister, SetPreregister] = useState<any>(null)
-  const [linkMedia, SetLinkMedia] = useState<string | string[] | null>(null)
+  const [linkMedia, SetLinkMedia] = useState<string | string[] | null | undefined>(null)
   const [storage_id, SetStorage_id] = useState<string | null>(null)
   const [WihtProvider, SetWihtProvider] = useState<boolean>(false)
+
+  const router = useRouter()
+
+  useEffect(() => {
+    console.log(100047, router?.query, { router })
+
+    if (!link_id && router?.query?.link) {
+      if (router?.query?._id) {
+        // fetchApiEventos({
+        //   query: queries.getPreregister,
+        //   variables: { _id: router?.query?._id }
+        // }).then((result: any) => {
+        //   SetPreregister(JSON.parse(result ?? {}))
+        // })
+      }
+      SetLinkMedia(router?.query?.m)
+      SetLink_id(router?.query?.link)
+      console.log(router?.query)
+      if (router?.query?._id) {
+        console.log(100048, router?.query, { router })
+        router.push("/login?q=register")
+      }
+      const storage_id = localStorage.getItem("_id")
+      if (!storage_id) {
+        const _id = customAlphabet('1234567890abcdef', 24)()
+        localStorage.setItem("_id", _id)
+        SetStorage_id(_id)
+      } else {
+        SetStorage_id(storage_id)
+      }
+    }
+  }, [router])
+
+
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user: any) => {

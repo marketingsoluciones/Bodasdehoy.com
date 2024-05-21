@@ -5,6 +5,7 @@ import FormLogin from "./Forms/FormLogin";
 import FormResetPassword from "./Forms/FormResetPassword";
 import { FirstStep, SecondStep } from "./Forms/Register/Steps";
 import PageLogin from "../../pages/login"
+import { AuthContextProvider } from "../../context";
 
 interface propsLogin {
   fStageRegister?: any
@@ -43,10 +44,11 @@ export const Login: FC<propsLogin> = ({ setStage, whoYouAre, setWhoYouAre }) => 
 };
 
 export const Register: FC<propsLogin> = ({ setStage, fStageRegister, stageRegister, setStageRegister, whoYouAre, setWhoYouAre }) => {
+  const { linkMedia, preregister } = AuthContextProvider()
+
   useEffect(() => {
     setWhoYouAre(fStageRegister == 1 ? "empresa" : "")
   }, [])
-
 
   return (
     <>
@@ -64,9 +66,7 @@ export const Register: FC<propsLogin> = ({ setStage, fStageRegister, stageRegist
         }
       })()}
 
-      <h2
-        className={`font-light text-tertiary flex gap-2 items-center text-sm `}
-      >
+      {(!linkMedia && !preregister) && <h2 className={`font-light text-tertiary flex gap-2 items-center text-sm `}      >
         ¿Dispones de una cuenta?
         <span
           className="text-sm text-primary font-semibold cursor-pointer hover:text-tertiary transition"
@@ -77,7 +77,7 @@ export const Register: FC<propsLogin> = ({ setStage, fStageRegister, stageRegist
         >
           Inicia Sesión
         </span>
-      </h2>
+      </h2>}
     </>
   );
 };

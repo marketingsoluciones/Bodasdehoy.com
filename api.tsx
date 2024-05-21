@@ -6,7 +6,8 @@ import { parseJwt } from './utils/Authentication';
 
 
 type Fetching = {
-    graphql: CallableFunction
+    apiBodas: CallableFunction
+    apiApp: CallableFunction
     youtube: CallableFunction
     restCountries: CallableFunction
     socketIO: CallableFunction
@@ -15,7 +16,7 @@ type Fetching = {
 const instance: AxiosInstance = axios.create({ baseURL: process.env.NEXT_PUBLIC_BASE_URL })
 
 export const api: Fetching = {
-    graphql: async (data: object, token: string): Promise<AxiosResponse> => {
+    apiBodas: async (data: object, token: string): Promise<AxiosResponse> => {
         let idToken = Cookies.get("idTokenV0.1.0")
         try {
             if (getAuth().currentUser) {
@@ -29,6 +30,26 @@ export const api: Fetching = {
             //            
         }
         return await instance.post("/graphql", data, {
+            headers: {
+                Authorization: `Bearer ${idToken}`,
+                Development: "bodasdehoy"
+            }
+        })
+    },
+    apiApp: async (data: object, token: string): Promise<AxiosResponse> => {
+        let idToken = Cookies.get("idTokenV0.1.0")
+        try {
+            if (getAuth().currentUser) {
+                if (!idToken) {
+                    idToken = await getAuth().currentUser?.getIdToken(true)
+                    const dateExpire = new Date(parseJwt(idToken ?? "").exp * 1000)
+                    Cookies.set("idTokenV0.1.0", idToken ?? "", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
+                }
+            }
+        } catch (error) {
+            //            
+        }
+        return await axios.post('https://apiapp.bodasdehoy.com/graphql', data, {
             headers: {
                 Authorization: `Bearer ${idToken}`,
                 Development: "bodasdehoy"

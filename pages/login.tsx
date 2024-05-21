@@ -16,6 +16,8 @@ type Forms = {
 };
 
 const PageLogin: FC = () => {
+  const { linkMedia, preregister } = AuthContextProvider()
+
   try {
     const appCheck = initializeAppCheck(firebaseClient, {
       provider: new ReCaptchaV3Provider('6LekwcchAAAAANJHB3yv2ZOx6v8PHu2DkF-ku3J8'),
@@ -38,6 +40,12 @@ const PageLogin: FC = () => {
   useEffect(() => {
     setRedirect(null)
   }, []);
+
+  useEffect(() => {
+    if (preregister) {
+      setStageRegister(1)
+    }
+  }, [preregister])
 
   useEffect(() => {
     if (r?.query?.q === "register") {
@@ -118,7 +126,7 @@ const PageLogin: FC = () => {
   return (
     <>
       <div className="w-screen fixed h-full top-0 left-0 md:grid z-30 grid-cols-5 ">
-        <ArrowLeft className="absolute w-6 h-6 z-[10] text-gray-500 cursor-pointer translate-x-5 translate-y-5" onClick={() => {
+        {((!linkMedia || stageRegister !== 0) && !preregister) && <ArrowLeft className="absolute w-6 h-6 z-[10] text-gray-500 cursor-pointer translate-x-5 translate-y-5" onClick={() => {
           if (stage === "resetPassword") {
             setStage("login")
             return
@@ -128,9 +136,9 @@ const PageLogin: FC = () => {
             return
           }
           handleClose()
-        }} />
+        }} />}
         <div className="bg-white w-full h-full col-span-3 relative flex items-center justify-center  ">
-          <ButtonClose onClick={handleClose} />
+          {(!linkMedia && !preregister) && <ButtonClose onClick={handleClose} />}
           <div className="flex flex-col items-center gap-4 w-full px-10 md:px-0 sm:w-3/4 md:w-2/3  ">
             {Stages[stage]}
           </div>

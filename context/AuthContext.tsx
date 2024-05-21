@@ -1,7 +1,7 @@
 import { User, getAuth } from "@firebase/auth";
 import { createContext, FC, useState, Dispatch, SetStateAction, useEffect, useContext } from "react";
 import { auth } from "../firebase";
-import { fetchApi, queries } from "../utils/Fetching";
+import { fetchApi, fetchApiEventos, queries } from "../utils/Fetching";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { nanoid, customAlphabet, } from 'nanoid'
@@ -84,23 +84,34 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
   const router = useRouter()
 
   useEffect(() => {
-    console.log(100047, router?.query, { router })
+    console.log(100046, router?.query)
 
     if (!link_id && router?.query?.link) {
+      if (!router?.query?._id) {
+        const sessionBodas = Cookies.get("sessionBodas")
+        if (!sessionBodas) {
+          router.push("/login?d=app&q=register")
+        }
+      }
+      console.log(1000447, router?.query?.link)
       if (router?.query?._id) {
-        // fetchApiEventos({
-        //   query: queries.getPreregister,
-        //   variables: { _id: router?.query?._id }
-        // }).then((result: any) => {
-        //   SetPreregister(JSON.parse(result ?? {}))
-        // })
+        fetchApiEventos({
+          query: queries.getPreregister,
+          variables: { _id: router?.query?._id }
+        }).then((result: any) => {
+          SetPreregister(JSON.parse(result ?? {}))
+        })
       }
       SetLinkMedia(router?.query?.m)
       SetLink_id(router?.query?.link)
       console.log(router?.query)
       if (router?.query?._id) {
-        console.log(100048, router?.query, { router })
-        router.push("/login?q=register")
+        const sessionBodas = Cookies.get("sessionBodas")
+        if (!sessionBodas) {
+          router.push("/login?d=app&q=register")
+        } else {
+          router.push(window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "")
+        }
       }
       const storage_id = localStorage.getItem("_id")
       if (!storage_id) {

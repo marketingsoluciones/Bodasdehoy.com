@@ -3,6 +3,7 @@ import { LogoFullColor } from '../../../Icons/';
 import { Providers } from '../../Components';
 import FormRegister from './FormRegister';
 import { WhoYouAre } from './WhoYouAre'
+import { AuthContextProvider } from '../../../../context';
 
 /*
   ### Componente FirstStep ###
@@ -14,12 +15,17 @@ interface propsFirstStep {
 }
 
 export const FirstStep: FC<propsFirstStep> = ({ value, setStageRegister }) => {
+  const { linkMedia } = AuthContextProvider()
   const [select, setSelect] = useState<string>("");
 
   // Tipo de dato para definir opciones
 
   return (
     <div className="flex flex-col items-center justify-center gap-8">
+      {linkMedia && <div className='flex flex-col justify-center items-center w-full'>
+        <h2 className="text-lg text-primary ">Te damos la bienvenida a</h2>
+        <LogoFullColor />
+      </div>}
       <h2 className="text-2xl text-primary ">¿Quien eres?</h2>
 
       <WhoYouAre select={select} setSelect={setSelect} />
@@ -48,17 +54,20 @@ interface propsSecondStep {
   setStage: CallableFunction
 }
 export const SecondStep: FC<propsSecondStep> = (props) => {
+  const { linkMedia, preregister } = AuthContextProvider()
   return (
-    <div className="gap-4 flex flex-col justify-center items-center w-full">
+    <div className={`gap-4 flex flex-col justify-center items-center w-full ${linkMedia && "space-y-12"}`}>
       <LogoFullColor />
-      <Providers setStage={props.setStage} whoYouAre={props?.whoYouAre} />
-      <h2 className={`font-light w-full text-tertiary text-center text-md`}>
-        Ó
-      </h2>
-      {props?.whoYouAre == "empresa" &&
-        <h2 className={`font-light text-tertiary flex items-center text-md `}>
-          Crea tu cuenta de Empresa en Bodasdehoy.com
-        </h2>}
+      {!linkMedia && <>
+        <Providers setStage={props.setStage} whoYouAre={props?.whoYouAre} />
+        <h2 className={`font-light w-full text-tertiary text-center text-md`}>
+          Ó
+        </h2>
+        {props?.whoYouAre == "empresa" &&
+          <h2 className={`font-light text-tertiary flex items-center text-md `}>
+            Crea tu cuenta de Empresa en Bodasdehoy.com
+          </h2>}
+      </>}
       <FormRegister {...props} />
 
     </div>

@@ -7,7 +7,7 @@ import { EmailIcon, UserForm, Eye, EyeSlash, LockClosed, PhoneMobile, } from "..
 import { createUserWithEmailAndPassword, updateProfile, UserCredential, getAuth, RecaptchaVerifier, PhoneAuthProvider, signInWithCredential, updatePhoneNumber, signInWithCustomToken } from "@firebase/auth";
 import * as yup from "yup";
 import { AuthContextProvider, LoadingContextProvider, } from "../../../../context";
-import { fetchApi, queries } from "../../../../utils/Fetching";
+import { fetchApi, fetchApiEventos, queries } from "../../../../utils/Fetching";
 import { parseJwt, phoneUtil, useAuthentication } from '../../../../utils/Authentication';
 import { useToast } from '../../../../hooks/useToast';
 import { FirebaseError } from "firebase/app";
@@ -39,7 +39,7 @@ interface propsFormRegister {
 
 const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stageRegister }) => {
   const router = useRouter()
-  const { setUser, user, setUserTemp, userTemp, redirect, geoInfo } = AuthContextProvider();
+  const { setUser, user, setUserTemp, userTemp, redirect, geoInfo, linkMedia, storage_id, link_id, preregister } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
   const { getSessionCookie, isPhoneValid } = useAuthentication();
   const toast = useToast()
@@ -47,13 +47,14 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
   const [passwordView, setPasswordView] = useState(true)
   const [verificationId, setVerificationId] = useState("")
   const [values, setValues] = useState<initialValues | null>()
+  const [phoneNumber, setPhoneNumber] = useState<string | null>()
 
   const initialValues: initialValues = {
-    identifier: "",
-    fullName: "",
+    identifier: preregister?.email ?? "",
+    fullName: preregister?.name ?? "",
     password: "",
-    phoneNumber: `+${phoneUtil?.getCountryCodeForRegion(geoInfo?.ipcountry)}`,
-    role: whoYouAre
+    phoneNumber: preregister?.phoneNumber ?? `+${phoneUtil?.getCountryCodeForRegion(geoInfo?.ipcountry)}`,
+    role: preregister?.role[0] ?? whoYouAre
   };
   const validationSchema = yup.object().shape({
     identifier: yup.string().required("Campo requerido").test("Unico", "Correo inválido", (value) => {
@@ -76,14 +77,16 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       }
     }),
     fullName: yup.string().required("Campo requerido"),
-    password: yup.string().required("Campo requerido").test("Unico", `Debe contener entre 8 y 12 caractéres`, (value: any) => {
-      const name = document.activeElement?.getAttribute("name")
-      if (name !== "password") {
-        return value?.length > 7 && value?.length < 11
-      } else {
-        return true
-      }
-    }),
+    password: !linkMedia
+      ? yup.string().required("Campo requerido").test("Unico", `Debe contener mas de 5 carácteres`, (value: any) => {
+        const name = document.activeElement?.getAttribute("name")
+        if (name !== "password") {
+          return value?.length > 5
+        } else {
+          return true
+        }
+      })
+      : yup.string(),
     phoneNumber: yup.string().test("Unico", `Campo requerido`, (value: any) => {
       const name = document.activeElement?.getAttribute("name")
       if (value?.length < 4) {
@@ -242,12 +245,38 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     }
   };
 
+  const handleSumitMedia = async (values: initialValues, actions: any) => {
+    try {
+      if (storage_id && link_id) {
+        fetchApiEventos({
+          query: queries.updateActivityLink,
+          variables: {
+            args: {
+              link_id,
+              storage_id,
+              activity: "preregistered",
+              name: values?.fullName,
+              role: values?.role,
+              email: values?.identifier,
+              phoneNumber: values.phoneNumber,
+              navigator: navigator?.userAgentData?.platform,
+              mobile: (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+            }
+          }
+        }).catch((error: any) => console.log(90000, error))
+      }
+      setPhoneNumber(values?.phoneNumber)
+    } catch (error) {
+      console.log(45111, error)
+    }
+  }
+
   return (
     <>
       <Formik
         initialValues={initialValues ?? {}}
         validationSchema={validationSchema ?? {}}
-        onSubmit={handleSubmit}
+        onSubmit={!linkMedia ? handleSubmit : handleSumitMedia}
       >
         <Form className="w-full md:w-[350px] text-gray-200 *md:grid *md:grid-cols-2 gap-4 md:gap-5 md:space-y-0 flex flex-col">
           <div className="col-span-2">
@@ -268,17 +297,18 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
               icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto text-gray-500" />}
             />
           </div>
-          <div className="w-full relative">
+          {!linkMedia && <div className="w-full relative">
             <InputField
               name="password"
               type={passwordView ? "password" : "text"}
               autoComplete="off"
               label="Contraseña"
+              autoFocus={!!preregister}
               icon={<LockClosed className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />} />
             <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 top-5 right-4 m-auto w-4 h-4 text-gray-500" >
               {!passwordView ? <Eye /> : <EyeSlash />}
             </div>
-          </div>
+          </div>}
           <span className="w-full relative ">
             <InputField
               name="phoneNumber"
@@ -294,9 +324,18 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
               type="submit"
               className="col-span-2 bg-primary rounded-full px-10 py-2 text-white font-medium mx-auto inset-x-0 md:hover:bg-tertiary transition"
             >
-              Registrar
+              {linkMedia != null ? !phoneNumber ? "siguiente" : "Reenviar Link" : !phoneNumber ? "Registrar" : "Reenviar Link"}
             </button>
           </div>
+          {linkMedia != null && <div className='text-gray-900 w-full h-40'>
+            {phoneNumber &&
+              <>
+                <p className='w-full text-center text-sm'>
+                  En hora buena, te hemos enviado un mensaje por whatsapp al número {phoneNumber}; haz click en link de confirmación para continuar con el registro.
+                </p>
+              </>
+            }
+          </div>}
         </Form>
       </Formik>
       <style jsx>

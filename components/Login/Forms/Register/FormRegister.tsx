@@ -14,6 +14,7 @@ import { FirebaseError } from "firebase/app";
 import { useRouter } from "next/router";
 import { redirections } from "./redirections";
 import Cookies from "js-cookie";
+import { useActivity } from '../../../../hooks/useActivity';
 
 interface initialValues {
   uid?: string
@@ -48,6 +49,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
   const [verificationId, setVerificationId] = useState("")
   const [values, setValues] = useState<initialValues | null>()
   const [phoneNumber, setPhoneNumber] = useState<string | null>()
+  const [updateActivity, updateActivityLink] = useActivity()
 
   const initialValues: initialValues = {
     identifier: preregister?.email ?? "",
@@ -170,7 +172,6 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       updateProfile(UserFirebase, { displayName: values?.fullName })
         .then(async () => {
           const idToken = await getAuth().currentUser?.getIdToken(true)
-          console.log("*************************----------**********8888888885 parseJwt", parseJwt(idToken ?? ""))
           const dateExpire = new Date(parseJwt(idToken ?? "").exp * 1000)
           Cookies.set("idTokenV0.1.0", idToken ?? "", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
           await getSessionCookie(idToken)
@@ -182,7 +183,9 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
             }
           }).then(async (moreInfo: any) => {
             setUser({ ...UserFirebase, ...moreInfo });
-            redirections({ router, moreInfo, redirect, toast })
+            updateActivity("registered")
+            updateActivityLink("registered")
+            redirections({ router, moreInfo, redirect:`${redirect}/?link=${link_id}`, toast })
           })
         })
         .catch((error): any => {

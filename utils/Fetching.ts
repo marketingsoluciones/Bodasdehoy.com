@@ -99,6 +99,7 @@ export const fetchApiEventos: CallableFunction = async ({ query = ``, variables 
 type queries = {
   getPreregister: string
   updateActivityLink: string
+  updateActivity: string
   getGeoInfo: string
   getEmailValid: string,
   createUser: string;
@@ -148,6 +149,9 @@ export const queries: queries = {
   }`,
   updateActivityLink: `mutation ($args:inputActivityLink){
     updateActivityLink(args:$args)
+  }`,
+  updateActivity: `mutation ($args:inputActivity){
+    updateActivity(args:$args)
   }`,
   getCodePage: `query ($args:inputCodePage, $sort:sortCriteriaCodePage, $skip:Int, $limit:Int){
     getCodePage(args:$args, sort:$sort, skip:$skip, limit:$limit){

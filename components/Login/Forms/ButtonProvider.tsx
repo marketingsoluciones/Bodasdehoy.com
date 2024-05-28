@@ -10,16 +10,18 @@ interface propsButtonProvider {
   icon: any
   setStage: any
   whoYouAre: string
+  validProvider: any
+  setValidProvider: any
 }
 
-export const ButtonProvider: FC<propsButtonProvider> = ({ provider, handle, icon, setStage, whoYouAre }) => {
+export const ButtonProvider: FC<propsButtonProvider> = ({ provider, handle, icon, setStage, whoYouAre, validProvider, setValidProvider }) => {
   const { signIn } = useAuthentication();
   const toast = useToast();
   const { setLoading } = LoadingContextProvider();
   const handleClick = async (provider: any) => {
     console.log("click ButtonProvider", setStage)
     try {
-      signIn({ type: "provider", payload: provider, setStage, whoYouAre });
+      signIn({ type: "provider", payload: provider, setStage, whoYouAre, validProvider, setValidProvider });
     } catch (error) {
       setLoading(false);
       toast("error", JSON.stringify(error));

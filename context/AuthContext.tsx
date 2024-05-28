@@ -84,7 +84,6 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
   const router = useRouter()
 
   useEffect(() => {
-    console.log(100046, router?.query)
 
     if (!link_id && router?.query?.link) {
       if (!router?.query?._id) {
@@ -93,18 +92,18 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
           router.push("/login?d=app&q=register")
         }
       }
-      console.log(1000447, router?.query?.link)
       if (router?.query?._id) {
         fetchApiEventos({
           query: queries.getPreregister,
           variables: { _id: router?.query?._id }
         }).then((result: any) => {
+          //aqui evaluar: si ya esta reristrado devolver null y redireccionar a app
+          // y falta el registro de logout
           SetPreregister(JSON.parse(result ?? {}))
         })
       }
       SetLinkMedia(router?.query?.m)
       SetLink_id(router?.query?.link)
-      console.log(router?.query)
       if (router?.query?._id) {
         const sessionBodas = Cookies.get("sessionBodas")
         if (!sessionBodas) {

@@ -4,6 +4,7 @@ import { Providers } from '../../Components';
 import FormRegister from './FormRegister';
 import { WhoYouAre } from './WhoYouAre'
 import { AuthContextProvider } from '../../../../context';
+import { useAuthentication } from '../../../../utils/Authentication';
 
 /*
   ### Componente FirstStep ###
@@ -12,10 +13,12 @@ import { AuthContextProvider } from '../../../../context';
 interface propsFirstStep {
   value: FunctionStringCallback;
   setStageRegister: Dispatch<SetStateAction<number>>
+  validProvider: any
 }
 
-export const FirstStep: FC<propsFirstStep> = ({ value, setStageRegister }) => {
-  const { linkMedia } = AuthContextProvider()
+export const FirstStep: FC<propsFirstStep> = ({ value, setStageRegister, validProvider }) => {
+  const { signIn } = useAuthentication();
+  const { linkMedia, user } = AuthContextProvider()
   const [select, setSelect] = useState<string>("");
 
   // Tipo de dato para definir opciones
@@ -25,6 +28,10 @@ export const FirstStep: FC<propsFirstStep> = ({ value, setStageRegister }) => {
       {linkMedia && <div className='flex flex-col justify-center items-center w-full'>
         <h2 className="text-lg text-primary ">Te damos la bienvenida a</h2>
         <LogoFullColor />
+      </div>}
+      {validProvider && <div className='flex flex-col justify-center items-center w-full space-y-4'>
+        <span className="text-lg text-gray-700 text-center">{`Hola: ${validProvider?.user?.email}`}</span>
+        <span className="text-lg text-primary text-center">Aún no estás registrado, para registrarte dinos</span>
       </div>}
       <h2 className="text-2xl text-primary ">¿Quien eres?</h2>
 
@@ -36,11 +43,13 @@ export const FirstStep: FC<propsFirstStep> = ({ value, setStageRegister }) => {
           }`}
         onClick={() => {
           value(select)
-          setStageRegister(old => old + 1)
+          !validProvider
+            ? setStageRegister(old => old + 1)
+            : signIn({ type: "credentials", payload: null, setStage: null, validProvider, whoYouAre: select })
         }}
         disabled={select === ""}
       >
-        Siguiente
+        {!validProvider ? "Siguiente" : "Registrar"}
       </button>
     </div>
   );
@@ -52,6 +61,8 @@ interface propsSecondStep {
   stageRegister: number;
   setStageRegister: Dispatch<SetStateAction<number>>
   setStage: CallableFunction
+  validProvider: any
+  setValidProvider: any
 }
 export const SecondStep: FC<propsSecondStep> = (props) => {
   const { linkMedia, preregister } = AuthContextProvider()
@@ -59,7 +70,7 @@ export const SecondStep: FC<propsSecondStep> = (props) => {
     <div className={`gap-4 flex flex-col justify-center items-center w-full ${linkMedia && "space-y-12"}`}>
       <LogoFullColor />
       {!linkMedia && <>
-        <Providers setStage={props.setStage} whoYouAre={props?.whoYouAre} />
+        <Providers setStage={props.setStage} whoYouAre={!preregister ? props?.whoYouAre : preregister.role[0]} validProvider={props.validProvider} setValidProvider={props.setValidProvider} />
         <h2 className={`font-light w-full text-tertiary text-center text-md`}>
           Ó
         </h2>

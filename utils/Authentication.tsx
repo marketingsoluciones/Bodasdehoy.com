@@ -89,9 +89,11 @@ export const useAuthentication = () => {
     verificationId?: any
     setStage: any
     whoYouAre?: any
+    validProvider?: any
+    setValidProvider?: any
   }
   const signIn = useCallback(
-    async ({ type, payload, verificationId, setStage, whoYouAre }: propsSinnIn) => {
+    async ({ type, payload, verificationId, setStage, whoYouAre, validProvider, setValidProvider }: propsSinnIn) => {
       /*
           ### Login por primera vez
           1.- Verificar tipo de login y tomar del diccionario el metodo
@@ -101,7 +103,7 @@ export const useAuthentication = () => {
           5.- Mutar el contexto User de React con los datos de Firebase + MoreInfo (API BODAS)
       */
       try {
-        const res: UserCredential | void = await types[type](payload, verificationId);
+        const res: UserCredential | void = !validProvider ? await types[type](payload, verificationId) : validProvider
         if (res) {
           const idToken = await res?.user?.getIdToken()
           const dateExpire = new Date(parseJwt(idToken).exp * 1000)
@@ -167,8 +169,9 @@ export const useAuthentication = () => {
                 })
               } else {
                 setStage("register")
-               /*  toast("error", `${res?.user?.email} no está registrado`)
-                toast("success", `Haz click en Regístrate`) */
+                setValidProvider(res)
+                /*  toast("error", `${res?.user?.email} no está registrado`)
+                 toast("success", `Haz click en Regístrate`) */
               }
             }
           })

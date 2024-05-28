@@ -6,6 +6,7 @@ import { AuthContextProvider } from "../context";
 import { firebaseClient } from "../firebase"
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { ArrowLeft } from "../components/Icons";
+import { User } from "../interfaces/FirebaseInterface";
 
 // Tipos de datos personalizados
 type Forms = {
@@ -36,6 +37,7 @@ const PageLogin: FC = () => {
   const [fStageRegister, setFStageRegister] = useState(0)
   const [stageRegister, setStageRegister] = useState(0)
   const [whoYouAre, setWhoYouAre] = useState<string>("");
+  const [validProvider, setValidProvider] = useState<User | null>(null);
 
   useEffect(() => {
     setRedirect(null)
@@ -74,8 +76,8 @@ const PageLogin: FC = () => {
 
 
   const Stages: Forms = {
-    login: <Login setStage={setStage} whoYouAre={whoYouAre} setWhoYouAre={setWhoYouAre} />,
-    register: <Register setStage={setStage} stageRegister={stageRegister} setStageRegister={setStageRegister} whoYouAre={whoYouAre} setWhoYouAre={setWhoYouAre} />,
+    login: <Login setStage={setStage} whoYouAre={whoYouAre} setWhoYouAre={setWhoYouAre} validProvider={validProvider} setValidProvider={setValidProvider} />,
+    register: <Register setStage={setStage} stageRegister={stageRegister} setStageRegister={setStageRegister} whoYouAre={whoYouAre} setWhoYouAre={setWhoYouAre} validProvider={validProvider} setValidProvider={setValidProvider} />,
     resetPassword: <ResetPass setStage={setStage} whoYouAre={whoYouAre} />
   };
 

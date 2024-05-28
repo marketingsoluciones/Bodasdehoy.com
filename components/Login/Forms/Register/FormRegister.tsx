@@ -200,11 +200,13 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
   // Funcion a ejecutar para el submit del formulario 
 
   const handleSubmit = async (values: any) => {
+    console.log("000000000000")
     try {
       if (!activeSaveRegister.state) {
         setActiveSaveRegister({ state: true, type: values.identifier.includes("@") ? "password" : "text" })
         /*Aquí para regsitrase con número de teléfono*/
         if (!values.identifier.includes("@")) {
+          console.log("111111111111")
           if (values.identifier[0] === "0") {
             values.identifier = `+${phoneUtil.getCountryCodeForRegion(geoInfo.ipcountry)}${values.identifier.slice(1, values.identifier.length)}`
           }
@@ -234,6 +236,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       }
       /*Aquí para regsitrase con correo electrónico*/
       if (values.identifier.includes("@")) {
+        console.log("222222222222222")
         nextSave(values)
       }
 
@@ -251,6 +254,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
   const handleSumitMedia = async (values: initialValues, actions: any) => {
     try {
       if (storage_id && link_id) {
+        handleSubmit(values)
         fetchApiEventos({
           query: queries.updateActivityLink,
           variables: {

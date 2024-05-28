@@ -46,15 +46,17 @@ export const ResetPassword: FC<propsResetPassword> = ({ onClick }) => {
 interface propsProviders {
   setStage: any
   whoYouAre: string
+  validProvider: any
+  setValidProvider: any
 }
-export const Providers: FC<propsProviders> = ({ setStage, whoYouAre }) => {
+export const Providers: FC<propsProviders> = ({ setStage, whoYouAre, validProvider, setValidProvider }) => {
 
   return (
     <>
       <div className={`text-center flex flex-col gap-2 w-full items-center `}>
         <div className="">
-          <ButtonProvider provider="Google" handle={GoogleProvider()} setStage={setStage} whoYouAre={whoYouAre} icon={<GoogleIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
-          <ButtonProvider provider="Facebook" handle={FacebookProvider} setStage={setStage} whoYouAre={whoYouAre} icon={<FacebookIcon2 className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
+          <ButtonProvider provider="Google" handle={GoogleProvider()} setStage={setStage} whoYouAre={whoYouAre} validProvider={validProvider} setValidProvider={setValidProvider} icon={<GoogleIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
+          <ButtonProvider provider="Facebook" handle={FacebookProvider} setStage={setStage} whoYouAre={whoYouAre} validProvider={validProvider} setValidProvider={setValidProvider} icon={<FacebookIcon2 className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} />
           {/* <ButtonProvider provider="Apple" handle={AppleProvidor()} icon={<AppleIcon className="ml-[15px] w-[20px] h-[20px] text-gray-500" />} /> */}
         </div>
       </div>

@@ -279,7 +279,7 @@ const FormikStep = ({ children, ...props }: FormikStepProps) => {
   const childrenWithProps = Children.map(children, (child: any) =>
     cloneElement(child, { ...props })
   );
-// revisar si lleva idx
+  // revisar si lleva idx
 
   return <>{childrenWithProps}</>;
 }

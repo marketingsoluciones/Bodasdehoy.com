@@ -123,7 +123,27 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
     }
   }, [router])
 
-
+  useEffect(() => {
+    if (storage_id && link_id) {
+      fetchApiEventos({
+        query: queries.updateActivityLink,
+        variables: {
+          args: {
+            link_id,
+            storage_id,
+            activity: "accessed",
+            usuario_id: user?.uid,
+            name: user?.displayName,
+            role: user?.role,
+            email: user?.email,
+            phoneNumber: user?.phoneNumber,
+            navigator: navigator?.userAgentData?.platform,
+            mobile: (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+          }
+        }
+      }).catch((error: any) => console.log(90000, error))
+    }
+  }, [storage_id, link_id, user])
 
   useEffect(() => {
     auth.onAuthStateChanged(async (user: any) => {

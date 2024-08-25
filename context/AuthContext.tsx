@@ -6,6 +6,10 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/router";
 import { nanoid, customAlphabet, } from 'nanoid'
 
+interface StartLink {
+  time: number | null
+  idx: number
+}
 
 export interface UserMax extends User {
   city?: string;
@@ -45,6 +49,7 @@ type Context = {
   SetPreregister: any
   WihtProvider: any
   SetWihtProvider: any
+  startLink: StartLink
 };
 
 const initialContext: Context = {
@@ -66,6 +71,7 @@ const initialContext: Context = {
   SetPreregister: () => { },
   WihtProvider: null,
   SetWihtProvider: () => { },
+  startLink: { time: null, idx: 0 }
 };
 
 const AuthContext = createContext<Context>(initialContext);
@@ -80,6 +86,7 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
   const [linkMedia, SetLinkMedia] = useState<string | string[] | null | undefined>(null)
   const [storage_id, SetStorage_id] = useState<string | null>(null)
   const [WihtProvider, SetWihtProvider] = useState<boolean>(false)
+  const [startLink, setStartLink] = useState<StartLink>(initialContext.startLink)
 
   const router = useRouter()
 
@@ -141,7 +148,11 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
             mobile: (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
           }
         }
-      }).catch((error: any) => console.log(90000, error))
+      })
+        .then((result: any) => {
+          setStartLink({ time: new Date().getTime(), idx: parseInt(result) })
+        })
+        .catch((error: any) => console.log(90000, error))
     }
   }, [storage_id, link_id, user])
 
@@ -174,7 +185,7 @@ const AuthProvider: FC = ({ children }): JSX.Element => {
   }, [])
 
   return (
-    <AuthContext.Provider value={{ user, setUser, userTemp, setUserTemp, redirect, setRedirect, geoInfo, setGeoInfo, link_id, SetLink_id, storage_id, SetStorage_id, linkMedia, SetLinkMedia, preregister, SetPreregister, SetWihtProvider, WihtProvider, }}>
+    <AuthContext.Provider value={{ user, setUser, userTemp, setUserTemp, redirect, setRedirect, geoInfo, setGeoInfo, link_id, SetLink_id, storage_id, SetStorage_id, linkMedia, SetLinkMedia, preregister, SetPreregister, SetWihtProvider, WihtProvider, startLink }}>
       {children}
     </AuthContext.Provider>
   );

@@ -88,9 +88,9 @@ const LugaresParaBodas = () => {
   return (
     <div className="w-full grid grid-cols-3">
       <ul className="col-span-2 grid grid-cols-3 gap-2 text-gray-500">
-        {subCategories.map((item) => (
+        {subCategories.map((item, idx) => (
           <Link
-            key={item?._id}
+            key={idx}
             href={`/categoria/lugares-para-bodas/${item?.slug}`}
             passHref
           >

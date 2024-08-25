@@ -1,4 +1,4 @@
-import { FC, ReactNode, useCallback, useEffect, useState } from "react";
+import { FC, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { ButtonClose } from "../components/Inputs";
 import router, { useRouter } from "next/router";
 import { Login, Register, ResetPass } from '../components/Login/Forms';
@@ -7,6 +7,7 @@ import { firebaseClient } from "../firebase"
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { ArrowLeft } from "../components/Icons";
 import { User } from "../interfaces/FirebaseInterface";
+import { useActivity } from "../hooks/useActivity";
 
 // Tipos de datos personalizados
 type Forms = {
@@ -18,6 +19,7 @@ type Forms = {
 
 const PageLogin: FC = () => {
   const { linkMedia, preregister } = AuthContextProvider()
+  const [updateActivity, updateActivityLink] = useActivity()
 
   try {
     const appCheck = initializeAppCheck(firebaseClient, {
@@ -38,10 +40,28 @@ const PageLogin: FC = () => {
   const [stageRegister, setStageRegister] = useState(0)
   const [whoYouAre, setWhoYouAre] = useState<string>("");
   const [validProvider, setValidProvider] = useState<User | null>(null);
+  const intervalRef: any = useRef();
 
   useEffect(() => {
-    setRedirect(null)
+    return () => {
+      if (intervalRef) {
+        clearInterval(intervalRef.current);
+      }
+    }
   }, []);
+
+  const getInterval = (lasTime?: any) => {
+    const progressInterval = setInterval(() => {
+      updateActivityLink("timeStep1Step2")
+    }, 5000);
+    return progressInterval;
+  };
+
+  useEffect(() => {
+    if (linkMedia) {
+      intervalRef.current = getInterval();
+    }
+  }, [linkMedia]);
 
   useEffect(() => {
     if (preregister) {
@@ -134,6 +154,7 @@ const PageLogin: FC = () => {
             return
           }
           if (stageRegister > 0) {
+            updateActivityLink("backStep1")
             setStageRegister(stageRegister - 1)
             return
           }

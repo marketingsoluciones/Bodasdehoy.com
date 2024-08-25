@@ -185,7 +185,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
             setUser({ ...UserFirebase, ...moreInfo });
             updateActivity("registered")
             updateActivityLink("registered")
-            redirections({ router, moreInfo, redirect:`${redirect}/?link=${link_id}`, toast })
+            redirections({ router, moreInfo, redirect: `${redirect}/?link=${link_id}`, toast })
           })
         })
         .catch((error): any => {
@@ -254,6 +254,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
   const handleSumitMedia = async (values: initialValues, actions: any) => {
     try {
       if (storage_id && link_id) {
+        updateActivityLink("clikNextStep3")
         handleSubmit(values)
         fetchApiEventos({
           query: queries.updateActivityLink,
@@ -292,6 +293,11 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
               type="text"
               autoComplete="off"
               label={"Nombre y Apellido"}
+              onFocus={() => { updateActivityLink("focusFullNameStep2") }}
+              onBlur={(e: Event) => {
+                const inputElement = e.target as HTMLInputElement;
+                inputElement?.value && updateActivityLink("fullNameStep2", inputElement?.value)
+              }}
               icon={<UserForm className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
             />
           </div>
@@ -301,6 +307,11 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
               type="text"
               autoComplete="off"
               label={"Correo electrónico"}
+              onFocus={() => { updateActivityLink("focusEmailStep2") }}
+              onBlur={(e: Event) => {
+                const inputElement = e.target as HTMLInputElement;
+                inputElement?.value && updateActivityLink("emailStep2", inputElement?.value)
+              }}
               icon={<EmailIcon className="absolute w-4 h-4 inset-y-0 left-4 m-auto text-gray-500" />}
             />
           </div>
@@ -321,6 +332,11 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
               name="phoneNumber"
               type="text"
               autoComplete="off"
+              onFocus={() => { updateActivityLink("focusPhoneNumberStep2") }}
+              onBlur={(e: Event) => {
+                const inputElement = e.target as HTMLInputElement;
+                inputElement?.value && updateActivityLink("phoneNumberStep2", inputElement?.value)
+              }}
               icon={<PhoneMobile className="absolute w-4 h-4 inset-y-0 left-4 m-auto  text-gray-500" />}
               label={"Número de telefono"}
             />

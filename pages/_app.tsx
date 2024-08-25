@@ -30,8 +30,20 @@ function MyApp({ Component, pageProps }: AppProps) {
         </DefaultLayout>
         <style jsx global>
           {`
-            html {
-              scroll-behavior: smooth;
+            body {
+                overscroll-behavior: contain;
+            }
+            ::-webkit-scrollbar {
+              width: 8px;
+            }
+            ::-webkit-scrollbar-track {
+              background: #f1f1f1
+              border-radius: 6px;
+            }
+            ::-webkit-scrollbar-thumb {
+              background: #ffc0cb;
+              border-radius: 6px;
+              height: 50%;
             }
           `}
         </style>

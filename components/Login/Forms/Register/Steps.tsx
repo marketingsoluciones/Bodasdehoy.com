@@ -1,10 +1,11 @@
-import { Dispatch, FC, MouseEventHandler, SetStateAction, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useEffect, useState } from 'react';
 import { LogoFullColor } from '../../../Icons/';
 import { Providers } from '../../Components';
 import FormRegister from './FormRegister';
 import { WhoYouAre } from './WhoYouAre'
 import { AuthContextProvider } from '../../../../context';
 import { useAuthentication } from '../../../../utils/Authentication';
+import { useActivity } from '../../../../hooks/useActivity';
 
 /*
   ### Componente FirstStep ###
@@ -20,6 +21,15 @@ export const FirstStep: FC<propsFirstStep> = ({ value, setStageRegister, validPr
   const { signIn } = useAuthentication();
   const { linkMedia, user } = AuthContextProvider()
   const [select, setSelect] = useState<string>("");
+  const [updateActivity, updateActivityLink] = useActivity()
+
+
+  useEffect(() => {
+    if (select) {
+      updateActivityLink("selectRole", select)
+    }
+  }, [select])
+
 
   // Tipo de dato para definir opciones
 
@@ -42,6 +52,7 @@ export const FirstStep: FC<propsFirstStep> = ({ value, setStageRegister, validPr
           : "bg-primary hover:bg-tertiary transition"
           }`}
         onClick={() => {
+          updateActivityLink("clikNextStep2")
           value(select)
           !validProvider
             ? setStageRegister(old => old + 1)

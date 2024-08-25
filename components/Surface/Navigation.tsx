@@ -8,6 +8,7 @@ import { AlertDesarrollo } from "../modals/AlertDesarrollo";
 import { SearchNavigation } from "./SearchNavigation";
 import { ProfileMenu } from "./MultiMenu/ProfileMenu";
 import { Navbar } from "./Navbar";
+import ClickAwayListener from "react-click-away-listener";
 
 interface propsNavigation {
   modal: any
@@ -47,22 +48,20 @@ export const Navigation: FC<propsNavigation> = () => {
       {modal ? (
         <AlertDesarrollo alertDev={modal} setAlertDev={setModal} />
       ) : null}
-      <header className="container max-w-screen-lg 2xl:max-w-screen-xl w-full px-3 sm:px-0 mx-auto inset-x-0 mt-3 absolute hidden sm:block ">
-        <div className="bg-white rounded-full h-16 py-3 md:px-10 z-30 px-5 md:px-0 mx-auto inset-x-0  flex items-center  justify-between container relative">
-          {isSearch && (
-            <SearchNavigation setSearch={setSearch} isSearch={isSearch} />
-          )}
-          {!isSearch && (
-            <>
-              <Link href={"/"} passHref>
-                <span className="relative cursor-pointer hover:opacity-95 transform hover:-translate-x-1 transition duration-700 ">
+      <header className="flex w-full mt-3 absolute justify-center">
+        <div className="bg-white max-w-screen-lg 2xl:max-w-screen-xl w-full h-16 rounded-full py-3 z-30 mx-[2%] px-[2%] flex items-center relative">
+          {isSearch
+            ? <SearchNavigation setSearch={setSearch} isSearch={isSearch} />
+            : <>
+              <span className="relative cursor-pointer hover:opacity-95 transform hover:-translate-x-1 transition duration-700 mr-[3%] hidden lg:block">
+                <Link href={"/"} passHref>
                   <LogoFullColor className="h-auto w-40" />
-                </span>
-              </Link>
+                </Link>
+              </span>
               <Navbar />
               <Icons handleClickSearch={() => setSearch(!isSearch)} modal={modal} setModal={setModal} />
             </>
-          )}
+          }
         </div>
       </header>
     </>
@@ -80,30 +79,30 @@ export const Icons: FC<propsIcons> = ({ handleClickSearch, modal, setModal }) =>
   const [isHovered, setHovered] = useState<boolean>(false);
   const router = useRouter();
   return (
-    <div className="flex items-center relative">
+    <div className="flex items-center relative ml-[1%]">
       <button className="hidden md:block px-3 cursor-pointer text-gray-500 focus:outline-none ">
         <SearchIcon
           onClick={handleClickSearch}
           className="icon transition transform hover:-rotate-6 hover:scale-110 "
         />
       </button>
-      <div
-        className="border-gray-100 border-l text-gray-500 pl-3 flex items-center gap-1 z-40"
-        onMouseOver={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      >
-        {!user
-          ? <span >
-            <UserIcon className="icon w-8 h-8 text-gray-400 transition transform hover:-rotate-6 hover:scale-110" />
-          </span>
-          : <img
-            alt={user?.displayName ?? "nombre"}
-            src={user?.photoURL ?? "/placeholder/user.png"}
-            className="w-9 h-9 border border-primary rounded-full cursor-pointer"
-          />}
-        <ArrowIcon className="w-4 h-4 rotate-90 transform cursor-pointer" />
-        <ProfileMenu isHovered={isHovered} setHovered={setHovered} modal={modal} setModal={setModal} />
-      </div>
+      <ClickAwayListener onClickAway={() => { setHovered(false) }}>
+        <div onClick={() => setHovered(!isHovered)}
+          className="border-gray-100 border-l text-gray-500 flex items-center z-40">
+          {!user
+            ? <span >
+              <UserIcon className="icon w-8 h-8 text-gray-400 transition transform hover:-rotate-6 hover:scale-110" />
+            </span>
+            : <img
+              alt={user?.displayName ?? "nombre"}
+              src={user?.photoURL ?? "/placeholder/user.png"}
+              className="w-9 h-9 border border-primary rounded-full cursor-pointer"
+            />
+          }
+          <ArrowIcon className="w-4 h-4 rotate-90 transform cursor-pointer hidden sm:block" />
+          <ProfileMenu isHovered={isHovered} setHovered={setHovered} modal={modal} setModal={setModal} />
+        </div>
+      </ClickAwayListener>
     </div>
   );
 };

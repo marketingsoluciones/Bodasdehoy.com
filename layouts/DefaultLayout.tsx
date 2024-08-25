@@ -51,21 +51,21 @@ const DefaultLayout: FC = ({ children }) => {
             <LoadingProvider>
               <FiltersProvider>
                 <DynamicToastProvider>
-                  <div className="bg-color-base relative min-h-screen w-full h-full">
+                  <div className="bg-color-base flex flex-col relative w-full h-[100vh]">
                     <DynamicSidebarProvider>
                       <ButtonCrearEmpresa />
                       {/* <ButtonMessages /> */}
                       <ButtonEmpezar />
                       <FloatButtonchat />
                       <DynamicNavigation />
-                      <DynamicNavbarMobile />
+                      {/* <DynamicNavbarMobile /> */}
                       {/* <NavigationMobile /> */}
-                      <main className="w-full pt-5 md:pt-20">
+                      <main className="w-full overflow-auto mt-20">
                         {!!process?.env?.NEXT_PUBLIC_ID_ANALYTICS && <GoogleAnalytics />}
                         {children}
+                        <DynamicFooter />
+                        <DynamicFooterMobile />
                       </main>
-                      <DynamicFooter />
-                      <DynamicFooterMobile />
                     </DynamicSidebarProvider>
                   </div>
                 </DynamicToastProvider>

@@ -10,6 +10,8 @@ interface propsField {
   label?: string;
   disabled?: boolean
   autoFocus?: boolean
+  onFocus?: any
+  onBlur?: any
 }
 export const InputField: FC<propsField> = ({
   icon = false,

@@ -60,8 +60,8 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
     },
     {
       title: "Wedding page",
-      onClick: async () => { 
-        router.push( window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CUSTOMWEB?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_CUSTOMWEB ?? "" ,)
+      onClick: async () => {
+        router.push(window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CUSTOMWEB?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_CUSTOMWEB ?? "",)
       },
       icon: <WeddingPage />,
       rol: ["novio", "novia", "otro", "empresa"],
@@ -117,7 +117,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       timeout={300}
       classNames={"fade"}>
       < div
-        className={`bg-white w-80 p-3 rounded-xl h-max shadow-md absolute bottom-0 right-0 inset-y-full translate-y-1 overflow-hidden z-50 
+        className={`bg-white w-80  p-3 rounded-xl h-max shadow-md absolute bottom-0 right-0 inset-y-full translate-y-1 overflow-hidden z-50 
     }`}
       >
         <div className="w-full border-b border-gray-100 pb-2">

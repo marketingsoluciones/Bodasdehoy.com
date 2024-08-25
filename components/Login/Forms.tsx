@@ -5,6 +5,7 @@ import FormLogin from "./Forms/FormLogin";
 import FormResetPassword from "./Forms/FormResetPassword";
 import { FirstStep, SecondStep } from "./Forms/Register/Steps";
 import PageLogin from "../../pages/login"
+import { AuthContextProvider } from "../../context";
 
 interface propsLogin {
   fStageRegister?: any
@@ -13,9 +14,11 @@ interface propsLogin {
   setStageRegister?: any
   whoYouAre: string
   setWhoYouAre?: any
+  validProvider?: any
+  setValidProvider?: any
 }
 
-export const Login: FC<propsLogin> = ({ setStage, whoYouAre, setWhoYouAre }) => {
+export const Login: FC<propsLogin> = ({ setStage, whoYouAre, setWhoYouAre, validProvider, setValidProvider }) => {
   useEffect(() => {
     setWhoYouAre("")
   }, [])
@@ -30,7 +33,7 @@ export const Login: FC<propsLogin> = ({ setStage, whoYouAre, setWhoYouAre }) => 
         <h2 className={`font-light text-tertiary flex items-center text-md `}>
           Accede a tu cuenta
         </h2>
-        <Providers setStage={setStage} whoYouAre={whoYouAre} />
+        <Providers setStage={setStage} whoYouAre={whoYouAre} validProvider={validProvider} setValidProvider={setValidProvider} />
         <h2 className={`font-light w-full text-tertiary text-center text-md `}>
           ó
         </h2>
@@ -42,21 +45,22 @@ export const Login: FC<propsLogin> = ({ setStage, whoYouAre, setWhoYouAre }) => 
   );
 };
 
-export const Register: FC<propsLogin> = ({ setStage, fStageRegister, stageRegister, setStageRegister, whoYouAre, setWhoYouAre }) => {
+export const Register: FC<propsLogin> = ({ setStage, fStageRegister, stageRegister, setStageRegister, whoYouAre, setWhoYouAre, validProvider, setValidProvider }) => {
+  const { linkMedia, preregister } = AuthContextProvider()
+
   useEffect(() => {
     setWhoYouAre(fStageRegister == 1 ? "empresa" : "")
   }, [])
-
 
   return (
     <>
       {(() => {
         switch (stageRegister) {
           case 0:
-            return <FirstStep setStageRegister={setStageRegister} value={setWhoYouAre} />
+            return <FirstStep setStageRegister={setStageRegister} value={setWhoYouAre} validProvider={validProvider} />
             break;
           case 1:
-            return <SecondStep setStageRegister={setStageRegister} stageRegister={stageRegister} whoYouAre={whoYouAre} setStage={setStage} />
+            return <SecondStep setStageRegister={setStageRegister} stageRegister={stageRegister} whoYouAre={whoYouAre} setStage={setStage} validProvider={validProvider} setValidProvider={setValidProvider} />
             break;
           default:
             return <PageLogin />
@@ -64,9 +68,7 @@ export const Register: FC<propsLogin> = ({ setStage, fStageRegister, stageRegist
         }
       })()}
 
-      <h2
-        className={`font-light text-tertiary flex gap-2 items-center text-sm `}
-      >
+      {(!linkMedia && !preregister) && <h2 className={`font-light text-tertiary flex gap-2 items-center text-sm `}      >
         ¿Dispones de una cuenta?
         <span
           className="text-sm text-primary font-semibold cursor-pointer hover:text-tertiary transition"
@@ -77,7 +79,7 @@ export const Register: FC<propsLogin> = ({ setStage, fStageRegister, stageRegist
         >
           Inicia Sesión
         </span>
-      </h2>
+      </h2>}
     </>
   );
 };

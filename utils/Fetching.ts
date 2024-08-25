@@ -11,17 +11,12 @@ interface fetchApiProps {
   type: keyof typeof types;
   token?: string;
 }
-export const fetchApi: CallableFunction = async ({
-  query = ``,
-  variables = {},
-  type = "json",
-  token,
-}: fetchApiProps): Promise<any> => {
+export const fetchApi: CallableFunction = async ({ query = ``, variables = {}, type = "json", token }: fetchApiProps): Promise<any> => {
   try {
     if (type === "json") {
       const {
         data: { data },
-      } = await api.graphql({ query, variables }, token);
+      } = await api.apiBodas({ query, variables }, token);
       return Object.values(data)[0];
     } else if (type === "formData") {
       const formData = new FormData();
@@ -75,7 +70,7 @@ export const fetchApi: CallableFunction = async ({
         }
       });
 
-      const { data } = await api.graphql(formData, token);
+      const { data } = await api.apiBodas(formData, token);
 
       if (data.errors) {
         throw new Error(JSON.stringify(data.errors));
@@ -88,7 +83,23 @@ export const fetchApi: CallableFunction = async ({
   }
 };
 
+export const fetchApiEventos: CallableFunction = async ({ query = ``, variables = {}, type = "json", token }: fetchApiProps): Promise<any> => {
+  try {
+    if (type === "json") {
+      const {
+        data: { data },
+      } = await api.apiApp({ query, variables }, token);
+      return Object.values(data)[0];
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 type queries = {
+  getPreregister: string
+  updateActivityLink: string
+  updateActivity: string
   getGeoInfo: string
   getEmailValid: string,
   createUser: string;
@@ -128,9 +139,34 @@ type queries = {
   getAllLocalities: string;
   createSubscripcion: string
   updateAccount: string
+  createUserWithPassword: string
+  getCodePage: string
 };
 
 export const queries: queries = {
+  getPreregister: `query ($_id :ID){
+    getPreregister(_id:$_id)
+  }`,
+  updateActivityLink: `mutation ($args:inputActivityLink){
+    updateActivityLink(args:$args)
+  }`,
+  updateActivity: `mutation ($args:inputActivity){
+    updateActivity(args:$args)
+  }`,
+  getCodePage: `query ($args:inputCodePage, $sort:sortCriteriaCodePage, $skip:Int, $limit:Int){
+    getCodePage(args:$args, sort:$sort, skip:$skip, limit:$limit){
+      total
+      results{
+        _id
+        title
+        htmlPages{
+          title
+          html
+          css
+        }
+      }
+    }
+  }`,
   getEmailValid: `query ($email :String){
     getEmailValid(email:$email){
       valid
@@ -1122,6 +1158,9 @@ export const queries: queries = {
   updateAccount: `mutation { 
     updateAccount 
   }`,
+  createUserWithPassword: `mutation($email:String, $password:String) { 
+    createUserWithPassword(email:$email, password:$password)
+  }`,
 };
 
 export const GraphQL = {
@@ -1185,7 +1224,7 @@ export const GraphQL = {
       data: {
         data: { singleUpload },
       },
-    } = await api.graphql(newFile, config);
+    } = await api.apiBodas(newFile, config);
     return singleUpload;
   },
 };

@@ -1,4 +1,4 @@
-import { FC, ReactNode, useCallback, useEffect, useState } from "react";
+import { FC, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { ButtonClose } from "../components/Inputs";
 import router, { useRouter } from "next/router";
 import { Login, Register, ResetPass } from '../components/Login/Forms';
@@ -6,6 +6,8 @@ import { AuthContextProvider } from "../context";
 import { firebaseClient } from "../firebase"
 import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 import { ArrowLeft } from "../components/Icons";
+import { User } from "../interfaces/FirebaseInterface";
+import { useActivity } from "../hooks/useActivity";
 
 // Tipos de datos personalizados
 type Forms = {
@@ -16,6 +18,9 @@ type Forms = {
 };
 
 const PageLogin: FC = () => {
+  const { linkMedia, preregister } = AuthContextProvider()
+  const [updateActivity, updateActivityLink] = useActivity()
+
   try {
     const appCheck = initializeAppCheck(firebaseClient, {
       provider: new ReCaptchaV3Provider('6LekwcchAAAAANJHB3yv2ZOx6v8PHu2DkF-ku3J8'),
@@ -34,10 +39,35 @@ const PageLogin: FC = () => {
   const [fStageRegister, setFStageRegister] = useState(0)
   const [stageRegister, setStageRegister] = useState(0)
   const [whoYouAre, setWhoYouAre] = useState<string>("");
+  const [validProvider, setValidProvider] = useState<User | null>(null);
+  const intervalRef: any = useRef();
 
   useEffect(() => {
-    setRedirect(null)
+    return () => {
+      if (intervalRef) {
+        clearInterval(intervalRef.current);
+      }
+    }
   }, []);
+
+  const getInterval = (lasTime?: any) => {
+    const progressInterval = setInterval(() => {
+      updateActivityLink("timeStep1Step2")
+    }, 5000);
+    return progressInterval;
+  };
+
+  useEffect(() => {
+    if (linkMedia) {
+      intervalRef.current = getInterval();
+    }
+  }, [linkMedia]);
+
+  useEffect(() => {
+    if (preregister) {
+      setStageRegister(1)
+    }
+  }, [preregister])
 
   useEffect(() => {
     if (r?.query?.q === "register") {
@@ -66,8 +96,8 @@ const PageLogin: FC = () => {
 
 
   const Stages: Forms = {
-    login: <Login setStage={setStage} whoYouAre={whoYouAre} setWhoYouAre={setWhoYouAre} />,
-    register: <Register setStage={setStage} stageRegister={stageRegister} setStageRegister={setStageRegister} whoYouAre={whoYouAre} setWhoYouAre={setWhoYouAre} />,
+    login: <Login setStage={setStage} whoYouAre={whoYouAre} setWhoYouAre={setWhoYouAre} validProvider={validProvider} setValidProvider={setValidProvider} />,
+    register: <Register setStage={setStage} stageRegister={stageRegister} setStageRegister={setStageRegister} whoYouAre={whoYouAre} setWhoYouAre={setWhoYouAre} validProvider={validProvider} setValidProvider={setValidProvider} />,
     resetPassword: <ResetPass setStage={setStage} whoYouAre={whoYouAre} />
   };
 
@@ -118,19 +148,20 @@ const PageLogin: FC = () => {
   return (
     <>
       <div className="w-screen fixed h-full top-0 left-0 md:grid z-30 grid-cols-5 ">
-        <ArrowLeft className="absolute w-6 h-6 z-[10] text-gray-500 cursor-pointer translate-x-5 translate-y-5" onClick={() => {
+        {((!linkMedia || stageRegister !== 0) && !preregister) && <ArrowLeft className="absolute w-6 h-6 z-[10] text-gray-500 cursor-pointer translate-x-5 translate-y-5" onClick={() => {
           if (stage === "resetPassword") {
             setStage("login")
             return
           }
           if (stageRegister > 0) {
+            updateActivityLink("backStep1")
             setStageRegister(stageRegister - 1)
             return
           }
           handleClose()
-        }} />
+        }} />}
         <div className="bg-white w-full h-full col-span-3 relative flex items-center justify-center  ">
-          <ButtonClose onClick={handleClose} />
+          {(!linkMedia && !preregister) && <ButtonClose onClick={handleClose} />}
           <div className="flex flex-col items-center gap-4 w-full px-10 md:px-0 sm:w-3/4 md:w-2/3  ">
             {Stages[stage]}
           </div>

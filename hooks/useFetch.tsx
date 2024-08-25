@@ -25,7 +25,7 @@ const useFetch = ({ query, variables, config = {} }: propsUseFetch) => {
       setError(false)
       setLoading(true)
       if (query && variables) {
-        const { data: { data } } = await api.graphql({ query, variables }, config)
+        const { data: { data } } = await api.apiBodas({ query, variables }, config)
         isMounted.current && setData(Object.values(data)[0])
       } else {
         throw new Error("No tengo query o variables")

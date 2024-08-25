@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "types": [
+      "./node_modules/user-agent-data-types"
+    ],
     "lib": [
       "dom",
       "dom.iterable",
@@ -27,7 +30,8 @@
     "components/EditorJS/index.tsx",
     "components/ReclamarEmpresa/ModalReclamarEmprcomponents/ButtonReclamarEmpresa.tsxEmpresa.jsx",
     "components/ButtonReclamarEmpresa.js",
-    "components/Login/Components.tsx"
+    "components/Login/Components.tsx",
+    "gtas.js"
   ],
   "exclude": [
     "node_modules"

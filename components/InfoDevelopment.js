@@ -30,7 +30,7 @@ export const InfoDevelopment = () => {
 
   return (
     <>
-      {isDevelopment &&
+      {/* {isDevelopment &&
         <div className="absolute z-[1000] bg-blue-100">
           <ul className='text-xs font-display font-semibold ml-4 text-gray-800'>
             <li>url: {window?.location?.hostname}</li>
@@ -39,7 +39,7 @@ export const InfoDevelopment = () => {
             <li>idTokenExp: {dateExpire}</li>
           </ul>
         </div>
-      }
+      } */}
     </>
   )
 }

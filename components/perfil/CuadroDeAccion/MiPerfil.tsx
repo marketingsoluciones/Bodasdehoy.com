@@ -170,6 +170,7 @@ const DatosAcceso = () => {
                         label={"Contraseña Actual"}
                         name={"currentPassword"}
                         type={passwordView ? "password" : "text"}
+                        placeholder={"**********"}
                       />
                       <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 right-4 m-auto w-4 h-4 text-gray-500 translate-y-2.5" >
                         {passwordView ? <EyeSlash /> : <Eye />}
@@ -182,6 +183,7 @@ const DatosAcceso = () => {
                         label={"Nuevo Contraseña"}
                         name={"password"}
                         type={passwordView ? "password" : "text"}
+                        placeholder={"**********"}
                       />
                       <div onClick={() => { setPasswordView(!passwordView) }} className="absolute cursor-pointer inset-y-0 right-4 m-auto w-4 h-4 text-gray-500 translate-y-2.5" >
                         {passwordView ? <EyeSlash /> : <Eye />}

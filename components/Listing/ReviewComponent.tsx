@@ -108,13 +108,13 @@ const ReviewComponent: FC<propsReviewComponent> = ({
   };
 
   const fetchAverageTotal = async () => {
-    const { review, reviewsT } = await fetchApi({
+    const data = await fetchApi({
       query: queries.getAverageBusiness,
       variables: { id: _id },
       token: user?.accessToken,
     });
-    setReviewsProps(reviewsT);
-    setAverageTotal(review);
+    setReviewsProps(data?.reviewsT);
+    setAverageTotal(data?.review);
   };
 
   useEffect(() => {
@@ -122,7 +122,7 @@ const ReviewComponent: FC<propsReviewComponent> = ({
   }, []);
   const fetchMyReview = async () => {
     if (user?.uid) {
-      const { results, total } = await fetchApi({
+      const data = await fetchApi({
         query: queries.getAllReviews,
         variables: {
           criteria: { business: _id, user: user?.uid },
@@ -130,7 +130,7 @@ const ReviewComponent: FC<propsReviewComponent> = ({
         },
         token: user?.accessToken,
       });
-      setMyReview(results[0]);
+      setMyReview(data?.results[0]);
     }
   };
 

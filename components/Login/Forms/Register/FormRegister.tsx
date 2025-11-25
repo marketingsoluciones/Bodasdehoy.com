@@ -133,18 +133,19 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       if (error instanceof FirebaseError) {
         if (error.code === "auth/email-already-in-use") {
           try {
-            const data = values?.password
-            const encryptedData = crypto.publicEncrypt(
-              {
-                key: publicKey,
-                padding: crypto.constants.RSA_PKCS1_PADDING,
-                oaepHash: 'sha256',
-              },
-              Buffer.from(data)
-            );
+            // const data = values?.password
+            // const encryptedData = crypto.publicEncrypt(
+            //   {
+            //     key: publicKey,
+            //     padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+            //     oaepHash: 'sha256',
+            //   },
+            //   Buffer.from(data)
+            // );
+            // console.log(550016, encryptedData)
             const result = await fetchApi({
               query: queries.createUserWithPassword,
-              variables: { email: values.identifier, password: encryptedData.toString('hex') },
+              variables: { email: values.identifier, password: values?.password },
             })
             if (result === "apiBodas/email-already-in-use") {
               console.log(550012, error.code)

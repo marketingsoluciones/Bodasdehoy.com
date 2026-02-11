@@ -53,7 +53,6 @@ export const useActivity = () => {
   const updateActivityLink = async (activity: keyof typeof activities, payload?: any) => {
     try {
       if (link_id) {
-        console.log(99900001, "aqui")
         fetchApiEventos({
           query: queries.updateActivityLink,
           variables: {

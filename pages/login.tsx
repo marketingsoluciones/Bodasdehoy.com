@@ -78,7 +78,7 @@ const PageLogin: FC = () => {
       setRedirect(window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "")
     }
     if (r?.query?.d === "info-empresa") {
-      setRedirect(`/${r?.query?.d}` ?? "")
+      setRedirect(`/${r?.query?.d}`)
       if (r?.query?.f === "register") {
         setStage("register")
         setFStageRegister(1)
@@ -88,12 +88,13 @@ const PageLogin: FC = () => {
       setRedirect(window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_CMS ?? "")
     }
     if (r?.query?.d !== "app" && r?.query?.d !== "info-empresa" && r?.query?.d !== "cms" && r?.query?.d !== "") {
-      setRedirect(`/${r?.query?.d}` ?? "")
+      setRedirect(`/${r?.query?.d}`)
+    }
+    if (!r?.query?.d) {
+      setRedirect(`/`)
     }
     ///////////////////////////    
   }, [r, setRedirect]);
-
-
 
   const Stages: Forms = {
     login: <Login setStage={setStage} whoYouAre={whoYouAre} setWhoYouAre={setWhoYouAre} validProvider={validProvider} setValidProvider={setValidProvider} />,

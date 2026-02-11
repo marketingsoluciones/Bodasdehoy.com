@@ -126,6 +126,10 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
         );
         // aqui updatePhoneNumber    
         UserFirebase = userCredential.user;
+        const idToken = await userCredential.user.getIdToken()
+        const dateExpire = new Date(parseJwt(idToken ?? "").exp * 1000)
+        Cookies.set("idTokenV0.1.0", idToken ?? "", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
+        await getSessionCookie(idToken)
       }
 
       values.uid = UserFirebase.uid;
@@ -133,16 +137,6 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       if (error instanceof FirebaseError) {
         if (error.code === "auth/email-already-in-use") {
           try {
-            // const data = values?.password
-            // const encryptedData = crypto.publicEncrypt(
-            //   {
-            //     key: publicKey,
-            //     padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-            //     oaepHash: 'sha256',
-            //   },
-            //   Buffer.from(data)
-            // );
-            // console.log(550016, encryptedData)
             const result = await fetchApi({
               query: queries.createUserWithPassword,
               variables: { email: values.identifier, password: values?.password },
@@ -152,9 +146,12 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
               toast("error", "Ups... este correo ya está registrado1")
               return false
             }
-            const asd = await signInWithCustomToken(getAuth(), result)
-            UserFirebase = asd.user
-
+            const userCredential: UserCredential = await signInWithCustomToken(getAuth(), result)
+            UserFirebase = userCredential.user
+            const idToken = await userCredential.user.getIdToken()
+            const dateExpire = new Date(parseJwt(idToken ?? "").exp * 1000)
+            Cookies.set("idTokenV0.1.0", idToken ?? "", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
+            await getSessionCookie(idToken)
             values.uid = UserFirebase.uid
           } catch (error) {
             console.log(55001, error)
@@ -172,11 +169,6 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
     if (UserFirebase) {
       updateProfile(UserFirebase, { displayName: values?.fullName })
         .then(async () => {
-          const idToken = await getAuth().currentUser?.getIdToken(true)
-          const dateExpire = new Date(parseJwt(idToken ?? "").exp * 1000)
-          Cookies.set("idTokenV0.1.0", idToken ?? "", { domain: process.env.NEXT_PUBLIC_DOMINIO ?? "", expires: dateExpire })
-          await getSessionCookie(idToken)
-          // Crear usuario en MongoDB
           fetchApi({
             query: queries.createUser,
             variables: {
@@ -201,13 +193,11 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
   // Funcion a ejecutar para el submit del formulario 
 
   const handleSubmit = async (values: any) => {
-    console.log("000000000000")
     try {
       if (!activeSaveRegister.state) {
         setActiveSaveRegister({ state: true, type: values.identifier.includes("@") ? "password" : "text" })
         /*Aquí para regsitrase con número de teléfono*/
         if (!values.identifier.includes("@")) {
-          console.log("111111111111")
           if (values.identifier[0] === "0") {
             values.identifier = `+${phoneUtil.getCountryCodeForRegion(geoInfo.ipcountry)}${values.identifier.slice(1, values.identifier.length)}`
           }
@@ -237,7 +227,6 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       }
       /*Aquí para regsitrase con correo electrónico*/
       if (values.identifier.includes("@")) {
-        console.log("222222222222222")
         nextSave(values)
       }
 
@@ -276,7 +265,7 @@ const FormRegister: FC<propsFormRegister> = ({ whoYouAre, setStageRegister, stag
       }
       setPhoneNumber(values?.phoneNumber)
     } catch (error) {
-      console.log(45111, error)
+      console.log(451113, error)
     }
   }
 

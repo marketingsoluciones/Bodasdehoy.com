@@ -10,6 +10,7 @@ import { RiLoginBoxLine } from "react-icons/ri"
 import { MdLogout } from "react-icons/md"
 import { BsCamera } from "react-icons/bs"
 import Cookies from "js-cookie";
+import { getChatLoginUrl } from "../../../utils/whitelabelUrls";
 
 export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal }) => {
   const { user } = AuthContextProvider();
@@ -23,7 +24,12 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       title: "Iniciar sesión",
       onClick: async () => {
         const redirect = encodeURIComponent(window.location.href)
-        window.location.href = `${process.env.NEXT_PUBLIC_CHAT ?? "https://chat.bodasdehoy.com"}/login?redirect=${redirect}`
+        const url = getChatLoginUrl(redirect)
+        if (!url) {
+          console.error("NEXT_PUBLIC_CHAT no está definido.")
+          return
+        }
+        window.location.href = url
       },
       icon: <RiLoginBoxLine />,
       rol: undefined,
@@ -32,7 +38,12 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       title: "Registrarse",
       onClick: async () => {
         const redirect = encodeURIComponent(window.location.href)
-        window.location.href = `${process.env.NEXT_PUBLIC_CHAT ?? "https://chat.bodasdehoy.com"}/login?redirect=${redirect}&q=register`
+        const url = getChatLoginUrl(redirect, "register")
+        if (!url) {
+          console.error("NEXT_PUBLIC_CHAT no está definido.")
+          return
+        }
+        window.location.href = url
       },
       icon: <PiUserPlusLight />,
       rol: undefined,

@@ -85,7 +85,7 @@ const PageLogin: FC = () => {
       }
     }
     if (r?.query?.d === "cms") {
-      setRedirect(window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_CMS ?? "")
+      setRedirect(window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_SUITE?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_SUITE ?? "")
     }
     if (r?.query?.d !== "app" && r?.query?.d !== "info-empresa" && r?.query?.d !== "cms" && r?.query?.d !== "") {
       setRedirect(`/${r?.query?.d}`)

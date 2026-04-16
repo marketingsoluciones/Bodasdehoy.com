@@ -50,7 +50,7 @@ const InfoEmpresas = () => {
     })
     if (resp === "ok") {
       toast("success", "ahora tu cuenta es de empresa")
-      const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
+      const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_SUITE?.replace("//", "//test") : process.env.NEXT_PUBLIC_SUITE
       router.push(path ?? "")
     }
   }

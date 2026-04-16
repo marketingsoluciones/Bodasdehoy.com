@@ -1,19 +1,15 @@
-import Link from "next/link"
-import { Dispatch, FC, SetStateAction, useMemo } from "react"
+import { Dispatch, FC, SetStateAction } from "react"
 import ClickAwayListener from "react-click-away-listener"
-import { ArrowLeft, Icon036Profile, CarIcon as SettingsIcon, UserIcon } from "../Icons"
+import { ArrowLeft, UserIcon } from "../Icons"
 import ModalReclarEmpresa from '../ReclamarEmpresa/ModalReclamarEmpresa'
 import { useState } from 'react'
-import { ButtonClose2 } from '../../components/Inputs/ButtonClose2'
 import { AuthContextProvider, LoadingContextProvider } from '../../context';
 import { PiUserPlusLight } from "react-icons/pi"
 import { useRouter } from "next/router"
 import Cookies from "js-cookie"
-import { getAuth, signOut } from "firebase/auth"
-import { useToast } from "../../hooks/useToast"
 import { MdLogout } from "react-icons/md"
-import { BiBell } from "react-icons/bi"
 import { RiLoginBoxLine } from "react-icons/ri"
+import { BsCamera } from "react-icons/bs"
 import { useAuthentication } from "../../utils/Authentication"
 
 type ItemNav = {
@@ -28,22 +24,15 @@ interface propsSidebar {
     setShowSidebar: Dispatch<SetStateAction<boolean>>
     showSidebar: boolean
 }
-// menu hamburguesa en el mobile 
+// menu hamburguesa en el mobile
 export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
     const { _signOut } = useAuthentication()
     const [showForm, setShowForm] = useState(false)
     const { user, setUser } = AuthContextProvider()
     const router = useRouter()
-    const toast = useToast()
     const cookieContent = JSON.parse(Cookies.get("guestbodas") ?? "{}")
 
     const ListaNavbar: ItemNav[] = [
-        {
-            title: "Organiza tu Boda",
-            icon: "",
-            route: cookieContent?.eventCreated || user?.uid ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",
-            user: "all"
-        },
         {
             title: "Novia",
             icon: "",
@@ -75,34 +64,27 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
             user: "all"
         },
         {
-            title: "Mis publicaciones",
-            icon: "",
-            onClick: async () => {
-                !user?.uid && toast("success", "debes ininiciar sessión o registrarte")
-                const path = `${window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS}/InfoPage/publicaciones`
-                router.push(user?.uid ? path ?? "" : `/login?d=${router.asPath.slice(1, router.asPath.length)}&end=${path}`)
-            },
-            user: "all"
-        },
-        {
-            title: "Mis empresas",
-            icon: "",
-            onClick: async () => {
-                const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
-                router.push(user?.role?.includes("empresa") ? path ?? "" : "/info-empresa")
-            },
-            user: "all"
-        },
-        {
             title: "Mis eventos",
             icon: "",
-            route: cookieContent?.eventCreated || user?.uid ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",
+            route: cookieContent?.eventCreated || user?.uid ? process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",
             user: "all"
         },
         {
-            title: "Notificaciones",
-            icon: <BiBell className="w-6 h-6" />,
-            route: "/configuracion",
+            title: "Copilot IA",
+            icon: "",
+            route: process.env.NEXT_PUBLIC_CHAT ?? "",
+            user: "all"
+        },
+        {
+            title: "Momentos",
+            icon: <BsCamera className="w-6 h-6" />,
+            route: process.env.NEXT_PUBLIC_MEMORIES ?? "",
+            user: "loged"
+        },
+        {
+            title: "Suite",
+            icon: "",
+            route: process.env.NEXT_PUBLIC_SUITE ?? "",
             user: "loged"
         },
         {

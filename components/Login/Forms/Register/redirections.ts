@@ -4,7 +4,7 @@ export const redirections = ({ router, moreInfo, redirect, toast }: any) => {
     toast("success", `Inicio sesión con exito`)
   } else {
     if (router?.query?.d == "info-empresa" && moreInfo.role.includes("empresa")) {
-      const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
+      const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_SUITE?.replace("//", "//test") : process.env.NEXT_PUBLIC_SUITE
       router.push(path ?? "")
       toast("success", `Cuenta de empresa creada con exito`)
     }

@@ -21,13 +21,19 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
   const options: Option[] = [
     {
       title: "Iniciar sesión",
-      onClick: async () => { router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) },
+      onClick: async () => {
+        const redirect = encodeURIComponent(window.location.href)
+        window.location.href = `${process.env.NEXT_PUBLIC_CHAT ?? "https://chat.bodasdehoy.com"}/login?redirect=${redirect}`
+      },
       icon: <RiLoginBoxLine />,
       rol: undefined,
     },
     {
       title: "Registrarse",
-      onClick: async () => { router.push(`/login?q=register&d=${router.asPath.slice(1, router.asPath.length)}`) },
+      onClick: async () => {
+        const redirect = encodeURIComponent(window.location.href)
+        window.location.href = `${process.env.NEXT_PUBLIC_CHAT ?? "https://chat.bodasdehoy.com"}/login?redirect=${redirect}&q=register`
+      },
       icon: <PiUserPlusLight />,
       rol: undefined,
     },

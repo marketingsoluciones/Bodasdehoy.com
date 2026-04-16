@@ -94,13 +94,19 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
         {
             title: "Iniciar sesión",
             icon: <RiLoginBoxLine className="w-6 h-6" />,
-            route: `/login?d=${router.asPath.slice(1, router.asPath.length)}`,
+            onClick: () => {
+                const redirect = encodeURIComponent(window.location.href)
+                window.location.href = `${process.env.NEXT_PUBLIC_CHAT ?? "https://chat.bodasdehoy.com"}/login?redirect=${redirect}`
+            },
             user: "guest"
         },
         {
             title: "Registrarse",
             icon: <PiUserPlusLight className="w-6 h-6" />,
-            route: `/login?q=register&d=${router.asPath.slice(1, router.asPath.length)}`,
+            onClick: () => {
+                const redirect = encodeURIComponent(window.location.href)
+                window.location.href = `${process.env.NEXT_PUBLIC_CHAT ?? "https://chat.bodasdehoy.com"}/login?redirect=${redirect}&q=register`
+            },
             user: "guest"
         },
         {
@@ -148,11 +154,17 @@ export const Sidebar: FC<propsSidebar> = ({ setShowSidebar, showSidebar }) => {
                                 {user?.displayName
                                     ? <span className="capitalize">{user?.displayName}</span>
                                     : <div className="text-sm">
-                                        <span onClick={async () => { router.push(`/login?d=${router.asPath.slice(1, router.asPath.length)}`) }}>
+                                        <span onClick={() => {
+                                            const redirect = encodeURIComponent(window.location.href)
+                                            window.location.href = `${process.env.NEXT_PUBLIC_CHAT ?? "https://chat.bodasdehoy.com"}/login?redirect=${redirect}`
+                                        }}>
                                             Iniciar sesión
                                         </span>
 
-                                        <span onClick={async () => { router.push(`/login?q=register&d=${router.asPath.slice(1, router.asPath.length)}`) }} className="m-1">
+                                        <span onClick={() => {
+                                            const redirect = encodeURIComponent(window.location.href)
+                                            window.location.href = `${process.env.NEXT_PUBLIC_CHAT ?? "https://chat.bodasdehoy.com"}/login?redirect=${redirect}&q=register`
+                                        }} className="m-1">
                                             / Registrarse
                                         </span>
                                     </div>}

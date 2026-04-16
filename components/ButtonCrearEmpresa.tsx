@@ -10,7 +10,7 @@ const ButtonCrearEmpresa = () => {
     const url = () => {
         const lowerCase = user?.role?.map((item: string) => item.toLowerCase())
         if (lowerCase?.includes("empresa")) {
-            return `${process.env.NEXT_PUBLIC_SUITE}/?d=busines`
+            return `${process.env.NEXT_PUBLIC_CMS}/?d=busines`
         }
         return "/info-empresa"
     }

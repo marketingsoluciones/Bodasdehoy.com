@@ -121,7 +121,7 @@ export const useAuthentication = () => {
                 toast("success", `Inicio sesión con éxito`)
               } else {
                 if (router?.query?.d == "info-empresa" && moreInfo.role.includes("empresa")) {
-                  const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_SUITE?.replace("//", "//test") : process.env.NEXT_PUBLIC_SUITE
+                  const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
                   router.push(path ?? "")
                   toast("success", `Inicio de sesión de empresa con éxito`)
                 }
@@ -152,7 +152,7 @@ export const useAuthentication = () => {
                     toast("success", `Registro sesión con éxito`)
                   } else {
                     if (router?.query?.d == "info-empresa" && [whoYouAre].includes("empresa")) {
-                      const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_SUITE?.replace("//", "//test") : process.env.NEXT_PUBLIC_SUITE
+                      const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
                       router.push(path ?? "")
                       toast("success", `Registro de sesión de empresa con éxito`)
                     }

@@ -3,20 +3,18 @@ import { AuthContextProvider, LoadingContextProvider } from "../../../context";
 import { useAuthentication } from "../../../utils/Authentication";
 import { useRouter } from "next/router";
 import { ListItemProfile, Option } from "./ListItemProfile";
-import { CompanyIcon, CorazonPaddinIcon, Eventos, Posts, StarRating, UserIcon, WeddingPage } from "../../Icons";
+import { ChatIcon, CompanyIcon, Eventos, UserIcon } from "../../Icons";
 import { CSSTransition } from "react-transition-group";
 import { PiUserPlusLight } from "react-icons/pi"
 import { RiLoginBoxLine } from "react-icons/ri"
 import { MdLogout } from "react-icons/md"
-import { BiBell } from "react-icons/bi"
-import { useToast } from "../../../hooks/useToast";
+import { BsCamera } from "react-icons/bs"
 import Cookies from "js-cookie";
 
 export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal }) => {
   const { user } = AuthContextProvider();
   const { setLoading } = LoadingContextProvider();
   const { _signOut } = useAuthentication()
-  const toast = useToast()
 
   const router = useRouter()
   const cookieContent = JSON.parse(Cookies.get("guestbodas") ?? "{}")
@@ -34,51 +32,36 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       rol: undefined,
     },
     {
-      title: "Mis empresas",
-      onClick: async () => {
-        const path = window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS
-        router.push(user?.role?.includes("empresa") ? path ?? "" : "/info-empresa")
-      },
-      icon: <CompanyIcon />,
-      rol: ["all"],
-    },
-    {
-      title: "Notificaciones",
-      onClick: async () => { setModal(!modal) },
-      icon: <BiBell />,
-      rol: ["novio", "novia", "otro", "empresa"],
-    },
-    {
-      title: "Mis publicaciones",
-      onClick: async () => {
-        !user?.uid && toast("success", "debes ininiciar sessión o registrarte")
-        const path = `${window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CMS?.replace("//", "//test") : process.env.NEXT_PUBLIC_CMS}/InfoPage/publicaciones`
-        router.push(user?.uid ? path ?? "" : `/login?d=${router.asPath.slice(1, router.asPath.length)}&end=${path}`)
-      },
-      icon: <Posts />,
-      rol: ["all"],
-    },
-    {
-      title: "Wedding page",
-      onClick: async () => {
-        router.push(window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_CUSTOMWEB?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_CUSTOMWEB ?? "",)
-      },
-      icon: <WeddingPage />,
-      rol: ["novio", "novia", "otro", "empresa"],
-    },
-    {
       title: "Mis eventos",
       onClick: async () => {
-        router.push(cookieContent?.eventCreated || user?.uid ? window.origin.includes("://test.") ? process.env.NEXT_PUBLIC_EVENTSAPP?.replace("//", "//test") ?? "" : process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app",)
+        router.push(cookieContent?.eventCreated || user?.uid ? process.env.NEXT_PUBLIC_EVENTSAPP ?? "" : "/welcome-app")
       },
       icon: <Eventos />,
       rol: ["all"],
     },
     {
-      title: "Proveedores",
-      onClick: async () => { router.push(`/`) },
-      icon: <CorazonPaddinIcon />,
-      rol: ["novio", "novia", "otro", "empresa"],
+      title: "Copilot IA",
+      onClick: async () => {
+        router.push(process.env.NEXT_PUBLIC_CHAT ?? "")
+      },
+      icon: <ChatIcon />,
+      rol: ["all"],
+    },
+    {
+      title: "Momentos",
+      onClick: async () => {
+        router.push(process.env.NEXT_PUBLIC_MEMORIES ?? "")
+      },
+      icon: <BsCamera />,
+      rol: ["novio", "novia", "otro"],
+    },
+    {
+      title: "Suite",
+      onClick: async () => {
+        router.push(user?.role?.includes("empresa") ? process.env.NEXT_PUBLIC_SUITE ?? "" : "/info-empresa")
+      },
+      icon: <CompanyIcon />,
+      rol: ["empresa"],
     },
     {
       title: "Mi perfil",
@@ -117,7 +100,7 @@ export const ProfileMenu: FC<any> = ({ isHovered, setHovered, modal, setModal })
       timeout={300}
       classNames={"fade"}>
       < div
-        className={`bg-white w-80  p-3 rounded-xl h-max shadow-md absolute bottom-0 right-0 inset-y-full translate-y-1 overflow-hidden z-50 
+        className={`bg-white w-80  p-3 rounded-xl h-max shadow-md absolute bottom-0 right-0 inset-y-full translate-y-1 overflow-hidden z-50
     }`}
       >
         <div className="w-full border-b border-gray-100 pb-2">
